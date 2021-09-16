@@ -12,6 +12,9 @@ public class GameRenderer
         batch = new SpriteBatch();
     }
 
+    /**
+     * Renders a background and then all the objects in the world singleton using a SpriteBatch
+     */
     public void render()
     {
         ScreenUtils.clear(0, 0, 0, 1);
@@ -21,6 +24,9 @@ public class GameRenderer
         batch.end();
     }
 
+    /**
+     * Disposes of the SpriteBatch
+     */
     public void dispose()
     {
         batch.dispose();
