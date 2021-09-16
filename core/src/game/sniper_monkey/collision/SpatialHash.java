@@ -1,8 +1,45 @@
 package game.sniper_monkey.collision;
 
+import com.badlogic.gdx.math.Vector2;
+import game.sniper_monkey.GameObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class SpatialHash
 {
+    HashMap<Vector2, ArrayList<CollisionPair>> hash;
+    float tileWidth, tileHeight;
 
+    Vector2 testKey = new Vector2(0, 0);
+
+    public SpatialHash(float tileWidth, float tileHeight)
+    {
+        this.tileWidth = tileWidth;
+        this.tileHeight = tileHeight;
+
+        hash = new HashMap<Vector2, ArrayList<CollisionPair>>();
+    }
+
+    public void insert(GameObject object, Hitbox hitbox)
+    {
+        CollisionPair pair = new CollisionPair(object, hitbox);
+        if(hash.containsKey(testKey))
+        {
+            hash.get(testKey).add(pair);
+        }
+        else
+        {
+            ArrayList<CollisionPair> bucket = new ArrayList<CollisionPair>();
+            bucket.add(pair);
+            hash.put(testKey, bucket);
+        }
+    }
+
+    public ArrayList<CollisionPair> query(Vector2 position)
+    {
+        if (hash.containsKey(testKey)) return hash.get(testKey); else return null;
+    }
 }
 
 /*#include "spatial_hash.h"
