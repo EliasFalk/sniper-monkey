@@ -16,6 +16,11 @@ public abstract class GameObject
         batch.draw(sprite, position.x, position.y);
     }
 
+    protected final void delete()
+    {
+        World.getInstance().deleteGameObject(this);
+    }
+
     protected void setSprite(Texture sprite)
     {
         this.sprite = sprite;
