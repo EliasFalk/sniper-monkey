@@ -9,6 +9,27 @@ public abstract class GameObject
     private Vector2 position;
     private Texture sprite;
 
+    /**
+     * Creates the GameObject at a custom position
+     * @param position the starting position
+     * @param sprite the sprite to use
+     */
+    public GameObject(Vector2 position, Texture sprite)
+    {
+        this.position = position;
+        this.sprite = sprite;
+    }
+
+    /**
+     * Creates the GameObject at a default position
+     * @param sprite the sprite to use
+     */
+    public GameObject(Texture sprite)
+    {
+        position = new Vector2(0, 0);
+        this.sprite = sprite;
+    }
+
     public abstract void update(float deltaTime);
 
     /**
