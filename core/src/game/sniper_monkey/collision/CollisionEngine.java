@@ -25,7 +25,7 @@ public class CollisionEngine
         ArrayList<CollisionPair> potentialHits = spatialHash.query(hitbox.getPosition());
         for(CollisionPair pair : potentialHits)
         {
-            if(hitbox.isOverlapping(pair.hitbox, offset))
+            if(pair.hitbox != hitbox && hitbox.isOverlapping(pair.hitbox, offset))
             {
                 hits.add(pair.gameObject);
             }
