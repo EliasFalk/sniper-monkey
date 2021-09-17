@@ -2,6 +2,7 @@ package game.sniper_monkey;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.player.Player;
+import game.sniper_monkey.platform.Platform;
 import game.sniper_monkey.world.*;
 
 import com.badlogic.gdx.ApplicationAdapter;
@@ -19,8 +20,10 @@ public class SniperMonkey extends ApplicationAdapter {
 	@Override
 	public void create () {
 		Texture img = new Texture("evil_wizard_2/Attack1.png");
+		Texture platform = new Texture("platform.png");
 		gameRenderer = new GameRenderer();
 		World.getInstance().addGameObject(new Player(new Vector2(50, 50), new Sprite(img,75, 100, 55, 65)));
+		World.getInstance().addGameObject(new Platform(new Vector2(-400, -200), new Sprite(platform)));
 	}
 
 	@Override

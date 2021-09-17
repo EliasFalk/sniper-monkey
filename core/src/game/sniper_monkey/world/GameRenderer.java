@@ -12,6 +12,7 @@ public class GameRenderer
 {
     SpriteBatch batch;
     Texture img = new Texture("evil_wizard_2/Attack1.png");
+    Texture platform = new Texture("platform.png");
 
     public GameRenderer()
     {
