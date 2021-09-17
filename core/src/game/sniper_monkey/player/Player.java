@@ -10,9 +10,6 @@ import java.util.Vector;
 
 public class Player extends GameObject {
 
-
-
-
     /**
      * Creates a player with a sprite and a position in the world
      * @param position
