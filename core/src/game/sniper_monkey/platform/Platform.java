@@ -8,7 +8,7 @@ import game.sniper_monkey.world.GameObject;
 public class Platform extends GameObject {
 
     public Platform(Vector2 position) {
-        super(position, new Sprite(new Texture("platform.png")));
+        super(position, new Sprite(new Texture("CuteForest/Tileset.png"), 16, 0, 16, 16));
     }
 
     @Override

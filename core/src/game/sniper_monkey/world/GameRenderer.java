@@ -23,7 +23,7 @@ public class GameRenderer
      * Renders a background and then all the objects in the world singleton using a SpriteBatch
      */
 
-    OrthographicCamera camera = new OrthographicCamera(800, 800);
+    OrthographicCamera camera = new OrthographicCamera(400, 400);
     public void render()
     {
         ScreenUtils.clear(1, 1, 1, 1);
