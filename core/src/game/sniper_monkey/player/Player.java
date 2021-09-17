@@ -1,4 +1,4 @@
-package game.sniper_monkey.Player;
+package game.sniper_monkey.player;
 
 public class Player {
     int cooldown;

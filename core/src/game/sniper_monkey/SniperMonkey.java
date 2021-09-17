@@ -1,4 +1,5 @@
 package game.sniper_monkey;
+import game.sniper_monkey.world.*;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;

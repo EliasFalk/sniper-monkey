@@ -1,4 +1,4 @@
-package game.sniper_monkey;
+package game.sniper_monkey.world;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;

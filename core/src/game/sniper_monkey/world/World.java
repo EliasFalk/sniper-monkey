@@ -1,6 +1,5 @@
-package game.sniper_monkey;
+package game.sniper_monkey.world;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
