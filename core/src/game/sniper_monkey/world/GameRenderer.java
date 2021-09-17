@@ -1,13 +1,17 @@
 package game.sniper_monkey.world;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+
+import javax.swing.*;
 
 public class GameRenderer
 {
     SpriteBatch batch;
-    Texture img = new Texture("badlogic.jpg");
+    Texture img = new Texture("evil_wizard_2/Attack1.png");
 
     public GameRenderer()
     {
@@ -17,12 +21,14 @@ public class GameRenderer
     /**
      * Renders a background and then all the objects in the world singleton using a SpriteBatch
      */
+
+    OrthographicCamera camera = new OrthographicCamera(800, 800);
     public void render()
     {
-        ScreenUtils.clear(0, 0, 0, 1);
+        ScreenUtils.clear(1, 1, 1, 1);
 
         batch.begin();
-        batch.draw(img, 0, 0);
+        batch.setProjectionMatrix(camera.combined);
         World.getInstance().render(batch);
         batch.end();
     }

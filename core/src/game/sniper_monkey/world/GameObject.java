@@ -1,6 +1,6 @@
 package game.sniper_monkey.world;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.collision.Hitbox;
@@ -8,7 +8,7 @@ import game.sniper_monkey.collision.Hitbox;
 public abstract class GameObject
 {
     private Vector2 position;
-    private Texture sprite;
+    private Sprite sprite;
     private Hitbox hitbox;
 
     /**
@@ -16,7 +16,7 @@ public abstract class GameObject
      * @param position the starting position
      * @param sprite the sprite to use
      */
-    public GameObject(Vector2 position, Texture sprite)
+    public GameObject(Vector2 position, Sprite sprite)
     {
         this.position = position;
         this.sprite = sprite;
@@ -26,7 +26,7 @@ public abstract class GameObject
      * Creates the GameObject at a default position
      * @param sprite the sprite to use
      */
-    public GameObject(Texture sprite)
+    public GameObject(Sprite sprite)
     {
         position = new Vector2(0, 0);
         this.sprite = sprite;
@@ -55,7 +55,7 @@ public abstract class GameObject
      * Updates the sprite of this GameObject
      * @param sprite the new sprite to use
      */
-    protected void setSprite(Texture sprite)
+    protected void setSprite(Sprite sprite)
     {
         this.sprite = sprite;
     }
@@ -74,6 +74,6 @@ public abstract class GameObject
      */
     public Vector2 getPos()
     {
-        return position;
+        return position.cpy();
     }
 }
