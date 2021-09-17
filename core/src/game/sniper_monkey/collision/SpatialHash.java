@@ -1,7 +1,7 @@
 package game.sniper_monkey.collision;
 
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.GameObject;
+import game.sniper_monkey.world.GameObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;

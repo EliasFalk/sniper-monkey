@@ -1,7 +1,7 @@
 package game.sniper_monkey.collision;
 
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.*;
+import game.sniper_monkey.world.*;
 
 import java.util.ArrayList;
 
@@ -25,6 +25,7 @@ public class CollisionEngine
         ArrayList<CollisionPair> potentialHits = spatialHash.query(hitbox.getPosition());
         for(CollisionPair pair : potentialHits)
         {
+            //Doesn't collide with itself
             if(pair.hitbox != hitbox && hitbox.isOverlapping(pair.hitbox, offset))
             {
                 hits.add(pair.gameObject);

@@ -1,6 +1,6 @@
 package game.sniper_monkey.collision;
 
-import game.sniper_monkey.*;
+import game.sniper_monkey.world.*;
 
 public class CollisionPair
 {
