@@ -3,11 +3,13 @@ package game.sniper_monkey.world;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import game.sniper_monkey.collision.Hitbox;
 
 public abstract class GameObject
 {
     private Vector2 position;
     private Texture sprite;
+    private Hitbox hitbox;
 
     /**
      * Creates the GameObject at a custom position
