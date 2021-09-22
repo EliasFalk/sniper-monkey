@@ -7,4 +7,5 @@ public enum PlayerInputAction {
     ATTACK1,
     ATTACK2,
     BLOCK,
+    DROP
 }
