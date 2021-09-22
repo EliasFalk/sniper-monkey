@@ -1,9 +1,10 @@
 package game.sniper_monkey;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 
 public class PhysicsPosition {
-    private final float GRAVITY = -200f;
+    private final float GRAVITY = 0;
     private float DRAG = 50f;
     private Vector2 position;
     private Vector2 velocity;
@@ -11,7 +12,7 @@ public class PhysicsPosition {
 
 
     /**
-     * Updates the velocity and position based on current velocity and acceleration.
+     * Updates the velocity and position based on current velocity and acceleration;
      * @param deltaTime The time between frames
      */
     public void update(float deltaTime) {
@@ -26,6 +27,10 @@ public class PhysicsPosition {
     }
 
 
+    /**
+     * Gets a copy of the current position vector.
+     * @return
+     */
     public Vector2 getPosition() {
         return position.cpy();
     }
