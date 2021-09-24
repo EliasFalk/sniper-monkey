@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 import javax.swing.*;
 
-public class GameRenderer
+public class GameRenderer implements IWorldObserver
 {
     SpriteBatch batch;
     Texture img = new Texture("evil_wizard_2/Attack1.png");
@@ -40,5 +40,15 @@ public class GameRenderer
     public void dispose()
     {
         batch.dispose();
+    }
+
+    @Override
+    public void onObjectAddedToWorld(GameObject obj) {
+
+    }
+
+    @Override
+    public void onObjectRemovedWorld(GameObject obj) {
+
     }
 }

@@ -1,18 +1,22 @@
 package game.sniper_monkey.world;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
+import java.util.Observer;
 
 public final class World
 {
     private static World INSTANCE;
 
     private ArrayList<GameObject> gameObjects;
+    private ArrayList<IWorldObserver> observers;
 
     private World()
     {
-        gameObjects = new ArrayList<GameObject>();
+        gameObjects = new ArrayList<>();
+        observers = new ArrayList<>();
     }
 
     //Singleton
@@ -20,6 +24,32 @@ public final class World
     {
         if(INSTANCE == null) INSTANCE = new World();
         return INSTANCE;
+    }
+
+    public void registerObserver(IWorldObserver observer)
+    {
+        observers.add(observer);
+    }
+
+    public void unregisterObserver(IWorldObserver observer)
+    {
+        observers.remove(observer);
+    }
+
+    private void notifyObserversOfNewObject(GameObject obj)
+    {
+        for(IWorldObserver observer : observers)
+        {
+            observer.onObjectAddedToWorld(obj);
+        }
+    }
+
+    private void notifyObserversOfRemovedObject(GameObject obj)
+    {
+        for(IWorldObserver observer : observers)
+        {
+            observer.onObjectRemovedWorld(obj);
+        }
     }
 
     /**
@@ -51,6 +81,7 @@ public final class World
     public void addGameObject(GameObject obj)
     {
         gameObjects.add(obj);
+        notifyObserversOfNewObject(obj);
     }
 
     /**
@@ -60,5 +91,6 @@ public final class World
     public void deleteGameObject(GameObject obj)
     {
         gameObjects.remove(obj);
+        notifyObserversOfRemovedObject(obj);
     }
 }
