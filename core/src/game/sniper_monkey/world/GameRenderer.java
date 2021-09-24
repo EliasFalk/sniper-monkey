@@ -27,7 +27,7 @@ public class GameRenderer implements IWorldObserver
      * Renders a background and then all the objects in the world singleton using a SpriteBatch
      */
 
-    OrthographicCamera camera = new OrthographicCamera(400, 400);
+    OrthographicCamera camera = new OrthographicCamera(1280/2, 720/2);
     public void render()
     {
         ScreenUtils.clear(1, 1, 1, 1);
