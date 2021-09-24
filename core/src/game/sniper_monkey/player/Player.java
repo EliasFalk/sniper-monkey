@@ -10,6 +10,8 @@ import java.util.Vector;
 
 public class Player extends GameObject {
 
+    private Stamina playerStamina;
+
     /**
      * Creates a player with a sprite and a position in the world
      * @param position
@@ -17,7 +19,7 @@ public class Player extends GameObject {
      */
     public Player(Vector2 position, Sprite sprite) {
         super(position, sprite);
-
+        playerStamina = new Stamina(0.5f, 100);
     }
 
     /**
@@ -34,5 +36,6 @@ public class Player extends GameObject {
      */
     @Override
     public void update(float deltaTime) {
+        playerStamina.update(deltaTime);
     }
 }
