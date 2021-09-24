@@ -2,10 +2,11 @@ package game.sniper_monkey.player;
 
 public enum PlayerInputAction {
     JUMP,
-    MOVELEFT,
-    MOVERIGHT,
+    MOVE_LEFT,
+    MOVE_RIGHT,
     ATTACK1,
     ATTACK2,
     BLOCK,
-    DROP
+    DROP,
+    SWAP_FIGHTER
 }

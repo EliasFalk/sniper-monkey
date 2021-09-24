@@ -22,8 +22,8 @@ public class Player extends GameObject {
         inputActions.put(PlayerInputAction.ATTACK1, false);
         inputActions.put(PlayerInputAction.ATTACK2, false);
         inputActions.put(PlayerInputAction.BLOCK, false);
-        inputActions.put(PlayerInputAction.MOVERIGHT, false);
-        inputActions.put(PlayerInputAction.MOVELEFT, false);
+        inputActions.put(PlayerInputAction.MOVE_RIGHT, false);
+        inputActions.put(PlayerInputAction.MOVE_LEFT, false);
     }
 
     private void resetInputActions() {
@@ -53,15 +53,15 @@ public class Player extends GameObject {
 
     private boolean usedAbility() {
         if(inputActions.get(PlayerInputAction.ATTACK1)) {
-            // activeFighter.performState(...);
+            // TODO activeFighter.performState(...);
             currentState = this::attackingState;
             return true;
         } else if(inputActions.get(PlayerInputAction.ATTACK2)) {
-            // activeFighter.performState(...);
+            // TODO activeFighter.performState(...);
             currentState = this::attackingState;
             return true;
         } else if(inputActions.get(PlayerInputAction.BLOCK)) {
-            // block;
+            // TODO block;
             currentState = this::blockingState;
             return true;
         }
@@ -83,11 +83,11 @@ public class Player extends GameObject {
     }
 
     private void handleHorizontalMovement() {
-        if(inputActions.get(PlayerInputAction.MOVERIGHT)) {
-            // update physics position on player right
+        if(inputActions.get(PlayerInputAction.MOVE_RIGHT)) {
+            // TODO update physics position on player right
             setAvatarState();
-        } else if(inputActions.get(PlayerInputAction.MOVELEFT)) {
-            // update physics position on player left
+        } else if(inputActions.get(PlayerInputAction.MOVE_LEFT)) {
+            // TODO update physics position on player left
             setAvatarState();
         }
     }
@@ -105,16 +105,16 @@ public class Player extends GameObject {
     }
 
     private void blockingState() {
-
+        // TODO create blocking state
     }
 
     private void attackingState() {
-
+        // TODO create attacking state
     }
 
     /**
      * Creates a player with a sprite and a position in the world
-     * @param position
+     * @param position The initial position of the player.
      * @param sprite
      */
     public Player(Vector2 position, Sprite sprite) {
@@ -135,7 +135,7 @@ public class Player extends GameObject {
 
     /**
      * Updates the class player every frame
-     * @param deltaTime
+     * @param deltaTime The time between frames.
      */
     @Override
     public void update(float deltaTime) {
