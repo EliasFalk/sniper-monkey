@@ -19,7 +19,7 @@ public class CollisionEngine
 
     }
 
-    public ArrayList<GameObject> getCollision(Hitbox hitbox, Vector2 offset)
+    public static ArrayList<GameObject> getCollision(Hitbox hitbox, Vector2 offset)
     {
         ArrayList<GameObject> hits = new ArrayList<GameObject>();
         ArrayList<CollisionPair> potentialHits = spatialHash.query(hitbox.getPosition());

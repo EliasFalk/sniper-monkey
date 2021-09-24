@@ -48,7 +48,7 @@ public final class World
     {
         for(IWorldObserver observer : observers)
         {
-            observer.onObjectRemovedWorld(obj);
+            observer.onObjectRemovedFromWorld(obj);
         }
     }
 
