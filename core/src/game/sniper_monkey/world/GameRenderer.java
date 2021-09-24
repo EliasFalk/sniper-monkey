@@ -52,7 +52,8 @@ public class GameRenderer implements IWorldObserver
 
     @Override
     public void onObjectAddedToWorld(GameObject obj) {
-        gameObjectViews.add(GameObjectViewFactory.viewFromGameObject(obj));
+        GameObjectView view = GameObjectViewFactory.viewFromGameObject(obj);
+        if(view != null) gameObjectViews.add(view);
     }
 
     @Override
