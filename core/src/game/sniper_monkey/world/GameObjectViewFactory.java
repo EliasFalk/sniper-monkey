@@ -18,18 +18,18 @@ public class GameObjectViewFactory
         dispatch.put(Player.class, new ViewCreator() {
             @Override
             public GameObjectView createView(GameObject obj) {
-                return createFighterView();
+                return createFighterView((Player)obj);
             }
         });
         /*dispatch.put(Arrow.class, new ViewCreator() {
             @Override
             public GameObjectView createView(GameObject obj) {
-                return createArrowView();
+                return createArrowView((Arrow)obj);
             }
         });*/
     }
 
-    private static GameObjectView createFighterView()
+    private static GameObjectView createFighterView(Player player)
     {
         //Create Specific fighter view in this method
         //return new GameObjectView();
