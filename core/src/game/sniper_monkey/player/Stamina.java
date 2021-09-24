@@ -3,7 +3,7 @@ package game.sniper_monkey.player;
 public class Stamina {
 
     final int maxAmount; // oklart om denna ska assignas i constructorn eller ha en hårdkodad max.
-    int currentAmount;
+    float currentAmount; // oklart om denna assignas i constructorn eller ha en hårdkodad currentamount.
     float regenerationFactor;
 
     public Stamina(float regenerationFactor, int maxAmount) {
@@ -13,7 +13,11 @@ public class Stamina {
 
     }
 
-    public void decrease(int decreaseAmount) {
+    public float getCurrentAmount() {
+        return currentAmount;
+    }
+
+    public void decrease(float decreaseAmount) {
         if (currentAmount - decreaseAmount < 0) {
             currentAmount = 0;
         } else {
@@ -21,7 +25,7 @@ public class Stamina {
         }
     }
 
-    public void increase(int increaseAmount) {
+    private void increase(float increaseAmount) {
         if (currentAmount + increaseAmount > 100) {
             currentAmount = 100;
         } else {
@@ -29,14 +33,13 @@ public class Stamina {
         }
     }
 
-    public void regenerateStamina(float deltaTime) {
+    private void regenerateStamina(float deltaTime) {
         if (currentAmount < 100) {
-            currentAmount += regenerationFactor * deltaTime;
+           increase(regenerationFactor * deltaTime);
         }
     }
 
     public void update(float deltaTime) {
         regenerateStamina(deltaTime);
     }
-
 }
