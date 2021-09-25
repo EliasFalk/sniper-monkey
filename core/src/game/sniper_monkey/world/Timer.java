@@ -23,9 +23,19 @@ public class Timer {
      */
     public void start()
     {
-        System.out.println("Hello");
         start = System.nanoTime();
         end  = start + seconds;
+    }
+
+    public boolean end()
+    {
+        start = end = -1;
+        System.out.println("Timer ended");
+        return true;
+    }
+
+    public int getTimePassed() {
+        return (int) (((System.nanoTime() - start)/NANO) % 60);
     }
 
     /**
