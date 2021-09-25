@@ -12,18 +12,8 @@ public class GameObjectViewFactory {
     private static final HashMap<Class<?>, ViewCreator> dispatch = new HashMap<>();
 
     static {
-        dispatch.put(Player.class, new ViewCreator() {
-            @Override
-            public GameObjectView createView(GameObject obj) {
-                return createFighterView((Player) obj);
-            }
-        });
-        /*dispatch.put(Arrow.class, new ViewCreator() {
-            @Override
-            public GameObjectView createView(GameObject obj) {
-                return createArrowView((Arrow)obj);
-            }
-        });*/
+        dispatch.put(Player.class, obj -> createFighterView((Player) obj));
+        //dispatch.put(Arrow.class, obj -> createArrowView((Arrow) obj));
     }
 
     private static GameObjectView createFighterView(Player player) {
