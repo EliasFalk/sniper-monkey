@@ -15,12 +15,14 @@ public class StaminaTest {
     public void increaseStaminaTest() {
         float regenerationFactor = 10f;
         int maxAmount = 100;
+        float staminaDrain = 50f;
         float deltaTime = 1/60f; // equal to 1 frame if we consider that the game plays at 60fps
         Stamina stamina = new Stamina(regenerationFactor, maxAmount);
 
-        stamina.decrease(50);
+        stamina.decrease(staminaDrain);
         for (int i = 0; i < 60; i++) { //
             stamina.update(deltaTime);
+            System.out.println(stamina.getCurrentAmount());
         }
         assertEquals(60, stamina.getCurrentAmount(), 0.001);
 
@@ -32,15 +34,17 @@ public class StaminaTest {
     public void increaseStaminaWhenMaxTest() {
         float regenerationFactor = 10f;
         int maxAmount = 100;
-        float deltaTime = 1/60f;
+        float staminaDrain = 5f;
+        float deltaTime = 1/60f; // equal to 1 frame if we consider that the game plays at 60fps
         Stamina stamina = new Stamina(regenerationFactor, maxAmount);
 
-        stamina.decrease(5);
-
+        stamina.decrease(staminaDrain);
         for (int i = 0; i < 60; i++) { //
             stamina.update(deltaTime);
         }
         assertEquals(100, stamina.getCurrentAmount(), 0);
     }
+
+
 
 }

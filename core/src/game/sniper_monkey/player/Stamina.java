@@ -5,12 +5,13 @@ public class Stamina {
     final int maxAmount; // oklart om denna ska assignas i constructorn eller ha en hårdkodad max.
     float currentAmount; // oklart om denna assignas i constructorn eller ha en hårdkodad currentamount.
     float regenerationFactor;
+    // float staminaDrainFactor;
 
     public Stamina(float regenerationFactor, int maxAmount) {
         currentAmount = 100;
         this.regenerationFactor = regenerationFactor;
         this.maxAmount = maxAmount;
-
+        // this.staminaDrainFactor = staminaDrainFactor;
     }
 
     public float getCurrentAmount() {
@@ -24,6 +25,10 @@ public class Stamina {
             currentAmount -= decreaseAmount;
         }
     }
+
+    /*public void staminaDrainOnAttack(float staminaDrainAmount) { // TODO bättre namn för denna
+        decrease(staminaDrainAmount); // ska man ha en konstant stamina drain?
+    }*/ // oklart om jag vill ha denna kvar
 
     private void increase(float increaseAmount) {
         if (currentAmount + increaseAmount > 100) {

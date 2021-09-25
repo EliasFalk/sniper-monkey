@@ -13,6 +13,8 @@ public class Player extends GameObject {
         void performState();
     }
 
+    private Stamina playerStamina;
+
     State currentState = this::groundedState;
     PhysicsPosition position = new PhysicsPosition(new Vector2(0,0));
     private final Map<PlayerInputAction, Boolean> inputActions = new HashMap<PlayerInputAction, Boolean>();
@@ -55,10 +57,14 @@ public class Player extends GameObject {
         if(inputActions.get(PlayerInputAction.ATTACK1)) {
             // TODO activeFighter.performState(...);
             currentState = this::attackingState;
+            // TODO stamina decrease here?
+            // playerStamina.decrease(activeFighter.getAttack(1).getStamina??);  känns fett dumt att göra såhär men en attack måste ju ha en staminadecrease. bryter mot princip yo
             return true;
         } else if(inputActions.get(PlayerInputAction.ATTACK2)) {
+            // playerStamina.decrease(activeFighter.getAttack(2).getStamina??);  känns fett dumt att göra såhär men en attack måste ju ha en staminadecrease
             // TODO activeFighter.performState(...);
             currentState = this::attackingState;
+            // TODO stamina decrease here?
             return true;
         } else if(inputActions.get(PlayerInputAction.BLOCK)) {
             // TODO block;
@@ -110,9 +116,9 @@ public class Player extends GameObject {
 
     private void attackingState() {
         // TODO create attacking state
+        // TODO stamina decrease here?
     }
 
-    private Stamina playerStamina;
 
     /**
      * Creates a player with a sprite and a position in the world
@@ -121,7 +127,7 @@ public class Player extends GameObject {
      */
     public Player(Vector2 position, Sprite sprite) {
         super(position, sprite);
-        playerStamina = new Stamina(0.5f, 100);
+        playerStamina = new Stamina(10f, 100);
         resetInputActions();
         this.position.setVelocity(this.position.getVelocity().add(new Vector2(-0,0)));
     }
