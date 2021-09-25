@@ -12,6 +12,7 @@ public abstract class GameObjectView {
     public GameObjectView(Vector2 drawPosition, Sprite sprite, GameObject model) {
         this.drawPosition = drawPosition;
         this.sprite = sprite;
+        this.model = model;
     }
 
     public boolean hasModel(GameObject model) {

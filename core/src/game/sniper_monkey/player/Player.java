@@ -1,5 +1,7 @@
 package game.sniper_monkey.player;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.PhysicsPosition;
@@ -12,6 +14,9 @@ public class Player extends GameObject {
     interface State {
         void performState();
     }
+
+    private float blockDefenseFactor;
+
 
     State currentState = this::groundedState;
     PhysicsPosition position = new PhysicsPosition(new Vector2(0,0));
@@ -62,6 +67,7 @@ public class Player extends GameObject {
             return true;
         } else if(inputActions.get(PlayerInputAction.BLOCK)) {
             // TODO block;
+            blockDefenseFactor = 0.6f;
             currentState = this::blockingState;
             return true;
         }
@@ -105,7 +111,10 @@ public class Player extends GameObject {
     }
 
     private void blockingState() {
-        // TODO create blocking state
+        if(!inputActions.get(PlayerInputAction.BLOCK)) {
+            blockDefenseFactor = 0;
+            setAvatarState();
+        }
     }
 
     private void attackingState() {
@@ -121,6 +130,7 @@ public class Player extends GameObject {
         super(position, sprite);
         resetInputActions();
         this.position.setVelocity(this.position.getVelocity().add(new Vector2(-0,0)));
+        blockDefenseFactor = 0;
     }
 
     /**
@@ -131,6 +141,7 @@ public class Player extends GameObject {
         super(sprite);
         resetInputActions();
         this.position.setVelocity(this.position.getVelocity().add(new Vector2(-500000,0)));
+        blockDefenseFactor = 0;
     }
 
     /**
@@ -143,5 +154,8 @@ public class Player extends GameObject {
         resetInputActions();
         position.update(deltaTime);
         setPos(position.getPosition());
+        if(Gdx.input.isKeyPressed(Input.Keys.C)) {
+            setInputAction(PlayerInputAction.BLOCK);
+        }
     }
 }
