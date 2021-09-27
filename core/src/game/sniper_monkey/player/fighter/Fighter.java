@@ -1,5 +1,7 @@
 package game.sniper_monkey.player.fighter;
 
+import com.badlogic.gdx.math.Vector2;
+import game.sniper_monkey.collision.Hitbox;
 import game.sniper_monkey.player.fighter.attack.IAttack;
 
 import java.util.ArrayList;
@@ -11,11 +13,30 @@ public abstract class Fighter {
     public final float DEFENSE_FACTOR;
     public final float SPEED_FACTOR;
     protected final List<IAttack> attacks = new ArrayList<>();
+    private final Vector2 hitboxSize;
 
-    public Fighter(float attackFactor, float defenseFactor, float speedFactor) {
+    /**
+     * Creates a specific fighter, such as an Evil Wizard with x Factors.
+     *
+     * @param attackFactor  A float in the interval [0,1] which represents a percentage of the attack factor.
+     * @param defenseFactor A float in the interval [0,1] which represents a percentage of the attack defense factor.
+     * @param speedFactor   A float in the interval [0,1] which represents a percentage of the speed factor.
+     * @param hitboxSize    The size of the hitbox for the specific fighter, based on the idle sprite sheet.
+     */
+    public Fighter(float attackFactor, float defenseFactor, float speedFactor, Vector2 hitboxSize) {
         this.ATTACK_FACTOR = attackFactor;
         this.DEFENSE_FACTOR = defenseFactor;
         this.SPEED_FACTOR = speedFactor;
+        this.hitboxSize = hitboxSize;
+    }
+
+    /**
+     * Returns the size of the hitbox for the specific fighter.
+     *
+     * @return The hitbox size represented in a Vector2, x=width, y=height.
+     */
+    public Vector2 getHitboxSize() {
+        return hitboxSize.cpy();
     }
 
     /**
@@ -36,7 +57,7 @@ public abstract class Fighter {
         if (attackNum >= attacks.size()) {
             // TODO throw error?
         }
-        attacks.get(attackNum).performAttack(ATTACK_FACTOR); // attackModifier for when blocked for a while? -> attackDmg need to decrease
+        attacks.get(attackNum).performAttack(ATTACK_FACTOR);
     }
 
     /**
