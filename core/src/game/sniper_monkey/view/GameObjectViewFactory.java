@@ -3,8 +3,9 @@ package game.sniper_monkey.view;
 import game.sniper_monkey.platform.Platform;
 import game.sniper_monkey.player.Player;
 import game.sniper_monkey.view.platform.PlatformView;
-import game.sniper_monkey.view.player.PlayerView;
+import game.sniper_monkey.view.player.fighter.*;
 import game.sniper_monkey.world.GameObject;
+import game.sniper_monkey.player.fighter.*;
 
 import java.util.HashMap;
 
@@ -21,19 +22,18 @@ public class GameObjectViewFactory {
 
     private static final HashMap<Class<?>, ViewCreator> fighterDispatch = new HashMap<>();
     static {
-        //fighterDispatch.put(MageFighter.class, obj -> createMageFighterView((MageFighter) obj));
+        fighterDispatch.put(EvilWizard.class, obj -> createEvilWizardView((Player) obj));
     }
 
     private static GameObjectView createFighterView(Player player) {
-        /*ViewCreator viewCreator = fighterDispatch.get(player.getFighter().getClass());
-        if (viewCreator == null) throw exception? return null;
-        return viewCreator.createView(player.getFighter());*/
-        return new PlayerView(player);
+        ViewCreator viewCreator = fighterDispatch.get(player.getActiveFighterClass());
+        if (viewCreator == null) /*throw exception?*/ return null;
+        return viewCreator.createView(player);
     }
 
-    private static GameObjectView createMageFighterView(/*MageFighter fighter*/)
+    private static GameObjectView createEvilWizardView(Player player)
     {
-        return null;
+        return new EvilWizardView(player);
     }
 
     private static GameObjectView createPlatformView(Platform platform) {
