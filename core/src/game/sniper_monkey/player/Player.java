@@ -2,14 +2,11 @@ package game.sniper_monkey.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.sun.tools.jconsole.JConsoleContext;
 import game.sniper_monkey.PhysicsPosition;
 import game.sniper_monkey.world.GameObject;
 import game.sniper_monkey.world.Timer;
 
-import java.lang.constant.Constable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +17,7 @@ public class Player extends GameObject {
 
     private float blockDefenseFactor;
 
-    private Timer timer = new Timer(5);
+    private Timer blockTimer = new Timer(5);
 
     State currentState = this::groundedState;
     PhysicsPosition position = new PhysicsPosition(new Vector2(0,0));
@@ -71,7 +68,7 @@ public class Player extends GameObject {
             return true;
         } else if(inputActions.get(PlayerInputAction.BLOCK)) {
             blockDefenseFactor = 0.6f;
-            timer.start();
+            blockTimer.start();
             currentState = this::blockingState;
             return true;
         }
@@ -124,7 +121,8 @@ public class Player extends GameObject {
             blockDefenseFactor = 0;
             setAvatarState();
         } else {
-            if (timer.isDone()) {
+            System.out.println(blockDefenseFactor);
+            if (blockTimer.isDone()) {
                 blockDefenseFactor = 0.3f;
             } else {
                 blockDefenseFactor -= 0.0007;
