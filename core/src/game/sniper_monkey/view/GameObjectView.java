@@ -8,11 +8,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public abstract class GameObjectView {
     private GameObject model;
-    protected Vector2 drawPosition;
+    protected Vector2 drawOffset;
     protected Sprite sprite;
 
-    public GameObjectView(Vector2 drawPosition, Sprite sprite, GameObject model) {
-        this.drawPosition = drawPosition;
+    public GameObjectView(Vector2 drawOffset, Sprite sprite, GameObject model) {
+        this.drawOffset = drawOffset;
         this.sprite = sprite;
         this.model = model;
     }
@@ -21,11 +21,8 @@ public abstract class GameObjectView {
         return this.model == model;
     }
 
-    protected abstract void readModelData();
-
     public void render(ShapeRenderer sr, SpriteBatch batch) {
-        readModelData();
-        batch.draw(sprite, drawPosition.x, drawPosition.y);
+        batch.draw(sprite, model.getPos().x + drawOffset.x, model.getPos().y + drawOffset.y);
         sr.setColor(0, 0, 0, 1);
         Vector2 pos = model.getHitbox().getPosition();
         Vector2 size = model.getHitbox().getSize();

@@ -4,8 +4,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 
 public class PhysicsPosition {
-    private final float GRAVITY = -20f;
-    private float DRAG = 150f;
+    private final float GRAVITY = -1000f;
+    private float DRAG = 500f;
     private Vector2 position;
     private Vector2 velocity;
     private Vector2 acceleration = new Vector2(0, GRAVITY);

@@ -10,12 +10,7 @@ import game.sniper_monkey.world.GameObject;
 public class PlatformView extends GameObjectView {
     Platform model;
     public PlatformView(Platform model) {
-        super(model.getPos(), new Sprite(new Texture("CuteForest/Tileset.png"), 16, 0, 16, 16), model);
+        super(new Vector2(0,0), new Sprite(new Texture("CuteForest/Tileset.png"), 16, 0, 16, 16), model);
         this.model = model;
-    }
-
-    @Override
-    protected void readModelData() {
-        drawPosition = model.getPos();
     }
 }

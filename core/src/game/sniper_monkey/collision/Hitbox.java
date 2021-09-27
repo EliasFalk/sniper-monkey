@@ -18,7 +18,7 @@ public class Hitbox {
      * @return True if the hitbox and the other hitbox overlaps when hitbox is at hitbox initial position + offset position, false if no overlapping.
      */
     public boolean isOverlapping(Hitbox other, Vector2 offset) {
-        Vector2 offsetPosition = position;
+        Vector2 offsetPosition = position.cpy();
         offsetPosition.add(offset);
 
         return (offsetPosition.x < other.position.x + other.size.x &&

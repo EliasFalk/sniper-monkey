@@ -11,13 +11,8 @@ import game.sniper_monkey.world.GameObject;
 public class EvilWizardView extends GameObjectView {
     Player model;
     public EvilWizardView(Player model) {
-        super(model.getPos(), new Sprite(new Texture("evil_wizard_2/Attack1.png"), 0, 0, 250, 250), model);
+        super(new Vector2(-106, -83), new Sprite(new Texture("evil_wizard_2/Idle.png"), 0, 0, 250, 250), model);
         this.model = model;
         //TODO
-    }
-
-    @Override
-    protected void readModelData() {
-        drawPosition = model.getPos();
     }
 }

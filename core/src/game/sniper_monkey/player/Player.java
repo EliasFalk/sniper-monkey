@@ -1,5 +1,6 @@
 package game.sniper_monkey.player;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
@@ -24,9 +25,9 @@ public class Player extends GameObject {
     private Timer timer = new Timer(5);
 
     // TODO read these values from config file
-    private final float MAX_X_VEL = 300f;
-    private final float VEL_GAIN = 40f;
-    private final float JUMP_GAIN = 200f;
+    private final float MAX_X_VEL = 200f;
+    private final float VEL_GAIN = 25f;
+    private final float JUMP_GAIN = 50f;
 
 
     private Fighter activeFighter;
@@ -35,7 +36,7 @@ public class Player extends GameObject {
 
     State currentState = this::groundedState;
     PhysicsPosition position = new PhysicsPosition(new Vector2(0, 0));
-    private final Map<PlayerInputAction, Boolean> inputActions = new HashMap<PlayerInputAction, Boolean>();
+    private final Map<PlayerInputAction, Boolean> inputActions = new HashMap<>();
 
     private void initInputActions() {
         inputActions.put(PlayerInputAction.JUMP, false);
@@ -73,11 +74,11 @@ public class Player extends GameObject {
 
     private boolean usedAbility() {
         if(inputActions.get(PlayerInputAction.ATTACK1)) {
-            // TODO activeFighter.performState(...);
+            activeFighter.performAttack(1);
             currentState = this::attackingState;
             return true;
         } else if(inputActions.get(PlayerInputAction.ATTACK2)) {
-            // TODO activeFighter.performState(...);
+            activeFighter.performAttack(2);
             currentState = this::attackingState;
             return true;
         } else if(inputActions.get(PlayerInputAction.BLOCK)) {
@@ -96,7 +97,7 @@ public class Player extends GameObject {
 
     // TODO change name
     private void setAvatarState() {
-        if(isGrounded()) {
+        if (isGrounded()) {
             currentState = this::groundedState;
         } else {
             currentState = this::inAirState;
@@ -135,7 +136,7 @@ public class Player extends GameObject {
     }
 
     private void groundedState() {
-        if(usedAbility()) {
+        if (usedAbility()) {
             return;
         }
         handleHorizontalMovement();
@@ -146,13 +147,21 @@ public class Player extends GameObject {
         }
     }
 
+    private void swapFighters() {
+        if (primaryFighter.equals(activeFighter)) {
+            initActiveFighter(secondaryFighter);
+        } else {
+            initActiveFighter(primaryFighter);
+        }
+    }
+
     /**
      * Checks if the player is blocking.
      * If it is, slowly decrease the blockDefenseFactor.
      * If it isn't, reset the blockDefenseFactor and set the next state.
      */
     private void blockingState() {
-        if(!inputActions.get(PlayerInputAction.BLOCK)) {
+        if (!inputActions.get(PlayerInputAction.BLOCK)) {
             blockDefenseFactor = 0;
             setAvatarState();
         } else {
@@ -215,13 +224,29 @@ public class Player extends GameObject {
     public void update(float deltaTime) {
         currentState.performState();
         resetInputActions();
+        handleCollision(deltaTime);
         position.update(deltaTime);
-        setHitboxPos(position.getPosition());
         setPos(position.getPosition());
-        ArrayList<GameObject> go = CollisionEngine.getCollision(getHitbox(), new Vector2(0, 0));
-        if(go.size() > 0)
-        {
-            System.out.println("Collision!");
+        setHitboxPos(getPos());
+    }
+
+    // TODO refactor this behemoth
+    private void handleCollision(float deltaTime) {
+        // executes shawn mendez.
+        if(CollisionEngine.getCollision(getHitbox(), new Vector2(position.getVelocity().x, 0).scl(deltaTime))) {
+            while(!CollisionEngine.getCollision(getHitbox(), new Vector2(Math.signum(position.getVelocity().x)/100f, 0))) {
+                setHitboxPos(new Vector2(getHitbox().getPosition().x+ Math.signum(position.getVelocity().x)/100f, getHitbox().getPosition().y));
+            }
+            position.setVelocity(new Vector2(0,position.getVelocity().y));
         }
+        position.setPosition(new Vector2(getHitbox().getPosition().x, position.getPosition().y));
+
+        if(CollisionEngine.getCollision(getHitbox(), new Vector2(0, position.getVelocity().y).scl(deltaTime))) {
+            while(!CollisionEngine.getCollision(getHitbox(), new Vector2(0, Math.signum(position.getVelocity().y)/100f))) {
+                setHitboxPos(new Vector2(getHitbox().getPosition().x, getHitbox().getPosition().y+ Math.signum(position.getVelocity().y)/100f));
+            }
+            position.setVelocity(new Vector2(position.getVelocity().x,0));
+        }
+        position.setPosition(new Vector2(position.getPosition().x, getHitbox().getPosition().y));
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 public class EvilWizard extends Fighter {
 
     public EvilWizard() {
-        super(1, 1, 1, new Vector2(40, 56));
+        super(1, 1, 1, new Vector2(40, 55));
         // attacks.add(SomeAttack);
     }
 
