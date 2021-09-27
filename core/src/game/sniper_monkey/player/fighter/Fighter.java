@@ -66,7 +66,7 @@ public abstract class Fighter {
      * @param attackNum An int 0..n representing a attack of the fighter.
      * @return The stamina cost of the attack.
      */
-    public int getStaminaDecrease(int attackNum) {
+    public float getStaminaDecrease(int attackNum) {
         if (attackNum >= attacks.size()) {
             // TODO throw error?
         }

@@ -18,7 +18,7 @@ public class SpatialHash {
 
         hash = new HashMap<Vector2, ArrayList<CollisionPair>>();
     }
-
+    // TODO vincent go doc doc
     public void insert(GameObject object, Hitbox hitbox) {
         CollisionPair pair = new CollisionPair(object, hitbox);
         if (hash.containsKey(testKey)) {

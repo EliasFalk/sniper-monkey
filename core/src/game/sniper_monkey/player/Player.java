@@ -15,6 +15,8 @@ public class Player extends GameObject {
         void performState();
     }
 
+    private Stamina playerStamina; //TODO kanske final?
+
     boolean isGrounded = true;
 
     private float blockDefenseFactor;
@@ -63,6 +65,9 @@ public class Player extends GameObject {
     }
 
     private void inAirState() {
+        if (blockDefenseFactor != 0.4) {
+            regenerateBlockFactor(0.0005);
+        }
         if(usedAbility()) {
             return;
         }
@@ -73,13 +78,14 @@ public class Player extends GameObject {
         if(inputActions.get(PlayerInputAction.ATTACK1)) {
             activeFighter.performAttack(1);
             currentState = this::attackingState;
+            playerStamina.decrease(activeFighter.getStaminaDecrease(1));
             return true;
         } else if(inputActions.get(PlayerInputAction.ATTACK2)) {
             activeFighter.performAttack(2);
+            playerStamina.decrease(activeFighter.getStaminaDecrease(2));
             currentState = this::attackingState;
             return true;
         } else if(inputActions.get(PlayerInputAction.BLOCK)) {
-            blockDefenseFactor = 0.6f;
             blockTimer.start();
             currentState = this::blockingState;
             return true;
@@ -121,13 +127,17 @@ public class Player extends GameObject {
         if (inputActions.get(PlayerInputAction.MOVE_RIGHT)) {
             moveRight();
             setAvatarState();
-        } else if (inputActions.get(PlayerInputAction.MOVE_LEFT)) {
+        }
+        if (inputActions.get(PlayerInputAction.MOVE_LEFT)) {
             moveLeft();
             setAvatarState();
         }
     }
 
     private void groundedState() {
+        if (blockDefenseFactor != 0.4) {
+            regenerateBlockFactor(0.0007);
+        }
         if (usedAbility()) {
             return;
         }
@@ -154,21 +164,36 @@ public class Player extends GameObject {
      */
     private void blockingState() {
         if (!inputActions.get(PlayerInputAction.BLOCK)) {
-            blockDefenseFactor = 0;
             setAvatarState();
         } else {
-            System.out.println(blockDefenseFactor);
             if (blockTimer.isDone()) {
-                blockDefenseFactor = 0.3f;
+                blockDefenseFactor = 0.7f;
             } else {
-                blockDefenseFactor -= 0.0007;
+                increaseBlock(0.0007);
             }
+        }
+    }
+
+    private void increaseBlock (double increaseAmount) {
+        if (blockDefenseFactor + increaseAmount > 1) {
+            blockDefenseFactor = 1;
+        } else {
+            blockDefenseFactor += increaseAmount;
+        }
+    }
+
+    private void regenerateBlockFactor(double decreaseAmount) {
+        if (blockDefenseFactor - decreaseAmount < 0.4) {
+            blockDefenseFactor = 0.4f;
+        } else {
+            blockDefenseFactor -= decreaseAmount;
         }
     }
 
     private void attackingState() {
         // TODO create attacking state
     }
+
 
     /**
      * Get the type of the active fighter. Will be a subclass of Fighter.
@@ -198,8 +223,9 @@ public class Player extends GameObject {
         this.primaryFighter = primaryFighter;
         this.secondaryFighter = secondaryFighter;
         initActiveFighter(primaryFighter);
+        playerStamina = new Stamina(10f, 100);
         resetInputActions();
-        blockDefenseFactor = 0;
+        blockDefenseFactor = 0.4f;
     }
 
     /**
@@ -211,10 +237,12 @@ public class Player extends GameObject {
 
     /**
      * Updates the class player every frame
+     *
      * @param deltaTime The time between frames.
      */
     @Override
     public void update(float deltaTime) {
+        playerStamina.update(deltaTime);
         currentState.performState();
         resetInputActions();
         handleCollision(deltaTime);
@@ -225,7 +253,7 @@ public class Player extends GameObject {
 
     // TODO refactor this behemoth
     private void handleCollision(float deltaTime) {
-        // executes shawn mendez.
+        // executes shawn mendez. inspired by shawn's collision algorithm
         if(CollisionEngine.getCollision(getHitbox(), new Vector2(position.getVelocity().x, 0).scl(deltaTime))) {
             while(!CollisionEngine.getCollision(getHitbox(), new Vector2(Math.signum(position.getVelocity().x)/100f, 0))) {
                 setHitboxPos(new Vector2(getHitbox().getPosition().x+ Math.signum(position.getVelocity().x)/100f, getHitbox().getPosition().y));
