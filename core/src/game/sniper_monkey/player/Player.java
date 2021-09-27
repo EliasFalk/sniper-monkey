@@ -114,6 +114,11 @@ public class Player extends GameObject {
         }
     }
 
+    /**
+     * Checks if the player is blocking.
+     * If it is, slowly decrease the blockDefenseFactor.
+     * If it isn't, reset the blockDefenseFactor and set the next state.
+     */
     private void blockingState() {
         if(!inputActions.get(PlayerInputAction.BLOCK)) {
             blockDefenseFactor = 0;
