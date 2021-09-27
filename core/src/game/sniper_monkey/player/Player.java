@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.sun.tools.jconsole.JConsoleContext;
 import game.sniper_monkey.PhysicsPosition;
 import game.sniper_monkey.world.GameObject;
 import game.sniper_monkey.world.Timer;
@@ -152,7 +151,7 @@ public class Player extends GameObject {
      */
     public Player() {
         resetInputActions();
-        this.position.setVelocity(this.position.getVelocity().add(new Vector2(-500000,0)));
+        this.position.setVelocity(this.position.getVelocity().add(new Vector2(-50,0)));
         blockDefenseFactor = 0;
     }
 

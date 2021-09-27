@@ -17,7 +17,7 @@ public class SniperMonkey extends ApplicationAdapter {
         Texture img = new Texture("evil_wizard_2/Attack1.png");
         gameRenderer = new GameRenderer();
         World.getInstance().registerObserver(gameRenderer);
-        World.getInstance().addGameObject(new Player(new Vector2(50, 50)));
+        World.getInstance().addGameObject(new Player());
         for (int i = 0; i < 400 / 16; i++)
             World.getInstance().addGameObject(new Platform(new Vector2(-200 + i * 16, -100)));
     }
