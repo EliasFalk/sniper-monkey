@@ -27,6 +27,7 @@ public class SpatialHash {
             ArrayList<CollisionPair> bucket = new ArrayList<CollisionPair>();
             bucket.add(pair);
             hash.put(testKey, bucket);
+            //System.out.println("Helo");
         }
     }
 

@@ -8,7 +8,9 @@ import game.sniper_monkey.collision.Hitbox;
 import game.sniper_monkey.player.fighter.Fighter;
 import game.sniper_monkey.world.GameObject;
 import game.sniper_monkey.world.Timer;
+import game.sniper_monkey.collision.CollisionEngine;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -177,7 +179,9 @@ public class Player extends GameObject {
 
     private void initActiveFighter(Fighter fighter) {
         activeFighter = fighter;
-        setHitbox(new Hitbox(position.getPosition(), fighter.getHitboxSize()));
+        //setHitbox(new Hitbox(position.getPosition(), fighter.getHitboxSize()));
+        setHitboxPos(position.getPosition());
+        setHitboxSize(fighter.getHitboxSize());
         // TODO Set stamina regen
         // maybe more??
     }
@@ -212,7 +216,12 @@ public class Player extends GameObject {
         currentState.performState();
         resetInputActions();
         position.update(deltaTime);
+        setHitboxPos(position.getPosition());
         setPos(position.getPosition());
-
+        ArrayList<GameObject> go = CollisionEngine.getCollision(getHitbox(), new Vector2(0, 0));
+        if(go.size() > 0)
+        {
+            System.out.println("Collision!");
+        }
     }
 }

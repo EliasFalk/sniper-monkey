@@ -36,6 +36,10 @@ public class Hitbox {
         position = newPos;
     }
 
+    public void setSize(Vector2 newSize) {
+        size = newSize;
+    }
+
     /**
      * Returns a copy of the size of the hitbox.
      *

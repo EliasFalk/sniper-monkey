@@ -1,6 +1,8 @@
 package game.sniper_monkey.world;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import game.sniper_monkey.collision.CollisionEngine;
+import game.sniper_monkey.collision.Hitbox;
 
 import java.util.ArrayList;
 
@@ -58,6 +60,7 @@ public final class World {
     public void addGameObject(GameObject obj) {
         gameObjects.add(obj);
         notifyObserversOfNewObject(obj);
+        CollisionEngine.insertIntoSpatialHash(obj, obj.getHitbox());
     }
 
     /**
