@@ -125,7 +125,8 @@ public class Player extends GameObject {
         if (inputActions.get(PlayerInputAction.MOVE_RIGHT)) {
             moveRight();
             setAvatarState();
-        } else if (inputActions.get(PlayerInputAction.MOVE_LEFT)) {
+        }
+        if (inputActions.get(PlayerInputAction.MOVE_LEFT)) {
             moveLeft();
             setAvatarState();
         }
