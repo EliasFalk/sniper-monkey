@@ -6,10 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class PlayerTest {
-    @Before
-    public void setUp() {
-        Player player = new Player();
-    }
 
     @Test
     public void testInputActions() {

@@ -10,11 +10,6 @@ import org.junit.Test;
 
 public class GameObjectTest {
 
-    @Before
-    public void setUp() {
-        GameObject player = new Player();
-    }
-
     @Test
     public void testGameObjetDelete() {
     }

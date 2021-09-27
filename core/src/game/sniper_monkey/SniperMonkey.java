@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.platform.Platform;
 import game.sniper_monkey.player.Player;
+import game.sniper_monkey.player.PlayerFactory;
 import game.sniper_monkey.view.GameRenderer;
 import game.sniper_monkey.world.World;
 
@@ -17,7 +18,7 @@ public class SniperMonkey extends ApplicationAdapter {
         Texture img = new Texture("evil_wizard_2/Attack1.png");
         gameRenderer = new GameRenderer();
         World.getInstance().registerObserver(gameRenderer);
-        World.getInstance().addGameObject(new Player(new Vector2(50, 50)));
+        World.getInstance().addGameObject(PlayerFactory.createPlayer());
         for (int i = 0; i < 400 / 16; i++)
             World.getInstance().addGameObject(new Platform(new Vector2(-200 + i * 16, -100)));
     }

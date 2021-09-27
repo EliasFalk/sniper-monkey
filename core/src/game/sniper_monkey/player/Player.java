@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.sun.tools.jconsole.JConsoleContext;
 import game.sniper_monkey.PhysicsPosition;
+import game.sniper_monkey.player.fighter.Fighter;
 import game.sniper_monkey.world.GameObject;
 import game.sniper_monkey.world.Timer;
 
@@ -22,8 +23,13 @@ public class Player extends GameObject {
 
     private Timer timer = new Timer(5);
 
+    private Fighter activeFighter;
+    private final Fighter primaryFighter;
+    private final Fighter secondaryFighter;
+
+
     State currentState = this::groundedState;
-    PhysicsPosition position = new PhysicsPosition(new Vector2(0,0));
+    PhysicsPosition position = new PhysicsPosition(new Vector2(0, 0));
     private final Map<PlayerInputAction, Boolean> inputActions = new HashMap<PlayerInputAction, Boolean>();
 
     private void initInputActions() {
@@ -137,23 +143,32 @@ public class Player extends GameObject {
     }
 
     /**
+     * Get the type of the active fighter. Will be a subclass of Fighter.
+     *
+     * @return Type of the active fighter.
+     */
+    public Class<?> getActiveFighterClass() {
+        return activeFighter.getClass();
+    }
+
+    /**
      * Creates a player with a position in the world
+     *
      * @param position The initial position of the player.
      */
-    public Player(Vector2 position) {
+    public Player(Vector2 position, Fighter primaryFighter, Fighter secondaryFighter) {
         super(position);
+        this.primaryFighter = primaryFighter;
+        this.secondaryFighter = secondaryFighter;
         resetInputActions();
-        this.position.setVelocity(this.position.getVelocity().add(new Vector2(-0,0)));
         blockDefenseFactor = 0;
     }
 
     /**
      * Creates a Player object
      */
-    public Player() {
-        resetInputActions();
-        this.position.setVelocity(this.position.getVelocity().add(new Vector2(-500000,0)));
-        blockDefenseFactor = 0;
+    public Player(Fighter primaryFighter, Fighter secondaryFighter) {
+        this(new Vector2(0, 0), primaryFighter, secondaryFighter);
     }
 
     /**
