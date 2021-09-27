@@ -32,7 +32,7 @@ public class SpatialHash {
 
     public ArrayList<CollisionPair> query(Vector2 position) {
         if (hash.containsKey(testKey)) return hash.get(testKey);
-        else return null;
+        else return new ArrayList<CollisionPair>();
     }
 }
 

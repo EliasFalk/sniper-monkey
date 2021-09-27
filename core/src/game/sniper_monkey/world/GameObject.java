@@ -16,13 +16,14 @@ public abstract class GameObject {
      */
     public GameObject(Vector2 position) {
         this.position = position;
+        hitbox = new Hitbox(position, new Vector2(0, 0));
     }
 
     /**
      * Creates the GameObject at a 0, 0
      */
     public GameObject() {
-        this.position = new Vector2(0, 0);
+        this(new Vector2(0,0));
     }
 
     public abstract void update(float deltaTime);
@@ -48,5 +49,20 @@ public abstract class GameObject {
      */
     public Vector2 getPos() {
         return position.cpy();
+    }
+
+    protected void setHitboxSize(Vector2 size) {
+        hitbox.setSize(size);
+    }
+    protected void setHitboxPos(Vector2 pos) {
+        hitbox.setPosition(pos);
+    }
+
+    /**
+     * Returns the hitbox as a reference (not copy).
+     * @return The hitbox.
+     */
+    public Hitbox getHitbox() {
+        return hitbox;
     }
 }

@@ -3,6 +3,7 @@ package game.sniper_monkey.view;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import game.sniper_monkey.world.GameObject;
 import game.sniper_monkey.world.IWorldObserver;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 
 public class GameRenderer implements IWorldObserver {
     SpriteBatch batch;
+    ShapeRenderer sr;
     Texture img = new Texture("evil_wizard_2/Attack1.png");
     Texture platform = new Texture("platform.png");
 
@@ -19,6 +21,7 @@ public class GameRenderer implements IWorldObserver {
     public GameRenderer() {
         batch = new SpriteBatch();
         gameObjectViews = new ArrayList<>();
+        sr = new ShapeRenderer();
     }
 
     /**
@@ -31,11 +34,14 @@ public class GameRenderer implements IWorldObserver {
         ScreenUtils.clear(1, 1, 1, 1);
 
         batch.begin();
+        sr.begin(ShapeRenderer.ShapeType.Line);
         batch.setProjectionMatrix(camera.combined);
+        sr.setProjectionMatrix(camera.combined);
         for (GameObjectView view : gameObjectViews) {
-            view.render(batch);
+            view.render(sr, batch);
         }
         batch.end();
+        sr.end();
     }
 
     /**

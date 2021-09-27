@@ -1,7 +1,6 @@
 package game.sniper_monkey.world;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
 
@@ -98,7 +97,6 @@ public final class World {
      * Calls update on all GameObjects in the world
      */
     public void update(float deltaTime) {
-        currentState.performState();
         for (GameObject obj : gameObjects) {
             obj.update(deltaTime);
         }
@@ -112,6 +110,7 @@ public final class World {
     public void addGameObject(GameObject obj) {
         gameObjects.add(obj);
         notifyObserversOfNewObject(obj);
+        CollisionEngine.insertIntoSpatialHash(obj, obj.getHitbox());
     }
 
     /**
