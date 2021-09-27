@@ -49,4 +49,8 @@ public abstract class GameObject {
     public Vector2 getPos() {
         return position.cpy();
     }
+
+    protected void setHitbox(Hitbox hitbox) {
+        this.hitbox = hitbox;
+    }
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.sun.tools.jconsole.JConsoleContext;
 import game.sniper_monkey.PhysicsPosition;
+import game.sniper_monkey.collision.Hitbox;
 import game.sniper_monkey.player.fighter.Fighter;
 import game.sniper_monkey.world.GameObject;
 import game.sniper_monkey.world.Timer;
@@ -26,7 +27,6 @@ public class Player extends GameObject {
     private Fighter activeFighter;
     private final Fighter primaryFighter;
     private final Fighter secondaryFighter;
-
 
     State currentState = this::groundedState;
     PhysicsPosition position = new PhysicsPosition(new Vector2(0, 0));
@@ -151,6 +151,13 @@ public class Player extends GameObject {
         return activeFighter.getClass();
     }
 
+    public void initFighter(Fighter fighter) {
+        activeFighter = fighter;
+        setHitbox(new Hitbox(position.getPosition(), fighter.getHitboxSize()));
+        // TODO Set stamina regen
+        // maybe more??
+    }
+
     /**
      * Creates a player with a position in the world
      *
@@ -160,6 +167,7 @@ public class Player extends GameObject {
         super(position);
         this.primaryFighter = primaryFighter;
         this.secondaryFighter = secondaryFighter;
+        initFighter(primaryFighter);
         resetInputActions();
         blockDefenseFactor = 0;
     }
