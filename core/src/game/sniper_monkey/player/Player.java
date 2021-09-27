@@ -122,23 +122,20 @@ public class Player extends GameObject {
     }
 
     /**
-     * Creates a player with a sprite and a position in the world
+     * Creates a player with a position in the world
      * @param position The initial position of the player.
-     * @param sprite
      */
-    public Player(Vector2 position, Sprite sprite) {
-        super(position, sprite);
+    public Player(Vector2 position) {
+        super(position);
         resetInputActions();
         this.position.setVelocity(this.position.getVelocity().add(new Vector2(-0,0)));
         blockDefenseFactor = 0;
     }
 
     /**
-     * Creates a Player object with a sprite
-     * @param sprite
+     * Creates a Player object
      */
-    public Player(Sprite sprite) {
-        super(sprite);
+    public Player() {
         resetInputActions();
         this.position.setVelocity(this.position.getVelocity().add(new Vector2(-500000,0)));
         blockDefenseFactor = 0;

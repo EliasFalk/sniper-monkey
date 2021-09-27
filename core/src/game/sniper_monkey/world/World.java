@@ -51,15 +51,6 @@ public final class World {
     }
 
     /**
-     * Renders all objects in the world
-     */
-    public void render(SpriteBatch batch) {
-        for (GameObject obj : gameObjects) {
-            obj.render(batch);
-        }
-    }
-
-    /**
      * Adds a GameObject to the world
      *
      * @param obj the object to add

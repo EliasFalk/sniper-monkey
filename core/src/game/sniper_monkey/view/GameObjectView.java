@@ -1,8 +1,9 @@
-package game.sniper_monkey.world;
+package game.sniper_monkey.view;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import game.sniper_monkey.world.GameObject;
 
 public abstract class GameObjectView {
     private GameObject model;

@@ -1,9 +1,11 @@
-package game.sniper_monkey.world;
+package game.sniper_monkey.view;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import game.sniper_monkey.world.GameObject;
+import game.sniper_monkey.world.IWorldObserver;
 
 import java.util.ArrayList;
 
@@ -30,7 +32,6 @@ public class GameRenderer implements IWorldObserver {
 
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
-        World.getInstance().render(batch);
         for (GameObjectView view : gameObjectViews) {
             view.render(batch);
         }
