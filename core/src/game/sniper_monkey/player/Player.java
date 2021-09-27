@@ -1,17 +1,12 @@
 package game.sniper_monkey.player;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.PhysicsPosition;
-import game.sniper_monkey.collision.Hitbox;
+import game.sniper_monkey.collision.CollisionEngine;
 import game.sniper_monkey.player.fighter.Fighter;
 import game.sniper_monkey.world.GameObject;
 import game.sniper_monkey.world.Timer;
-import game.sniper_monkey.collision.CollisionEngine;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +15,8 @@ public class Player extends GameObject {
         void performState();
     }
 
+    boolean isGrounded = true;
+
     private float blockDefenseFactor;
 
     private Timer timer = new Timer(5);
@@ -27,7 +24,7 @@ public class Player extends GameObject {
     // TODO read these values from config file
     private final float MAX_X_VEL = 200f;
     private final float VEL_GAIN = 25f;
-    private final float JUMP_GAIN = 50f;
+    private final float JUMP_GAIN = 200f;
 
 
     private Fighter activeFighter;
@@ -90,14 +87,9 @@ public class Player extends GameObject {
         return false;
     }
 
-    private boolean isGrounded() {
-        //TODO check if player collides with platform
-        return true;
-    }
-
     // TODO change name
     private void setAvatarState() {
-        if (isGrounded()) {
+        if (isGrounded) {
             currentState = this::groundedState;
         } else {
             currentState = this::inAirState;
@@ -241,11 +233,13 @@ public class Player extends GameObject {
         }
         position.setPosition(new Vector2(getHitbox().getPosition().x, position.getPosition().y));
 
+        isGrounded = false;
         if(CollisionEngine.getCollision(getHitbox(), new Vector2(0, position.getVelocity().y).scl(deltaTime))) {
             while(!CollisionEngine.getCollision(getHitbox(), new Vector2(0, Math.signum(position.getVelocity().y)/100f))) {
                 setHitboxPos(new Vector2(getHitbox().getPosition().x, getHitbox().getPosition().y+ Math.signum(position.getVelocity().y)/100f));
             }
-            position.setVelocity(new Vector2(position.getVelocity().x,0));
+            isGrounded = true;
+            position.setVelocity(new Vector2(position.getVelocity().x, 0));
         }
         position.setPosition(new Vector2(position.getPosition().x, getHitbox().getPosition().y));
     }

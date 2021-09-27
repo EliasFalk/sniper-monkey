@@ -1,10 +1,9 @@
 package game.sniper_monkey;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 
 public class PhysicsPosition {
-    private final float GRAVITY = -1000f;
+    private final float GRAVITY = -300f;
     private float DRAG = 500f;
     private Vector2 position;
     private Vector2 velocity;
