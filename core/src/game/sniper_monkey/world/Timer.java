@@ -7,15 +7,16 @@ public class Timer {
     long start;
     long end;
     long seconds;
+    int minutes;
 
     /**
      * Creates the timer object
-     * @param seconds
+     * @param seconds A number representing how long the timer will count in seconds.
      */
     public Timer(int seconds)
     {
         this.seconds = seconds * NANO;
-        start = end = -1;
+        start = end = 0;
     }
 
     /**
@@ -27,28 +28,33 @@ public class Timer {
         end  = start + seconds;
     }
 
-    public boolean end()
+    /**
+     * Ends the timer
+     */
+    public void endTimer()
     {
-        start = end = -1;
-        System.out.println("Timer ended");
-        return true;
+        end = 1;
     }
 
+    //If you want to relate something to the time passed, however not used for now.
+    /**
+     * Returns the time passed since starting the timer
+     * @return An integer between 0..n representing amount of seconds since starting the timer.
+     */
     public int getTimePassed() {
-        return (int) (((System.nanoTime() - start)/NANO) % 60);
+        return (int) (((System.nanoTime() - start)/NANO));
     }
 
     /**
      * Checks if the timer is done and deactivates it, if it is.
+     * @return A boolean-value representing if the timer is done or not.
      */
     public boolean isDone()
     {
         if (start > 0 && end > 0)
             if (System.nanoTime() >= end) {
-                start = end = -1;
                 return true;
             }
-
         return false;
     }
 }
