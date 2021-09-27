@@ -27,13 +27,12 @@ public class SpatialHash {
             ArrayList<CollisionPair> bucket = new ArrayList<CollisionPair>();
             bucket.add(pair);
             hash.put(testKey, bucket);
-            //System.out.println("Helo");
         }
     }
 
     public ArrayList<CollisionPair> query(Vector2 position) {
         if (hash.containsKey(testKey)) return hash.get(testKey);
-        else return null;
+        else return new ArrayList<CollisionPair>();
     }
 }
 

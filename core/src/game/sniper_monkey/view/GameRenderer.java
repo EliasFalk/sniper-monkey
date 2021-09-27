@@ -40,8 +40,8 @@ public class GameRenderer implements IWorldObserver {
         for (GameObjectView view : gameObjectViews) {
             view.render(sr, batch);
         }
-        sr.end();
         batch.end();
+        sr.end();
     }
 
     /**
