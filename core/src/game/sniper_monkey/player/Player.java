@@ -15,7 +15,7 @@ public class Player extends GameObject {
         void performState();
     }
 
-    private Stamina playerStamina;
+    private Stamina playerStamina; //TODO kanske final?
 
     boolean isGrounded = true;
 
@@ -75,14 +75,12 @@ public class Player extends GameObject {
         if(inputActions.get(PlayerInputAction.ATTACK1)) {
             activeFighter.performAttack(1);
             currentState = this::attackingState;
-            // TODO stamina decrease here?
-            // playerStamina.decrease(activeFighter.getAttack(1).getStamina??);  känns fett dumt att göra såhär men en attack måste ju ha en staminadecrease. bryter mot princip yo
+            playerStamina.decrease(activeFighter.getStaminaDecrease(1));
             return true;
         } else if(inputActions.get(PlayerInputAction.ATTACK2)) {
             activeFighter.performAttack(2);
-            // playerStamina.decrease(activeFighter.getAttack(2).getStamina??);  känns fett dumt att göra såhär men en attack måste ju ha en staminadecrease
+            playerStamina.decrease(activeFighter.getStaminaDecrease(2));
             currentState = this::attackingState;
-            // TODO stamina decrease here?
             return true;
         } else if(inputActions.get(PlayerInputAction.BLOCK)) {
             blockDefenseFactor = 0.6f;
@@ -219,6 +217,7 @@ public class Player extends GameObject {
 
     /**
      * Updates the class player every frame
+     *
      * @param deltaTime The time between frames.
      */
     @Override
@@ -234,7 +233,7 @@ public class Player extends GameObject {
 
     // TODO refactor this behemoth
     private void handleCollision(float deltaTime) {
-        // executes shawn mendez.
+        // executes shawn mendez. inspired by shawn's collision algorithm
         if(CollisionEngine.getCollision(getHitbox(), new Vector2(position.getVelocity().x, 0).scl(deltaTime))) {
             while(!CollisionEngine.getCollision(getHitbox(), new Vector2(Math.signum(position.getVelocity().x)/100f, 0))) {
                 setHitboxPos(new Vector2(getHitbox().getPosition().x+ Math.signum(position.getVelocity().x)/100f, getHitbox().getPosition().y));
