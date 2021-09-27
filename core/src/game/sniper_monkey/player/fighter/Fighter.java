@@ -1,7 +1,6 @@
 package game.sniper_monkey.player.fighter;
 
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.collision.Hitbox;
 import game.sniper_monkey.player.fighter.attack.IAttack;
 
 import java.util.ArrayList;
@@ -31,7 +30,7 @@ public abstract class Fighter {
     }
 
     /**
-     * Returns the size of the hitbox for the specific fighter.
+     * Returns a copy of the size of the hitbox for the specific fighter.
      *
      * @return The hitbox size represented in a Vector2, x=width, y=height.
      */
