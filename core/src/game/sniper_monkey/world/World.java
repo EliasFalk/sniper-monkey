@@ -1,6 +1,9 @@
 package game.sniper_monkey.world;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import game.sniper_monkey.collision.CollisionEngine;
 
 import java.util.ArrayList;
 
@@ -9,6 +12,58 @@ public final class World {
 
     private ArrayList<GameObject> gameObjects;
     private ArrayList<IWorldObserver> observers;
+
+    interface State {
+        void performState();
+    }
+
+    private int roundDuration = 60;
+    Timer roundTimer = new Timer(roundDuration);
+
+    /**
+     * Starts the fightingState of the game by activating the roundTimer and setting the next state to playingState
+     */
+    private void startFightingState() {
+        roundDuration = 60;
+        roundTimer.start();
+        System.out.println("START FIGHT!");
+        currentState = this::playingState;
+    }
+
+    /**
+     * The state of the game while actively combating.
+     * If the roundTimer is done, then switch to the endGameState.
+     * If the roundTimer is still counting, show the time left until the game is done.
+     */
+    private void playingState() {
+
+        int timeLeft = 60-roundTimer.getTimePassed();
+
+        if(roundTimer.isDone()) {
+            currentState = this::endGameState;
+        } else {
+            //TODO: Input what should happen during playingState
+
+            //Mostly for clean output in the console, can be removed whenever
+            if(roundDuration != timeLeft) {
+                System.out.println("ROUNDTIMER: " + timeLeft);
+                roundDuration -= 1;
+            }
+        }
+    }
+
+    /**
+     * The state of the game when the combating has ended.
+     * Actively waits for input to start the game again.
+     */
+    private void endGameState() {
+        System.out.println("GAME ENDED!");
+        if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            startFightingState();
+        }
+    }
+
+    State currentState = this::startFightingState;
 
     private World() {
         gameObjects = new ArrayList<>();
@@ -45,17 +100,9 @@ public final class World {
      * Calls update on all GameObjects in the world
      */
     public void update(float deltaTime) {
+        currentState.performState();
         for (GameObject obj : gameObjects) {
             obj.update(deltaTime);
-        }
-    }
-
-    /**
-     * Renders all objects in the world
-     */
-    public void render(SpriteBatch batch) {
-        for (GameObject obj : gameObjects) {
-            obj.render(batch);
         }
     }
 
@@ -67,6 +114,7 @@ public final class World {
     public void addGameObject(GameObject obj) {
         gameObjects.add(obj);
         notifyObserversOfNewObject(obj);
+        CollisionEngine.insertIntoSpatialHash(obj, obj.getHitbox());
     }
 
     /**
