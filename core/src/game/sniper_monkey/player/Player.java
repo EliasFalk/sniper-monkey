@@ -65,6 +65,9 @@ public class Player extends GameObject {
     }
 
     private void inAirState() {
+        if (blockDefenseFactor != 0.4) {
+            regenerateBlockFactor(0.0005);
+        }
         if(usedAbility()) {
             return;
         }
@@ -83,7 +86,6 @@ public class Player extends GameObject {
             currentState = this::attackingState;
             return true;
         } else if(inputActions.get(PlayerInputAction.BLOCK)) {
-            blockDefenseFactor = 0.6f;
             blockTimer.start();
             currentState = this::blockingState;
             return true;
@@ -132,6 +134,9 @@ public class Player extends GameObject {
     }
 
     private void groundedState() {
+        if (blockDefenseFactor != 0.4) {
+            regenerateBlockFactor(0.0007);
+        }
         if (usedAbility()) {
             return;
         }
@@ -158,15 +163,29 @@ public class Player extends GameObject {
      */
     private void blockingState() {
         if (!inputActions.get(PlayerInputAction.BLOCK)) {
-            blockDefenseFactor = 0;
             setAvatarState();
         } else {
-            System.out.println(blockDefenseFactor);
             if (blockTimer.isDone()) {
-                blockDefenseFactor = 0.3f;
+                blockDefenseFactor = 0.7f;
             } else {
-                blockDefenseFactor -= 0.0007;
+                increaseBlock(0.0007);
             }
+        }
+    }
+
+    private void increaseBlock (double increaseAmount) {
+        if (blockDefenseFactor + increaseAmount > 1) {
+            blockDefenseFactor = 1;
+        } else {
+            blockDefenseFactor += increaseAmount;
+        }
+    }
+
+    private void regenerateBlockFactor(double decreaseAmount) {
+        if (blockDefenseFactor - decreaseAmount < 0.4) {
+            blockDefenseFactor = 0.4f;
+        } else {
+            blockDefenseFactor -= decreaseAmount;
         }
     }
 
@@ -205,7 +224,7 @@ public class Player extends GameObject {
         initActiveFighter(primaryFighter);
         playerStamina = new Stamina(10f, 100);
         resetInputActions();
-        blockDefenseFactor = 0;
+        blockDefenseFactor = 0.4f;
     }
 
     /**
