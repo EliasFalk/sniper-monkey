@@ -20,7 +20,10 @@ public abstract class GameObjectView {
         return this.model == model;
     }
 
+    protected abstract void readModelData();
+
     public void render(SpriteBatch batch) {
+        readModelData();
         batch.draw(sprite, drawPosition.x, drawPosition.y);
     }
 }
