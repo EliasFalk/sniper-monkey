@@ -2,16 +2,13 @@ package game.sniper_monkey.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.sun.tools.jconsole.JConsoleContext;
 import game.sniper_monkey.PhysicsPosition;
 import game.sniper_monkey.collision.Hitbox;
 import game.sniper_monkey.player.fighter.Fighter;
 import game.sniper_monkey.world.GameObject;
 import game.sniper_monkey.world.Timer;
 
-import java.lang.constant.Constable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +20,12 @@ public class Player extends GameObject {
     private float blockDefenseFactor;
 
     private Timer timer = new Timer(5);
+
+    // TODO read these values from config file
+    private final float MAX_X_VEL = 300f;
+    private final float VEL_GAIN = 40f;
+    private final float JUMP_GAIN = 200f;
+
 
     private Fighter activeFighter;
     private final Fighter primaryFighter;
@@ -98,12 +101,33 @@ public class Player extends GameObject {
         }
     }
 
+    private void moveLeft() {
+        Vector2 newVel = position.getVelocity().add(new Vector2(-VEL_GAIN, 0));
+        if (newVel.x <= -MAX_X_VEL) {
+            newVel = new Vector2(-MAX_X_VEL, position.getVelocity().y);
+        }
+        position.setVelocity(newVel);
+    }
+
+    private void moveRight() {
+        Vector2 newVel = position.getVelocity().add(new Vector2(VEL_GAIN, 0));
+        if (newVel.x >= MAX_X_VEL) {
+            newVel = new Vector2(MAX_X_VEL, position.getVelocity().y);
+        }
+        position.setVelocity(newVel);
+    }
+
+    private void jump() {
+        Vector2 newVel = position.getVelocity().add(new Vector2(0, JUMP_GAIN));
+        position.setVelocity(newVel);
+    }
+
     private void handleHorizontalMovement() {
-        if(inputActions.get(PlayerInputAction.MOVE_RIGHT)) {
-            // TODO update physics position on player right
+        if (inputActions.get(PlayerInputAction.MOVE_RIGHT)) {
+            moveRight();
             setAvatarState();
-        } else if(inputActions.get(PlayerInputAction.MOVE_LEFT)) {
-            // TODO update physics position on player left
+        } else if (inputActions.get(PlayerInputAction.MOVE_LEFT)) {
+            moveLeft();
             setAvatarState();
         }
     }
@@ -114,8 +138,8 @@ public class Player extends GameObject {
         }
         handleHorizontalMovement();
 
-        if(inputActions.get(PlayerInputAction.JUMP)) {
-            position.setVelocity(position.getVelocity().add(new Vector2(0, 50)));
+        if (inputActions.get(PlayerInputAction.JUMP)) {
+            jump();
             currentState = this::inAirState;
         }
     }
@@ -151,7 +175,7 @@ public class Player extends GameObject {
         return activeFighter.getClass();
     }
 
-    public void initFighter(Fighter fighter) {
+    private void initActiveFighter(Fighter fighter) {
         activeFighter = fighter;
         setHitbox(new Hitbox(position.getPosition(), fighter.getHitboxSize()));
         // TODO Set stamina regen
@@ -167,7 +191,7 @@ public class Player extends GameObject {
         super(position);
         this.primaryFighter = primaryFighter;
         this.secondaryFighter = secondaryFighter;
-        initFighter(primaryFighter);
+        initActiveFighter(primaryFighter);
         resetInputActions();
         blockDefenseFactor = 0;
     }
@@ -189,8 +213,6 @@ public class Player extends GameObject {
         resetInputActions();
         position.update(deltaTime);
         setPos(position.getPosition());
-        if(Gdx.input.isKeyPressed(Input.Keys.C)) {
-            setInputAction(PlayerInputAction.BLOCK);
-        }
+
     }
 }

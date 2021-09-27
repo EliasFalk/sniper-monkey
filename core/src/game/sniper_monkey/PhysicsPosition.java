@@ -4,8 +4,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 
 public class PhysicsPosition {
-    private final float GRAVITY = 0;
-    private float DRAG = 50f;
+    private final float GRAVITY = 0f;
+    private float DRAG = 150f;
     private Vector2 position;
     private Vector2 velocity;
     private Vector2 acceleration = new Vector2(0, GRAVITY);
@@ -13,6 +13,7 @@ public class PhysicsPosition {
 
     /**
      * Updates the velocity and position based on current velocity and acceleration;
+     *
      * @param deltaTime The time between frames
      */
     public void update(float deltaTime) {
@@ -29,7 +30,8 @@ public class PhysicsPosition {
 
     /**
      * Gets a copy of the current position vector.
-     * @return
+     *
+     * @return A copy of the position vector.
      */
     public Vector2 getPosition() {
         return position.cpy();
