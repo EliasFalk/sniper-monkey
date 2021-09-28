@@ -17,10 +17,20 @@ public abstract class GameObjectView {
         this.model = model;
     }
 
+    /**
+     * Checks whether the supplied GameObject is the model of this view.
+     * @param model The model to check.
+     * @return Is "model" the model of this view?
+     */
     public boolean hasModel(GameObject model) {
         return this.model == model;
     }
 
+    /**
+     * Renders the view using a SpriteBatch and ShapeRenderer
+     * @param sr The ShapeRenderer to use.
+     * @param batch The SpriteBatch to use.
+     */
     public void render(ShapeRenderer sr, SpriteBatch batch) {
         batch.draw(sprite, model.getPos().x + drawOffset.x, model.getPos().y + drawOffset.y);
         sr.setColor(0, 0, 0, 1);
