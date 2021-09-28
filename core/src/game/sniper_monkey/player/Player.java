@@ -263,11 +263,11 @@ public class Player extends GameObject {
 
         isGrounded = false;
         if (CollisionEngine.getCollision(getHitbox(), new Vector2(0, position.getVelocity().y).scl(deltaTime))) {
+            if(position.getVelocity().y < 0) isGrounded = true;
             while (!CollisionEngine.getCollision(getHitbox(), new Vector2(0, Math.signum(position.getVelocity().y) / 2f))) {
                 setHitboxPos(new Vector2(getHitbox().getPosition().x, getHitbox().getPosition().y + Math.signum(position.getVelocity().y) / 2f));
             }
-            isGrounded = true;
-            currentState = this::groundedState;
+            setAvatarState();
             position.setVelocity(new Vector2(position.getVelocity().x, 0));
         }
         position.setPosition(new Vector2(position.getPosition().x, getHitbox().getPosition().y));
