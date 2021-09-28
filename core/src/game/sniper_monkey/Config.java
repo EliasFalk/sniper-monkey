@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
 import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
 
 public class Config {
 
@@ -22,7 +21,12 @@ public class Config {
         String text = handle.readString();
         String[] lines = text.split("\\r?\\n");
         for(String line : lines) {
-            String[] words = line.split("=");
+            String[] words = line.split("(\\/\\/)|=");
+
+            for (int i = 0; i < words.length; i++) {
+                words[i] = words[i].strip();
+            }
+
             try {
                 config.put(words[0], Float.parseFloat(words[1]));
             } catch (NumberFormatException e) {
