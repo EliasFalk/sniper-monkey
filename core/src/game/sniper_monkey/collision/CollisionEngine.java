@@ -17,6 +17,7 @@ public class CollisionEngine {
         spatialHash.insert(gameObject, hitbox);
     }
 
+    // TODO make dis?
     public static void updateSpatialHash() {
 
     }

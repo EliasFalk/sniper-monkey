@@ -20,6 +20,14 @@ public class Stamina {
         // this.staminaDrainFactor = staminaDrainFactor;
     }
 
+    public Stamina(int maxAmount) {
+        this(0, maxAmount);
+    }
+
+    public void setRegenerationFactor(float regenerationFactor) {
+        this.regenerationFactor = regenerationFactor;
+    }
+
     /**
      * Returns the current amount of Stamina a player has.
      *

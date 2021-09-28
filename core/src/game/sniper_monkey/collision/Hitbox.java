@@ -6,6 +6,7 @@ public class Hitbox {
     private Vector2 position;
     private Vector2 size;
 
+    // TODO vincent go doc doc
     public Hitbox(Vector2 position, Vector2 size) {
         this.position = position;
         this.size = size;

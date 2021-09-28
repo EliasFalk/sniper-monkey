@@ -15,19 +15,18 @@ public class Player extends GameObject {
         void performState();
     }
 
-    private Stamina playerStamina; //TODO kanske final?
-
     boolean isGrounded = true;
 
     private float blockDefenseFactor;
 
+    // TODO read these values from config file
+    private static final float MAX_X_VEL = 200f;
+    private static final float VEL_GAIN = 25f;
+    private static final float JUMP_GAIN = 300f;
+    private static final int MAX_STAMINA = 100;
     private Timer blockTimer = new Timer(5);
 
-    // TODO read these values from config file
-    private final float MAX_X_VEL = 200f;
-    private final float VEL_GAIN = 25f;
-    private final float JUMP_GAIN = 200f;
-
+    private static final Stamina playerStamina = new Stamina(0, MAX_STAMINA);
 
     private Fighter activeFighter;
     private final Fighter primaryFighter;
@@ -44,6 +43,8 @@ public class Player extends GameObject {
         inputActions.put(PlayerInputAction.BLOCK, false);
         inputActions.put(PlayerInputAction.MOVE_RIGHT, false);
         inputActions.put(PlayerInputAction.MOVE_LEFT, false);
+        inputActions.put(PlayerInputAction.DROP, false);
+        inputActions.put(PlayerInputAction.SWAP_FIGHTER, false);
     }
 
     private void resetInputActions() {
@@ -65,9 +66,7 @@ public class Player extends GameObject {
     }
 
     private void inAirState() {
-        if (blockDefenseFactor != 0.4) {
-            regenerateBlockFactor(0.0005);
-        }
+        regenerateBlockFactor(0.0005);
         if(usedAbility()) {
             return;
         }
@@ -77,8 +76,8 @@ public class Player extends GameObject {
     private boolean usedAbility() {
         if(inputActions.get(PlayerInputAction.ATTACK1)) {
             activeFighter.performAttack(1);
-            currentState = this::attackingState;
             playerStamina.decrease(activeFighter.getStaminaDecrease(1));
+            currentState = this::attackingState;
             return true;
         } else if(inputActions.get(PlayerInputAction.ATTACK2)) {
             activeFighter.performAttack(2);
@@ -127,16 +126,15 @@ public class Player extends GameObject {
         if (inputActions.get(PlayerInputAction.MOVE_RIGHT)) {
             moveRight();
             setAvatarState();
-        } else if (inputActions.get(PlayerInputAction.MOVE_LEFT)) {
+        }
+        if (inputActions.get(PlayerInputAction.MOVE_LEFT)) {
             moveLeft();
             setAvatarState();
         }
     }
 
     private void groundedState() {
-        if (blockDefenseFactor != 0.4) {
-            regenerateBlockFactor(0.0007);
-        }
+        regenerateBlockFactor(0.0007);
         if (usedAbility()) {
             return;
         }
@@ -205,11 +203,9 @@ public class Player extends GameObject {
 
     private void initActiveFighter(Fighter fighter) {
         activeFighter = fighter;
-        //setHitbox(new Hitbox(position.getPosition(), fighter.getHitboxSize()));
         setHitboxPos(position.getPosition());
         setHitboxSize(fighter.getHitboxSize());
-        // TODO Set stamina regen
-        // maybe more??
+        playerStamina.setRegenerationFactor(10f * activeFighter.SPEED_FACTOR);
     }
 
     /**
@@ -221,8 +217,8 @@ public class Player extends GameObject {
         super(position);
         this.primaryFighter = primaryFighter;
         this.secondaryFighter = secondaryFighter;
+
         initActiveFighter(primaryFighter);
-        playerStamina = new Stamina(10f, 100);
         resetInputActions();
         blockDefenseFactor = 0.4f;
     }
@@ -253,20 +249,25 @@ public class Player extends GameObject {
     // TODO refactor this behemoth
     private void handleCollision(float deltaTime) {
         // executes shawn mendez. inspired by shawn's collision algorithm
-        if(CollisionEngine.getCollision(getHitbox(), new Vector2(position.getVelocity().x, 0).scl(deltaTime))) {
-            while(!CollisionEngine.getCollision(getHitbox(), new Vector2(Math.signum(position.getVelocity().x)/100f, 0))) {
-                setHitboxPos(new Vector2(getHitbox().getPosition().x+ Math.signum(position.getVelocity().x)/100f, getHitbox().getPosition().y));
+        boolean collidesXAxisNextFrame = CollisionEngine.getCollision(getHitbox(), new Vector2(position.getVelocity().x, 0).scl(deltaTime));
+        if (collidesXAxisNextFrame) {
+            // while it doesn't collide with an x position approaching the object it will collide with, then see if it collides with an x position a tiny bit closer until it collides.
+            while (!CollisionEngine.getCollision(getHitbox(), new Vector2(Math.signum(position.getVelocity().x) / 2f, 0))) {
+                setHitboxPos(new Vector2(getHitbox().getPosition().x + Math.signum(position.getVelocity().x) / 2f, getHitbox().getPosition().y));
             }
-            position.setVelocity(new Vector2(0,position.getVelocity().y));
+            // Then set x velocity to zero, and the x position is already set to the closest it can get to the object it collides with.
+            position.setVelocity(new Vector2(0, position.getVelocity().y));
         }
+        // Sync the position of the player with the x position of the hitbox.
         position.setPosition(new Vector2(getHitbox().getPosition().x, position.getPosition().y));
 
         isGrounded = false;
-        if(CollisionEngine.getCollision(getHitbox(), new Vector2(0, position.getVelocity().y).scl(deltaTime))) {
-            while(!CollisionEngine.getCollision(getHitbox(), new Vector2(0, Math.signum(position.getVelocity().y)/100f))) {
-                setHitboxPos(new Vector2(getHitbox().getPosition().x, getHitbox().getPosition().y+ Math.signum(position.getVelocity().y)/100f));
+        if (CollisionEngine.getCollision(getHitbox(), new Vector2(0, position.getVelocity().y).scl(deltaTime))) {
+            while (!CollisionEngine.getCollision(getHitbox(), new Vector2(0, Math.signum(position.getVelocity().y) / 2f))) {
+                setHitboxPos(new Vector2(getHitbox().getPosition().x, getHitbox().getPosition().y + Math.signum(position.getVelocity().y) / 2f));
             }
             isGrounded = true;
+            currentState = this::groundedState;
             position.setVelocity(new Vector2(position.getVelocity().x, 0));
         }
         position.setPosition(new Vector2(position.getPosition().x, getHitbox().getPosition().y));
