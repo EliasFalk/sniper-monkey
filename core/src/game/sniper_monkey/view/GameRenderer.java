@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import game.sniper_monkey.world.GameObject;
 import game.sniper_monkey.world.IWorldObserver;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import game.sniper_monkey.world.World;
 
 import java.util.ArrayList;
 
@@ -15,13 +17,21 @@ public class GameRenderer implements IWorldObserver {
     ShapeRenderer sr;
     Texture img = new Texture("evil_wizard_2/Attack1.png");
     Texture platform = new Texture("platform.png");
+    Stage stage;
 
     private ArrayList<GameObjectView> gameObjectViews;
+    private ArrayList<HUDView> HUDViews;
 
     public GameRenderer() {
+        stage = new Stage();
         batch = new SpriteBatch();
         gameObjectViews = new ArrayList<>();
+        HUDViews = new ArrayList<>();
+        HUDViews.add(new RoundTimerView(World.getInstance()));
         sr = new ShapeRenderer();
+        for (HUDView view : HUDViews) {
+            view.addActors(stage);
+        }
     }
 
     /**
@@ -40,8 +50,12 @@ public class GameRenderer implements IWorldObserver {
         for (GameObjectView view : gameObjectViews) {
             view.render(sr, batch);
         }
+        for (HUDView view : HUDViews) {
+            view.readModel();
+        }
         batch.end();
         sr.end();
+        stage.draw();
     }
 
     /**

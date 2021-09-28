@@ -2,7 +2,10 @@ package game.sniper_monkey.world;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import game.sniper_monkey.collision.CollisionEngine;
 
 import java.util.ArrayList;
@@ -17,14 +20,18 @@ public final class World {
         void performState();
     }
 
-    private int roundDuration = 60;
+    private int roundDuration = 120;
     Timer roundTimer = new Timer(roundDuration);
+
+    public int getRoundDuration() {
+        return roundDuration;
+    }
 
     /**
      * Starts the fightingState of the game by activating the roundTimer and setting the next state to playingState
      */
     private void startFightingState() {
-        roundDuration = 60;
+        roundDuration = 120;
         roundTimer.start();
         System.out.println("START FIGHT!");
         currentState = this::playingState;
@@ -37,7 +44,7 @@ public final class World {
      */
     private void playingState() {
 
-        int timeLeft = 60-roundTimer.getTimePassed();
+        int timeLeft = 120-roundTimer.getTimePassed();
 
         if(roundTimer.isDone()) {
             currentState = this::endGameState;
@@ -46,7 +53,6 @@ public final class World {
 
             //Mostly for clean output in the console, can be removed whenever
             if(roundDuration != timeLeft) {
-                System.out.println("ROUNDTIMER: " + timeLeft);
                 roundDuration -= 1;
             }
         }
