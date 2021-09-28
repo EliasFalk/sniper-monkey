@@ -240,10 +240,14 @@ public class Player extends GameObject {
         playerStamina.update(deltaTime);
         currentState.performState();
         resetInputActions();
-        handleCollision(deltaTime);
+        updatePlayerPos(deltaTime);
+    }
+
+    private void updatePlayerPos(float deltaTime) {
         position.update(deltaTime);
-        setPos(position.getPosition());
-        setHitboxPos(getPos());
+        handleCollision(deltaTime);
+        setHitboxPos(position.getPosition());
+        super.setPos(position.getPosition());
     }
 
     // TODO refactor this behemoth
@@ -258,8 +262,8 @@ public class Player extends GameObject {
             // Then set x velocity to zero, and the x position is already set to the closest it can get to the object it collides with.
             position.setVelocity(new Vector2(0, position.getVelocity().y));
         }
-        // Sync the position of the player with the x position of the hitbox.
-        position.setPosition(new Vector2(getHitbox().getPosition().x, position.getPosition().y));
+
+        setHitboxPos(getHitbox().getPosition().add(position.getVelocity().x * deltaTime, 0));
 
         isGrounded = false;
         if (CollisionEngine.getCollision(getHitbox(), new Vector2(0, position.getVelocity().y).scl(deltaTime))) {
@@ -270,6 +274,7 @@ public class Player extends GameObject {
             setAvatarState();
             position.setVelocity(new Vector2(position.getVelocity().x, 0));
         }
-        position.setPosition(new Vector2(position.getPosition().x, getHitbox().getPosition().y));
+        setHitboxPos(getHitbox().getPosition().add(0, position.getVelocity().y * deltaTime));
+        position.setPosition(getHitbox().getPosition());
     }
 }

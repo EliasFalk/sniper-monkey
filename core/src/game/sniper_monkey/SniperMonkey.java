@@ -24,6 +24,17 @@ public class SniperMonkey extends ApplicationAdapter {
         playerController = new PlayerController(player, "cfg/player1_keybinds.cfg");
         for (int i = 0; i < 400 / 16; i++)
             World.getInstance().addGameObject(new Platform(new Vector2(-200 + i * 16, -100)));
+        World.getInstance().addGameObject(new Platform(new Vector2(16, -100+16)));
+        World.getInstance().addGameObject(new Platform(new Vector2(16, -100+16*2)));
+        World.getInstance().addGameObject(new Platform(new Vector2(16, -100+16*3)));
+        World.getInstance().addGameObject(new Platform(new Vector2(16, -100+16*4)));
+        World.getInstance().addGameObject(new Platform(new Vector2(32, -100+16*4)));
+        World.getInstance().addGameObject(new Platform(new Vector2(32+16, -100+16*4)));
+        World.getInstance().addGameObject(new Platform(new Vector2(32*2, -100+16*4)));
+
+        World.getInstance().addGameObject(new Platform(new Vector2(-32, -100+16*5)));
+        World.getInstance().addGameObject(new Platform(new Vector2(-32-16, -100+16*5)));
+        World.getInstance().addGameObject(new Platform(new Vector2(-32*2, -100+16*5)));
     }
 
     @Override
