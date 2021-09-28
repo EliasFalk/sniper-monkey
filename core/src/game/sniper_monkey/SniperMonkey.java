@@ -9,11 +9,13 @@ import game.sniper_monkey.platform.Platform;
 import game.sniper_monkey.player.Player;
 import game.sniper_monkey.player.PlayerFactory;
 import game.sniper_monkey.view.GameRenderer;
+import game.sniper_monkey.world.CallbackTimer;
 import game.sniper_monkey.world.World;
 
 public class SniperMonkey extends ApplicationAdapter {
     GameRenderer gameRenderer;
     PlayerController playerController;
+
     @Override
     public void create() {
         Texture img = new Texture("evil_wizard_2/Attack1.png");

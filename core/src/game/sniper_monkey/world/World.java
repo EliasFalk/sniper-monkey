@@ -2,10 +2,6 @@ package game.sniper_monkey.world;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import game.sniper_monkey.collision.CollisionEngine;
 
 import java.util.ArrayList;
@@ -15,23 +11,21 @@ public final class World {
 
     private ArrayList<GameObject> gameObjects;
     private ArrayList<IWorldObserver> observers;
+    private CallbackTimer roundTimer;
+    private State currentState = this::startFightingState;
 
     interface State {
         void performState();
     }
 
-    private int roundDuration = 120;
-    Timer roundTimer = new Timer(roundDuration);
-
     public int getRoundDuration() {
-        return roundDuration;
+        return (int) roundTimer.getTimeLeft();
     }
 
     /**
      * Starts the fightingState of the game by activating the roundTimer and setting the next state to playingState
      */
     private void startFightingState() {
-        roundDuration = 120;
         roundTimer.start();
         System.out.println("START FIGHT!");
         currentState = this::playingState;
@@ -43,19 +37,7 @@ public final class World {
      * If the roundTimer is still counting, show the time left until the game is done.
      */
     private void playingState() {
-
-        int timeLeft = 120-roundTimer.getTimePassed();
-
-        if(roundTimer.isDone()) {
-            currentState = this::endGameState;
-        } else {
-            //TODO: Input what should happen during playingState
-
-            //Mostly for clean output in the console, can be removed whenever
-            if(roundDuration != timeLeft) {
-                roundDuration -= 1;
-            }
-        }
+        roundTimer.update(Gdx.graphics.getDeltaTime());
     }
 
     /**
@@ -69,11 +51,11 @@ public final class World {
         }
     }
 
-    State currentState = this::startFightingState;
 
     private World() {
         gameObjects = new ArrayList<>();
         observers = new ArrayList<>();
+        roundTimer = new CallbackTimer(120, () -> currentState = this::endGameState);
     }
 
     //Singleton
