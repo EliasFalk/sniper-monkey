@@ -9,12 +9,12 @@ import game.sniper_monkey.platform.Platform;
 import game.sniper_monkey.player.Player;
 import game.sniper_monkey.player.PlayerFactory;
 import game.sniper_monkey.view.GameRenderer;
-import game.sniper_monkey.world.CallbackTimer;
 import game.sniper_monkey.world.World;
 
 public class SniperMonkey extends ApplicationAdapter {
     GameRenderer gameRenderer;
     PlayerController playerController;
+    boolean pause = false;
 
     @Override
     public void create() {
@@ -42,7 +42,11 @@ public class SniperMonkey extends ApplicationAdapter {
 
     @Override
     public void render() {
-        World.getInstance().update(Gdx.graphics.getDeltaTime());
+        float deltaTime = Math.min(1 / 10f, Gdx.graphics.getDeltaTime());
+        if (Gdx.graphics.getDeltaTime() > 1) {
+            return;
+        }
+        World.getInstance().update(deltaTime);
         playerController.handleKeyInputs();
         gameRenderer.render();
     }
@@ -50,5 +54,10 @@ public class SniperMonkey extends ApplicationAdapter {
     @Override
     public void dispose() {
         gameRenderer.dispose();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        gameRenderer.updateCamera(width / 2, height / 2);
     }
 }

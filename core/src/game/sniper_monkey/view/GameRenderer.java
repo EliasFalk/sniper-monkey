@@ -4,10 +4,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import game.sniper_monkey.world.GameObject;
 import game.sniper_monkey.world.IWorldObserver;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import game.sniper_monkey.world.World;
 
 import java.util.ArrayList;
@@ -18,9 +18,16 @@ public class GameRenderer implements IWorldObserver {
     Texture img = new Texture("evil_wizard_2/Attack1.png");
     Texture platform = new Texture("platform.png");
     Stage stage;
+    OrthographicCamera camera = new OrthographicCamera(1280 / 2f, 720 / 2f);
 
     private ArrayList<GameObjectView> gameObjectViews;
     RoundTimerView roundTimerView;
+
+    public void updateCamera(int width, int height) {
+        camera.viewportHeight = height;
+        camera.viewportWidth = width;
+        camera.update();
+    }
 
     public GameRenderer() {
         stage = new Stage();
@@ -35,7 +42,6 @@ public class GameRenderer implements IWorldObserver {
         roundTimerView.addActors(stage);
     }
 
-    OrthographicCamera camera = new OrthographicCamera(1280 / 2, 720 / 2);
 
     /**
      * Renders a background and then all of the views stored in the GameRenderer
