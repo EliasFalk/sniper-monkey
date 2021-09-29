@@ -16,6 +16,7 @@ public class Config {
      */
     public static void readConfigFile(String file) {
         HashMap<String, Object> config = new HashMap<>();
+        if (fileMap.containsKey(file)) return;
         fileMap.put(file, config);
         FileHandle handle = Gdx.files.local(file);
         String text = handle.readString();
