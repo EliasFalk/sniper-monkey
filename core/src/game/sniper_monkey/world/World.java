@@ -12,6 +12,7 @@ public final class World {
     private ArrayList<GameObject> gameObjects;
     private ArrayList<IWorldObserver> observers;
     private CallbackTimer roundTimer;
+    private ArrayList<ITimerObserver> timerObservers;
     private State currentState = this::startFightingState;
 
     interface State {
@@ -38,6 +39,7 @@ public final class World {
      */
     private void playingState() {
         roundTimer.update(Gdx.graphics.getDeltaTime());
+        notifyObserversOfTimerChange((int) roundTimer.getTimeLeft());
     }
 
     /**
@@ -55,6 +57,7 @@ public final class World {
     private World() {
         gameObjects = new ArrayList<>();
         observers = new ArrayList<>();
+        timerObservers = new ArrayList<>();
         roundTimer = new CallbackTimer(120, () -> currentState = this::endGameState);
     }
 
@@ -83,6 +86,26 @@ public final class World {
             observer.onObjectRemovedFromWorld(obj);
         }
     }
+
+
+
+    //TIMER OBSERVER STUFF
+    public void registerTimerObserver(ITimerObserver timerObserver) {
+        timerObservers.add(timerObserver);
+    }
+
+    public void unregisterTimerObserver(ITimerObserver deleteTimerObserver) {
+        int observerIndex = observers.indexOf(deleteTimerObserver);
+        timerObservers.remove(deleteTimerObserver);
+    }
+
+    private void notifyObserversOfTimerChange(int time) {
+        for (ITimerObserver timerObserver : timerObservers) {
+            timerObserver.onTimerChange(time);
+        }
+    }
+
+
 
     /**
      * Calls update on all GameObjects in the world

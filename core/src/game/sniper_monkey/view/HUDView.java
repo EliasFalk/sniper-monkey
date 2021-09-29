@@ -16,6 +16,4 @@ public abstract class HUDView {
     }
 
     public abstract void addActors(Stage stage);
-
-    public abstract void readModel();
 }

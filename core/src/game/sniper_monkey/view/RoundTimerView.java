@@ -6,9 +6,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
+import game.sniper_monkey.world.ITimerObserver;
 import game.sniper_monkey.world.World;
 
-public class RoundTimerView extends HUDView {
+public class RoundTimerView extends HUDView implements ITimerObserver {
 
     World model;
 
@@ -23,13 +24,12 @@ public class RoundTimerView extends HUDView {
         countdownLabel.setAlignment(Align.center);
     }
 
-    @Override
-    public void readModel() {
-        countdownLabel.setText(model.getRoundDuration());
+    public void addActors(Stage stage) {
+        stage.addActor(countdownLabel);
     }
 
     @Override
-    public void addActors(Stage stage) {
-        stage.addActor(countdownLabel);
+    public void onTimerChange(int time) {
+        countdownLabel.setText(time);
     }
 }
