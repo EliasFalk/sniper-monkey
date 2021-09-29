@@ -195,6 +195,10 @@ public class Player extends GameObject {
     }
 
 
+    /**
+     * Decreases the players health by using the Health class.
+     * @param damageAmount a float 0..n. Is the damage that the other fighter has done to the player.
+     */
     public void takeDamage(float damageAmount) {
         if (false/*currentState == blockingState*/) { // change when statechecking has been implemented
             playerHealth.onDamage(damageAmount * (1 - activeFighter.DEFENSE_FACTOR) * (1 - blockDefenseFactor));
@@ -203,6 +207,10 @@ public class Player extends GameObject {
         }
     }
 
+    /**
+     * Checks if the player is dead using the Health class.
+     * @return true if the player is dead, false if the player is alive.
+     */
     public boolean isDead() {
         return playerHealth.isDead();
     }
