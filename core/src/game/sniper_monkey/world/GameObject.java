@@ -44,8 +44,9 @@ public abstract class GameObject {
      *
      * @param position the new position to use
      */
-    protected void setPos(Vector2 position) {
+    protected void setPosition(Vector2 position) {
         this.position = position;
+        this.hitbox.setPosition(position);
     }
 
     /**

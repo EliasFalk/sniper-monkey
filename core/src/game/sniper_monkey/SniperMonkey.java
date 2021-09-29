@@ -21,9 +21,7 @@ public class SniperMonkey extends ApplicationAdapter {
         Texture img = new Texture("evil_wizard_2/Attack1.png");
         gameRenderer = new GameRenderer();
         World.getInstance().registerObserver(gameRenderer);
-        Player player = PlayerFactory.createPlayer();
-        World.getInstance().addGameObject(player);
-        playerController = new PlayerController(player, "cfg/player1_keybinds.cfg");
+
         for (int i = 0; i < 400 / 16; i++)
             World.getInstance().addGameObject(new Platform(new Vector2(-200 + i * 16, -100)));
         World.getInstance().addGameObject(new Platform(new Vector2(16, -100+16)));
@@ -37,6 +35,9 @@ public class SniperMonkey extends ApplicationAdapter {
         World.getInstance().addGameObject(new Platform(new Vector2(-32, -100+16*5)));
         World.getInstance().addGameObject(new Platform(new Vector2(-32-16, -100+16*5)));
         World.getInstance().addGameObject(new Platform(new Vector2(-32*2, -100+16*5)));
+        Player player = PlayerFactory.createPlayer();
+        World.getInstance().addGameObject(player);
+        playerController = new PlayerController(player, "cfg/player1_keybinds.cfg");
     }
 
     @Override

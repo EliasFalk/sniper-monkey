@@ -1,5 +1,6 @@
 package game.sniper_monkey.view;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -10,7 +11,6 @@ public abstract class GameObjectView {
     private GameObject model;
     protected Vector2 drawOffset;
     protected Sprite sprite;
-
     public GameObjectView(Vector2 drawOffset, Sprite sprite, GameObject model) {
         this.drawOffset = drawOffset;
         this.sprite = sprite;
@@ -37,5 +37,9 @@ public abstract class GameObjectView {
         Vector2 pos = model.getHitbox().getPosition();
         Vector2 size = model.getHitbox().getSize();
         sr.rect(pos.x, pos.y, size.x, size.y);
+    }
+
+    public void updateSprite() {
+
     }
 }

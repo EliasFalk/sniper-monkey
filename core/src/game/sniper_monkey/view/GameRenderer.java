@@ -48,6 +48,7 @@ public class GameRenderer implements IWorldObserver {
         batch.setProjectionMatrix(camera.combined);
         sr.setProjectionMatrix(camera.combined);
         for (GameObjectView view : gameObjectViews) {
+            view.updateSprite();
             view.render(sr, batch);
         }
         /*

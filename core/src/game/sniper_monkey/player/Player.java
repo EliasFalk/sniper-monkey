@@ -34,10 +34,22 @@ public class Player extends GameObject {
     private Fighter activeFighter;
     private final Fighter primaryFighter;
     private final Fighter secondaryFighter;
+    private FighterAnimation currentFighterAnimation; // TODO set this to static for very many fun
+
+    private boolean lookingRight;
 
     State currentState = this::groundedState;
-    PhysicsPosition position = new PhysicsPosition(new Vector2(0, 0));
+    PhysicsPosition physicsPos = new PhysicsPosition(new Vector2(0, 0));
     private final Map<PlayerInputAction, Boolean> inputActions = new HashMap<>();
+
+
+    public FighterAnimation getCurrentFighterAnimation() {
+        return currentFighterAnimation;
+    }
+
+    public boolean isLookingRight() {
+        return lookingRight;
+    }
 
     private void initInputActions() {
         inputActions.put(PlayerInputAction.JUMP, false);
@@ -68,12 +80,22 @@ public class Player extends GameObject {
         inputActions.replace(action, true);
     }
 
+
+    private void setAirAnimation() {
+        if(physicsPos.getVelocity().y > 0) {
+            currentFighterAnimation = FighterAnimation.JUMPING;
+        } else {
+            currentFighterAnimation = FighterAnimation.FALLING;
+        }
+    }
+
     private void inAirState() {
         regenerateBlockFactor(0.0005);
         if(usedAbility()) {
             return;
         }
         handleHorizontalMovement();
+        setAirAnimation();
     }
 
     private boolean usedAbility() {
@@ -98,45 +120,50 @@ public class Player extends GameObject {
     // TODO change name
     private void setAvatarState() {
         if (isGrounded) {
+//            currentFighterAnimation = FighterAnimation.IDLING;
             currentState = this::groundedState;
         } else {
+//            currentFighterAnimation = FighterAnimation.FALLING;
             currentState = this::inAirState;
         }
     }
 
     private void moveLeft() {
-        Vector2 newVel = position.getVelocity().add(new Vector2(-VEL_GAIN, 0));
+        Vector2 newVel = physicsPos.getVelocity().add(new Vector2(-VEL_GAIN, 0));
         if (newVel.x <= -MAX_X_VEL) {
-            newVel = new Vector2(-MAX_X_VEL, position.getVelocity().y);
+            newVel = new Vector2(-MAX_X_VEL, physicsPos.getVelocity().y);
         }
-        position.setVelocity(newVel);
+        physicsPos.setVelocity(newVel);
     }
 
     private void moveRight() {
-        Vector2 newVel = position.getVelocity().add(new Vector2(VEL_GAIN, 0));
+        Vector2 newVel = physicsPos.getVelocity().add(new Vector2(VEL_GAIN, 0));
         if (newVel.x >= MAX_X_VEL) {
-            newVel = new Vector2(MAX_X_VEL, position.getVelocity().y);
+            newVel = new Vector2(MAX_X_VEL, physicsPos.getVelocity().y);
         }
-        position.setVelocity(newVel);
+        physicsPos.setVelocity(newVel);
     }
 
     private void jump() {
-        Vector2 newVel = position.getVelocity().add(new Vector2(0, JUMP_GAIN));
-        position.setVelocity(newVel);
+        Vector2 newVel = physicsPos.getVelocity().add(new Vector2(0, JUMP_GAIN));
+        physicsPos.setVelocity(newVel);
     }
 
     private void handleHorizontalMovement() {
         if (inputActions.get(PlayerInputAction.MOVE_RIGHT)) {
+            currentFighterAnimation = FighterAnimation.MOVING; // TODO code duplication
             moveRight();
             setAvatarState();
         }
         if (inputActions.get(PlayerInputAction.MOVE_LEFT)) {
+            currentFighterAnimation = FighterAnimation.MOVING; // TODO code duplication
             moveLeft();
             setAvatarState();
         }
     }
 
     private void groundedState() {
+        currentFighterAnimation = FighterAnimation.IDLING;
         regenerateBlockFactor(0.0007);
         if (usedAbility()) {
             return;
@@ -227,7 +254,7 @@ public class Player extends GameObject {
 
     private void initActiveFighter(Fighter fighter) {
         activeFighter = fighter;
-        setHitboxPos(position.getPosition());
+        setHitboxPos(physicsPos.getPosition());
         setHitboxSize(fighter.getHitboxSize());
         playerStamina.setRegenerationFactor(10f * activeFighter.SPEED_FACTOR);
     }
@@ -241,7 +268,7 @@ public class Player extends GameObject {
         super(position);
         this.primaryFighter = primaryFighter;
         this.secondaryFighter = secondaryFighter;
-
+        currentFighterAnimation = FighterAnimation.IDLING;
         initActiveFighter(primaryFighter);
         resetInputActions();
         blockDefenseFactor = 0.4f;
@@ -252,6 +279,14 @@ public class Player extends GameObject {
      */
     public Player(Fighter primaryFighter, Fighter secondaryFighter) {
         this(new Vector2(0, 0), primaryFighter, secondaryFighter);
+    }
+
+    private void handleLookingDirection() {
+        if(physicsPos.getVelocity().x > 0) {
+            lookingRight = true;
+        } else if(physicsPos.getVelocity().x < 0) {
+            lookingRight = false;
+        }
     }
 
     /**
@@ -265,40 +300,41 @@ public class Player extends GameObject {
         currentState.performState();
         resetInputActions();
         updatePlayerPos(deltaTime);
+
+        handleLookingDirection();
     }
 
     private void updatePlayerPos(float deltaTime) {
-        position.update(deltaTime);
+        physicsPos.update(deltaTime);
         handleCollision(deltaTime);
-        setHitboxPos(position.getPosition());
-        super.setPos(position.getPosition());
+        super.setPosition(physicsPos.getPosition());
     }
 
     // TODO refactor this behemoth
     private void handleCollision(float deltaTime) {
         // executes shawn mendez. inspired by shawn's collision algorithm
-        boolean collidesXAxisNextFrame = CollisionEngine.getCollision(getHitbox(), new Vector2(position.getVelocity().x, 0).scl(deltaTime));
+        boolean collidesXAxisNextFrame = CollisionEngine.getCollision(getHitbox(), new Vector2(physicsPos.getVelocity().x, 0).scl(deltaTime));
         if (collidesXAxisNextFrame) {
             // while it doesn't collide with an x position approaching the object it will collide with, then see if it collides with an x position a tiny bit closer until it collides.
-            while (!CollisionEngine.getCollision(getHitbox(), new Vector2(Math.signum(position.getVelocity().x) / 2f, 0))) {
-                setHitboxPos(new Vector2(getHitbox().getPosition().x + Math.signum(position.getVelocity().x) / 2f, getHitbox().getPosition().y));
+            while (!CollisionEngine.getCollision(getHitbox(), new Vector2(Math.signum(physicsPos.getVelocity().x) / 2f, 0))) {
+                setHitboxPos(new Vector2(getHitbox().getPosition().x + Math.signum(physicsPos.getVelocity().x) / 2f, getHitbox().getPosition().y));
             }
             // Then set x velocity to zero, and the x position is already set to the closest it can get to the object it collides with.
-            position.setVelocity(new Vector2(0, position.getVelocity().y));
+            physicsPos.setVelocity(new Vector2(0, physicsPos.getVelocity().y));
         }
 
-        setHitboxPos(getHitbox().getPosition().add(position.getVelocity().x * deltaTime, 0));
+        setHitboxPos(getHitbox().getPosition().add(physicsPos.getVelocity().x * deltaTime, 0));
 
         isGrounded = false;
-        if (CollisionEngine.getCollision(getHitbox(), new Vector2(0, position.getVelocity().y).scl(deltaTime))) {
-            if(position.getVelocity().y < 0) isGrounded = true;
-            while (!CollisionEngine.getCollision(getHitbox(), new Vector2(0, Math.signum(position.getVelocity().y) / 2f))) {
-                setHitboxPos(new Vector2(getHitbox().getPosition().x, getHitbox().getPosition().y + Math.signum(position.getVelocity().y) / 2f));
+        if (CollisionEngine.getCollision(getHitbox(), new Vector2(0, physicsPos.getVelocity().y).scl(deltaTime))) {
+            if(physicsPos.getVelocity().y < 0) isGrounded = true;
+            while (!CollisionEngine.getCollision(getHitbox(), new Vector2(0, Math.signum(physicsPos.getVelocity().y) / 2f))) {
+                setHitboxPos(new Vector2(getHitbox().getPosition().x, getHitbox().getPosition().y + Math.signum(physicsPos.getVelocity().y) / 2f));
             }
             setAvatarState();
-            position.setVelocity(new Vector2(position.getVelocity().x, 0));
+            physicsPos.setVelocity(new Vector2(physicsPos.getVelocity().x, 0));
         }
-        setHitboxPos(getHitbox().getPosition().add(0, position.getVelocity().y * deltaTime));
-        position.setPosition(getHitbox().getPosition());
+        setHitboxPos(getHitbox().getPosition().add(0, physicsPos.getVelocity().y * deltaTime));
+        physicsPos.setPosition(getHitbox().getPosition());
     }
 }
