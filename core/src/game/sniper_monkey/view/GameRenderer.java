@@ -20,18 +20,19 @@ public class GameRenderer implements IWorldObserver {
     Stage stage;
 
     private ArrayList<GameObjectView> gameObjectViews;
-    private ArrayList<HUDView> HUDViews;
+    RoundTimerView roundTimerView;
 
     public GameRenderer() {
         stage = new Stage();
         batch = new SpriteBatch();
         gameObjectViews = new ArrayList<>();
-        HUDViews = new ArrayList<>();
-        HUDViews.add(new RoundTimerView(World.getInstance()));
+
+        //TODO: REFACTOR OBSERVER
+        roundTimerView = new RoundTimerView(World.getInstance());
+        World.getInstance().registerTimerObserver(roundTimerView);
+
         sr = new ShapeRenderer();
-        for (HUDView view : HUDViews) {
-            view.addActors(stage);
-        }
+        roundTimerView.addActors(stage);
     }
 
     OrthographicCamera camera = new OrthographicCamera(1280 / 2, 720 / 2);
@@ -49,9 +50,11 @@ public class GameRenderer implements IWorldObserver {
         for (GameObjectView view : gameObjectViews) {
             view.render(sr, batch);
         }
-        for (HUDView view : HUDViews) {
-            view.readModel();
+        /*
+        for (RoundTimerView timerView : timerViews) {
+            timerView.onTimerChange();
         }
+         */
         batch.end();
         sr.end();
         stage.draw();
