@@ -24,9 +24,12 @@ public class Player extends GameObject {
     private static final float VEL_GAIN = 25f;
     private static final float JUMP_GAIN = 300f;
     private static final int MAX_STAMINA = 100;
+    private static final int MAX_HEALTH = 100;
     private Timer blockTimer = new Timer(5);
 
     private static final Stamina playerStamina = new Stamina(0, MAX_STAMINA);
+
+    private static final Health playerHealth = new Health(MAX_HEALTH);
 
     private Fighter activeFighter;
     private final Fighter primaryFighter;
@@ -189,6 +192,19 @@ public class Player extends GameObject {
 
     private void attackingState() {
         // TODO create attacking state
+    }
+
+
+    public void takeDamage(float damageAmount) {
+        if (false/*currentState == blockingState*/) { // change when statechecking has been implemented
+            playerHealth.onDamage(damageAmount * (1 - activeFighter.DEFENSE_FACTOR) * (1 - blockDefenseFactor));
+        } else {
+            playerHealth.onDamage(damageAmount*(1-activeFighter.DEFENSE_FACTOR)); // TODO make getter for defense factor instead?
+        }
+    }
+
+    public boolean isDead() {
+        return playerHealth.isDead();
     }
 
 
