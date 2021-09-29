@@ -26,6 +26,10 @@ public abstract class GameObject {
         this(new Vector2(0,0));
     }
 
+    /**
+     * Update the GameObject (handles logic, data, etc.)
+     * @param deltaTime The time between this and the last time update was called (in seconds).
+     */
     public abstract void update(float deltaTime);
 
     /**
@@ -51,9 +55,18 @@ public abstract class GameObject {
         return position.cpy();
     }
 
+    /**
+     * Set the size of the hitbox.
+     * @param size The new size to use.
+     */
     protected void setHitboxSize(Vector2 size) {
         hitbox.setSize(size);
     }
+
+    /**
+     * Set the position of the hitbox.
+     * @param pos The new position to use.
+     */
     protected void setHitboxPos(Vector2 pos) {
         hitbox.setPosition(pos);
     }

@@ -9,9 +9,12 @@ import java.util.List;
 
 public class EvilWizard extends Fighter {
 
+    /**
+     * Creates an EvilWizard fighter.
+     */
     public EvilWizard() {
         super(1, 1, 1, new Vector2(40, 55));
-        // attacks.add(SomeAttack);
+        // TODO attacks.add(SomeAttack);
     }
 
 }
