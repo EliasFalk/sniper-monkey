@@ -53,7 +53,6 @@ public final class World {
         }
     }
 
-
     private World() {
         gameObjects = new ArrayList<>();
         observers = new ArrayList<>();
@@ -95,7 +94,6 @@ public final class World {
     }
 
     public void unregisterTimerObserver(ITimerObserver deleteTimerObserver) {
-        int observerIndex = observers.indexOf(deleteTimerObserver);
         timerObservers.remove(deleteTimerObserver);
     }
 
