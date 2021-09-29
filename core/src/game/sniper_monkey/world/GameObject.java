@@ -7,55 +7,32 @@ import game.sniper_monkey.collision.Hitbox;
 
 public abstract class GameObject {
     private Vector2 position;
-    private Sprite sprite;
     private Hitbox hitbox;
 
     /**
      * Creates the GameObject at a custom position
      *
      * @param position the starting position
-     * @param sprite   the sprite to use
      */
-    public GameObject(Vector2 position, Sprite sprite) {
+    public GameObject(Vector2 position) {
         this.position = position;
-        this.sprite = sprite;
+        hitbox = new Hitbox(position, new Vector2(0, 0));
     }
 
     /**
-     * Creates the GameObject at a default position
-     *
-     * @param sprite the sprite to use
+     * Creates the GameObject at a 0, 0
      */
-    public GameObject(Sprite sprite) {
-        position = new Vector2(0, 0);
-        this.sprite = sprite;
+    public GameObject() {
+        this(new Vector2(0,0));
     }
 
     public abstract void update(float deltaTime);
-
-    /**
-     * Renders the GameObjects sprite (must be used inside a SpriteBatch begin and end statement)
-     *
-     * @param batch the SpriteBatch to use
-     */
-    public void render(SpriteBatch batch) {
-        batch.draw(sprite, position.x, position.y);
-    }
 
     /**
      * Removes this GameObject from the world
      */
     protected final void delete() {
         World.getInstance().deleteGameObject(this);
-    }
-
-    /**
-     * Updates the sprite of this GameObject
-     *
-     * @param sprite the new sprite to use
-     */
-    protected void setSprite(Sprite sprite) {
-        this.sprite = sprite;
     }
 
     /**
@@ -72,5 +49,20 @@ public abstract class GameObject {
      */
     public Vector2 getPos() {
         return position.cpy();
+    }
+
+    protected void setHitboxSize(Vector2 size) {
+        hitbox.setSize(size);
+    }
+    protected void setHitboxPos(Vector2 pos) {
+        hitbox.setPosition(pos);
+    }
+
+    /**
+     * Returns the hitbox as a reference (not copy).
+     * @return The hitbox.
+     */
+    public Hitbox getHitbox() {
+        return hitbox;
     }
 }

@@ -2,34 +2,37 @@ package game.sniper_monkey.player;
 
 public class Stamina {
 
-    final int maxAmount; // oklart om denna ska assignas i constructorn eller ha en hårdkodad max.
-    float currentAmount; // oklart om denna assignas i constructorn eller ha en hårdkodad currentamount.
+    final int maxAmount;
+    float currentAmount;
     float regenerationFactor;
     // float staminaDrainFactor;
 
     /**
-     * Creates a player object with a regenFactor and max stamina amount.
-     * @param regenerationFactor a float variable that determines how much stamina is regained every frame
-     * @param maxAmount a maximum amount, the stamina can't go over this amount
+     * Creates a stamina object with a regenerationFactor and maxAmount
+     *
+     * @param regenerationFactor a float between 0..n. This determines how fast the stamina is regenerated per second. For example a factor of 10 would mean 10 stamina points are regenerated per second.
+     * @param maxAmount an integer between 0..n. This is the maximum value that stamina can be.
      */
     public Stamina(float regenerationFactor, int maxAmount) {
-        currentAmount = 100;
+        currentAmount = maxAmount;
         this.regenerationFactor = regenerationFactor;
         this.maxAmount = maxAmount;
         // this.staminaDrainFactor = staminaDrainFactor;
     }
 
     /**
-     * Getter for the current stamina amount.
-     * @return the current stamina amount.
+     * Returns the current amount of Stamina a player has.
+     *
+     * @return a float between 0..maxAmount.
      */
     public float getCurrentAmount() {
         return currentAmount;
     }
 
     /**
-     * Decreases the players stamina based on a parameter. Mostly used on attack or something likewise
-     * @param decreaseAmount the amount of stamina that is decreased
+     * Decreases players stamina with the parameter decreaseAmount. Stamina cannot go under 0.
+     *
+     * @param decreaseAmount a float determined by which attack is used.
      */
     public void decrease(float decreaseAmount) {
         if (currentAmount - decreaseAmount < 0) {
@@ -44,12 +47,13 @@ public class Stamina {
     }*/ // oklart om jag vill ha denna kvar
 
     /**
-     * Increases the players stamina based on a parameter. Gets called every update.
-     * @param increaseAmount the amount that stamina increases
+     * Increases the players stamina with the parameter increaseAmount. Stamina cannot go over maxAmount.
+     *
+     * @param increaseAmount a float between 0..n. Depends on how long each frame is.
      */
     private void increase(float increaseAmount) {
-        if (currentAmount + increaseAmount > 100) {
-            currentAmount = 100;
+        if (currentAmount + increaseAmount > maxAmount) {
+            currentAmount = maxAmount;
         } else {
             currentAmount += increaseAmount;
         }
@@ -57,7 +61,8 @@ public class Stamina {
 
     /**
      * Regenerates the players stamina.
-     * @param deltaTime is the time between frames. Is used so that the regeneration is constant.
+     *
+     * @param deltaTime a float between 0..n. It's the time between each frame and is often very small.
      */
     private void regenerateStamina(float deltaTime) {
         if (currentAmount < 100) {
@@ -66,8 +71,9 @@ public class Stamina {
     }
 
     /**
-     * Regenerates stamina by calling the regenerateStamina method. Gets called every frame by the Player class.
-     * @param deltaTime is the time between frames.
+     * An update method that gets called every frame by the Player class.
+     *
+     * @param deltaTime a float between 0..n. It's the time between each frame and is often very small.
      */
     public void update(float deltaTime) {
         regenerateStamina(deltaTime);
