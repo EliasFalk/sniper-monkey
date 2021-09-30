@@ -4,9 +4,10 @@ import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.world.GameObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CollisionEngine {
-    static SpatialHash spatialHash = new SpatialHash(64, 64);
+    private static SpatialHash spatialHash = new SpatialHash(64, 64);
 
     /**
      * Add a game object to the world's spatial hash so it can be handled by the engine
@@ -17,9 +18,11 @@ public class CollisionEngine {
         spatialHash.insert(gameObject, hitbox);
     }
 
-    // TODO make dis?
-    public static void updateSpatialHash() {
-
+    /**
+     * Regenerates the entire spatial hash taking into account the updated movement of hitboxes in it.
+     */
+    public static void regenerateSpatialHash() {
+        spatialHash.regenerate();
     }
 
     /**
@@ -28,9 +31,9 @@ public class CollisionEngine {
      * @param offset An offset of the hitbox position that can be used to predict future collision
      * @return The list of GameObjects that was collided with
      */
-    public static ArrayList<GameObject> getCollidingObjects(Hitbox hitbox, Vector2 offset) {
-        ArrayList<GameObject> hits = new ArrayList<GameObject>();
-        ArrayList<CollisionPair> potentialHits = spatialHash.query(hitbox.getPosition());
+    public static List<GameObject> getCollidingObjects(Hitbox hitbox, Vector2 offset) {
+        ArrayList<GameObject> hits = new ArrayList<>();
+        List<CollisionPair> potentialHits = spatialHash.query(hitbox, offset);
         for (CollisionPair pair : potentialHits) {
             //Doesn't collide with itself
             if (pair.hitbox != hitbox && hitbox.isOverlapping(pair.hitbox, offset)) {
@@ -47,7 +50,7 @@ public class CollisionEngine {
      * @return Was there a collision?
      */
     public static boolean getCollision(Hitbox hitbox, Vector2 offset) {
-        ArrayList<CollisionPair> potentialHits = spatialHash.query(hitbox.getPosition());
+        List<CollisionPair> potentialHits = spatialHash.query(hitbox, offset);
         for (CollisionPair pair : potentialHits) {
             //Doesn't collide with itself
             if (pair.hitbox != hitbox && hitbox.isOverlapping(pair.hitbox, offset)) {
