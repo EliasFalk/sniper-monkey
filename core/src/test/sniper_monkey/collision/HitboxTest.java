@@ -100,4 +100,26 @@ public class HitboxTest {
         Hitbox other = new Hitbox(new Vector2(0, -9), new Vector2(10, 10));
         assertEquals(false, hitbox.isOverlapping(other, new Vector2(0, 1)));
     }
+
+    @Test
+    public void testGetPosition() {
+        assertEquals(new Vector2(0, 0), hitbox.getPosition());
+    }
+
+    @Test
+    public void testGetSize() {
+        assertEquals(new Vector2(10, 10), hitbox.getSize());
+    }
+
+    @Test
+    public void testSetSize() {
+        hitbox.setSize(new Vector2(20, 20));
+        assertEquals(new Vector2(20, 20), hitbox.getSize());
+    }
+
+    @Test
+    public void testSetPosition() {
+        hitbox.setPosition(new Vector2(10, 10));
+        assertEquals(new Vector2(10, 10), hitbox.getPosition());
+    }
 }
