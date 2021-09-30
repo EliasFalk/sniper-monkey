@@ -8,6 +8,11 @@ import java.util.Objects;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+/**
+ * A spatial hash which partitions space into multiple cells in a grid. Every partition stores a set
+ * of hitboxes and associated GameObjects. It can later be queried for these.
+ * @author Vincent Hellner
+ */
 public class SpatialHash {
 
     /**
@@ -125,9 +130,9 @@ public class SpatialHash {
             if (hash.containsKey(key)) {
                 hash.get(key).add(pair);
             } else {
-                ArrayList<CollisionPair> bucket = new ArrayList<>();
-                bucket.add(pair);
-                hash.put(key, bucket);
+                ArrayList<CollisionPair> partition = new ArrayList<>();
+                partition.add(pair);
+                hash.put(key, partition);
             }
         });
     }

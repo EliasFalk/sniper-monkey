@@ -239,7 +239,7 @@ public class Player extends GameObject {
      * @return true if the player is dead, false if the player is alive.
      */
     public boolean isDead() {
-        return playerHealth.isNone();
+        return playerHealth.getCurrentValue() == 0;
     }
 
 

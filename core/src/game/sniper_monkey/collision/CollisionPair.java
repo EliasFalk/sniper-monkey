@@ -7,7 +7,13 @@ import game.sniper_monkey.world.GameObject;
  * as a way of associating a hitbox to its GameObject
  */
 public class CollisionPair {
+    /**
+     * The GameObject in the pair
+     */
     public final GameObject gameObject;
+    /**
+     * The hitbox in the pair
+     */
     public final Hitbox hitbox;
 
     public CollisionPair(GameObject gameObject, Hitbox hitbox) {

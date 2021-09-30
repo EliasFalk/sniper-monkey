@@ -32,21 +32,6 @@ public class HealthTest {
         }
     }
 
-    @Test
-    public void testHealthIsNone() {
-        FluctuatingAttribute playerHealth = new FluctuatingAttribute(100);
-
-        playerHealth.decrease(50);
-        playerHealth.update(1/60f); //simulate one frame
-
-        assertFalse(playerHealth.isNone());
-
-
-        playerHealth.decrease(200);
-        playerHealth.update(1/60f); //simulate one frame
-        assertTrue(playerHealth.isNone());
-    }
-
     // TODO make test to decrease health on attack
 
 
