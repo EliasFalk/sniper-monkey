@@ -115,6 +115,9 @@ public final class World {
         }
         // TODO maybe move this somewhere else.
         TimerBank.updateTimers(deltaTime);
+
+        //TODO: Don't want to regenerate everytime so create separate hashed for moving and static objects? Also test performance
+        CollisionEngine.regenerateSpatialHash();
     }
 
     /**

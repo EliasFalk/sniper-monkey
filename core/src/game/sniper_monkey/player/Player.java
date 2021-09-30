@@ -27,9 +27,9 @@ public class Player extends GameObject {
     private static final int MAX_HEALTH = 100;
     private Timer blockTimer = new Timer(5);
 
-    private static final Stamina playerStamina = new Stamina(0, MAX_STAMINA);
+    private static final FluctuatingAttribute playerStamina = new FluctuatingAttribute(0, MAX_STAMINA, 10f);
 
-    private static final Health playerHealth = new Health(MAX_HEALTH);
+    private static final FluctuatingAttribute playerHealth = new FluctuatingAttribute(MAX_HEALTH);
 
     private Fighter activeFighter;
     private final Fighter primaryFighter;
@@ -223,23 +223,23 @@ public class Player extends GameObject {
 
 
     /**
-     * Decreases the players health by using the Health class.
+     * Decreases the players health.
      * @param damageAmount a float 0..n. Is the damage that the other fighter has done to the player.
      */
     public void takeDamage(float damageAmount) {
         if (false/*currentState == blockingState*/) { // change when statechecking has been implemented
-            playerHealth.onDamage(damageAmount * (1 - activeFighter.DEFENSE_FACTOR) * (1 - blockDefenseFactor));
+            playerHealth.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR) * (1 - blockDefenseFactor));
         } else {
-            playerHealth.onDamage(damageAmount*(1-activeFighter.DEFENSE_FACTOR)); // TODO make getter for defense factor instead?
+            playerHealth.decrease(damageAmount*(1-activeFighter.DEFENSE_FACTOR)); // TODO make getter for defense factor instead?
         }
     }
 
     /**
-     * Checks if the player is dead using the Health class.
+     * Checks if the player is dead.
      * @return true if the player is dead, false if the player is alive.
      */
     public boolean isDead() {
-        return playerHealth.isDead();
+        return playerHealth.isNone();
     }
 
 
@@ -256,7 +256,7 @@ public class Player extends GameObject {
         activeFighter = fighter;
         setHitboxPos(physicsPos.getPosition());
         setHitboxSize(fighter.getHitboxSize());
-        playerStamina.setRegenerationFactor(10f * activeFighter.SPEED_FACTOR);
+        playerStamina.setRegenerationAmount(10f * activeFighter.SPEED_FACTOR);
     }
 
     /**

@@ -52,7 +52,7 @@ public class FluctuatingAttribute {
         if(isDraining && isRegenerating) {
             currentValue = Math.max(minValue, Math.min(maxValue, currentValue + (regenerationAmount - drainAmount)*deltaTime));
         } else if(isRegenerating) {
-            currentValue = Math.max(currentValue + regenerationAmount *deltaTime, maxValue);
+            currentValue = Math.min(currentValue + regenerationAmount *deltaTime, maxValue);
         } else if(isDraining) {
             currentValue = Math.min(currentValue - drainAmount *deltaTime, minValue);
         }
@@ -88,14 +88,26 @@ public class FluctuatingAttribute {
         if(amount < 0) {
             throw new IllegalArgumentException("Amount cannot be negative.");
         }
-        setCurrentValue(currentValue + amount);
+        if (currentValue + amount > maxValue) {
+            currentValue = maxValue;
+        } else {
+            currentValue += amount;
+        }
     }
 
     public void decrease(float amount) {
         if(amount < 0) {
             throw new IllegalArgumentException("Amount cannot be negative.");
         }
-        setCurrentValue(currentValue - amount);
+        if (currentValue - amount < 0) {
+            currentValue = 0;
+        } else {
+            setCurrentValue(currentValue - amount);
+        }
+    }
+
+    public boolean isNone() { //TODO better method name
+        return currentValue == 0;
     }
 }
 
