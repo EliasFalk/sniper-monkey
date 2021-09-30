@@ -52,7 +52,7 @@ public class FluctuatingAttribute {
         if(isDraining && isRegenerating) {
             currentValue = Math.max(minValue, Math.min(maxValue, currentValue + (regenerationAmount - drainAmount)*deltaTime));
         } else if(isRegenerating) {
-            currentValue = Math.max(currentValue + regenerationAmount *deltaTime, maxValue);
+            currentValue = Math.min(currentValue + regenerationAmount *deltaTime, maxValue);
         } else if(isDraining) {
             currentValue = Math.min(currentValue - drainAmount *deltaTime, minValue);
         }
