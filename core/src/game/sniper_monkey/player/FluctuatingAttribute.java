@@ -88,14 +88,26 @@ public class FluctuatingAttribute {
         if(amount < 0) {
             throw new IllegalArgumentException("Amount cannot be negative.");
         }
-        setCurrentValue(currentValue + amount);
+        if (currentValue + amount > maxValue) {
+            currentValue = maxValue;
+        } else {
+            currentValue += amount;
+        }
     }
 
     public void decrease(float amount) {
         if(amount < 0) {
             throw new IllegalArgumentException("Amount cannot be negative.");
         }
-        setCurrentValue(currentValue - amount);
+        if (currentValue - amount < 0) {
+            currentValue = 0;
+        } else {
+            setCurrentValue(currentValue - amount);
+        }
+    }
+
+    public boolean isNone() { //TODO better method name
+        return currentValue == 0;
     }
 }
 
