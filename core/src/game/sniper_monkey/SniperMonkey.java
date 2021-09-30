@@ -24,6 +24,8 @@ public class SniperMonkey extends ApplicationAdapter {
 
         for (int i = 0; i < 400 / 16; i++)
             World.getInstance().addGameObject(new Platform(new Vector2(-200 + i * 16, -100)));
+
+        //TODO use an external tool to create the map and create a utility to read it
         World.getInstance().addGameObject(new Platform(new Vector2(16, -100+16)));
         World.getInstance().addGameObject(new Platform(new Vector2(16, -100+16*2)));
         World.getInstance().addGameObject(new Platform(new Vector2(16, -100+16*3)));
