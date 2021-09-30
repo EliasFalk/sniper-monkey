@@ -15,14 +15,18 @@ public class TimerBank {
 
     public static boolean removeTimer(UpdatableTimer timer) {
         if(timer == null) throw new IllegalArgumentException("Timer cannot be null.");
-        if(!timers.contains(timer)) return false;
+        if (!timers.contains(timer)) return false;
         timers.remove(timer);
         return true;
     }
 
     public static void updateTimers(float deltaTime) {
-        for(UpdatableTimer timer: timers) {
+        for (UpdatableTimer timer : timers) {
             timer.update(deltaTime);
         }
+    }
+
+    public static boolean contains(UpdatableTimer timer) {
+        return timers.contains(timer);
     }
 }
