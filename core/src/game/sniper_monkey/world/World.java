@@ -2,6 +2,7 @@ package game.sniper_monkey.world;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import game.sniper_monkey.TimerBank;
 import game.sniper_monkey.collision.CollisionEngine;
 
 import java.util.ArrayList;
@@ -38,7 +39,6 @@ public final class World {
      * If the roundTimer is still counting, show the time left until the game is done.
      */
     private void playingState() {
-        roundTimer.update(Gdx.graphics.getDeltaTime());
         notifyObserversOfTimerChange((int) roundTimer.getTimeLeft());
     }
 
@@ -113,6 +113,8 @@ public final class World {
         for (GameObject obj : gameObjects) {
             obj.update(deltaTime);
         }
+        // TODO maybe move this somewhere else.
+        TimerBank.updateTimers(deltaTime);
     }
 
     /**
