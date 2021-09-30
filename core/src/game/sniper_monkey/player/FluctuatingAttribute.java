@@ -145,14 +145,6 @@ public class FluctuatingAttribute {
         }
         setCurrentValue(currentValue - amount);
     }
-
-    /**
-     * Checks if the attributes' value is zero.
-     * @return a boolean. True if currentValue == 0, false if currentValue > 0.
-     */
-    public boolean isNone() { //TODO better method name
-        return currentValue == 0;
-    }
 }
 
 

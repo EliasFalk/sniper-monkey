@@ -2,6 +2,9 @@ package game.sniper_monkey.collision;
 
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * An Axis Aligned Bounding Box used for hit detection.
+ */
 public class Hitbox {
     private Vector2 position;
     private Vector2 size;
