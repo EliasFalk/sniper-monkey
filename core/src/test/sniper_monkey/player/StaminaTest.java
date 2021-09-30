@@ -1,12 +1,8 @@
 package sniper_monkey.player;
 
 import game.sniper_monkey.player.FluctuatingAttribute;
-import game.sniper_monkey.player.Stamina;
-import org.junit.Before;
 import org.junit.Test;
 
-
-import java.awt.*;
 
 import static org.junit.Assert.*;
 
