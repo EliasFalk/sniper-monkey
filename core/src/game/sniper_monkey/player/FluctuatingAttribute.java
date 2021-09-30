@@ -13,6 +13,13 @@ public class FluctuatingAttribute {
     private boolean isDraining;
     private boolean isRegenerating;
 
+    /**
+     * Creates a fluctuatingAttribute object. Used by Stamina, Health and Block.
+     * @param minValue a float 0..n. Is the minimum value that the attribute can have.
+     * @param maxValue a float 0..n. Is the maximum value that the attribute can have.
+     * @param regenerationAmount a float 0..n. Is the amount that the attribute regenerates by per second.
+     * @param drainAmount a float 0..n. Is the amount that the attribute drain by per second.
+     */
     public FluctuatingAttribute(float minValue, float maxValue, float regenerationAmount, float drainAmount) {
         this.maxValue = maxValue;
         this.minValue = minValue;
@@ -21,19 +28,37 @@ public class FluctuatingAttribute {
         currentValue = maxValue;
     }
 
+    /**
+     * Creates a fluctuatingAttribute object. Used by Stamina, Health and Block. Sets drainAmount to 0.
+     * @param minValue a float 0..n. Is the minimum value that the attribute can have.
+     * @param maxValue a float 0..n. Is the maximum value that the attribute can have.
+     * @param regenerationAmount a float 0..n. Is the amount that the attribute regenerates by per second.
+     */
     public FluctuatingAttribute(float minValue, float maxValue, float regenerationAmount) {
         this(minValue, maxValue, regenerationAmount, 0);
     }
-
+    /**
+     * Creates a fluctuatingAttribute object. Used by Stamina, Health and Block. Sets regenerationAmount to 0.
+     * @param minValue a float 0..n. Is the minimum value that the attribute can have.
+     * @param maxValue a float 0..n. Is the maximum value that the attribute can have.
+     */
     public FluctuatingAttribute(float minValue, float maxValue) {
         this(minValue, maxValue, 0);
     }
 
+    /**
+     * Creates a fluctuatingAttribute object. Used by Stamina, Health and Block. Sets minValue to 0.
+     * @param maxValue a float 0..n. Is the maximum value that the attribute can have.
+     */
     public FluctuatingAttribute(float maxValue) {
         this(0, maxValue);
     }
 
 
+    /**
+     * Sets the regenerationAmount to a new value. Must be => 0.
+     * @param regenerationAmount a float 0..n. Is the amount that the attribute regenerates by per second.
+     */
     public void setRegenerationAmount(float regenerationAmount) {
         if(regenerationAmount < 0) {
             throw new IllegalArgumentException("RegenerationAmount cannot be negative.");
@@ -41,6 +66,10 @@ public class FluctuatingAttribute {
         this.regenerationAmount = regenerationAmount;
     }
 
+    /**
+     * Sets the drainAmount to a new value. Must be => 0.
+     * @param drainAmount a float 0..n. Is the amount that the attribute regenerates by per second.
+     */
     public void setDrainAmount(float drainAmount) {
         if(drainAmount < 0) {
             throw new IllegalArgumentException("DrainAmount cannot be negative.");
@@ -48,6 +77,10 @@ public class FluctuatingAttribute {
         this.drainAmount = drainAmount;
     }
 
+    /**
+     * Updates the attributes' current value if the attribute is regenerating or draining.
+     * @param deltaTime a float between 0..n. It's the time between each frame and is often very small.
+     */
     public void update(float deltaTime) {
         if(isDraining && isRegenerating) {
             currentValue = Math.max(minValue, Math.min(maxValue, currentValue + (regenerationAmount - drainAmount)*deltaTime));
@@ -58,6 +91,11 @@ public class FluctuatingAttribute {
         }
     }
 
+
+    /**
+     * Gets the current value.
+     * @return a float 0..n. The current value of the attribute.
+     */
     public float getCurrentValue() {
         return currentValue;
     }
@@ -83,29 +121,35 @@ public class FluctuatingAttribute {
     public void setRegenerating(boolean regenerating) {
         setRegenerating(regenerating, regenerationAmount);
     }
-    
+
+    /**
+     * Increases the attributes' current value with a specified amount.
+     * The currentValue + amount cannot be higher than the maxValue. Otherwise, the value is set to the maxValue.
+     * @param amount a float 0..n. Is the amount that the current value is increased with. Must be => 0.
+     */
     public void increase(float amount) {
         if(amount < 0) {
             throw new IllegalArgumentException("Amount cannot be negative.");
         }
-        if (currentValue + amount > maxValue) {
-            currentValue = maxValue;
-        } else {
-            currentValue += amount;
-        }
+        setCurrentValue(currentValue + amount);
     }
 
+    /**
+     * Decreases the attributes' current value with a specified amount.
+     * The currentValue - amount cannot be less than 0. Otherwise, the value is set to minValue.
+     * @param amount a float 0..n. Is the amount that the current value is decreased with. Must be => 0.
+     */
     public void decrease(float amount) {
         if(amount < 0) {
             throw new IllegalArgumentException("Amount cannot be negative.");
         }
-        if (currentValue - amount < 0) {
-            currentValue = 0;
-        } else {
-            setCurrentValue(currentValue - amount);
-        }
+        setCurrentValue(currentValue - amount);
     }
 
+    /**
+     * Checks if the attributes' value is zero.
+     * @return a boolean. True if currentValue == 0, false if currentValue > 0.
+     */
     public boolean isNone() { //TODO better method name
         return currentValue == 0;
     }
