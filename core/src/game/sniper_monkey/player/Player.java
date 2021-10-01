@@ -5,7 +5,6 @@ import game.sniper_monkey.PhysicsPosition;
 import game.sniper_monkey.collision.CollisionEngine;
 import game.sniper_monkey.player.fighter.Fighter;
 import game.sniper_monkey.world.GameObject;
-import game.sniper_monkey.world.Timer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,10 +24,10 @@ public class Player extends GameObject {
     private static final float JUMP_GAIN = 300f;
     private static final int MAX_STAMINA = 100;
     private static final int MAX_HEALTH = 100;
-    private Timer blockTimer = new Timer(5);
 
     private final FluctuatingAttribute stamina = new FluctuatingAttribute(MAX_STAMINA);
     private final FluctuatingAttribute health = new FluctuatingAttribute(MAX_HEALTH);
+    private final FluctuatingAttribute blockFactor = new FluctuatingAttribute(0.4f, 0.7f);
 
     private Fighter activeFighter;
     private final Fighter primaryFighter;
@@ -37,96 +36,94 @@ public class Player extends GameObject {
 
     private boolean lookingRight;
 
-    State currentState = this::groundedState;
-    PhysicsPosition physicsPos = new PhysicsPosition(new Vector2(0, 0));
+    private State abilityState = this::inactiveState;
+    private State movementState = this::groundedState;
+
+    private PhysicsPosition physicsPos = new PhysicsPosition(new Vector2(0, 0));
     private final Map<PlayerInputAction, Boolean> inputActions = new HashMap<>();
 
-
-    public FighterAnimation getCurrentFighterAnimation() {
-        return currentFighterAnimation;
-    }
-
-    public boolean isLookingRight() {
-        return lookingRight;
-    }
-
-    private void initInputActions() {
-        inputActions.put(PlayerInputAction.JUMP, false);
-        inputActions.put(PlayerInputAction.ATTACK1, false);
-        inputActions.put(PlayerInputAction.ATTACK2, false);
-        inputActions.put(PlayerInputAction.BLOCK, false);
-        inputActions.put(PlayerInputAction.MOVE_RIGHT, false);
-        inputActions.put(PlayerInputAction.MOVE_LEFT, false);
-        inputActions.put(PlayerInputAction.DROP, false);
-        inputActions.put(PlayerInputAction.SWAP_FIGHTER, false);
-    }
-
-    private void resetInputActions() {
-        if(inputActions.isEmpty()) {
-            initInputActions();
-        } else {
-            for (Map.Entry<PlayerInputAction, Boolean> inputAction : inputActions.entrySet()) {
-                inputAction.setValue(false);
-            }
-        }
-    }
+    /* Ability states */
 
     /**
-     * Updates the inputActions map by setting the action to true, which translates to "player try to do this action".
-     * @param action The input action to be set.
+     * Checks if the player is blocking.
+     * If it is, slowly decrease the blockDefenseFactor.
+     * If it isn't, reset the blockDefenseFactor and set the next state.
      */
-    public void setInputAction(PlayerInputAction action) {
-        inputActions.replace(action, true);
-    }
-
-
-    private void setAirAnimation() {
-        if(physicsPos.getVelocity().y > 0) {
-            currentFighterAnimation = FighterAnimation.JUMPING;
+    private void blockingState() {
+        // TODO set correct blocking values, read these from config. If different values in different movement states, use percentage of config value.
+        blockFactor.setDrainAmount(0.2f);
+        if (inputActions.get(PlayerInputAction.BLOCK)) {
+            blockFactor.setRegenerating(false);
+            blockFactor.setDraining(true);
         } else {
-            currentFighterAnimation = FighterAnimation.FALLING;
+            blockFactor.setDraining(false);
+            blockFactor.setRegenerating(true, 0.1f);
+            abilityState = this::inactiveState;
+            movementState.performState();
         }
     }
 
-    private void inAirState() {
-        regenerateBlockFactor(0.0005);
-        if(usedAbility()) {
+    private void attacking1State() {
+
+    }
+
+    private void attacking2State() {
+
+    }
+
+    private void swappingFighterState() {
+
+    }
+
+    private void inactiveState() {
+        if (inputActions.get(PlayerInputAction.ATTACK1)) {
+            // TODO performAttack
+            abilityState = this::attacking1State;
+            return;
+        } else if (inputActions.get(PlayerInputAction.ATTACK2)) {
+            // TODO performAttack
+            abilityState = this::attacking2State;
+            return;
+        } else if (inputActions.get(PlayerInputAction.BLOCK)) {
+            abilityState = this::blockingState;
+            return;
+        } else if (inputActions.get(PlayerInputAction.SWAP_FIGHTER)) {
+            // TODO swapFighter
+            abilityState = this::swappingFighterState;
             return;
         }
-        if (inputActions.get(PlayerInputAction.DROP)) {
-            physicsPos.setVelocity(new Vector2(0, -JUMP_GAIN * 2));
+        movementState.performState();
+    }
+
+    /* Movement states */
+    private void inAirState() {
+        if (isGrounded) {
+            movementState = this::groundedState;
+            groundedState();
+            return;
         }
         handleHorizontalMovement();
-        setAirAnimation();
-    }
-
-    private boolean usedAbility() {
-        if(inputActions.get(PlayerInputAction.ATTACK1)) {
-            activeFighter.performAttack(1);
-            stamina.decrease(activeFighter.getStaminaDecrease(1));
-            currentState = this::attackingState;
-            return true;
-        } else if(inputActions.get(PlayerInputAction.ATTACK2)) {
-            activeFighter.performAttack(2);
-            stamina.decrease(activeFighter.getStaminaDecrease(2));
-            currentState = this::attackingState;
-            return true;
-        } else if(inputActions.get(PlayerInputAction.BLOCK)) {
-            blockTimer.start();
-            currentState = this::blockingState;
-            return true;
+        if (physicsPos.getVelocity().y < 0) {
+            currentFighterAnimation = FighterAnimation.FALLING;
+        } else if (physicsPos.getVelocity().y > 0) {
+            currentFighterAnimation = FighterAnimation.JUMPING;
         }
-        return false;
+
     }
 
-    // TODO change name
-    private void setAvatarState() {
-        if (isGrounded) {
-//            currentFighterAnimation = FighterAnimation.IDLING;
-            currentState = this::groundedState;
-        } else {
-//            currentFighterAnimation = FighterAnimation.FALLING;
-            currentState = this::inAirState;
+
+    // State helper methods
+    private void groundedState() {
+        currentFighterAnimation = FighterAnimation.IDLING;
+        handleHorizontalMovement();
+        if (inputActions.get(PlayerInputAction.JUMP)) {
+            jump();
+            movementState = this::inAirState;
+            return;
+        }
+        if (physicsPos.getVelocity().y < 0) {
+            movementState = this::inAirState;
+            return;
         }
     }
 
@@ -153,28 +150,12 @@ public class Player extends GameObject {
 
     private void handleHorizontalMovement() {
         if (inputActions.get(PlayerInputAction.MOVE_RIGHT)) {
-            currentFighterAnimation = FighterAnimation.MOVING; // TODO code duplication
+            currentFighterAnimation = FighterAnimation.MOVING;
             moveRight();
-            setAvatarState();
         }
         if (inputActions.get(PlayerInputAction.MOVE_LEFT)) {
-            currentFighterAnimation = FighterAnimation.MOVING; // TODO code duplication
+            currentFighterAnimation = FighterAnimation.MOVING;
             moveLeft();
-            setAvatarState();
-        }
-    }
-
-    private void groundedState() {
-        currentFighterAnimation = FighterAnimation.IDLING;
-        regenerateBlockFactor(0.0007);
-        if (usedAbility()) {
-            return;
-        }
-        handleHorizontalMovement();
-
-        if (inputActions.get(PlayerInputAction.JUMP)) {
-            jump();
-            currentState = this::inAirState;
         }
     }
 
@@ -186,47 +167,47 @@ public class Player extends GameObject {
         }
     }
 
-    /**
-     * Checks if the player is blocking.
-     * If it is, slowly decrease the blockDefenseFactor.
-     * If it isn't, reset the blockDefenseFactor and set the next state.
-     */
-    private void blockingState() {
-        System.out.println("In blocking state");
-        if (!inputActions.get(PlayerInputAction.BLOCK)) {
-            setAvatarState();
+    public FighterAnimation getCurrentFighterAnimation() {
+        return currentFighterAnimation;
+    }
+
+    public boolean isLookingRight() {
+        return lookingRight;
+    }
+
+    private void initInputActions() {
+        inputActions.put(PlayerInputAction.JUMP, false);
+        inputActions.put(PlayerInputAction.ATTACK1, false);
+        inputActions.put(PlayerInputAction.ATTACK2, false);
+        inputActions.put(PlayerInputAction.BLOCK, false);
+        inputActions.put(PlayerInputAction.MOVE_RIGHT, false);
+        inputActions.put(PlayerInputAction.MOVE_LEFT, false);
+        inputActions.put(PlayerInputAction.DROP, false);
+        inputActions.put(PlayerInputAction.SWAP_FIGHTER, false);
+    }
+
+    private void resetInputActions() {
+        if (inputActions.isEmpty()) {
+            initInputActions();
         } else {
-            if (blockTimer.isDone()) {
-                blockDefenseFactor = 0.7f;
-            } else {
-                increaseBlock(0.0007);
+            for (Map.Entry<PlayerInputAction, Boolean> inputAction : inputActions.entrySet()) {
+                inputAction.setValue(false);
             }
         }
     }
 
-    private void increaseBlock (double increaseAmount) {
-        if (blockDefenseFactor + increaseAmount > 1) {
-            blockDefenseFactor = 1;
-        } else {
-            blockDefenseFactor += increaseAmount;
-        }
+    /**
+     * Updates the inputActions map by setting the action to true, which translates to "player try to do this action".
+     *
+     * @param action The input action to be set.
+     */
+    public void setInputAction(PlayerInputAction action) {
+        inputActions.replace(action, true);
     }
-
-    private void regenerateBlockFactor(double decreaseAmount) {
-        if (blockDefenseFactor - decreaseAmount < 0.4) {
-            blockDefenseFactor = 0.4f;
-        } else {
-            blockDefenseFactor -= decreaseAmount;
-        }
-    }
-
-    private void attackingState() {
-        // TODO create attacking state
-    }
-
 
     /**
      * Decreases the players health.
+     *
      * @param damageAmount a float 0..n. Is the damage that the other fighter has done to the player.
      */
     public void takeDamage(float damageAmount) {
@@ -239,6 +220,7 @@ public class Player extends GameObject {
 
     /**
      * Checks if the player is dead.
+     *
      * @return true if the player is dead, false if the player is alive.
      */
     public boolean isDead() {
@@ -286,9 +268,9 @@ public class Player extends GameObject {
     }
 
     private void handleLookingDirection() {
-        if(physicsPos.getVelocity().x > 0) {
+        if (physicsPos.getVelocity().x > 0) {
             lookingRight = true;
-        } else if(physicsPos.getVelocity().x < 0) {
+        } else if (physicsPos.getVelocity().x < 0) {
             lookingRight = false;
         }
     }
@@ -301,10 +283,12 @@ public class Player extends GameObject {
     @Override
     public void update(float deltaTime) {
         stamina.update(deltaTime);
-        currentState.performState();
-        resetInputActions();
+        abilityState.performState();
+        blockFactor.update(deltaTime);
+        System.out.println(blockFactor.getCurrentValue());
         updatePlayerPos(deltaTime);
         handleLookingDirection();
+        resetInputActions();
     }
 
     private void updatePlayerPos(float deltaTime) {
@@ -331,11 +315,10 @@ public class Player extends GameObject {
 
         isGrounded = false;
         if (CollisionEngine.getCollision(getHitbox(), new Vector2(0, physicsPos.getVelocity().y).scl(deltaTime))) {
-            if(physicsPos.getVelocity().y < 0) isGrounded = true;
+            if (physicsPos.getVelocity().y < 0) isGrounded = true;
             while (!CollisionEngine.getCollision(getHitbox(), new Vector2(0, Math.signum(physicsPos.getVelocity().y) / 2f))) {
                 setHitboxPos(new Vector2(getHitbox().getPosition().x, getHitbox().getPosition().y + Math.signum(physicsPos.getVelocity().y) / 2f));
             }
-            setAvatarState();
             physicsPos.setVelocity(new Vector2(physicsPos.getVelocity().x, 0));
         }
         setHitboxPos(getHitbox().getPosition().add(0, physicsPos.getVelocity().y * deltaTime));
