@@ -250,7 +250,7 @@ public class Player extends GameObject {
      * @param position The initial position of the player.
      */
     public Player(Vector2 position, Fighter primaryFighter, Fighter secondaryFighter) {
-        super(position);
+        super(position, true);
         physicsPos.setPosition(position);
         this.primaryFighter = primaryFighter;
         this.secondaryFighter = secondaryFighter;
@@ -323,7 +323,5 @@ public class Player extends GameObject {
         }
         setHitboxPos(getHitbox().getPosition().add(0, physicsPos.getVelocity().y * deltaTime));
         physicsPos.setPosition(getHitbox().getPosition());
-        // TODO change
-        CollisionEngine.regenerateSpatialHash();
     }
 }

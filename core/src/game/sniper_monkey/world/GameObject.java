@@ -8,22 +8,28 @@ import game.sniper_monkey.collision.Hitbox;
 public abstract class GameObject {
     private Vector2 position;
     private Hitbox hitbox;
+    private boolean isDynamic;
 
     /**
      * Creates the GameObject at a custom position
      *
      * @param position the starting position
      */
-    public GameObject(Vector2 position) {
+    public GameObject(Vector2 position, boolean isDynamic) {
         this.position = position;
         hitbox = new Hitbox(position, new Vector2(0, 0));
+        this.isDynamic = isDynamic;
+    }
+
+    public boolean isDynamic() {
+        return isDynamic;
     }
 
     /**
      * Creates the GameObject at a 0, 0
      */
-    public GameObject() {
-        this(new Vector2(0,0));
+    public GameObject(boolean isDynamic) {
+        this(new Vector2(0,0), isDynamic);
     }
 
     /**

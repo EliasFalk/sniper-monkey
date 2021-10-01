@@ -16,7 +16,7 @@ public class CollisionPairTest {
     @Before
     public void initHitbox() {
         hitbox = new Hitbox(new Vector2(0, 0), new Vector2(10, 10));
-        object = new GameObject() { @Override public void update(float deltaTime) { } };
+        object = new GameObject(false) { @Override public void update(float deltaTime) { } };
     }
 
     /**

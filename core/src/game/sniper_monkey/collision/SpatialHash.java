@@ -46,7 +46,7 @@ public class SpatialHash {
         void execute(PartitionLocation key);
     }
 
-    private Map<PartitionLocation, ArrayList<CollisionPair>> hash;
+    private final Map<PartitionLocation, ArrayList<CollisionPair>> hash;
     private final int partitionWidth;
     private final int partitionHeight;
 
@@ -111,12 +111,11 @@ public class SpatialHash {
     }
 
     /**
-     * Inserts a hitbox and an associated GameObject into the spacial hash so it can later be queried.
+     * Inserts a GameObject and an associated hitbox into the spacial hash so it can later be queried.
      * @param object The associated GameObject.
-     * @param hitbox The hitbox.
      */
-    public void insert(GameObject object, Hitbox hitbox) {
-        CollisionPair pair = new CollisionPair(object, hitbox);
+    public void insert(GameObject object) {
+        CollisionPair pair = new CollisionPair(object, object.getHitbox());
         insert(pair);
     }
 
