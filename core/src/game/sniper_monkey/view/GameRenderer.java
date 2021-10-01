@@ -1,7 +1,6 @@
 package game.sniper_monkey.view;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -15,10 +14,9 @@ import java.util.ArrayList;
 public class GameRenderer implements IWorldObserver {
     SpriteBatch batch;
     ShapeRenderer sr;
-    Texture img = new Texture("evil_wizard_2/Attack1.png");
-    Texture platform = new Texture("platform.png");
     Stage stage;
     OrthographicCamera camera = new OrthographicCamera(1280 / 2f, 720 / 2f);
+    boolean debugMode = (Math.random() > 0.5); // TODO epic.
 
     private ArrayList<GameObjectView> gameObjectViews;
     RoundTimerView roundTimerView;
@@ -53,9 +51,20 @@ public class GameRenderer implements IWorldObserver {
         sr.begin(ShapeRenderer.ShapeType.Line);
         batch.setProjectionMatrix(camera.combined);
         sr.setProjectionMatrix(camera.combined);
+
+        if (debugMode) {
+            sr.setColor(1, 0, 0, 1);
+            int partitionSize = 64; // hard coded based on spatialhash
+            for (int x = -10 * partitionSize; x < 10 * partitionSize; x += partitionSize) {
+                for (int y = -10 * partitionSize; y < 10 * partitionSize; y += partitionSize) {
+                    sr.rect(x, y, partitionSize, partitionSize);
+                }
+            }
+        }
+
         for (GameObjectView view : gameObjectViews) {
             view.updateSprite();
-            view.render(sr, batch);
+            view.render(sr, batch, debugMode);
         }
         /*
         for (RoundTimerView timerView : timerViews) {

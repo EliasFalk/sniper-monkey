@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.PhysicsPosition;
 import game.sniper_monkey.collision.CollisionEngine;
 import game.sniper_monkey.player.fighter.Fighter;
-import game.sniper_monkey.utils.time.Time;
 import game.sniper_monkey.world.GameObject;
 import game.sniper_monkey.world.Timer;
 
@@ -93,6 +92,9 @@ public class Player extends GameObject {
         regenerateBlockFactor(0.0005);
         if(usedAbility()) {
             return;
+        }
+        if (inputActions.get(PlayerInputAction.DROP)) {
+            physicsPos.setVelocity(new Vector2(0, -JUMP_GAIN * 2));
         }
         handleHorizontalMovement();
         setAirAnimation();
@@ -190,6 +192,7 @@ public class Player extends GameObject {
      * If it isn't, reset the blockDefenseFactor and set the next state.
      */
     private void blockingState() {
+        System.out.println("In blocking state");
         if (!inputActions.get(PlayerInputAction.BLOCK)) {
             setAvatarState();
         } else {
@@ -266,6 +269,7 @@ public class Player extends GameObject {
      */
     public Player(Vector2 position, Fighter primaryFighter, Fighter secondaryFighter) {
         super(position);
+        physicsPos.setPosition(position);
         this.primaryFighter = primaryFighter;
         this.secondaryFighter = secondaryFighter;
         currentFighterAnimation = FighterAnimation.IDLING;
@@ -300,7 +304,6 @@ public class Player extends GameObject {
         currentState.performState();
         resetInputActions();
         updatePlayerPos(deltaTime);
-
         handleLookingDirection();
     }
 
@@ -312,6 +315,7 @@ public class Player extends GameObject {
 
     // TODO refactor this behemoth
     private void handleCollision(float deltaTime) {
+
         // executes shawn mendez. inspired by shawn's collision algorithm
         boolean collidesXAxisNextFrame = CollisionEngine.getCollision(getHitbox(), new Vector2(physicsPos.getVelocity().x, 0).scl(deltaTime));
         if (collidesXAxisNextFrame) {
@@ -336,5 +340,7 @@ public class Player extends GameObject {
         }
         setHitboxPos(getHitbox().getPosition().add(0, physicsPos.getVelocity().y * deltaTime));
         physicsPos.setPosition(getHitbox().getPosition());
+        // TODO change
+        CollisionEngine.regenerateSpatialHash();
     }
 }

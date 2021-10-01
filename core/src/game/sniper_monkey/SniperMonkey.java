@@ -13,12 +13,13 @@ import game.sniper_monkey.world.World;
 
 public class SniperMonkey extends ApplicationAdapter {
     GameRenderer gameRenderer;
-    PlayerController playerController;
+    PlayerController player1Controller;
+    PlayerController player2Controller;
     boolean pause = false;
 
     @Override
     public void create() {
-        Texture img = new Texture("evil_wizard_2/Attack1.png");
+        Texture img = new Texture("images/evil_wizard_2/Attack1.png");
         gameRenderer = new GameRenderer();
         World.getInstance().registerObserver(gameRenderer);
 
@@ -26,20 +27,23 @@ public class SniperMonkey extends ApplicationAdapter {
             World.getInstance().addGameObject(new Platform(new Vector2(-200 + i * 16, -100)));
 
         //TODO use an external tool to create the map and create a utility to read it
-        World.getInstance().addGameObject(new Platform(new Vector2(16, -100+16)));
-        World.getInstance().addGameObject(new Platform(new Vector2(16, -100+16*2)));
-        World.getInstance().addGameObject(new Platform(new Vector2(16, -100+16*3)));
-        World.getInstance().addGameObject(new Platform(new Vector2(16, -100+16*4)));
-        World.getInstance().addGameObject(new Platform(new Vector2(32, -100+16*4)));
-        World.getInstance().addGameObject(new Platform(new Vector2(32+16, -100+16*4)));
-        World.getInstance().addGameObject(new Platform(new Vector2(32*2, -100+16*4)));
+        World.getInstance().addGameObject(new Platform(new Vector2(16, -100 + 16)));
+        World.getInstance().addGameObject(new Platform(new Vector2(16, -100 + 16 * 2)));
+        World.getInstance().addGameObject(new Platform(new Vector2(16, -100 + 16 * 3)));
+        World.getInstance().addGameObject(new Platform(new Vector2(16, -100 + 16 * 4)));
+        World.getInstance().addGameObject(new Platform(new Vector2(32, -100 + 16 * 4)));
+        World.getInstance().addGameObject(new Platform(new Vector2(32 + 16, -100 + 16 * 4)));
+        World.getInstance().addGameObject(new Platform(new Vector2(32 * 2, -100 + 16 * 4)));
 
-        World.getInstance().addGameObject(new Platform(new Vector2(-32, -100+16*5)));
-        World.getInstance().addGameObject(new Platform(new Vector2(-32-16, -100+16*5)));
-        World.getInstance().addGameObject(new Platform(new Vector2(-32*2, -100+16*5)));
-        Player player = PlayerFactory.createPlayer();
-        World.getInstance().addGameObject(player);
-        playerController = new PlayerController(player, "cfg/player1_keybinds.cfg");
+        World.getInstance().addGameObject(new Platform(new Vector2(-32 * 4, -100 + 16 * 5)));
+        World.getInstance().addGameObject(new Platform(new Vector2((-32 - 16) * 4, -100 + 16 * 5)));
+        World.getInstance().addGameObject(new Platform(new Vector2(-32 * 2 * 4, -100 + 16 * 5)));
+        Player player1 = PlayerFactory.createPlayer(new Vector2(50, 50));
+        Player player2 = PlayerFactory.createPlayer(new Vector2(-50, 50));
+        World.getInstance().addGameObject(player1);
+        World.getInstance().addGameObject(player2);
+        player1Controller = new PlayerController(player1, "cfg/player1_keybinds.cfg");
+        player2Controller = new PlayerController(player2, "cfg/player2_keybinds.cfg");
     }
 
     @Override
@@ -49,7 +53,8 @@ public class SniperMonkey extends ApplicationAdapter {
             return;
         }
         World.getInstance().update(deltaTime);
-        playerController.handleKeyInputs();
+        player1Controller.handleKeyInputs();
+        player2Controller.handleKeyInputs();
         gameRenderer.render();
     }
 
