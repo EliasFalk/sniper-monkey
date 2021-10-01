@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.PhysicsPosition;
 import game.sniper_monkey.collision.CollisionEngine;
 import game.sniper_monkey.player.fighter.Fighter;
+import game.sniper_monkey.utils.time.Time;
 import game.sniper_monkey.world.GameObject;
 import game.sniper_monkey.world.Timer;
 
@@ -27,9 +28,8 @@ public class Player extends GameObject {
     private static final int MAX_HEALTH = 100;
     private Timer blockTimer = new Timer(5);
 
-    private static final Stamina playerStamina = new Stamina(0, MAX_STAMINA);
-
-    private static final Health playerHealth = new Health(MAX_HEALTH);
+    private final FluctuatingAttribute stamina = new FluctuatingAttribute(MAX_STAMINA);
+    private final FluctuatingAttribute health = new FluctuatingAttribute(MAX_HEALTH);
 
     private Fighter activeFighter;
     private final Fighter primaryFighter;
@@ -101,12 +101,12 @@ public class Player extends GameObject {
     private boolean usedAbility() {
         if(inputActions.get(PlayerInputAction.ATTACK1)) {
             activeFighter.performAttack(1);
-            playerStamina.decrease(activeFighter.getStaminaDecrease(1));
+            stamina.decrease(activeFighter.getStaminaDecrease(1));
             currentState = this::attackingState;
             return true;
         } else if(inputActions.get(PlayerInputAction.ATTACK2)) {
             activeFighter.performAttack(2);
-            playerStamina.decrease(activeFighter.getStaminaDecrease(2));
+            stamina.decrease(activeFighter.getStaminaDecrease(2));
             currentState = this::attackingState;
             return true;
         } else if(inputActions.get(PlayerInputAction.BLOCK)) {
@@ -223,23 +223,23 @@ public class Player extends GameObject {
 
 
     /**
-     * Decreases the players health by using the Health class.
+     * Decreases the players health.
      * @param damageAmount a float 0..n. Is the damage that the other fighter has done to the player.
      */
     public void takeDamage(float damageAmount) {
         if (false/*currentState == blockingState*/) { // change when statechecking has been implemented
-            playerHealth.onDamage(damageAmount * (1 - activeFighter.DEFENSE_FACTOR) * (1 - blockDefenseFactor));
+            health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR) * (1 - blockDefenseFactor));
         } else {
-            playerHealth.onDamage(damageAmount*(1-activeFighter.DEFENSE_FACTOR)); // TODO make getter for defense factor instead?
+            health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR)); // TODO make getter for defense factor instead?
         }
     }
 
     /**
-     * Checks if the player is dead using the Health class.
+     * Checks if the player is dead.
      * @return true if the player is dead, false if the player is alive.
      */
     public boolean isDead() {
-        return playerHealth.isDead();
+        return health.getCurrentValue() == 0;
     }
 
 
@@ -256,7 +256,7 @@ public class Player extends GameObject {
         activeFighter = fighter;
         setHitboxPos(physicsPos.getPosition());
         setHitboxSize(fighter.getHitboxSize());
-        playerStamina.setRegenerationFactor(10f * activeFighter.SPEED_FACTOR);
+        stamina.setRegenerationAmount(10f * activeFighter.SPEED_FACTOR);
     }
 
     /**
@@ -296,7 +296,7 @@ public class Player extends GameObject {
      */
     @Override
     public void update(float deltaTime) {
-        playerStamina.update(deltaTime);
+        stamina.update(deltaTime);
         currentState.performState();
         resetInputActions();
         updatePlayerPos(deltaTime);
