@@ -78,10 +78,12 @@ public class Player extends GameObject {
     private void inactiveState() {
         if (inputActions.get(PlayerInputAction.ATTACK1)) {
             // TODO performAttack
+            stamina.decrease(activeFighter.getStaminaDecrease(1));
             abilityState = this::attacking1State;
             return;
         } else if (inputActions.get(PlayerInputAction.ATTACK2)) {
             // TODO performAttack
+            stamina.decrease(activeFighter.getStaminaDecrease(2));
             abilityState = this::attacking2State;
             return;
         } else if (inputActions.get(PlayerInputAction.BLOCK)) {
