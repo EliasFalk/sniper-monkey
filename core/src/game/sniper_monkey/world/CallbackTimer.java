@@ -22,6 +22,7 @@ public class CallbackTimer implements UpdatableTimer {
      * @param callback    The method that will be called each time the timer finishes.
      */
     public CallbackTimer(float timerLength, boolean loop, Callback callback) {
+        if (timerLength < 0) throw new IllegalArgumentException("timerLength cannot be negative.");
         this.callback = callback;
         this.timerLength = timerLength;
         timeLeft = timerLength;

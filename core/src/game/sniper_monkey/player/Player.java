@@ -28,9 +28,8 @@ public class Player extends GameObject {
     private static final int MAX_HEALTH = 100;
     private Timer blockTimer = new Timer(5);
 
-    private static final FluctuatingAttribute playerStamina = new FluctuatingAttribute(0, MAX_STAMINA, 10f);
-
-    private static final FluctuatingAttribute playerHealth = new FluctuatingAttribute(MAX_HEALTH);
+    private final FluctuatingAttribute stamina = new FluctuatingAttribute(MAX_STAMINA);
+    private final FluctuatingAttribute health = new FluctuatingAttribute(MAX_HEALTH);
 
     private Fighter activeFighter;
     private final Fighter primaryFighter;
@@ -102,12 +101,12 @@ public class Player extends GameObject {
     private boolean usedAbility() {
         if(inputActions.get(PlayerInputAction.ATTACK1)) {
             activeFighter.performAttack(1);
-            playerStamina.decrease(activeFighter.getStaminaDecrease(1));
+            stamina.decrease(activeFighter.getStaminaDecrease(1));
             currentState = this::attackingState;
             return true;
         } else if(inputActions.get(PlayerInputAction.ATTACK2)) {
             activeFighter.performAttack(2);
-            playerStamina.decrease(activeFighter.getStaminaDecrease(2));
+            stamina.decrease(activeFighter.getStaminaDecrease(2));
             currentState = this::attackingState;
             return true;
         } else if(inputActions.get(PlayerInputAction.BLOCK)) {
@@ -229,9 +228,9 @@ public class Player extends GameObject {
      */
     public void takeDamage(float damageAmount) {
         if (false/*currentState == blockingState*/) { // change when statechecking has been implemented
-            playerHealth.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR) * (1 - blockDefenseFactor));
+            health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR) * (1 - blockDefenseFactor));
         } else {
-            playerHealth.decrease(damageAmount*(1-activeFighter.DEFENSE_FACTOR)); // TODO make getter for defense factor instead?
+            health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR)); // TODO make getter for defense factor instead?
         }
     }
 
@@ -240,7 +239,7 @@ public class Player extends GameObject {
      * @return true if the player is dead, false if the player is alive.
      */
     public boolean isDead() {
-        return playerHealth.getCurrentValue() == 0;
+        return health.getCurrentValue() == 0;
     }
 
 
@@ -257,7 +256,7 @@ public class Player extends GameObject {
         activeFighter = fighter;
         setHitboxPos(physicsPos.getPosition());
         setHitboxSize(fighter.getHitboxSize());
-        playerStamina.setRegenerationAmount(10f * activeFighter.SPEED_FACTOR);
+        stamina.setRegenerationAmount(10f * activeFighter.SPEED_FACTOR);
     }
 
     /**
@@ -297,7 +296,7 @@ public class Player extends GameObject {
      */
     @Override
     public void update(float deltaTime) {
-        playerStamina.update(deltaTime);
+        stamina.update(deltaTime);
         currentState.performState();
         resetInputActions();
         updatePlayerPos(deltaTime);

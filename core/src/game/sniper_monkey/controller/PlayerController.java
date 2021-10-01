@@ -52,7 +52,7 @@ public class PlayerController {
         if (Gdx.input.isKeyPressed(moveRightKeyCode)) {
             player.setInputAction(PlayerInputAction.MOVE_RIGHT);
             keyUsed = true;
-        } // player only moves right if both keys are pressed
+        }
         if (Gdx.input.isKeyPressed(jumpKeyCode)) {
             player.setInputAction(PlayerInputAction.JUMP);
             keyUsed = true;
