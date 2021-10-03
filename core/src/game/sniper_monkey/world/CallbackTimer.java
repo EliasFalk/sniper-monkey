@@ -7,10 +7,9 @@ import game.sniper_monkey.UpdatableTimer;
 public class CallbackTimer implements UpdatableTimer {
 
     private final float timerLength;
-    private float timeLeft;
-
-    private boolean running;
     private final Callback callback;
+    private float timeLeft;
+    private boolean running;
     private boolean looping;
 
     /**
@@ -31,19 +30,6 @@ public class CallbackTimer implements UpdatableTimer {
     }
 
     /**
-     * Set whether the TimerBank should handle the updates, or handled manually by calling the update method somewhere else.
-     * @param autoUpdate True will add this timer to the TimerBank and will update when TimerBank's update is called.
-     *                   False will remove this timer from the TimerBank and will require this timer's update to be called manually somewhere else.
-     */
-    public void setAutoUpdate(boolean autoUpdate) {
-        if(autoUpdate) {
-            TimerBank.addTimer(this);
-        } else {
-            TimerBank.removeTimer(this);
-        }
-    }
-
-    /**
      * Creates a timer with a callback method which will be called upon when the timer finishes.
      * The timer does not start automatically, need to call start() for the timer to start.
      * Will default to looping = false.
@@ -53,6 +39,20 @@ public class CallbackTimer implements UpdatableTimer {
      */
     public CallbackTimer(float timerLength, Callback callback) {
         this(timerLength, false, callback);
+    }
+
+    /**
+     * Set whether the TimerBank should handle the updates, or handled manually by calling the update method somewhere else.
+     *
+     * @param autoUpdate True will add this timer to the TimerBank and will update when TimerBank's update is called.
+     *                   False will remove this timer from the TimerBank and will require this timer's update to be called manually somewhere else.
+     */
+    public void setAutoUpdate(boolean autoUpdate) {
+        if (autoUpdate) {
+            TimerBank.addTimer(this);
+        } else {
+            TimerBank.removeTimer(this);
+        }
     }
 
     /**

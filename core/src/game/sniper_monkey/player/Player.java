@@ -10,37 +10,49 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Player extends GameObject {
-    interface State {
-        void performState();
-    }
-
-    boolean isGrounded = true;
-
-    private float blockDefenseFactor;
-
     // TODO read these values from config file
     private static final float MAX_X_VEL = 200f;
     private static final float VEL_GAIN = 25f;
     private static final float JUMP_GAIN = 300f;
     private static final int MAX_STAMINA = 100;
     private static final int MAX_HEALTH = 100;
-
     private final FluctuatingAttribute stamina = new FluctuatingAttribute(MAX_STAMINA);
     private final FluctuatingAttribute health = new FluctuatingAttribute(MAX_HEALTH);
     private final FluctuatingAttribute blockFactor = new FluctuatingAttribute(0.4f, 0.7f);
-
-    private Fighter activeFighter;
     private final Fighter primaryFighter;
     private final Fighter secondaryFighter;
-    private FighterAnimation currentFighterAnimation; // TODO set this to static for very many fun
-
-    private boolean lookingRight;
-
-    private State abilityState = this::inactiveState;
-    private State movementState = this::groundedState;
-
-    private PhysicsPosition physicsPos = new PhysicsPosition(new Vector2(0, 0));
     private final Map<PlayerInputAction, Boolean> inputActions = new HashMap<>();
+    private final float blockDefenseFactor;
+    private final PhysicsPosition physicsPos = new PhysicsPosition(new Vector2(0, 0));
+    boolean isGrounded = true;
+    private Fighter activeFighter;
+    private FighterAnimation currentFighterAnimation; // TODO set this to static for very many fun
+    private boolean lookingRight;
+    private State movementState = this::groundedState;
+    private State abilityState = this::inactiveState;
+
+    /**
+     * Creates a player with a position in the world
+     *
+     * @param position The initial position of the player.
+     */
+    public Player(Vector2 position, Fighter primaryFighter, Fighter secondaryFighter) {
+        super(position, true);
+        physicsPos.setPosition(position);
+        this.primaryFighter = primaryFighter;
+        this.secondaryFighter = secondaryFighter;
+        currentFighterAnimation = FighterAnimation.IDLING;
+        initActiveFighter(primaryFighter);
+        resetInputActions();
+        blockDefenseFactor = 0.4f;
+    }
+
+    /**
+     * Creates a Player object
+     */
+    public Player(Fighter primaryFighter, Fighter secondaryFighter) {
+        this(new Vector2(0, 0), primaryFighter, secondaryFighter);
+    }
 
     /* Ability states */
 
@@ -112,7 +124,6 @@ public class Player extends GameObject {
         }
 
     }
-
 
     // State helper methods
     private void groundedState() {
@@ -213,7 +224,7 @@ public class Player extends GameObject {
      * @param damageAmount a float 0..n. Is the damage that the other fighter has done to the player.
      */
     public void takeDamage(float damageAmount) {
-        if (false/*currentState == blockingState*/) { // change when statechecking has been implemented
+        if (false/*currentState == blockingState*/) { // change when state checking has been implemented
             health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR) * (1 - blockDefenseFactor));
         } else {
             health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR)); // TODO make getter for defense factor instead?
@@ -229,7 +240,6 @@ public class Player extends GameObject {
         return health.getCurrentValue() == 0;
     }
 
-
     /**
      * Get the type of the active fighter. Will be a subclass of Fighter.
      *
@@ -244,29 +254,6 @@ public class Player extends GameObject {
         setHitboxPos(physicsPos.getPosition());
         setHitboxSize(fighter.getHitboxSize());
         stamina.setRegenerationAmount(10f * activeFighter.SPEED_FACTOR);
-    }
-
-    /**
-     * Creates a player with a position in the world
-     *
-     * @param position The initial position of the player.
-     */
-    public Player(Vector2 position, Fighter primaryFighter, Fighter secondaryFighter) {
-        super(position, true);
-        physicsPos.setPosition(position);
-        this.primaryFighter = primaryFighter;
-        this.secondaryFighter = secondaryFighter;
-        currentFighterAnimation = FighterAnimation.IDLING;
-        initActiveFighter(primaryFighter);
-        resetInputActions();
-        blockDefenseFactor = 0.4f;
-    }
-
-    /**
-     * Creates a Player object
-     */
-    public Player(Fighter primaryFighter, Fighter secondaryFighter) {
-        this(new Vector2(0, 0), primaryFighter, secondaryFighter);
     }
 
     private void handleLookingDirection() {
@@ -325,5 +312,10 @@ public class Player extends GameObject {
         }
         setHitboxPos(getHitbox().getPosition().add(0, physicsPos.getVelocity().y * deltaTime));
         physicsPos.setPosition(getHitbox().getPosition());
+    }
+
+    @FunctionalInterface
+    private interface State {
+        void performState();
     }
 }

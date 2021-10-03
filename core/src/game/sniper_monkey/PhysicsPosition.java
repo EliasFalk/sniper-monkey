@@ -4,11 +4,28 @@ import com.badlogic.gdx.math.Vector2;
 
 public class PhysicsPosition {
     private final float GRAVITY = -600f;
-    private float DRAG = 800f;
+    private final float DRAG = 800f;
     private Vector2 position;
     private Vector2 velocity;
     private Vector2 acceleration = new Vector2(0, GRAVITY);
 
+
+    public PhysicsPosition(Vector2 position, Vector2 velocity, Vector2 acceleration) {
+        this.position = position;
+        this.velocity = velocity;
+        this.acceleration = acceleration;
+    }
+
+
+    public PhysicsPosition(Vector2 position, Vector2 velocity) {
+        this.position = position;
+        this.velocity = velocity;
+    }
+
+    public PhysicsPosition(Vector2 position) {
+        this.position = position;
+        this.velocity = new Vector2(0, 0);
+    }
 
     /**
      * Updates the velocity and position based on current velocity and acceleration;
@@ -18,14 +35,13 @@ public class PhysicsPosition {
     public void update(float deltaTime) {
         position.add(velocity.cpy().scl(deltaTime));
         velocity.add(acceleration.cpy().scl(deltaTime));
-        if(Math.abs(velocity.x) - DRAG*deltaTime < 0) {
+        if (Math.abs(velocity.x) - DRAG * deltaTime < 0) {
             velocity.x = 0;
         } else {
-            velocity.x -= Math.signum(velocity.x)*DRAG*deltaTime;
+            velocity.x -= Math.signum(velocity.x) * DRAG * deltaTime;
         }
         acceleration.x = 0;
     }
-
 
     /**
      * Gets a copy of the current position vector.
@@ -54,23 +70,6 @@ public class PhysicsPosition {
 
     public void setAcceleration(Vector2 acceleration) {
         this.acceleration = acceleration;
-    }
-
-
-    public PhysicsPosition(Vector2 position, Vector2 velocity, Vector2 acceleration) {
-        this.position = position;
-        this.velocity = velocity;
-        this.acceleration = acceleration;
-    }
-
-    public PhysicsPosition(Vector2 position, Vector2 velocity) {
-        this.position = position;
-        this.velocity = velocity;
-    }
-
-    public PhysicsPosition(Vector2 position) {
-        this.position = position;
-        this.velocity = new Vector2(0,0);
     }
 
 

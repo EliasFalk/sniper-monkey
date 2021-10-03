@@ -7,12 +7,12 @@ import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.world.GameObject;
 
 public abstract class GameObjectView {
-    private GameObject model;
+    private final GameObject model;
     protected Vector2 drawOffset;
     protected Sprite sprite;
 
     /**
-     * Creates a GameObject
+     * Creates a GameObjectView
      *
      * @param drawOffset
      * @param sprite
@@ -26,6 +26,7 @@ public abstract class GameObjectView {
 
     /**
      * Checks whether the supplied GameObject is the model of this view.
+     *
      * @param model The model to check.
      * @return Is "model" the model of this view?
      */

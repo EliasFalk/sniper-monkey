@@ -10,14 +10,28 @@ import java.util.ArrayList;
 public final class World {
     private static World INSTANCE;
 
-    private ArrayList<GameObject> gameObjects;
-    private ArrayList<IWorldObserver> observers;
-    private CallbackTimer roundTimer;
-    private ArrayList<ITimerObserver> timerObservers;
+    private final ArrayList<GameObject> gameObjects;
+    private final ArrayList<IWorldObserver> observers;
+    private final CallbackTimer roundTimer;
+    private final ArrayList<ITimerObserver> timerObservers;
     private State currentState = this::startFightingState;
 
+    @FunctionalInterface
     interface State {
         void performState();
+    }
+
+    private World() {
+        gameObjects = new ArrayList<>();
+        observers = new ArrayList<>();
+        timerObservers = new ArrayList<>();
+        roundTimer = new CallbackTimer(120, () -> currentState = this::endGameState);
+    }
+
+    //Singleton
+    public static World getInstance() {
+        if (INSTANCE == null) INSTANCE = new World();
+        return INSTANCE;
     }
 
     public int getRoundDuration() {
@@ -48,22 +62,9 @@ public final class World {
      */
     private void endGameState() {
         System.out.println("GAME ENDED!");
-        if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             startFightingState();
         }
-    }
-
-    private World() {
-        gameObjects = new ArrayList<>();
-        observers = new ArrayList<>();
-        timerObservers = new ArrayList<>();
-        roundTimer = new CallbackTimer(120, () -> currentState = this::endGameState);
-    }
-
-    //Singleton
-    public static World getInstance() {
-        if (INSTANCE == null) INSTANCE = new World();
-        return INSTANCE;
     }
 
     public void registerObserver(IWorldObserver observer) {
@@ -86,8 +87,6 @@ public final class World {
         }
     }
 
-
-
     //TIMER OBSERVER STUFF
     public void registerTimerObserver(ITimerObserver timerObserver) {
         timerObservers.add(timerObserver);
@@ -102,8 +101,6 @@ public final class World {
             timerObserver.onTimerChange(time);
         }
     }
-
-
 
     /**
      * Calls update on all GameObjects in the world
@@ -125,7 +122,7 @@ public final class World {
     public void addGameObject(GameObject obj) {
         gameObjects.add(obj);
         notifyObserversOfNewObject(obj);
-        CollisionEngine.registerObject(obj, obj.isDynamic());
+        CollisionEngine.registerGameObject(obj, obj.isDynamic());
     }
 
     /**
@@ -136,5 +133,6 @@ public final class World {
     public void deleteGameObject(GameObject obj) {
         gameObjects.remove(obj);
         notifyObserversOfRemovedObject(obj);
+        CollisionEngine.unregisterGameObject(obj);
     }
 }

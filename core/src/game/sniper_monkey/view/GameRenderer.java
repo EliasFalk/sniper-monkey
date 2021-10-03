@@ -12,20 +12,13 @@ import game.sniper_monkey.world.World;
 import java.util.ArrayList;
 
 public class GameRenderer implements IWorldObserver {
+    private final ArrayList<GameObjectView> gameObjectViews;
     SpriteBatch batch;
     ShapeRenderer sr;
     Stage stage;
     OrthographicCamera camera = new OrthographicCamera(1280 / 2f, 720 / 2f);
     boolean debugMode = (Math.random() > 0.5); // TODO epic.
-
-    private ArrayList<GameObjectView> gameObjectViews;
     RoundTimerView roundTimerView;
-
-    public void updateCamera(int width, int height) {
-        camera.viewportHeight = height;
-        camera.viewportWidth = width;
-        camera.update();
-    }
 
     public GameRenderer() {
         stage = new Stage();
@@ -40,6 +33,11 @@ public class GameRenderer implements IWorldObserver {
         roundTimerView.addActors(stage);
     }
 
+    public void updateCamera(int width, int height) {
+        camera.viewportHeight = height;
+        camera.viewportWidth = width;
+        camera.update();
+    }
 
     /**
      * Renders a background and then all of the views stored in the GameRenderer
@@ -66,21 +64,18 @@ public class GameRenderer implements IWorldObserver {
             view.updateSprite();
             view.render(sr, batch, debugMode);
         }
-        /*
-        for (RoundTimerView timerView : timerViews) {
-            timerView.onTimerChange();
-        }
-         */
+
         batch.end();
         sr.end();
         stage.draw();
     }
 
     /**
-     * Disposes of the SpriteBatch
+     * Disposes of the SpriteBatch and ShapeRenderer
      */
     public void dispose() {
         batch.dispose();
+        sr.dispose();
     }
 
     @Override

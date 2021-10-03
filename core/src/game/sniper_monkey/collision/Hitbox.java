@@ -5,14 +5,15 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * An Axis Aligned Bounding Box used for hit detection.
  */
-public class Hitbox {
+public final class Hitbox {
     private Vector2 position;
     private Vector2 size;
 
     /**
      * Creates an AABB Hitbox
+     *
      * @param position The position of the hitbox.
-     * @param size The size of the hitbox.
+     * @param size     The size of the hitbox.
      */
     public Hitbox(Vector2 position, Vector2 size) {
         this.position = position;
@@ -35,23 +36,8 @@ public class Hitbox {
     }
 
     /**
-     * Sets the hitbox's position.
-     * @param newPos The new position to use.
-     */
-    public void setPosition(Vector2 newPos) {
-        position = newPos;
-    }
-
-    /**
-     * Sets the hitbox's size.
-     * @param newSize The new size to use.
-     */
-    public void setSize(Vector2 newSize) {
-        size = newSize;
-    }
-
-    /**
      * Returns a copy of the size of the hitbox.
+     *
      * @return A Vector2 representing the width and height of the hitbox, x=width, y=height.
      */
     public Vector2 getSize() {
@@ -59,10 +45,29 @@ public class Hitbox {
     }
 
     /**
+     * Sets the hitbox's size.
+     *
+     * @param newSize The new size to use.
+     */
+    public void setSize(Vector2 newSize) {
+        size = newSize;
+    }
+
+    /**
      * Returns a copy of the hitbox's position.
+     *
      * @return A vector2 representing the x and y coordinates of the hitbox. The position is based in the lower left corner relative to the hitbox's size.
      */
     public Vector2 getPosition() {
         return position.cpy();
+    }
+
+    /**
+     * Sets the hitbox's position.
+     *
+     * @param newPos The new position to use.
+     */
+    public void setPosition(Vector2 newPos) {
+        position = newPos;
     }
 }

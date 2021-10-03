@@ -40,6 +40,7 @@ public class PlayerController {
 
     /**
      * Handles key inputs from the keyboard. Can handle several at the same time.
+     *
      * @return a bool if a key is pressed.
      */
     public boolean handleKeyInputs() {

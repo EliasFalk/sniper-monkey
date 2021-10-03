@@ -11,16 +11,15 @@ import game.sniper_monkey.world.World;
 
 public class RoundTimerView extends HUDView implements ITimerObserver {
 
+    private final Label countdownLabel;
     World model;
-
-    private Label countdownLabel;
 
     public RoundTimerView(World model) {
         super(model);
         this.model = model;
         countdownLabel = new Label(String.format("%03d", model.getRoundDuration()), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         countdownLabel.setFontScale(4, 4);
-        countdownLabel.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()-100);
+        countdownLabel.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() - 100);
         countdownLabel.setAlignment(Align.center);
     }
 

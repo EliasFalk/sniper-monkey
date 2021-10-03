@@ -21,6 +21,13 @@ public class EvilWizardView extends GameObjectView {
 
     private final Map<FighterAnimation, Animation<Sprite>> animations = new HashMap<>();
 
+    public EvilWizardView(Player model) {
+        super(drawOffset, SpriteUtils.getDefaultSprite(), model);
+        this.model = model;
+        //TODO: good.
+        initAnimationHash();
+    }
+
     private void initAnimationHash() {
         // TODO add remaining animations
         Texture idle = new Texture("images/evil_wizard_2/Idle.png");
@@ -32,14 +39,6 @@ public class EvilWizardView extends GameObjectView {
         animations.put(FighterAnimation.MOVING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(run, 8), Animation.PlayMode.LOOP));
         animations.put(FighterAnimation.JUMPING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(jump, 2), Animation.PlayMode.LOOP));
         animations.put(FighterAnimation.FALLING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(fall, 2), Animation.PlayMode.LOOP));
-    }
-
-
-    public EvilWizardView(Player model) {
-        super(drawOffset, SpriteUtils.getDefaultSprite(), model);
-        this.model = model;
-        //TODO: good.
-        initAnimationHash();
     }
 
     @Override

@@ -1,14 +1,12 @@
 package game.sniper_monkey.world;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.collision.Hitbox;
 
 public abstract class GameObject {
+    private final Hitbox hitbox;
+    private final boolean isDynamic;
     private Vector2 position;
-    private Hitbox hitbox;
-    private boolean isDynamic;
 
     /**
      * Creates the GameObject at a custom position
@@ -21,19 +19,20 @@ public abstract class GameObject {
         this.isDynamic = isDynamic;
     }
 
+    /**
+     * Creates the GameObject at a 0, 0
+     */
+    public GameObject(boolean isDynamic) {
+        this(new Vector2(0, 0), isDynamic);
+    }
+
     public boolean isDynamic() {
         return isDynamic;
     }
 
     /**
-     * Creates the GameObject at a 0, 0
-     */
-    public GameObject(boolean isDynamic) {
-        this(new Vector2(0,0), isDynamic);
-    }
-
-    /**
      * Update the GameObject (handles logic, data, etc.)
+     *
      * @param deltaTime The time between this and the last time update was called (in seconds).
      */
     public abstract void update(float deltaTime);
@@ -64,6 +63,7 @@ public abstract class GameObject {
 
     /**
      * Set the size of the hitbox.
+     *
      * @param size The new size to use.
      */
     protected void setHitboxSize(Vector2 size) {
@@ -72,6 +72,7 @@ public abstract class GameObject {
 
     /**
      * Set the position of the hitbox.
+     *
      * @param pos The new position to use.
      */
     protected void setHitboxPos(Vector2 pos) {
@@ -80,6 +81,7 @@ public abstract class GameObject {
 
     /**
      * Returns the hitbox as a reference (not copy).
+     *
      * @return The hitbox.
      */
     public Hitbox getHitbox() {
