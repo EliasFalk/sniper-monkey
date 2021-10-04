@@ -1,0 +1,36 @@
+package sniper_monkey.world;
+
+import com.badlogic.gdx.math.Vector2;
+import game.sniper_monkey.Config;
+import game.sniper_monkey.platform.Platform;
+import game.sniper_monkey.player.Player;
+import game.sniper_monkey.player.PlayerFactory;
+import game.sniper_monkey.view.GameRenderer;
+import game.sniper_monkey.world.GameObject;
+import game.sniper_monkey.world.World;
+import org.junit.Assert;
+import org.junit.Test;
+
+public class WorldTest {
+
+    World world = World.getInstance();
+
+    @Test
+    public void testGetRoundDuration() {
+        Assert.assertEquals(120, world.getRoundDuration());
+    }
+
+    @Test
+    public void testAddGameObject() {
+        GameObject obj = PlayerFactory.createPlayer(new Vector2(50, 50));
+        world.addGameObject(obj);
+        world.update(1);
+        Assert.assertNotEquals(new Vector2(50, 50), obj.getPos());
+    }
+
+    @Test
+    public void testUpdate() {
+        world.update(2);
+        Assert.assertEquals(117, world.getRoundDuration());
+    }
+}
