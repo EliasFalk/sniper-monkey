@@ -7,7 +7,7 @@ import game.sniper_monkey.world.GameObject;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class CollisionPairTest {
     Hitbox hitbox;
@@ -27,8 +27,8 @@ public class CollisionPairTest {
     public void testEquals() {
         CollisionPair one = new CollisionPair(object, hitbox);
         CollisionPair two = new CollisionPair(object, hitbox);
-        assertEquals(true, one.equals(two));
-        assertEquals(false, one == two);
+        assertEquals(one, two);
+        assertNotSame(one, two);
     }
 }
 

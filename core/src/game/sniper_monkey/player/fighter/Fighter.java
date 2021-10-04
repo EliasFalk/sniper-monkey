@@ -54,7 +54,7 @@ public abstract class Fighter {
      */
     public void performAttack(int attackNum) {
         if (attackNum >= attacks.size()) {
-            // TODO throw error?
+            throw new IllegalArgumentException("attack " + attackNum + " does not exist");
         }
         attacks.get(attackNum).performAttack(ATTACK_FACTOR);
     }
@@ -67,7 +67,7 @@ public abstract class Fighter {
      */
     public float getStaminaDecrease(int attackNum) {
         if (attackNum >= attacks.size()) {
-            // TODO throw error?
+            throw new IllegalArgumentException("attack " + attackNum + " does not exist");
         }
         return attacks.get(attackNum).getStaminaCost();
     }

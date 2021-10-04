@@ -55,4 +55,10 @@ public class SpatialHashTest {
         assertEquals(2, pairs.size());
     }
 
+    @Test
+    public void testRemoveFromExistingPartition() {
+        sh.remove(testObject);
+        List<CollisionPair> pairs = sh.query(testObject.getHitbox(), new Vector2(0, 0));
+        assertEquals(0, pairs.size());
+    }
 }

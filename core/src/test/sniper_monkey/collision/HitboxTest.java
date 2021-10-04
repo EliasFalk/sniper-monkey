@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class HitboxTest {
     Hitbox hitbox;
@@ -24,25 +24,25 @@ public class HitboxTest {
     @Test
     public void testLeftTouching() {
         Hitbox other = new Hitbox(new Vector2(10, 0), new Vector2(10, 10));
-        assertEquals(false, hitbox.isOverlapping(other, new Vector2(0, 0)));
+        assertFalse(hitbox.isOverlapping(other, new Vector2(0, 0)));
     }
 
     @Test
     public void testRightTouching() {
         Hitbox other = new Hitbox(new Vector2(-10, 0), new Vector2(10, 10));
-        assertEquals(false, hitbox.isOverlapping(other, new Vector2(0, 0)));
+        assertFalse(hitbox.isOverlapping(other, new Vector2(0, 0)));
     }
 
     @Test
     public void testUpTouching() {
         Hitbox other = new Hitbox(new Vector2(0, 10), new Vector2(10, 10));
-        assertEquals(false, hitbox.isOverlapping(other, new Vector2(0, 0)));
+        assertFalse(hitbox.isOverlapping(other, new Vector2(0, 0)));
     }
 
     @Test
     public void testDownTouching() {
         Hitbox other = new Hitbox(new Vector2(0, -10), new Vector2(10, 10));
-        assertEquals(false, hitbox.isOverlapping(other, new Vector2(0, 0)));
+        assertFalse(hitbox.isOverlapping(other, new Vector2(0, 0)));
     }
 
     /**
@@ -52,25 +52,25 @@ public class HitboxTest {
     @Test
     public void testLeftOverlap() {
         Hitbox other = new Hitbox(new Vector2(9, 0), new Vector2(10, 10));
-        assertEquals(true, hitbox.isOverlapping(other, new Vector2(0, 0)));
+        assertTrue(hitbox.isOverlapping(other, new Vector2(0, 0)));
     }
 
     @Test
     public void testRightOverlap() {
         Hitbox other = new Hitbox(new Vector2(-9, 0), new Vector2(10, 10));
-        assertEquals(true, hitbox.isOverlapping(other, new Vector2(0, 0)));
+        assertTrue(hitbox.isOverlapping(other, new Vector2(0, 0)));
     }
 
     @Test
     public void testUpOverlap() {
         Hitbox other = new Hitbox(new Vector2(0, 9), new Vector2(10, 10));
-        assertEquals(true, hitbox.isOverlapping(other, new Vector2(0, 0)));
+        assertTrue(hitbox.isOverlapping(other, new Vector2(0, 0)));
     }
 
     @Test
     public void testDownOverlap() {
         Hitbox other = new Hitbox(new Vector2(0, -9), new Vector2(10, 10));
-        assertEquals(true, hitbox.isOverlapping(other, new Vector2(0, 0)));
+        assertTrue(hitbox.isOverlapping(other, new Vector2(0, 0)));
     }
 
     /**
@@ -80,25 +80,25 @@ public class HitboxTest {
     @Test
     public void testLeftOffsetOverlap() {
         Hitbox other = new Hitbox(new Vector2(9, 0), new Vector2(10, 10));
-        assertEquals(false, hitbox.isOverlapping(other, new Vector2(-1, 0)));
+        assertFalse(hitbox.isOverlapping(other, new Vector2(-1, 0)));
     }
 
     @Test
     public void testRightOffsetOverlap() {
         Hitbox other = new Hitbox(new Vector2(-9, 0), new Vector2(10, 10));
-        assertEquals(false, hitbox.isOverlapping(other, new Vector2(1, 0)));
+        assertFalse(hitbox.isOverlapping(other, new Vector2(1, 0)));
     }
 
     @Test
     public void testUpOffsetOverlap() {
         Hitbox other = new Hitbox(new Vector2(0, 9), new Vector2(10, 10));
-        assertEquals(false, hitbox.isOverlapping(other, new Vector2(0, -1)));
+        assertFalse(hitbox.isOverlapping(other, new Vector2(0, -1)));
     }
 
     @Test
     public void testDownOffsetOverlap() {
         Hitbox other = new Hitbox(new Vector2(0, -9), new Vector2(10, 10));
-        assertEquals(false, hitbox.isOverlapping(other, new Vector2(0, 1)));
+        assertFalse(hitbox.isOverlapping(other, new Vector2(0, 1)));
     }
 
     @Test
