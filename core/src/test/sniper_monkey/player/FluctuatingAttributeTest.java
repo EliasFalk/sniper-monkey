@@ -120,4 +120,7 @@ public class FluctuatingAttributeTest {
 
         }
     }
+
+    //TODO add decrease test on attack
+
 }
