@@ -6,6 +6,12 @@ import game.sniper_monkey.world.GameObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A static class used for checking collision between hitboxes and
+ * optimizes this by storing static (Not moving) GameObjects in a spatial hash.
+ *
+ * @author Vincent Hellner
+ */
 public final class CollisionEngine {
     private static final SpatialHash spatialHash = new SpatialHash(64, 64);
     private static final List<CollisionPair> dynamicObjects = new ArrayList<>();

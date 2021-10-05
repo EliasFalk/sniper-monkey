@@ -3,6 +3,9 @@ package game.sniper_monkey.player;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.player.fighter.FighterFactory;
 
+/**
+ * @author Elias Falk
+ */
 public class PlayerFactory {
 
     /**

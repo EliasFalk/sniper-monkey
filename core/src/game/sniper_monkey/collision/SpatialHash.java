@@ -139,6 +139,8 @@ public final class SpatialHash {
 
     /**
      * An x and y position representing the location of a single cell in the partitioning grid.
+     *
+     * @author Vincent Hellner
      */
     private static final class PartitionLocation {
 

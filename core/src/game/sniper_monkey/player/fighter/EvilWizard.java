@@ -2,6 +2,11 @@ package game.sniper_monkey.player.fighter;
 
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * An Evil Wizard (spooky)
+ *
+ * @author Elias Falk
+ */
 public class EvilWizard extends Fighter {
     private static final float attack = 1;
     private static final float defense = 1;

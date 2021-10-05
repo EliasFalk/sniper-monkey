@@ -1,7 +1,13 @@
 package game.sniper_monkey.player;
 
 
-// TODO find a better name for the class
+/**
+ * Representing a range of float values which can fluctuate over time by regenerating or draining slowly
+ * or by instantaneously increasing or decreasing.
+ *
+ * @author Elias Falk
+ * @author Vincent Hellner
+ */
 public class FluctuatingAttribute {
     private final float maxValue;
     private final float minValue;

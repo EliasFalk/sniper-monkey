@@ -7,6 +7,8 @@ import java.util.Objects;
 /**
  * A tuple storing both a GameObject and hitbox for use in the collision engine
  * as a way of associating a hitbox to its GameObject
+ *
+ * @author Vincent Hellner
  */
 public final class CollisionPair {
 

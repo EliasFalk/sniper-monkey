@@ -9,6 +9,15 @@ import game.sniper_monkey.world.GameObject;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A player GameObject to be controlled in the world, handling its movement, collision, blocking and attacking
+ * using two internal Fighter subclasses.
+ *
+ * @author Elias Falk
+ * @author Vincent Hellner
+ * @author Kevin Jeryd
+ * @author Dadi Andrason
+ */
 public class Player extends GameObject {
     // TODO read these values from config file
     private static final float MAX_X_VEL = 200f;
