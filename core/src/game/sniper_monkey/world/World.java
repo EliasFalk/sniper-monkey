@@ -2,6 +2,7 @@ package game.sniper_monkey.world;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import game.sniper_monkey.Config;
 import game.sniper_monkey.TimerBank;
 import game.sniper_monkey.collision.CollisionEngine;
 
@@ -25,7 +26,10 @@ public final class World {
         gameObjects = new ArrayList<>();
         observers = new ArrayList<>();
         timerObservers = new ArrayList<>();
-        roundTimer = new CallbackTimer(120, () -> currentState = this::endGameState);
+
+        Config.readConfigFile("cfg/game.cfg");
+        float roundTime = Config.getNumber("cfg/game.cfg", "ROUND_TIME");
+        roundTimer = new CallbackTimer(roundTime, () -> currentState = this::endGameState);
     }
 
     //Singleton
