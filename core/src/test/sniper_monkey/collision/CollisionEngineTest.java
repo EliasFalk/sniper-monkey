@@ -3,6 +3,7 @@ package sniper_monkey.collision;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.collision.CollisionEngine;
 import game.sniper_monkey.collision.Hitbox;
+import game.sniper_monkey.platform.Platform;
 import game.sniper_monkey.player.Player;
 import game.sniper_monkey.player.PlayerFactory;
 import game.sniper_monkey.world.GameObject;
@@ -19,8 +20,8 @@ public class CollisionEngineTest {
 
     @BeforeClass
     public static void InsertObj() {
-        obj = PlayerFactory.createPlayer();
-        objDynamic = PlayerFactory.createPlayer();
+        obj = new Platform(new Vector2(0, 0));
+        objDynamic = new Platform(new Vector2(0, 0));
         CollisionEngine.registerGameObject(obj, false);
     }
 

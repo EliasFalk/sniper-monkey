@@ -62,6 +62,7 @@ public final class Config {
      *
      * @param file The file containing the data
      * @param key  The name of the datapoint
+     * @throws RuntimeException if the key does not exist
      * @return The data as a String.
      */
     public static String getText(String file, String key) {

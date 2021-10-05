@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.collision.CollisionPair;
 import game.sniper_monkey.collision.Hitbox;
 import game.sniper_monkey.collision.SpatialHash;
+import game.sniper_monkey.platform.Platform;
 import game.sniper_monkey.player.PlayerFactory;
 import game.sniper_monkey.world.GameObject;
 import org.junit.Before;
@@ -21,7 +22,7 @@ public class SpatialHashTest {
     @Before
     public void initHitbox() {
         sh = new SpatialHash(64, 64);
-        testObject = PlayerFactory.createPlayer();
+        testObject = new Platform(new Vector2(0, 0));
     }
 
     @Test
