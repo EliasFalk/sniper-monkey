@@ -20,18 +20,14 @@ public class ConfigTest {
         final HeadlessApplicationConfiguration config = new HeadlessApplicationConfiguration();
         new HeadlessApplication(new ApplicationAdapter() {
         }, config);
-    }
-
-    @Before
-    public void readConfig() {
         Config.readConfigFile(cfg);
     }
 
     @Test
     public void testNumberVal() {
         int num = (int) Config.getNumber(cfg, "key1");
+        System.out.println(num);
         assertEquals(123, num);
-
     }
 
     @Test
@@ -63,6 +59,17 @@ public class ConfigTest {
 
     @Test
     public void testTextValue() {
+        String str = Config.getText(cfg, "key1");
+        assertEquals("123", str);
+    }
+
+    @Test(expected = NumberFormatException.class)
+    public void testTextAsNumberValue() {
+        Config.getNumber(cfg, "key2");
+    }
+
+    @Test
+    public void testNumberAsTextValue() {
         String str = Config.getText(cfg, "key2");
         assertEquals("hejsan", str);
     }
@@ -86,10 +93,10 @@ public class ConfigTest {
         assertEquals(123, num);
     }
 
-    /*@Test // TODO fix this test
+    @Test // TODO fix this test
     public void testKeyWithoutValue() {
         String str = Config.getText(cfg, "key7");
         System.out.println(str);
-    }*/
+    }
 
 }

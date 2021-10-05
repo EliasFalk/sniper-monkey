@@ -15,7 +15,7 @@ public final class Config {
 
     private Config() {}
 
-    private static final HashMap<String, HashMap<String, Object>> fileMap = new HashMap<>();
+    private static final HashMap<String, HashMap<String, String>> fileMap = new HashMap<>();
 
     /**
      * Read a config file and add it's data to the internal config hash.
@@ -24,7 +24,7 @@ public final class Config {
      * @param file The filename to read data from.
      */
     public static void readConfigFile(String file) {
-        HashMap<String, Object> config = new HashMap<>();
+        HashMap<String, String> config = new HashMap<>();
         if (fileMap.containsKey(file)) return;
         fileMap.put(file, config);
         FileHandle handle = Gdx.files.local(file);
@@ -32,16 +32,12 @@ public final class Config {
         String[] lines = text.split("\\r?\\n");
         for (String line : lines) {
             String[] words = line.split("(\\/\\/)|=");
-
             for (int i = 0; i < words.length; i++) {
                 words[i] = words[i].strip();
             }
-
-            try {
-                config.put(words[0], Float.parseFloat(words[1]));
-            } catch (NumberFormatException e) {
-                config.put(words[0], words[1]);
-            }
+            String value = "";
+            if(words.length > 1) value = words[1];
+            config.put(words[0], value);
         }
     }
 
@@ -50,11 +46,14 @@ public final class Config {
      *
      * @param file The file containing the data
      * @param key  The name of the datapoint
+     * @throws NumberFormatException if the key does not contain a valid number
+     * @throws RuntimeException if the key does not exist
      * @return The data as a float.
      */
     public static float getNumber(String file, String key) {
-        if (fileMap.get(file).containsKey(key))
-            return (float) fileMap.get(file).get(key);
+        if (fileMap.get(file).containsKey(key)) {
+            return Float.parseFloat(fileMap.get(file).get(key));
+        }
         else throw new RuntimeException("The key " + key + " does not exist.");
     }
 
@@ -67,7 +66,7 @@ public final class Config {
      */
     public static String getText(String file, String key) {
         if (fileMap.get(file).containsKey(key))
-            return (String) fileMap.get(file).get(key);
+            return fileMap.get(file).get(key);
         else throw new RuntimeException("The key " + key + " does not exist.");
     }
 }
