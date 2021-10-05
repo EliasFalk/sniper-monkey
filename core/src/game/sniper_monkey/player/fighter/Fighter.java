@@ -6,6 +6,12 @@ import game.sniper_monkey.player.fighter.attack.IAttack;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * An abstract class used for fighters providing functionality such as attacking,
+ * storing basic stats and hitbox settings.
+ *
+ * @author Elias Falk
+ */
 public abstract class Fighter {
 
     public final float ATTACK_FACTOR;

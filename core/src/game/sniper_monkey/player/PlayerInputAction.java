@@ -1,5 +1,8 @@
 package game.sniper_monkey.player;
 
+/**
+ * @author Elias Falk
+ */
 public enum PlayerInputAction {
     JUMP,
     MOVE_LEFT,

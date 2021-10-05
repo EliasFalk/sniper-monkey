@@ -5,6 +5,12 @@ import game.sniper_monkey.Config;
 import game.sniper_monkey.player.Player;
 import game.sniper_monkey.player.PlayerInputAction;
 
+/**
+ * Represents a controller reading keyboard input and updating the internal
+ * player's state based on a keybinds config file.
+ *
+ * @author Elias Falk
+ */
 public class PlayerController {
     private final Player player;
 

@@ -1,11 +1,7 @@
 package sniper_monkey.world;
 
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.Config;
-import game.sniper_monkey.platform.Platform;
-import game.sniper_monkey.player.Player;
 import game.sniper_monkey.player.PlayerFactory;
-import game.sniper_monkey.view.GameRenderer;
 import game.sniper_monkey.world.GameObject;
 import game.sniper_monkey.world.World;
 import org.junit.Assert;

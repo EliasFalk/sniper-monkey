@@ -4,6 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 
 /**
  * An Axis Aligned Bounding Box used for hit detection.
+ *
+ * @author Vincent Hellner
  */
 public final class Hitbox {
     private Vector2 position;
