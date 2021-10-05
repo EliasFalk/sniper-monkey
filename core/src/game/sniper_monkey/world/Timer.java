@@ -1,5 +1,10 @@
 package game.sniper_monkey.world;
 
+
+/**
+ * A timer that outputs true when finished and can give you them time from start.
+ * @author  Kevin Jeryd
+ */
 public class Timer {
     private final long NANO = 1000000000; // Number of nanoseconds in a second
 

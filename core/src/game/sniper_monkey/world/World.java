@@ -8,6 +8,16 @@ import game.sniper_monkey.collision.CollisionEngine;
 
 import java.util.ArrayList;
 
+/**
+ * Represents the model for the world where all game objects are existing in.
+ * It keeps track of the state of the game, updates timers as well as adds objects to the world and updates them
+ *
+ *
+ * @author Elias Falk
+ * @author Vincent Hellner
+ * @author Kevin Jeryd
+ * @author Dadi Andrason
+ */
 public final class World {
     private static World INSTANCE;
 
