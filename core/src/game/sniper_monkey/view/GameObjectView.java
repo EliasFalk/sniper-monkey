@@ -6,6 +6,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.world.GameObject;
 
+/**
+ * A view with a GameObject as its model to read data from
+ *
+ * @author Vincent Hellner
+ * @author Elias Falk
+ */
 public abstract class GameObjectView {
     private final GameObject model;
     protected Vector2 drawOffset;
@@ -14,9 +20,9 @@ public abstract class GameObjectView {
     /**
      * Creates a GameObjectView
      *
-     * @param drawOffset
-     * @param sprite
-     * @param model
+     * @param drawOffset An offset to draw the sprite at.
+     * @param sprite     The sprite to draw.
+     * @param model      The GameObject used as the model.
      */
     public GameObjectView(Vector2 drawOffset, Sprite sprite, GameObject model) {
         this.drawOffset = drawOffset;
@@ -50,7 +56,8 @@ public abstract class GameObjectView {
         }
     }
 
-    public void updateSprite() {
-
-    }
+    /**
+     * Overridable method for updating the sprite
+     */
+    public void updateSprite() { }
 }

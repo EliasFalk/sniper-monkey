@@ -4,6 +4,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Array;
 
+/**
+ * Utility used for cutting Sprite sheets used in animations.
+ *
+ * @author Elias Falk
+ * @author Vincent Hellner
+ * @author Kevin Jeryd
+ */
 public final class AnimationUtils {
 
     private AnimationUtils() {

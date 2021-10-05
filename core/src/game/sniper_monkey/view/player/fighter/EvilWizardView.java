@@ -14,6 +14,13 @@ import game.sniper_monkey.view.GameObjectView;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A view for the evil wizard with animation support.
+ *
+ * @author Vincent Hellner
+ * @author Elias Falk
+ * @author Kevin Jeryd
+ */
 public class EvilWizardView extends GameObjectView {
     private static final Vector2 drawOffset = new Vector2(-106, -83);
     private final Player model;
@@ -21,6 +28,10 @@ public class EvilWizardView extends GameObjectView {
 
     private final Map<FighterAnimation, Animation<Sprite>> animations = new HashMap<>();
 
+    /**
+     * Creates an EvilWizardView
+     * @param model The Player
+     */
     public EvilWizardView(Player model) {
         super(drawOffset, SpriteUtils.getDefaultSprite(), model);
         this.model = model;
@@ -47,6 +58,5 @@ public class EvilWizardView extends GameObjectView {
     public void updateSprite() {
         sprite = animations.get(model.getCurrentFighterAnimation()).getKeyFrame(Time.getElapsedTime());
         sprite.setFlip(!model.isLookingRight(), false);
-
     }
 }

@@ -1,5 +1,8 @@
 package game.sniper_monkey.world;
 
+/**
+ * An observer used for observing when the world has had a GameObject added or removed.
+ */
 public interface IWorldObserver {
     /**
      * Called when an object is added to the world

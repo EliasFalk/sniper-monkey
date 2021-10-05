@@ -3,7 +3,15 @@ package game.sniper_monkey;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TimerBank {
+/**
+ * A static class used for storing and updating UpdatableTimers
+ *
+ * @author Elias Falk
+ */
+public final class TimerBank {
+
+    private TimerBank() {}
+
     private static final List<UpdatableTimer> timers = new ArrayList<>();
 
     /**

@@ -5,7 +5,15 @@ import com.badlogic.gdx.files.FileHandle;
 
 import java.util.HashMap;
 
-public class Config {
+/**
+ * A static class used for reading and storing config data that can later be accessed.
+ *
+ * @author Vincent Hellner
+ * @author Elias Falk
+ */
+public final class Config {
+
+    private Config() {}
 
     private static final HashMap<String, HashMap<String, Object>> fileMap = new HashMap<>();
 

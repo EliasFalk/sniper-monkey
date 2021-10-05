@@ -2,7 +2,13 @@ package game.sniper_monkey;
 
 import com.badlogic.gdx.math.Vector2;
 
-// TODO add documentation
+/**
+ * Represents an object used for handling of physics based movement using
+ * gravity, velocity, acceleration, etc.
+ *
+ * @author Vincent Hellner
+ * @author Elias Falk
+ */
 public class PhysicsPosition {
     private static final float GRAVITY;
     private static final float DRAG;

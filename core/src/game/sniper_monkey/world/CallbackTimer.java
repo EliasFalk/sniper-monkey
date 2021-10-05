@@ -4,6 +4,12 @@ import game.sniper_monkey.Callback;
 import game.sniper_monkey.TimerBank;
 import game.sniper_monkey.UpdatableTimer;
 
+/**
+ * An UpdatableTimer with a callback that is called once it has finished counting down.
+ *
+ * @author Elias Falk
+ * @author Vincent Hellner
+ */
 public class CallbackTimer implements UpdatableTimer {
 
     private final float timerLength;

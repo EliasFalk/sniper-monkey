@@ -9,6 +9,11 @@ import com.badlogic.gdx.utils.Align;
 import game.sniper_monkey.world.ITimerObserver;
 import game.sniper_monkey.world.World;
 
+/**
+ * A view for the Round timer shown at the top of the screen
+ *
+ * @author Kevin Jeryd
+ */
 public class RoundTimerView extends HUDView implements ITimerObserver {
 
     private final Label countdownLabel;

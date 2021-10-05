@@ -3,6 +3,12 @@ package game.sniper_monkey.world;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.collision.Hitbox;
 
+/**
+ * A abstract GameObject used in the world. It has a position and hitbox as well as support for
+ * being updated.
+ *
+ * @author Vincent Hellner
+ */
 public abstract class GameObject {
     private final Hitbox hitbox;
     private final boolean isDynamic;
@@ -35,7 +41,7 @@ public abstract class GameObject {
      *
      * @param deltaTime The time between this and the last time update was called (in seconds).
      */
-    public abstract void update(float deltaTime);
+    public void update(float deltaTime) {}
 
     /**
      * Removes this GameObject from the world

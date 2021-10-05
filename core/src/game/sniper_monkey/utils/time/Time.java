@@ -1,5 +1,12 @@
 package game.sniper_monkey.utils.time;
 
+/**
+ * A Time utility
+ *
+ * @author Elias Falk
+ * @author Vincent Hellner
+ * @author Kevin Jeryd
+ */
 public final class Time {
 
     /**

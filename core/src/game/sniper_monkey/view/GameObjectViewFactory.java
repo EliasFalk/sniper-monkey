@@ -9,7 +9,14 @@ import game.sniper_monkey.world.GameObject;
 
 import java.util.HashMap;
 
-public class GameObjectViewFactory {
+/**
+ * A static class creating GameObjectViews using GameObjects by determining their type at runtime.
+ *
+ * @author Vincent Hellner
+ */
+public final class GameObjectViewFactory {
+
+    private GameObjectViewFactory() {}
 
     private static final HashMap<Class<?>, ViewCreator> viewCreatorDispatch = new HashMap<>();
     private static final HashMap<Class<?>, ViewCreator> fighterDispatch = new HashMap<>();

@@ -6,6 +6,10 @@ import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.platform.Platform;
 import game.sniper_monkey.view.GameObjectView;
 
+/**
+ * @author Vincent Hellner
+ * @author Elias Falk
+ */
 public class PlatformView extends GameObjectView {
     Platform model;
 

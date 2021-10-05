@@ -19,9 +19,4 @@ public class Platform extends GameObject {
         super(position, false);
         setHitboxSize(new Vector2(16, 16));
     }
-
-    @Override
-    public void update(float deltaTime) {
-        //TODO issa smell here, how fix?
-    }
 }

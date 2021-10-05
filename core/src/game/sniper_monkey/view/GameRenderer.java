@@ -11,6 +11,14 @@ import game.sniper_monkey.world.World;
 
 import java.util.ArrayList;
 
+/**
+ * A class storing view data (all HUDViews and GameObjectViews) as well as renders these using
+ * a projection matrix. It also provides visual debug functionality.
+ *
+ * @author Vincent Hellner
+ * @author Elias Falk
+ * @author Kevin Jeryd
+ */
 public class GameRenderer implements IWorldObserver {
     private final ArrayList<GameObjectView> gameObjectViews;
     SpriteBatch batch;
@@ -20,6 +28,9 @@ public class GameRenderer implements IWorldObserver {
     boolean debugMode = (Math.random() > 0.5); // TODO epic.
     RoundTimerView roundTimerView;
 
+    /**
+     * Creates a GameRenderer
+     */
     public GameRenderer() {
         stage = new Stage();
         batch = new SpriteBatch();
@@ -33,6 +44,11 @@ public class GameRenderer implements IWorldObserver {
         roundTimerView.addActors(stage);
     }
 
+    /**
+     * Updates the projection matrix using a new size
+     * @param width  The new viewport width
+     * @param height The new viewport height
+     */
     public void updateCamera(int width, int height) {
         camera.viewportHeight = height;
         camera.viewportWidth = width;
