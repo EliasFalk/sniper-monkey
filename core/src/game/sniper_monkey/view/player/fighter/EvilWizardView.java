@@ -34,11 +34,13 @@ public class EvilWizardView extends GameObjectView {
         Texture run = new Texture("images/evil_wizard_2/Run.png");
         Texture jump = new Texture("images/evil_wizard_2/Jump.png");
         Texture fall = new Texture("images/evil_wizard_2/Fall.png");
+        Texture death = new Texture("images/evil_wizard_2/Death.png");
         animations.clear();
         animations.put(FighterAnimation.IDLING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(idle, 8), Animation.PlayMode.LOOP));
         animations.put(FighterAnimation.MOVING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(run, 8), Animation.PlayMode.LOOP));
         animations.put(FighterAnimation.JUMPING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(jump, 2), Animation.PlayMode.LOOP));
         animations.put(FighterAnimation.FALLING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(fall, 2), Animation.PlayMode.LOOP));
+        animations.put(FighterAnimation.DYING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(death, 7), Animation.PlayMode.LOOP_PINGPONG));
     }
 
     @Override
