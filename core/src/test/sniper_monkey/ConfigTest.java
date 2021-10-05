@@ -1,6 +1,7 @@
 package sniper_monkey;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import game.sniper_monkey.Config;
@@ -16,7 +17,7 @@ public class ConfigTest {
   
     @BeforeClass
     public static void initHeadless() {
-        cfg = "assets/cfg/test.cfg";
+        cfg = "cfg/test.cfg";
         final HeadlessApplicationConfiguration config = new HeadlessApplicationConfiguration();
         new HeadlessApplication(new ApplicationAdapter() {
         }, config);

@@ -1,5 +1,8 @@
 package sniper_monkey.player;
 
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.backends.headless.HeadlessApplication;
+import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import game.sniper_monkey.player.Player;
 import game.sniper_monkey.player.PlayerFactory;
@@ -12,6 +15,13 @@ import org.junit.Test;
 public class PlayerTest {
 
     Player player;
+
+    @BeforeClass
+    public static void initHeadless() {
+        final HeadlessApplicationConfiguration config = new HeadlessApplicationConfiguration();
+        new HeadlessApplication(new ApplicationAdapter() {
+        }, config);
+    }
 
     @Before
     public void initPlayer() {

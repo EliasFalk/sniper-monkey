@@ -3,8 +3,10 @@ sourceCompatibility = 1.16
 
 sourceSets.main.java.srcDirs = [ "src/" ]
 sourceSets.test.java.srcDirs = [ "src/test" ]
+sourceSets.main.resources.srcDirs = ["../core/assets"]
 
 eclipse.project.name = appName + "-core"
+project.ext.assetsDir = new File("../core/assets")
 
 dependencies {
     implementation 'junit:junit:4.13.2'
