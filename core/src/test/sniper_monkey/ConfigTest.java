@@ -12,8 +12,11 @@ import org.junit.Test;
 
 public class ConfigTest {
 
+    private static String cfg;
+  
     @BeforeClass
     public static void initHeadless() {
+        cfg = "assets/cfg/test.cfg";
         final HeadlessApplicationConfiguration config = new HeadlessApplicationConfiguration();
         new HeadlessApplication(new ApplicationAdapter() {
         }, config);
@@ -21,12 +24,12 @@ public class ConfigTest {
 
     @Before
     public void readConfig() {
-        Config.readConfigFile("assets/cfg/test.cfg");
+        Config.readConfigFile(cfg);
     }
 
     @Test
     public void testNumberVal() {
-        int num = (int) Config.getNumber("assets/cfg/test.cfg", "key1");
+        int num = (int) Config.getNumber(cfg, "key1");
         assertEquals(123, num);
 
     }
@@ -34,7 +37,7 @@ public class ConfigTest {
     @Test
     public void testInvalidNumber() {
         try {
-            int num = (int) Config.getNumber("assets/cfg/test.cfg", "key20");
+            int num = (int) Config.getNumber(cfg, "key20");
         } catch (RuntimeException e) {
             if (e.getMessage().equals("The key " + "key20" + " does not exist.")) {
                 assertTrue(true);
@@ -47,7 +50,7 @@ public class ConfigTest {
     @Test
     public void testInvalidText() {
         try {
-           String str = Config.getText("assets/cfg/test.cfg", "key20");
+           String str = Config.getText(cfg, "key20");
         } catch (RuntimeException e) {
             if (e.getMessage().equals("The key " + "key20" + " does not exist.")) {
                 assertTrue(true);
@@ -60,10 +63,33 @@ public class ConfigTest {
 
     @Test
     public void testTextValue() {
-        String str = Config.getText("assets/cfg/test.cfg", "key2");
+        String str = Config.getText(cfg, "key2");
         assertEquals("hejsan", str);
-
-
     }
+
+    @Test
+    public void testMultiWordText() {
+        String str = Config.getText(cfg, "key3");
+        assertEquals("hello there", str);
+    }
+
+    @Test
+    public void testDoubleSlashText() {
+        String str = Config.getText(cfg, "key5");
+        System.out.println(str);
+        assertEquals("hejsan", str); // "//" is considered to be a comment. it's meant to disappear.
+    }
+
+    @Test
+    public void testDoubleSlashNumber() { // kinda same as previous test but maybe need to test it for getNumber() as well.
+        int num = (int) Config.getNumber(cfg, "key4");
+        assertEquals(123, num);
+    }
+
+    /*@Test // TODO fix this test
+    public void testKeyWithoutValue() {
+        String str = Config.getText(cfg, "key7");
+        System.out.println(str);
+    }*/
 
 }
