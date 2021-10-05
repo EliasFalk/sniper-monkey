@@ -2,13 +2,19 @@ package game.sniper_monkey;
 
 import com.badlogic.gdx.math.Vector2;
 
+// TODO add documentation
 public class PhysicsPosition {
-    private final float GRAVITY = -600f;
-    private final float DRAG = 800f;
+    private static final float GRAVITY;
+    private static final float DRAG;
     private Vector2 position;
     private Vector2 velocity;
     private Vector2 acceleration = new Vector2(0, GRAVITY);
 
+    static {
+        Config.readConfigFile("cfg/physics.cfg");
+        GRAVITY = Config.getNumber("cfg/physics.cfg", "GRAVITY");
+        DRAG = Config.getNumber("cfg/physics.cfg", "DRAG");
+    }
 
     public PhysicsPosition(Vector2 position, Vector2 velocity, Vector2 acceleration) {
         this.position = position;
@@ -23,8 +29,7 @@ public class PhysicsPosition {
     }
 
     public PhysicsPosition(Vector2 position) {
-        this.position = position;
-        this.velocity = new Vector2(0, 0);
+        this(position, new Vector2(0, 0));
     }
 
     /**
@@ -72,5 +77,15 @@ public class PhysicsPosition {
         this.acceleration = acceleration;
     }
 
+    public PhysicsPosition(PhysicsPosition physicsPosition) {
+        this.position = physicsPosition.getPosition();
+        this.velocity = physicsPosition.getVelocity();
+        this.acceleration = physicsPosition.getAcceleration();
+    }
 
+    public String toString() {
+        return "Position: " + position.x + ", " + position.y + "\n" +
+                "Velocity: " + velocity.x + ", " + velocity.y + "\n" +
+                "Acceleration: " + acceleration.x + ", " + acceleration.y + "\n";
+    }
 }
