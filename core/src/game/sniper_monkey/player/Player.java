@@ -1,8 +1,11 @@
 package game.sniper_monkey.player;
 
 import com.badlogic.gdx.math.Vector2;
+import game.sniper_monkey.Callback;
+import game.sniper_monkey.Config;
 import game.sniper_monkey.PhysicsPosition;
 import game.sniper_monkey.collision.CollisionEngine;
+import game.sniper_monkey.collision.Hitbox;
 import game.sniper_monkey.player.fighter.Fighter;
 import game.sniper_monkey.world.GameObject;
 
@@ -11,14 +14,20 @@ import java.util.Map;
 
 public class Player extends GameObject {
     // TODO read these values from config file
-    private static final float MAX_X_VEL = 200f;
-    private static final float VEL_GAIN = 25f;
-    private static final float JUMP_GAIN = 300f;
-    private static final int MAX_STAMINA = 100;
-    private static final int MAX_HEALTH = 100;
+    private static final float MAX_X_VEL;
+    private static final float VEL_GAIN;
+    private static final float JUMP_GAIN;
+    private static final int MAX_STAMINA;
+    private static final int MAX_HEALTH;
+    private static final float MIN_BLOCK;
+    private static final float MAX_BLOCK;
+    private static final float BASE_BLOCK_REGEN;
+    private static final float BASE_BLOCK_DRAIN;
+    private static final float BASE_STAMINA_REGEN;
+    private static final float SWAP_COOLDOWN;
     private final FluctuatingAttribute stamina = new FluctuatingAttribute(MAX_STAMINA);
     private final FluctuatingAttribute health = new FluctuatingAttribute(MAX_HEALTH);
-    private final FluctuatingAttribute blockFactor = new FluctuatingAttribute(0.4f, 0.7f);
+    private final FluctuatingAttribute blockFactor = new FluctuatingAttribute(MIN_BLOCK, MAX_BLOCK);
     private final Fighter primaryFighter;
     private final Fighter secondaryFighter;
     private final Map<PlayerInputAction, Boolean> inputActions = new HashMap<>();
@@ -30,6 +39,23 @@ public class Player extends GameObject {
     private boolean lookingRight;
     private State movementState = this::groundedState;
     private State abilityState = this::inactiveState;
+
+
+    static {
+        String filepath = "cfg/player_values.cfg";
+        Config.readConfigFile(filepath);
+        MAX_X_VEL = Config.getNumber(filepath, "MAX_X_VEL");
+        VEL_GAIN = Config.getNumber(filepath, "VEL_GAIN");
+        JUMP_GAIN = Config.getNumber(filepath, "JUMP_GAIN");
+        MAX_STAMINA = (int) Config.getNumber(filepath, "MAX_STAMINA");
+        MAX_HEALTH = (int) Config.getNumber(filepath, "MAX_HEALTH");
+        MIN_BLOCK = Config.getNumber(filepath, "MIN_BLOCK");
+        MAX_BLOCK = Config.getNumber(filepath, "MAX_BLOCK");
+        BASE_BLOCK_REGEN = Config.getNumber(filepath, "BASE_BLOCK_REGEN");
+        BASE_BLOCK_DRAIN = Config.getNumber(filepath, "BASE_BLOCK_DRAIN");
+        BASE_STAMINA_REGEN = Config.getNumber(filepath, "BASE_STAMINA_REGEN");
+        SWAP_COOLDOWN = Config.getNumber(filepath, "SWAP_COOLDOWN");
+    }
 
     /**
      * Creates a player with a position in the world
@@ -63,13 +89,13 @@ public class Player extends GameObject {
      */
     private void blockingState() {
         // TODO set correct blocking values, read these from config. If different values in different movement states, use percentage of config value.
-        blockFactor.setDrainAmount(0.2f);
+        currentFighterAnimation = FighterAnimation.DYING;
         if (inputActions.get(PlayerInputAction.BLOCK)) {
             blockFactor.setRegenerating(false);
-            blockFactor.setDraining(true);
+            blockFactor.setDraining(true, BASE_BLOCK_DRAIN);
         } else {
             blockFactor.setDraining(false);
-            blockFactor.setRegenerating(true, 0.1f);
+            blockFactor.setRegenerating(true, BASE_BLOCK_REGEN);
             abilityState = this::inactiveState;
             movementState.performState();
         }
@@ -84,7 +110,12 @@ public class Player extends GameObject {
     }
 
     private void swappingFighterState() {
+        // TODO swap fighter
 
+        // if swapped fighter go to inactive state. Swapping fighter could take some time?
+        if (true) {
+            abilityState = this::inactiveState;
+        }
     }
 
     private void inactiveState() {
@@ -116,6 +147,11 @@ public class Player extends GameObject {
             groundedState();
             return;
         }
+
+        if (inputActions.get(PlayerInputAction.DROP)) {
+            physicsPos.setVelocity(physicsPos.getVelocity().add(new Vector2(0, -JUMP_GAIN / 5)));
+        }
+
         handleHorizontalMovement();
         if (physicsPos.getVelocity().y < 0) {
             currentFighterAnimation = FighterAnimation.FALLING;
@@ -129,6 +165,7 @@ public class Player extends GameObject {
     private void groundedState() {
         currentFighterAnimation = FighterAnimation.IDLING;
         handleHorizontalMovement();
+
         if (inputActions.get(PlayerInputAction.JUMP)) {
             jump();
             movementState = this::inAirState;
@@ -253,7 +290,7 @@ public class Player extends GameObject {
         activeFighter = fighter;
         setHitboxPos(physicsPos.getPosition());
         setHitboxSize(fighter.getHitboxSize());
-        stamina.setRegenerationAmount(10f * activeFighter.SPEED_FACTOR);
+        stamina.setRegenerationAmount(BASE_STAMINA_REGEN * activeFighter.SPEED_FACTOR);
     }
 
     private void handleLookingDirection() {
@@ -274,7 +311,6 @@ public class Player extends GameObject {
         stamina.update(deltaTime);
         abilityState.performState();
         blockFactor.update(deltaTime);
-        System.out.println(blockFactor.getCurrentValue());
         updatePlayerPos(deltaTime);
         handleLookingDirection();
         resetInputActions();
