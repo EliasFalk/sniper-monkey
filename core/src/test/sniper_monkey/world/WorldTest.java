@@ -1,6 +1,7 @@
 package sniper_monkey.world;
 
 import com.badlogic.gdx.math.Vector2;
+import game.sniper_monkey.model.Config;
 import game.sniper_monkey.model.player.PlayerFactory;
 import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.model.world.World;
@@ -13,7 +14,7 @@ public class WorldTest {
 
     @Test
     public void testGetRoundDuration() {
-        Assert.assertEquals(120, world.getRoundDuration());
+        Assert.assertEquals(130, world.getRoundDuration());
     }
 
     @Test
@@ -27,6 +28,6 @@ public class WorldTest {
     @Test
     public void testUpdate() {
         world.update(2);
-        Assert.assertEquals(117, world.getRoundDuration());
+        Assert.assertEquals(127, world.getRoundDuration());
     }
 }
