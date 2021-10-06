@@ -26,14 +26,10 @@ public class FluctuatingAttributeTest {
         Assert.assertEquals(fluctuatingAttribute.getCurrentValue(), 1,0.0);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testRegenerationAmountNegative() {
         fluctuatingAttribute.setCurrentValue(0.9f);
-        try {
-            fluctuatingAttribute.setRegenerationAmount(-0.25f);
-        } catch (IllegalArgumentException e) {
-
-        }
+        fluctuatingAttribute.setRegenerationAmount(-0.25f);
     }
 
     @Test
@@ -54,14 +50,10 @@ public class FluctuatingAttributeTest {
         Assert.assertEquals(fluctuatingAttribute.getCurrentValue(), 0,0.0);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testDrainAmountNegative() {
         fluctuatingAttribute.setCurrentValue(0.9f);
-        try {
-            fluctuatingAttribute.setDrainAmount(-0.25f);
-        } catch (IllegalArgumentException e) {
-
-        }
+        fluctuatingAttribute.setDrainAmount(-0.25f);
     }
 
     @Test
@@ -87,14 +79,10 @@ public class FluctuatingAttributeTest {
         Assert.assertEquals(fluctuatingAttribute.getCurrentValue(), 1,0.0);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testIncreaseNegativeNumber() {
         fluctuatingAttribute.setCurrentValue(0.30f);
-        try {
-            fluctuatingAttribute.increase(-0.8f);
-        } catch (IllegalArgumentException e) {
-
-        }
+        fluctuatingAttribute.increase(-0.8f);
     }
 
     @Test
@@ -111,14 +99,10 @@ public class FluctuatingAttributeTest {
         Assert.assertEquals(fluctuatingAttribute.getCurrentValue(), 0,0.0);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testDecreaseNegativeNumber() {
         fluctuatingAttribute.setCurrentValue(0.30f);
-        try {
-            fluctuatingAttribute.decrease(-0.8f);
-        } catch (IllegalArgumentException e) {
-
-        }
+        fluctuatingAttribute.decrease(-0.8f);
     }
 
     //TODO add decrease test on attack
