@@ -7,6 +7,7 @@ package game.sniper_monkey.player;
  *
  * @author Elias Falk
  * @author Vincent Hellner
+ * @author Dadi Andrason
  */
 public class FluctuatingAttribute {
     private final float maxValue;

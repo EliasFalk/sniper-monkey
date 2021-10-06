@@ -14,7 +14,7 @@ import org.junit.Test;
 public class ConfigTest {
 
     private static String cfg;
-  
+
     @BeforeClass
     public static void initHeadless() {
         cfg = "cfg/test.cfg";
@@ -47,7 +47,7 @@ public class ConfigTest {
     @Test
     public void testInvalidText() {
         try {
-           String str = Config.getText(cfg, "key20");
+            String str = Config.getText(cfg, "key20");
         } catch (RuntimeException e) {
             if (e.getMessage().equals("The key " + "key20" + " does not exist.")) {
                 assertTrue(true);
@@ -84,7 +84,6 @@ public class ConfigTest {
     @Test
     public void testDoubleSlashText() {
         String str = Config.getText(cfg, "key5");
-        System.out.println(str);
         assertEquals("hejsan", str); // "//" is considered to be a comment. it's meant to disappear.
     }
 
@@ -94,10 +93,14 @@ public class ConfigTest {
         assertEquals(123, num);
     }
 
-    @Test // TODO fix this test
-    public void testKeyWithoutValue() {
+    @Test
+    public void testKeyWithoutValueAsText() {
         String str = Config.getText(cfg, "key7");
-        System.out.println(str);
+        assertEquals("", str);
     }
 
+    @Test(expected = NumberFormatException.class)
+    public void testKeyWithoutValueAsNumber() {
+        int num = (int) Config.getNumber(cfg, "key7");
+    }
 }
