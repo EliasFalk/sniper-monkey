@@ -41,13 +41,15 @@ public final class Config {
         }
     }
 
+    //TODO write function, key must be a value
+
     /**
      * Gets config data as a float
      *
      * @param file The file containing the data
      * @param key  The name of the datapoint
      * @throws NumberFormatException if the key does not contain a valid number
-     * @throws RuntimeException if the key does not exist
+     * @throws RuntimeException if the key does not exist, or key is empty
      * @return The data as a float.
      */
     public static float getNumber(String file, String key) {
