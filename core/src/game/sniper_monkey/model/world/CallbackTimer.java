@@ -1,8 +1,8 @@
-package game.sniper_monkey.world;
+package game.sniper_monkey.model.world;
 
-import game.sniper_monkey.Callback;
-import game.sniper_monkey.TimerBank;
-import game.sniper_monkey.UpdatableTimer;
+import game.sniper_monkey.model.Callback;
+import game.sniper_monkey.model.TimerBank;
+import game.sniper_monkey.model.UpdatableTimer;
 
 /**
  * An UpdatableTimer with a callback that is called once it has finished counting down.

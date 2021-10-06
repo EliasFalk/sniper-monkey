@@ -1,4 +1,4 @@
-package game.sniper_monkey.world;
+package game.sniper_monkey.model.world;
 
 
 /**

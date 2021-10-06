@@ -1,4 +1,4 @@
-package game.sniper_monkey.player.fighter.attack;
+package game.sniper_monkey.model.player.fighter.attack;
 
 /**
  * An interface used for attacks providing ability to perform the attack

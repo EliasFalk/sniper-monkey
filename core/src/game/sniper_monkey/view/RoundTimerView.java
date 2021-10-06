@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import game.sniper_monkey.world.ITimerObserver;
-import game.sniper_monkey.world.World;
+import game.sniper_monkey.model.world.ITimerObserver;
+import game.sniper_monkey.model.world.World;
 
 /**
  * A view for the Round timer shown at the top of the screen

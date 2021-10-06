@@ -1,4 +1,4 @@
-package game.sniper_monkey.world;
+package game.sniper_monkey.model.world;
 
 /**
  * An observer used for observing when the world has had a GameObject added or removed.

@@ -1,9 +1,7 @@
 package sniper_monkey.collision;
 
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.collision.Hitbox;
-import game.sniper_monkey.player.PlayerInputAction;
-import org.junit.Assert;
+import game.sniper_monkey.model.collision.Hitbox;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.world.GameObject;
+import game.sniper_monkey.model.world.GameObject;
 
 /**
  * A view with a GameObject as its model to read data from

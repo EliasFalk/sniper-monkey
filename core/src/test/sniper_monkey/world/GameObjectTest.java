@@ -1,12 +1,7 @@
 package sniper_monkey.world;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.collision.Hitbox;
-import game.sniper_monkey.player.Player;
-import game.sniper_monkey.world.GameObject;
-import game.sniper_monkey.world.World;
-import org.junit.Before;
+import game.sniper_monkey.model.world.GameObject;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;

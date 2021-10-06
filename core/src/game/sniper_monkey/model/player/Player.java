@@ -1,13 +1,11 @@
-package game.sniper_monkey.player;
+package game.sniper_monkey.model.player;
 
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.Callback;
-import game.sniper_monkey.Config;
-import game.sniper_monkey.PhysicsPosition;
-import game.sniper_monkey.collision.CollisionEngine;
-import game.sniper_monkey.collision.Hitbox;
-import game.sniper_monkey.player.fighter.Fighter;
-import game.sniper_monkey.world.GameObject;
+import game.sniper_monkey.model.Config;
+import game.sniper_monkey.model.PhysicsPosition;
+import game.sniper_monkey.model.collision.CollisionEngine;
+import game.sniper_monkey.model.player.fighter.Fighter;
+import game.sniper_monkey.model.world.GameObject;
 
 import java.util.HashMap;
 import java.util.Map;

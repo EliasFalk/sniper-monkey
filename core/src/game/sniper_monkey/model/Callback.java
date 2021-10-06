@@ -1,4 +1,4 @@
-package game.sniper_monkey;
+package game.sniper_monkey.model;
 
 /**
  * A functional interface used for callbacks

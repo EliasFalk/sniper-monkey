@@ -1,6 +1,6 @@
 package sniper_monkey.player;
 
-import game.sniper_monkey.player.FluctuatingAttribute;
+import game.sniper_monkey.model.player.FluctuatingAttribute;
 import org.junit.Assert;
 import org.junit.Test;
 

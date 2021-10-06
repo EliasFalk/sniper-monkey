@@ -1,4 +1,4 @@
-package game.sniper_monkey.player.fighter;
+package game.sniper_monkey.model.player.fighter;
 
 import com.badlogic.gdx.math.Vector2;
 

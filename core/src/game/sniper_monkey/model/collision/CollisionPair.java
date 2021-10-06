@@ -1,6 +1,6 @@
-package game.sniper_monkey.collision;
+package game.sniper_monkey.model.collision;
 
-import game.sniper_monkey.world.GameObject;
+import game.sniper_monkey.model.world.GameObject;
 
 import java.util.Objects;
 

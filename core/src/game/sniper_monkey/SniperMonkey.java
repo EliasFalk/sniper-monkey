@@ -5,11 +5,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.controller.PlayerController;
-import game.sniper_monkey.platform.Platform;
-import game.sniper_monkey.player.Player;
-import game.sniper_monkey.player.PlayerFactory;
+import game.sniper_monkey.model.platform.Platform;
+import game.sniper_monkey.model.player.Player;
+import game.sniper_monkey.model.player.PlayerFactory;
 import game.sniper_monkey.view.GameRenderer;
-import game.sniper_monkey.world.World;
+import game.sniper_monkey.model.world.World;
 
 public class SniperMonkey extends ApplicationAdapter {
     GameRenderer gameRenderer;

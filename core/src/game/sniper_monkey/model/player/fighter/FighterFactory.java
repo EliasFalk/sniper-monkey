@@ -1,4 +1,4 @@
-package game.sniper_monkey.player.fighter;
+package game.sniper_monkey.model.player.fighter;
 
 /**
  * @author Elias Falk

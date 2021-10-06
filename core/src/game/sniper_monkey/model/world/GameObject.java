@@ -1,7 +1,7 @@
-package game.sniper_monkey.world;
+package game.sniper_monkey.model.world;
 
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.collision.Hitbox;
+import game.sniper_monkey.model.collision.Hitbox;
 
 /**
  * A abstract GameObject used in the world. It has a position and hitbox as well as support for

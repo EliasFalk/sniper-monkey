@@ -1,4 +1,4 @@
-package game.sniper_monkey.collision;
+package game.sniper_monkey.model.collision;
 
 import com.badlogic.gdx.math.Vector2;
 

@@ -1,4 +1,4 @@
-package game.sniper_monkey;
+package game.sniper_monkey.model;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;

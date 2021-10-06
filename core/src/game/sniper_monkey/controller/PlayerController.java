@@ -1,9 +1,9 @@
 package game.sniper_monkey.controller;
 
 import com.badlogic.gdx.Gdx;
-import game.sniper_monkey.Config;
-import game.sniper_monkey.player.Player;
-import game.sniper_monkey.player.PlayerInputAction;
+import game.sniper_monkey.model.Config;
+import game.sniper_monkey.model.player.Player;
+import game.sniper_monkey.model.player.PlayerInputAction;
 
 /**
  * Represents a controller reading keyboard input and updating the internal

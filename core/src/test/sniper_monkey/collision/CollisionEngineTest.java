@@ -1,13 +1,10 @@
 package sniper_monkey.collision;
 
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.collision.CollisionEngine;
-import game.sniper_monkey.collision.Hitbox;
-import game.sniper_monkey.platform.Platform;
-import game.sniper_monkey.player.Player;
-import game.sniper_monkey.player.PlayerFactory;
-import game.sniper_monkey.world.GameObject;
-import org.junit.Before;
+import game.sniper_monkey.model.collision.CollisionEngine;
+import game.sniper_monkey.model.collision.Hitbox;
+import game.sniper_monkey.model.platform.Platform;
+import game.sniper_monkey.model.world.GameObject;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

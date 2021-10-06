@@ -1,9 +1,9 @@
 package sniper_monkey.world;
 
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.player.PlayerFactory;
-import game.sniper_monkey.world.GameObject;
-import game.sniper_monkey.world.World;
+import game.sniper_monkey.model.player.PlayerFactory;
+import game.sniper_monkey.model.world.GameObject;
+import game.sniper_monkey.model.world.World;
 import org.junit.Assert;
 import org.junit.Test;
 

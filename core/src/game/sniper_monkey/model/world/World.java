@@ -1,10 +1,10 @@
-package game.sniper_monkey.world;
+package game.sniper_monkey.model.world;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import game.sniper_monkey.Config;
-import game.sniper_monkey.TimerBank;
-import game.sniper_monkey.collision.CollisionEngine;
+import game.sniper_monkey.model.Config;
+import game.sniper_monkey.model.TimerBank;
+import game.sniper_monkey.model.collision.CollisionEngine;
 
 import java.util.ArrayList;
 

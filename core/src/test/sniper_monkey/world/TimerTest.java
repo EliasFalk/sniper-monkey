@@ -1,10 +1,7 @@
 package sniper_monkey.world;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import game.sniper_monkey.player.Player;
-import game.sniper_monkey.world.GameObject;
 import org.junit.*;
 
-import game.sniper_monkey.world.Timer;
+import game.sniper_monkey.model.world.Timer;
 
 import java.util.concurrent.TimeUnit;
 

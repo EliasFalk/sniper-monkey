@@ -1,7 +1,7 @@
-package game.sniper_monkey.platform;
+package game.sniper_monkey.model.platform;
 
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.world.GameObject;
+import game.sniper_monkey.model.world.GameObject;
 
 /**
  * A stationary GameObject representing a platform with collision.

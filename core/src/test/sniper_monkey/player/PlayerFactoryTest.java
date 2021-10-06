@@ -6,10 +6,8 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.Config;
-import game.sniper_monkey.player.Player;
-import game.sniper_monkey.player.PlayerFactory;
-import org.junit.Before;
+import game.sniper_monkey.model.player.Player;
+import game.sniper_monkey.model.player.PlayerFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

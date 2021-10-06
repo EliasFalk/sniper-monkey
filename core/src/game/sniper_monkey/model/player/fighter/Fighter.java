@@ -1,7 +1,7 @@
-package game.sniper_monkey.player.fighter;
+package game.sniper_monkey.model.player.fighter;
 
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.player.fighter.attack.IAttack;
+import game.sniper_monkey.model.player.fighter.attack.IAttack;
 
 import java.util.ArrayList;
 import java.util.List;

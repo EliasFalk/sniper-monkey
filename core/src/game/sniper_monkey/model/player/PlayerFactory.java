@@ -1,7 +1,7 @@
-package game.sniper_monkey.player;
+package game.sniper_monkey.model.player;
 
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.player.fighter.FighterFactory;
+import game.sniper_monkey.model.player.fighter.FighterFactory;
 
 /**
  * @author Elias Falk

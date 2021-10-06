@@ -1,4 +1,4 @@
-package game.sniper_monkey.player;
+package game.sniper_monkey.model.player;
 
 /**
  * Enum representing different animations a fighter can have

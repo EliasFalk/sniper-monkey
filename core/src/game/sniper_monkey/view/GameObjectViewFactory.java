@@ -1,11 +1,11 @@
 package game.sniper_monkey.view;
 
-import game.sniper_monkey.platform.Platform;
-import game.sniper_monkey.player.Player;
-import game.sniper_monkey.player.fighter.EvilWizard;
+import game.sniper_monkey.model.platform.Platform;
+import game.sniper_monkey.model.player.Player;
+import game.sniper_monkey.model.player.fighter.EvilWizard;
 import game.sniper_monkey.view.platform.PlatformView;
 import game.sniper_monkey.view.player.fighter.EvilWizardView;
-import game.sniper_monkey.world.GameObject;
+import game.sniper_monkey.model.world.GameObject;
 
 import java.util.HashMap;
 

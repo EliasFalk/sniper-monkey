@@ -3,7 +3,7 @@ package game.sniper_monkey.view.platform;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.platform.Platform;
+import game.sniper_monkey.model.platform.Platform;
 import game.sniper_monkey.view.GameObjectView;
 
 /**

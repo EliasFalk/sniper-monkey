@@ -1,4 +1,4 @@
-package game.sniper_monkey;
+package game.sniper_monkey.model;
 
 import java.util.ArrayList;
 import java.util.List;

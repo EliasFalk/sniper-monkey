@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
-import game.sniper_monkey.world.GameObject;
-import game.sniper_monkey.world.IWorldObserver;
-import game.sniper_monkey.world.World;
+import game.sniper_monkey.model.world.GameObject;
+import game.sniper_monkey.model.world.IWorldObserver;
+import game.sniper_monkey.model.world.World;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package game.sniper_monkey;
+package game.sniper_monkey.model;
 
 /**
  * An interface providing functionality for timers that should be updated every frame

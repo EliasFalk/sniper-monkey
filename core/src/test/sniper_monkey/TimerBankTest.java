@@ -1,11 +1,10 @@
 package sniper_monkey;
 
-import game.sniper_monkey.TimerBank;
-import game.sniper_monkey.world.CallbackTimer;
-import game.sniper_monkey.world.Timer;
+import game.sniper_monkey.model.TimerBank;
+import game.sniper_monkey.model.world.CallbackTimer;
+
 import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.BeforeClass;
+
 import org.junit.Test;
 
 public class TimerBankTest {
