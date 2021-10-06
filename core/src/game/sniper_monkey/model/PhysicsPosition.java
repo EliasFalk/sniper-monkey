@@ -17,9 +17,10 @@ public class PhysicsPosition {
     private Vector2 acceleration = new Vector2(0, GRAVITY);
 
     static {
-        Config.readConfigFile("cfg/physics.cfg");
-        GRAVITY = Config.getNumber("cfg/physics.cfg", "GRAVITY");
-        DRAG = Config.getNumber("cfg/physics.cfg", "DRAG");
+        String cfgPath = "cfg/physics.cfg";
+        Config.readConfigFile(cfgPath);
+        GRAVITY = Config.getNumber(cfgPath, "GRAVITY");
+        DRAG = Config.getNumber(cfgPath, "DRAG");
     }
 
     public PhysicsPosition(Vector2 position, Vector2 velocity, Vector2 acceleration) {
