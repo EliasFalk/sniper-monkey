@@ -23,18 +23,35 @@ public class PhysicsPosition {
         DRAG = Config.getNumber(cfgPath, "DRAG");
     }
 
+    /**
+     * Creates a new physics position with a start position, velocity and acceleration.
+     *
+     * @param position     The start position.
+     * @param velocity     The start velocity.
+     * @param acceleration The start acceleration.
+     */
     public PhysicsPosition(Vector2 position, Vector2 velocity, Vector2 acceleration) {
         this.position = position;
         this.velocity = velocity;
         this.acceleration = acceleration;
     }
 
-
+    /**
+     * Creates a new physics position with a start position and velocity. Acceleration is (0, gravity)
+     *
+     * @param position The start position.
+     * @param velocity The start velocity.
+     */
     public PhysicsPosition(Vector2 position, Vector2 velocity) {
         this.position = position;
         this.velocity = velocity;
     }
 
+    /**
+     * Creates a new physics position with a start position. Velocity is 0. Acceleration is (0, gravity).
+     *
+     * @param position The start position.
+     */
     public PhysicsPosition(Vector2 position) {
         this(position, new Vector2(0, 0));
     }
@@ -64,32 +81,67 @@ public class PhysicsPosition {
         return position.cpy();
     }
 
+    /**
+     * Sets a new position.
+     *
+     * @param position The new position.
+     */
     public void setPosition(Vector2 position) {
         this.position = position;
     }
 
+    /**
+     * Returns a copy of the velocity vector.
+     *
+     * @return A copy of the velocity vector.
+     */
     public Vector2 getVelocity() {
         return velocity.cpy();
     }
 
+    /**
+     * Sets a new velocity.
+     *
+     * @param velocity The new velocity.
+     */
     public void setVelocity(Vector2 velocity) {
         this.velocity = velocity;
     }
 
+    /**
+     * Returns a copy of the acceleration vector.
+     *
+     * @return A copy of the acceleration vector.
+     */
     public Vector2 getAcceleration() {
         return acceleration.cpy();
     }
 
+    /**
+     * Sets a new acceleration.
+     *
+     * @param acceleration The new acceleration.
+     */
     public void setAcceleration(Vector2 acceleration) {
         this.acceleration = acceleration;
     }
 
+    /**
+     * Creates a new physics position with values copied from the physics position sent into the constructor.
+     *
+     * @param physicsPosition The physics position with the values being copied from.
+     */
     public PhysicsPosition(PhysicsPosition physicsPosition) {
         this.position = physicsPosition.getPosition();
         this.velocity = physicsPosition.getVelocity();
         this.acceleration = physicsPosition.getAcceleration();
     }
 
+    /**
+     * Returns a formatted string that presents the three vectors, position, velocity and acceleration in way suited for printing.
+     *
+     * @return A formatted string that presents the three vectors, position, velocity and acceleration in way suited for printing.
+     */
     public String toString() {
         return "Position: " + position.x + ", " + position.y + "\n" +
                 "Velocity: " + velocity.x + ", " + velocity.y + "\n" +

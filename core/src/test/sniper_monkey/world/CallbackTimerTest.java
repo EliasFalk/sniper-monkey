@@ -99,6 +99,7 @@ public class CallbackTimerTest {
     @Test(expected = IllegalArgumentException.class)
     public void testNegativeTimeLength() {
         CallbackTimer cbTimer2 = new CallbackTimer(-100, () -> finished = true);
+        Assert.fail("Timer should not allow for negative timer lengths.");
     }
 
     @Test
