@@ -2,7 +2,7 @@ package game.sniper_monkey.controller;
 
 import com.badlogic.gdx.Gdx;
 import game.sniper_monkey.model.Config;
-import game.sniper_monkey.model.player.Player;
+import game.sniper_monkey.model.player.ControllablePlayer;
 import game.sniper_monkey.model.player.PlayerInputAction;
 
 /**
@@ -12,7 +12,7 @@ import game.sniper_monkey.model.player.PlayerInputAction;
  * @author Elias Falk
  */
 public class PlayerController {
-    private final Player player;
+    private final ControllablePlayer player;
 
     // TODO read keycodes from config file
     private final int moveLeftKeyCode;
@@ -31,7 +31,7 @@ public class PlayerController {
      * @param player a player object. Is used to know which player object the controller controls.
      */
     // Send something to identify which config / part of config to read.
-    public PlayerController(Player player, String filepath) {
+    public PlayerController(ControllablePlayer player, String filepath) {
         this.player = player;
         Config.readConfigFile(filepath);
         this.moveLeftKeyCode = (int) Config.getNumber(filepath, "MOVE_LEFT");
