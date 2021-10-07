@@ -224,10 +224,12 @@ public class Player extends GameObject {
         }
     }
 
+    //TODO documentation
     public FighterAnimation getCurrentFighterAnimation() {
         return currentFighterAnimation;
     }
 
+    //TODO documentation
     public boolean isLookingRight() {
         return lookingRight;
     }

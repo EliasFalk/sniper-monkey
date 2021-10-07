@@ -18,6 +18,7 @@ public class PlayerFactory {
         return new Player(FighterFactory.createEvilWizard(), FighterFactory.createEvilWizard());
     }
 
+    //TODO documentation
     public static Player createPlayer(Vector2 spawnPos) {
         // TODO change this method thanks
         return new Player(spawnPos, FighterFactory.createEvilWizard(), FighterFactory.createEvilWizard());

@@ -114,24 +114,29 @@ public class FluctuatingAttribute {
         return currentValue;
     }
 
+    //TODO documentation
     public void setCurrentValue(float currentValue) {
         this.currentValue = Math.max(minValue, Math.min(maxValue, currentValue));
     }
 
+    //TODO documentation
     public void setDraining(boolean draining, float drainAmount) {
         isDraining = draining;
         setDrainAmount(drainAmount);
     }
 
+    //TODO documentation
     public void setDraining(boolean draining) {
         setDraining(draining, drainAmount);
     }
 
+    //TODO documentation
     public void setRegenerating(boolean regenerating, float regenerationAmount) {
         isRegenerating = regenerating;
         setRegenerationAmount(regenerationAmount);
     }
 
+    //TODO documentation
     public void setRegenerating(boolean regenerating) {
         setRegenerating(regenerating, regenerationAmount);
     }

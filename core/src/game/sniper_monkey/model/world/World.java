@@ -42,12 +42,14 @@ public final class World {
         roundTimer = new CallbackTimer(roundTime, () -> currentState = this::endGameState);
     }
 
+    //TODO documentation
     //Singleton
     public static World getInstance() {
         if (INSTANCE == null) INSTANCE = new World();
         return INSTANCE;
     }
 
+    //TODO documentation
     public int getRoundDuration() {
         return (int) roundTimer.getTimeLeft();
     }
@@ -81,10 +83,12 @@ public final class World {
         }
     }
 
+    //TODO documentation
     public void registerObserver(IWorldObserver observer) {
         observers.add(observer);
     }
 
+    //TODO documentation
     public void unregisterObserver(IWorldObserver observer) {
         observers.remove(observer);
     }
@@ -101,6 +105,7 @@ public final class World {
         }
     }
 
+    //TODO documentation
     //TIMER OBSERVER STUFF
     public void registerTimerObserver(ITimerObserver timerObserver) {
         timerObservers.add(timerObserver);

@@ -19,6 +19,7 @@ public class RoundTimerView extends HUDView implements ITimerObserver {
     private final Label countdownLabel;
     World model;
 
+    //TODO documentation
     public RoundTimerView(World model) {
         super(model);
         this.model = model;
@@ -28,10 +29,12 @@ public class RoundTimerView extends HUDView implements ITimerObserver {
         countdownLabel.setAlignment(Align.center);
     }
 
+    //TODO documentation
     public void addActors(Stage stage) {
         stage.addActor(countdownLabel);
     }
 
+    //TODO documentation
     @Override
     public void onTimerChange(int time) {
         countdownLabel.setText(time);

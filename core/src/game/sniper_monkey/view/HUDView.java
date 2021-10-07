@@ -13,9 +13,11 @@ public abstract class HUDView {
 
     private final Object model;
 
+    //TODO documentation
     public HUDView(Object model) {
         this.model = model;
     }
 
+    //TODO documentation
     public abstract void addActors(Stage stage);
 }

@@ -32,6 +32,7 @@ public abstract class GameObject {
         this(new Vector2(0, 0), isDynamic);
     }
 
+    //TODO documentation
     public boolean isDynamic() {
         return isDynamic;
     }
