@@ -359,6 +359,31 @@ public class Player extends GameObject {
         physicsPos.setPosition(getHitbox().getPosition());
     }
 
+
+    public void registerHealthObserver(FluctuatingAttributeObserver observer) {
+        health.registerObserver(observer);
+    }
+
+    public void unRegisterHealthObserver(FluctuatingAttributeObserver observer) {
+        health.unRegisterObserver(observer);
+    }
+
+    public void registerStaminaObserver(FluctuatingAttributeObserver observer) {
+        stamina.registerObserver(observer);
+    }
+
+    public void unRegisterStaminaObserver(FluctuatingAttributeObserver observer) {
+        stamina.unRegisterObserver(observer);
+    }
+
+    public void registerBlockObserver(FluctuatingAttributeObserver observer) {
+        blockFactor.registerObserver(observer);
+    }
+
+    public void unRegisterBlockObserver(FluctuatingAttributeObserver observer) {
+        blockFactor.unRegisterObserver(observer);
+    }
+
     @FunctionalInterface
     private interface State {
         void performState();

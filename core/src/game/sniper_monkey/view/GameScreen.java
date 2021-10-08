@@ -10,8 +10,10 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.model.world.IWorldObserver;
 import game.sniper_monkey.model.world.World;
+import game.sniper_monkey.view.hud.HUDView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A class storing view data (all HUDViews and GameObjectViews) as well as renders these using
@@ -22,12 +24,12 @@ import java.util.ArrayList;
  * @author Kevin Jeryd
  */
 public class GameScreen extends ScreenAdapter implements IWorldObserver  {
-    private final ArrayList<GameObjectView> gameObjectViews;
+    private final List<GameObjectView> gameObjectViews;
     SpriteBatch batch;
     ShapeRenderer sr;
     Stage stage;
-    OrthographicCamera camera = new OrthographicCamera(1280 / 2f, 720 / 2f);
-    boolean debugMode = (Math.random() > 0.5); // TODO epic.
+    OrthographicCamera camera = new OrthographicCamera(1920 / 2f, 1080 / 2f);
+    boolean debugMode = true;
     RoundTimerView roundTimerView;
 
     /**
@@ -136,5 +138,13 @@ public class GameScreen extends ScreenAdapter implements IWorldObserver  {
                 return;
             }
         }
+    }
+
+    public void addHudView(HUDView hudView) {
+        hudView.addActors(stage);
+    }
+
+    public void removeHudView(HUDView hudView) {
+//        hudView.addActors(stage);
     }
 }

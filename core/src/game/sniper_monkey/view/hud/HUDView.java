@@ -1,4 +1,4 @@
-package game.sniper_monkey.view;
+package game.sniper_monkey.view.hud;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -10,13 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
  * @author Vincent Hellner
  */
 public abstract class HUDView {
-
-    private final Object model;
-
-    //TODO documentation
-    public HUDView(Object model) {
-        this.model = model;
-    }
 
     //TODO documentation
     public abstract void addActors(Stage stage);
