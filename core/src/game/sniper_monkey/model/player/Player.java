@@ -6,6 +6,7 @@ import game.sniper_monkey.model.PhysicsPosition;
 import game.sniper_monkey.model.collision.CollisionEngine;
 import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.world.GameObject;
+import game.sniper_monkey.model.world.World;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -127,9 +128,9 @@ public class Player extends GameObject {
 
     private void inactiveState() {
         if (inputActions.get(PlayerInputAction.ATTACK1)) {
-            // activeFighter.performAttack(0);
+            activeFighter.performAttack(0, this.getPos());
             stamina.decrease(activeFighter.getStaminaDecrease(0));
-            abilityState = this::attacking1State;
+            //abilityState = this::attacking1State;
             return;
         } else if (inputActions.get(PlayerInputAction.ATTACK2)) {
             // TODO performAttack

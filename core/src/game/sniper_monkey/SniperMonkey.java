@@ -8,6 +8,7 @@ import game.sniper_monkey.controller.PlayerController;
 import game.sniper_monkey.model.platform.Platform;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.PlayerFactory;
+import game.sniper_monkey.model.player.fighter.attack.SwordAttack;
 import game.sniper_monkey.view.GameRenderer;
 import game.sniper_monkey.model.world.World;
 

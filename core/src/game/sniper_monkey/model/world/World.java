@@ -126,8 +126,8 @@ public final class World {
      */
     public void update(float deltaTime) {
         currentState.performState();
-        for (GameObject obj : gameObjects) {
-            obj.update(deltaTime);
+        for (int i = 0; i < gameObjects.size(); i++) {
+            gameObjects.get(i).update(deltaTime);
         }
         // TODO maybe move this somewhere else.
         TimerBank.updateTimers(deltaTime);
