@@ -96,11 +96,11 @@ public class FluctuatingAttribute {
      */
     public void update(float deltaTime) {
         if (isDraining && isRegenerating) {
-            currentValue = Math.max(minValue, Math.min(maxValue, currentValue + (regenerationAmount - drainAmount) * deltaTime));
+            setCurrentValue(currentValue + (regenerationAmount - drainAmount) * deltaTime);
         } else if (isRegenerating) {
-            currentValue = Math.min(currentValue + regenerationAmount * deltaTime, maxValue);
+            setCurrentValue(currentValue + regenerationAmount * deltaTime);
         } else if (isDraining) {
-            currentValue = Math.max(currentValue - drainAmount * deltaTime, minValue);
+            setCurrentValue(currentValue - drainAmount * deltaTime);
         }
     }
 
