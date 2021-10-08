@@ -1,5 +1,7 @@
 package game.sniper_monkey.view;
 
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -19,7 +21,7 @@ import java.util.ArrayList;
  * @author Elias Falk
  * @author Kevin Jeryd
  */
-public class GameRenderer implements IWorldObserver {
+public class GameScreen extends ScreenAdapter implements IWorldObserver  {
     private final ArrayList<GameObjectView> gameObjectViews;
     SpriteBatch batch;
     ShapeRenderer sr;
@@ -31,7 +33,7 @@ public class GameRenderer implements IWorldObserver {
     /**
      * Creates a GameRenderer
      */
-    public GameRenderer() {
+    public GameScreen() {
         stage = new Stage();
         batch = new SpriteBatch();
         gameObjectViews = new ArrayList<>();
@@ -55,10 +57,13 @@ public class GameRenderer implements IWorldObserver {
         camera.update();
     }
 
-    /**
-     * Renders a background and then all of the views stored in the GameRenderer
-     */
-    public void render() {
+    @Override
+    public void show() {
+
+    }
+
+    @Override
+    public void render(float deltaTime) {
         ScreenUtils.clear(1, 1, 1, 1);
 
         batch.begin();
@@ -86,9 +91,30 @@ public class GameRenderer implements IWorldObserver {
         stage.draw();
     }
 
+    @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
     /**
      * Disposes of the SpriteBatch and ShapeRenderer
      */
+    @Override
     public void dispose() {
         batch.dispose();
         sr.dispose();

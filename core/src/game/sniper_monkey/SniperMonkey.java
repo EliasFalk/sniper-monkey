@@ -8,11 +8,11 @@ import game.sniper_monkey.controller.PlayerController;
 import game.sniper_monkey.model.platform.Platform;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.PlayerFactory;
-import game.sniper_monkey.view.GameRenderer;
+import game.sniper_monkey.view.GameScreen;
 import game.sniper_monkey.model.world.World;
 
 public class SniperMonkey extends ApplicationAdapter {
-    GameRenderer gameRenderer;
+    GameScreen gameScreen;
     PlayerController player1Controller;
     PlayerController player2Controller;
     boolean pause = false;
@@ -21,8 +21,8 @@ public class SniperMonkey extends ApplicationAdapter {
     @Override
     public void create() {
         Texture img = new Texture("images/evil_wizard_2/Attack1.png");
-        gameRenderer = new GameRenderer();
-        World.getInstance().registerObserver(gameRenderer);
+        gameScreen = new GameScreen();
+        World.getInstance().registerObserver(gameScreen);
 
         for (int i = 0; i < 400 / 16; i++)
             World.getInstance().addGameObject(new Platform(new Vector2(-200 + i * 16, -100)));
@@ -57,18 +57,18 @@ public class SniperMonkey extends ApplicationAdapter {
         World.getInstance().update(deltaTime);
         player1Controller.handleKeyInputs();
         player2Controller.handleKeyInputs();
-        gameRenderer.render();
+        gameScreen.render(deltaTime);
     }
 
     //TODO documentation
     @Override
     public void dispose() {
-        gameRenderer.dispose();
+        gameScreen.dispose();
     }
 
     //TODO documentation
     @Override
     public void resize(int width, int height) {
-        gameRenderer.updateCamera(width / 2, height / 2);
+        gameScreen.updateCamera(width / 2, height / 2);
     }
 }
