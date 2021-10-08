@@ -10,4 +10,6 @@ public interface IAttack {
     void performAttack(float attackFactor);
 
     float getStaminaCost();
+
+    float getCooldown();
 }

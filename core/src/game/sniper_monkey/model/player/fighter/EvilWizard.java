@@ -1,6 +1,7 @@
 package game.sniper_monkey.model.player.fighter;
 
 import com.badlogic.gdx.math.Vector2;
+import game.sniper_monkey.model.player.fighter.attack.AttackFactory;
 
 /**
  * An Evil Wizard (spooky)
@@ -18,6 +19,6 @@ public class EvilWizard extends Fighter {
      */
     public EvilWizard() {
         super(attack, defense, speed, hitboxSize);
-        // TODO attacks.add(SomeAttack);
+        attacks.add(AttackFactory.createSwordAttack());
     }
 }
