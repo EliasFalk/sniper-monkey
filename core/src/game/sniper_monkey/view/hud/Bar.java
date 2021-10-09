@@ -2,7 +2,6 @@ package game.sniper_monkey.view.hud;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
@@ -17,24 +16,31 @@ public class Bar extends Actor {
     private static final float borderThickness = 6;
     private float fraction = 1;
     private Color color;
+    private FillDirection fillDir;
 
-    public Bar(float x, float y, float width, float height, Color color) {
+    public Bar(float x, float y, float width, float height, Color color, FillDirection fillDir) {
         shapeRenderer = new ShapeRenderer();
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.color = color;
+        this.fillDir = fillDir;
     }
 
     @Override
-    public void draw(Batch batch, float alpha){
+    public void draw(Batch batch, float alpha) {
         batch.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLACK);
-        shapeRenderer.rect(x - borderThickness/2, y - borderThickness/2, width + borderThickness, height + borderThickness);
+        shapeRenderer.rect(x - borderThickness / 2, y - borderThickness / 2, width + borderThickness, height + borderThickness);
         shapeRenderer.setColor(color);
-        shapeRenderer.rect(x, y, width*fraction, height);
+
+        if (fillDir == FillDirection.RIGHT) {
+            shapeRenderer.rect(x, y, width * fraction, height);
+        } else if (fillDir == FillDirection.LEFT) {
+            shapeRenderer.rect(x + width - width * fraction, y, width * fraction, height);
+        }
         shapeRenderer.end();
         batch.begin();
     }
