@@ -32,14 +32,18 @@ public class Bar extends Actor {
     public void draw(Batch batch, float alpha) {
         batch.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.BLACK);
+        shapeRenderer.setColor(Color.DARK_GRAY);
         shapeRenderer.rect(x - borderThickness / 2, y - borderThickness / 2, width + borderThickness, height + borderThickness);
         shapeRenderer.setColor(color);
 
         if (fillDir == FillDirection.RIGHT) {
             shapeRenderer.rect(x, y, width * fraction, height);
         } else if (fillDir == FillDirection.LEFT) {
-            shapeRenderer.rect(x + width - width * fraction, y, width * fraction, height);
+            shapeRenderer.rect(x + width * (1 - fraction), y, width * fraction, height);
+        } else if (fillDir == FillDirection.UP) {
+            shapeRenderer.rect(x, y, width, height * fraction);
+        } else if (fillDir == FillDirection.DOWN) {
+            shapeRenderer.rect(x, y + height * (1 - fraction), width, height * fraction);
         }
         shapeRenderer.end();
         batch.begin();
