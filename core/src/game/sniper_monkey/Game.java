@@ -44,9 +44,13 @@ public class Game {
         World.getInstance().addGameObject(player2);
         player1Controller = new PlayerController(player1, "cfg/player1_keybinds.cfg");
         player2Controller = new PlayerController(player2, "cfg/player2_keybinds.cfg");
-        BarView healthBar = new BarView(100, Gdx.graphics.getHeight() - 50, Color.RED, FillDirection.LEFT);
-        BarView staminaBar = new BarView(120, Gdx.graphics.getHeight() - 80, Color.YELLOW, FillDirection.LEFT);
-        BarView blockBar = new BarView(140, Gdx.graphics.getHeight() - 110, Color.BLUE, FillDirection.LEFT);
+
+        float barWidth = 300f;
+        float barHeight = 20f;
+
+        BarView healthBar = new BarView(100, Gdx.graphics.getHeight() - 50, barWidth, barHeight, Color.RED, FillDirection.LEFT);
+        BarView staminaBar = new BarView(120, Gdx.graphics.getHeight() - 80, barWidth, barHeight, Color.YELLOW, FillDirection.LEFT);
+        BarView blockBar = new BarView(140, Gdx.graphics.getHeight() - 110, barWidth, barHeight, Color.BLUE, FillDirection.LEFT);
 
         gameScreen.addHudView(healthBar);
         gameScreen.addHudView(staminaBar);
@@ -58,9 +62,9 @@ public class Game {
         player1.registerBlockObserver(blockBar);
 
         // player 2
-        BarView healthBar2 = new BarView(Gdx.graphics.getWidth() - 100 - 153, Gdx.graphics.getHeight() - 50, Color.RED, FillDirection.RIGHT);
-        BarView staminaBar2 = new BarView(Gdx.graphics.getWidth() - 120 - 153, Gdx.graphics.getHeight() - 80, Color.YELLOW, FillDirection.RIGHT);
-        BarView blockBar2 = new BarView(Gdx.graphics.getWidth() - 140 - 153, Gdx.graphics.getHeight() - 110, Color.BLUE, FillDirection.RIGHT);
+        BarView healthBar2 = new BarView(Gdx.graphics.getWidth() - 100 - barWidth, Gdx.graphics.getHeight() - 50, barWidth, barHeight, Color.RED, FillDirection.RIGHT);
+        BarView staminaBar2 = new BarView(Gdx.graphics.getWidth() - 120 - barWidth, Gdx.graphics.getHeight() - 80, barWidth, barHeight, Color.YELLOW, FillDirection.RIGHT);
+        BarView blockBar2 = new BarView(Gdx.graphics.getWidth() - 140 - barWidth, Gdx.graphics.getHeight() - 110, barWidth, barHeight, Color.BLUE, FillDirection.RIGHT);
 
         gameScreen.addHudView(healthBar2);
         gameScreen.addHudView(staminaBar2);
