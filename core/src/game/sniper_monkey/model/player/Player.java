@@ -88,7 +88,7 @@ public class Player extends GameObject {
      * @param position The initial position of the player.
      */
     public Player(Vector2 position, Fighter primaryFighter, Fighter secondaryFighter) {
-        this(new Vector2(0, 0), primaryFighter, secondaryFighter, 0);
+        this(position, primaryFighter, secondaryFighter, 0);
     }
 
     /**
