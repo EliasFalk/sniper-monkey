@@ -147,7 +147,7 @@ public class Player extends GameObject {
 
     private void inactiveState() {
         if (inputActions.get(PlayerInputAction.ATTACK1)) {
-            if (activeFighter.performAttack(0, this.getPos())) {
+            if (activeFighter.performAttack(0, this.getPos(), getHitboxMask())) {
                 stamina.decrease(activeFighter.getStaminaDecrease(0));
                 //currentFighterAnimation = FighterAnimation.ATTACKING1;
                 abilityState = this::attacking1State;

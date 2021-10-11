@@ -32,7 +32,7 @@ public class FighterTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testPerformAttack() {
-        fighter.performAttack(0, new Vector2(1,1));
+        fighter.performAttack(0, new Vector2(1,1), 0);
     }
 
     @Test(expected = IllegalArgumentException.class)

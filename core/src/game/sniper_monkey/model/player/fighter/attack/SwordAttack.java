@@ -38,11 +38,11 @@ public class SwordAttack implements IAttack {
     }
 
     @Override
-    public boolean performAttack(float attackFactor, Vector2 playerPos) {
+    public boolean performAttack(float attackFactor, Vector2 playerPos, int collisionMask) {
         if (canAttack) {
             playerPos.x += 30;
             playerPos.y += 30;
-            projectile = ProjectileSpawner.spawnSwordAttack(damage, attackLength, playerPos, attackSize);
+            projectile = ProjectileSpawner.spawnSwordAttack(damage, attackLength, playerPos, attackSize, collisionMask);
             cbTimer.reset();
             cbTimer.start();
             System.out.println("test1");

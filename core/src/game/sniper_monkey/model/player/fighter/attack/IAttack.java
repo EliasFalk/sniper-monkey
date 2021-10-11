@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector2;
  * @author Elias Falk
  */
 public interface IAttack {
-    boolean performAttack(float attackFactor, Vector2 playerPos);
+    boolean performAttack(float attackFactor, Vector2 playerPos, int collisionMask);
 
     float getStaminaCost();
 
