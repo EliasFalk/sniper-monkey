@@ -17,6 +17,7 @@ public class SniperMonkey extends ApplicationAdapter {
     PlayerController player2Controller;
     boolean pause = false;
 
+    //TODO documentation
     @Override
     public void create() {
         Texture img = new Texture("images/evil_wizard_2/Attack1.png");
@@ -46,6 +47,7 @@ public class SniperMonkey extends ApplicationAdapter {
         player2Controller = new PlayerController(player2, "cfg/player2_keybinds.cfg");
     }
 
+    //TODO documentation
     @Override
     public void render() {
         float deltaTime = Math.min(1 / 10f, Gdx.graphics.getDeltaTime());
@@ -58,11 +60,13 @@ public class SniperMonkey extends ApplicationAdapter {
         gameRenderer.render();
     }
 
+    //TODO documentation
     @Override
     public void dispose() {
         gameRenderer.dispose();
     }
 
+    //TODO documentation
     @Override
     public void resize(int width, int height) {
         gameRenderer.updateCamera(width / 2, height / 2);

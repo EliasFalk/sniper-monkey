@@ -152,6 +152,7 @@ public final class SpatialHash {
             this.y = y;
         }
 
+        // todo documentation
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -160,6 +161,7 @@ public final class SpatialHash {
             return x == that.x && y == that.y;
         }
 
+        //TODO documentation
         @Override
         public int hashCode() {
             return Objects.hash(x, y);

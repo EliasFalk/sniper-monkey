@@ -1,6 +1,6 @@
 package game.sniper_monkey.model.player;
 
-/**
+/** //TODO documentation
  * @author Elias Falk
  */
 public enum PlayerInputAction {
