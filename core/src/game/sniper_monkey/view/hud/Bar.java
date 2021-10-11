@@ -34,8 +34,10 @@ public class Bar extends Actor {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.DARK_GRAY);
         shapeRenderer.rect(x - borderThickness / 2, y - borderThickness / 2, width + borderThickness, height + borderThickness);
-        shapeRenderer.setColor(color);
+        shapeRenderer.setColor(Color.WHITE);
+        shapeRenderer.rect(x, y, width, height);
 
+        shapeRenderer.setColor(color);
         if (fillDir == FillDirection.RIGHT) {
             shapeRenderer.rect(x, y, width * fraction, height);
         } else if (fillDir == FillDirection.LEFT) {

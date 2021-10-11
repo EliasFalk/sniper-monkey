@@ -27,6 +27,10 @@ public class BarView extends HUDView implements FluctuatingAttributeObserver {
         this(x, y, 150, 20, color, fillDir);
     }
 
+    public BarView(float x, float y, Color color) {
+        this(x, y, color, FillDirection.RIGHT);
+    }
+
     @Override
     public void addActors(Stage stage) {
         stage.addActor(bar);
