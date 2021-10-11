@@ -10,9 +10,11 @@ import game.sniper_monkey.model.player.PlayerFactory;
 import game.sniper_monkey.model.world.World;
 import game.sniper_monkey.view.GameScreen;
 import game.sniper_monkey.view.hud.BarView;
+import game.sniper_monkey.view.hud.BottomHUDController;
 import game.sniper_monkey.view.hud.FillDirection;
+import game.sniper_monkey.view.hud.Placement;
 
-public class Game {
+public class GameController {
     GameScreen gameScreen;
     PlayerController player1Controller;
     PlayerController player2Controller;
@@ -45,6 +47,7 @@ public class Game {
         player1Controller = new PlayerController(player1, "cfg/player1_keybinds.cfg");
         player2Controller = new PlayerController(player2, "cfg/player2_keybinds.cfg");
 
+        // Player health, stamina & block bars.
         float barWidth = 300f;
         float barHeight = 20f;
 
@@ -73,9 +76,10 @@ public class Game {
         player2.registerHealthObserver(healthBar2);
         player2.registerStaminaObserver(staminaBar2);
         player2.registerBlockObserver(blockBar2);
+
+        BottomHUDController p1BottomHUD = new BottomHUDController(gameScreen, player1, "cfg/player1_keybinds.cfg", Placement.LEFT);
+        BottomHUDController p2BottomHUD = new BottomHUDController(gameScreen, player2, "cfg/player2_keybinds.cfg", Placement.RIGHT);
     }
-
-
 
     //TODO documentation
     public void tick(float deltaTime) {

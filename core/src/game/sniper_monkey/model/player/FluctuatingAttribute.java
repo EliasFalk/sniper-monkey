@@ -124,8 +124,6 @@ public class FluctuatingAttribute {
     public void setCurrentValue(float currentValue) {
         this.currentValue = Math.max(minValue, Math.min(maxValue, currentValue));
         for (FluctuatingAttributeObserver observer : observers) {
-
-
             observer.onPercentageChange((this.currentValue - minValue) / (maxValue-minValue));
         }
     }

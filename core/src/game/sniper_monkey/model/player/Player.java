@@ -5,7 +5,9 @@ import game.sniper_monkey.model.Config;
 import game.sniper_monkey.model.PhysicsPosition;
 import game.sniper_monkey.model.collision.CollisionEngine;
 import game.sniper_monkey.model.player.fighter.Fighter;
+import game.sniper_monkey.model.world.CallbackTimer;
 import game.sniper_monkey.model.world.GameObject;
+import game.sniper_monkey.model.world.TimerObserver;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +37,8 @@ public class Player extends GameObject {
     private final FluctuatingAttribute stamina = new FluctuatingAttribute(MAX_STAMINA);
     private final FluctuatingAttribute health = new FluctuatingAttribute(MAX_HEALTH);
     private final FluctuatingAttribute blockFactor = new FluctuatingAttribute(MIN_BLOCK, MAX_BLOCK);
+    private final CallbackTimer blockTimer = new CallbackTimer(.2f, () -> canBlock = true);
+    private final CallbackTimer swapTimer = new CallbackTimer(SWAP_COOLDOWN, () -> canSwap = true);
     private final Fighter primaryFighter;
     private final Fighter secondaryFighter;
     private final Map<PlayerInputAction, Boolean> inputActions = new HashMap<>();
@@ -46,6 +50,8 @@ public class Player extends GameObject {
     private boolean lookingRight;
     private State movementState = this::groundedState;
     private State abilityState = this::inactiveState;
+    private boolean canBlock = true;
+    private boolean canSwap = true;
 
 
     static {
@@ -100,10 +106,12 @@ public class Player extends GameObject {
         if (inputActions.get(PlayerInputAction.BLOCK)) {
             blockFactor.setRegenerating(false);
             blockFactor.setDraining(true, BASE_BLOCK_DRAIN);
+            blockTimer.reset();
         } else {
             blockFactor.setDraining(false);
             blockFactor.setRegenerating(true, BASE_BLOCK_REGEN);
             abilityState = this::inactiveState;
+            blockTimer.start();
             movementState.performState();
         }
     }
@@ -137,8 +145,11 @@ public class Player extends GameObject {
             abilityState = this::attacking2State;
             return;
         } else if (inputActions.get(PlayerInputAction.BLOCK)) {
-            abilityState = this::blockingState;
-            return;
+            if (canBlock) {
+                abilityState = this::blockingState;
+                canBlock = false;
+                return;
+            }
         } else if (inputActions.get(PlayerInputAction.SWAP_FIGHTER)) {
             // TODO swapFighter
             abilityState = this::swappingFighterState;
@@ -360,28 +371,112 @@ public class Player extends GameObject {
     }
 
 
+    /**
+     * Subscribes the observer to changes made when the health attribute changes.
+     *
+     * @param observer The observer that wants to be subscribed to the changes.
+     */
     public void registerHealthObserver(FluctuatingAttributeObserver observer) {
         health.registerObserver(observer);
     }
 
-    public void unRegisterHealthObserver(FluctuatingAttributeObserver observer) {
+    /**
+     * Unsubscribes the observer to changes made when the health attribute changes.
+     *
+     * @param observer The observer that wants to be unsubscribed to the changes.
+     */
+    public void unregisterHealthObserver(FluctuatingAttributeObserver observer) {
         health.unRegisterObserver(observer);
     }
 
+    /**
+     * Subscribes the observer to changes made when the stamina attribute changes.
+     *
+     * @param observer The observer that wants to be subscribed to the changes.
+     */
     public void registerStaminaObserver(FluctuatingAttributeObserver observer) {
         stamina.registerObserver(observer);
     }
 
-    public void unRegisterStaminaObserver(FluctuatingAttributeObserver observer) {
+    /**
+     * Unsubscribes the observer to changes made when the stamina attribute changes.
+     *
+     * @param observer The observer that wants to be unsubscribed to the changes.
+     */
+    public void unregisterStaminaObserver(FluctuatingAttributeObserver observer) {
         stamina.unRegisterObserver(observer);
     }
 
+    /**
+     * Subscribes the observer to changes made when the block attribute changes.
+     *
+     * @param observer The observer that wants to be subscribed to the changes.
+     */
     public void registerBlockObserver(FluctuatingAttributeObserver observer) {
         blockFactor.registerObserver(observer);
     }
 
-    public void unRegisterBlockObserver(FluctuatingAttributeObserver observer) {
+    /**
+     * Unsubscribes the observer to changes made when the block attribute changes.
+     *
+     * @param observer The observer that wants to be unsubscribed to the changes.
+     */
+    public void unregisterBlockObserver(FluctuatingAttributeObserver observer) {
         blockFactor.unRegisterObserver(observer);
+    }
+
+    /**
+     * Subscribes the observer to changes made when the attack cooldown changes.
+     *
+     * @param timerObserver The observer that wants to be subscribed to the changes.
+     */
+    public void registerAttackCooldownObserver(TimerObserver timerObserver) {
+        // TODO since cooldown effects all attacks should set this in player
+    }
+
+    /**
+     * Subscribes the observer to changes made when the attack cooldown changes.
+     *
+     * @param timerObserver The observer that wants to be unsubscribed to the changes.
+     */
+    public void unregisterAttackCooldownObserver(TimerObserver timerObserver) {
+        // TODO
+    }
+
+    /**
+     * Subscribes the observer to changes made when the block cooldown changes.
+     *
+     * @param timerObserver The observer that wants to be subscribed to the changes.
+     */
+    public void registerBlockCooldownObserver(TimerObserver timerObserver) {
+        blockTimer.registerTimerObserver(timerObserver);
+    }
+
+    /**
+     * Unsubscribes the observer to changes made when the block cooldown changes.
+     *
+     * @param timerObserver The observer that wants to be unsubscribed to the changes.
+     */
+    public void unregisterBlockCooldownObserver(TimerObserver timerObserver) {
+        blockTimer.unRegisterTimerObserver(timerObserver);
+    }
+
+    /**
+     * Subscribes the observer to changes made when the swap cooldown changes.
+     *
+     * @param timerObserver The observer that wants to be subscribed to the changes.
+     */
+    public void registerSwapCooldownObserver(TimerObserver timerObserver) {
+        swapTimer.registerTimerObserver(timerObserver);
+    }
+
+    /**
+     * Unsubscribes the observer to changes made when the swap cooldown changes.
+     *
+     * @param timerObserver The observer that wants to be subscribed to the changes.
+     */
+    public void unregisterSwapCooldownObserver(TimerObserver timerObserver) {
+        swapTimer.unRegisterTimerObserver(timerObserver);
     }
 
     @FunctionalInterface
