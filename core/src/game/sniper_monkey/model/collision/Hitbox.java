@@ -10,6 +10,20 @@ import com.badlogic.gdx.math.Vector2;
 public final class Hitbox {
     private Vector2 position;
     private Vector2 size;
+    private int mask;
+
+    /**
+     * Creates an AABB Hitbox
+     *
+     * @param position The position of the hitbox.
+     * @param size     The size of the hitbox.
+     * @param mask     The bitmask CollisionMask of this Hitbox.
+     */
+    public Hitbox(Vector2 position, Vector2 size, int mask) {
+        this.position = position;
+        this.size = size;
+        this.mask = mask;
+    }
 
     /**
      * Creates an AABB Hitbox
@@ -18,8 +32,34 @@ public final class Hitbox {
      * @param size     The size of the hitbox.
      */
     public Hitbox(Vector2 position, Vector2 size) {
-        this.position = position;
-        this.size = size;
+        this(position, size, 0);
+    }
+
+    /**
+     * Sets the mask of this Hitbox.
+     *
+     * @param mask The new mask to use
+     */
+    public void setMask(int mask) {
+        this.mask = mask;
+    }
+
+    /**
+     * Adds to the mask of this Hitbox.
+     *
+     * @param mask The new mask to add onto the current mask.
+     */
+    public void addMask(int mask) {
+        this.mask &= mask;
+    }
+
+    /**
+     * Returns the mask of this Hitbox.
+     *
+     * @return The mask
+     */
+    public int getMask() {
+        return mask;
     }
 
     /**

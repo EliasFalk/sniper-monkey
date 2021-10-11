@@ -40,8 +40,8 @@ public class SniperMonkey extends ApplicationAdapter {
         World.getInstance().addGameObject(new Platform(new Vector2(-32 * 4, -100 + 16 * 5)));
         World.getInstance().addGameObject(new Platform(new Vector2((-32 - 16) * 4, -100 + 16 * 5)));
         World.getInstance().addGameObject(new Platform(new Vector2(-32 * 2 * 4, -100 + 16 * 5)));
-        Player player1 = PlayerFactory.createPlayer(new Vector2(50, 50));
-        Player player2 = PlayerFactory.createPlayer(new Vector2(-50, 50));
+        Player player1 = PlayerFactory.createPlayer1(new Vector2(50, 50));
+        Player player2 = PlayerFactory.createPlayer2(new Vector2(-50, 50));
         World.getInstance().addGameObject(player1);
         World.getInstance().addGameObject(player2);
         player1Controller = new PlayerController(player1, "cfg/player1_keybinds.cfg");
