@@ -5,6 +5,7 @@ import game.sniper_monkey.model.Config;
 import game.sniper_monkey.model.PhysicsPosition;
 import game.sniper_monkey.model.collision.CollisionEngine;
 import game.sniper_monkey.model.player.fighter.Fighter;
+import game.sniper_monkey.model.world.CallbackTimer;
 import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.model.world.World;
 
@@ -110,7 +111,10 @@ public class Player extends GameObject {
     }
 
     private void attacking1State() {
-
+        currentFighterAnimation = FighterAnimation.ATTACKING1;
+        if (!activeFighter.isAttacking()) {
+            abilityState = this::inactiveState;
+        }
     }
 
     private void attacking2State() {
@@ -126,11 +130,18 @@ public class Player extends GameObject {
         }
     }
 
+    public float getAttack1Length() {
+        return activeFighter.getAttackLength(0);
+    }
+
     private void inactiveState() {
         if (inputActions.get(PlayerInputAction.ATTACK1)) {
-            activeFighter.performAttack(0, this.getPos());
-            stamina.decrease(activeFighter.getStaminaDecrease(0));
-            //abilityState = this::attacking1State;
+            if (activeFighter.performAttack(0, this.getPos())) {
+                stamina.decrease(activeFighter.getStaminaDecrease(0));
+                //currentFighterAnimation = FighterAnimation.ATTACKING1;
+                abilityState = this::attacking1State;
+            }
+
             return;
         } else if (inputActions.get(PlayerInputAction.ATTACK2)) {
             // TODO performAttack

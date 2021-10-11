@@ -58,11 +58,11 @@ public abstract class Fighter {
      *
      * @param attackNum A number between 0..n which determines which of the (n-1) attacks to perform.
      */
-    public void performAttack(int attackNum, Vector2 playerPos) {
+    public boolean performAttack(int attackNum, Vector2 playerPos) {
         if (attackNum >= attacks.size()) {
             throw new IllegalArgumentException("attack " + attackNum + " does not exist");
         }
-        attacks.get(attackNum).performAttack(ATTACK_FACTOR, playerPos);
+        return attacks.get(attackNum).performAttack(ATTACK_FACTOR, playerPos);
     }
 
     /**
@@ -78,5 +78,18 @@ public abstract class Fighter {
         return attacks.get(attackNum).getStaminaCost();
     }
 
+    public boolean isAttacking() {
+        boolean isAttacking = false;
+        for (IAttack attack : attacks) {
+            if (!attack.isFinished()) {
+                isAttacking = true;
+            }
+        }
+        return isAttacking;
+    }
+
+    public float getAttackLength(int attackNum) {
+        return attacks.get(attackNum).getAttackLength();
+    }
 
 }
