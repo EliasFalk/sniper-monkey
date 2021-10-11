@@ -94,4 +94,31 @@ public abstract class GameObject {
     public Hitbox getHitbox() {
         return hitbox;
     }
+
+    /**
+     * Sets the mask of this GameObjects hitbox.
+     *
+     * @param mask The new mask to use
+     */
+    protected void setHitboxMask(int mask) {
+        hitbox.setMask(mask);
+    }
+
+    /**
+     * Adds to the mask of this GameObjects hitbox.
+     *
+     * @param mask The new mask to add onto the current mask.
+     */
+    protected void addHitboxMask(int mask) {
+        hitbox.addMask(mask);;
+    }
+
+    /**
+     * Returns the mask of this GameObject.
+     *
+     * @return The mask
+     */
+    protected int getHitboxMask() {
+        return hitbox.getMask();
+    }
 }
