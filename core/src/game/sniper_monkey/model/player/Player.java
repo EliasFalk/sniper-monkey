@@ -349,7 +349,7 @@ public class Player extends GameObject {
         boolean collidesXAxisNextFrame = CollisionEngine.getCollision(getHitbox(), new Vector2(physicsPos.getVelocity().x, 0).scl(deltaTime), getHitboxMask());
         if (collidesXAxisNextFrame) {
             // while it doesn't collide with an x position approaching the object it will collide with, then see if it collides with an x position a tiny bit closer until it collides.
-            while (!CollisionEngine.getCollision(getHitbox(), new Vector2(Math.signum(physicsPos.getVelocity().x) / 2f, 0), getHitboxMask() | CollisionMasks.PLAYER_1)) {
+            while (!CollisionEngine.getCollision(getHitbox(), new Vector2(Math.signum(physicsPos.getVelocity().x) / 2f, 0), getHitboxMask())) {
                 setHitboxPos(new Vector2(getHitbox().getPosition().x + Math.signum(physicsPos.getVelocity().x) / 2f, getHitbox().getPosition().y));
             }
             // Then set x velocity to zero, and the x position is already set to the closest it can get to the object it collides with.
