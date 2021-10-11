@@ -63,4 +63,10 @@ public class CollisionEngineTest {
         CollisionEngine.registerGameObject(objDynamic, true);
         assertFalse(CollisionEngine.getCollision(objDynamic.getHitbox(), new Vector2(0, 0)));
     }
+
+    @Test
+    public void testMaskedHitbox() {
+        //TODO Make this test once there are suitable predefined GameObjects which have masks.
+        assertTrue(true);
+    }
 }
