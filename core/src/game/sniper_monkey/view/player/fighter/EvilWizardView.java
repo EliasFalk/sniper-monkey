@@ -25,6 +25,7 @@ public class EvilWizardView extends GameObjectView {
     private static final Vector2 drawOffset = new Vector2(-106, -83);
     private final Player model;
     private final float frameDuration = 0.1f;
+    private FighterAnimation lastAnimation;
 
     private final Map<FighterAnimation, Animation<Sprite>> animations = new HashMap<>();
 
@@ -37,6 +38,7 @@ public class EvilWizardView extends GameObjectView {
         this.model = model;
         //TODO: good.
         initAnimationHash();
+        lastAnimation = FighterAnimation.IDLING;
     }
 
     private void initAnimationHash() {
@@ -52,13 +54,17 @@ public class EvilWizardView extends GameObjectView {
         animations.put(FighterAnimation.MOVING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(run, 8), Animation.PlayMode.LOOP));
         animations.put(FighterAnimation.JUMPING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(jump, 2), Animation.PlayMode.LOOP));
         animations.put(FighterAnimation.FALLING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(fall, 2), Animation.PlayMode.LOOP));
-        animations.put(FighterAnimation.DYING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(death, 7), Animation.PlayMode.LOOP_PINGPONG));
-        animations.put(FighterAnimation.ATTACKING1, new Animation<>(model.getAttack1Length()/8, AnimationUtils.cutSpriteSheet(attack1, 8), Animation.PlayMode.LOOP));
+        animations.put(FighterAnimation.DYING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(death, 7), Animation.PlayMode.NORMAL));
+        animations.put(FighterAnimation.ATTACKING1, new Animation<>(model.getAttack1Length()/8, AnimationUtils.cutSpriteSheet(attack1, 8), Animation.PlayMode.NORMAL));
     }
 
     //TODO documentation
     @Override
     public void updateSprite() {
+        if(model.getCurrentFighterAnimation() != lastAnimation) {
+            Time.resetElapsedTime();
+            lastAnimation = model.getCurrentFighterAnimation();
+        }
         sprite = animations.get(model.getCurrentFighterAnimation()).getKeyFrame(Time.getElapsedTime());
         sprite.setFlip(!model.isLookingRight(), false);
     }
