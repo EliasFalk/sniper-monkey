@@ -22,7 +22,6 @@ import java.util.Map;
  * @author Dadi Andrason
  */
 public class Player extends GameObject implements ReadablePlayer, ControllablePlayer, DamageablePlayer {
-    // TODO read these values from config file
     private static final float MAX_X_VEL;
     private static final float VEL_GAIN;
     private static final float JUMP_GAIN;
