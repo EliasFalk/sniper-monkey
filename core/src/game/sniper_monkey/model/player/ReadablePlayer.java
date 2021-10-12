@@ -26,4 +26,7 @@ public interface ReadablePlayer {
      * @return The Class of the active fighter
      */
     Class<?> getActiveFighterClass();
+
+    float getAttack1Length();
+
 }
