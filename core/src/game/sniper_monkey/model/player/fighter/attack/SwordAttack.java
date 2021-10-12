@@ -42,7 +42,7 @@ public class SwordAttack implements IAttack {
     private final CallbackTimer cbTimer;
     private final float attackLength = 0.8f;
     private final float projectileTimeToLive = attackLength;
-    private Vector2 velocity = new Vector2(1,0);
+    private Vector2 velocity = new Vector2(10,0);
 
     public SwordAttack() {
         this.cbTimer = new CallbackTimer(attackLength, () -> canAttack = true);
@@ -51,8 +51,8 @@ public class SwordAttack implements IAttack {
     @Override
     public boolean performAttack(float attackFactor, Vector2 playerPos, int collisionMask) {
         if (canAttack) {
-            playerPos.x += 30;
-            playerPos.y += 30;
+            playerPos.x += 60;
+            playerPos.y += 0;
             ProjectileSpawner.spawnSwordAttack(damage, projectileTimeToLive, playerPos, attackSize, collisionMask, velocity);
             cbTimer.reset();
             cbTimer.start();
