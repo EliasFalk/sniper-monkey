@@ -94,12 +94,14 @@ public class GameRenderer implements IWorldObserver {
         sr.dispose();
     }
 
+    //TODO documentation
     @Override
     public void onObjectAddedToWorld(GameObject obj) {
         GameObjectView view = GameObjectViewFactory.viewFromGameObject(obj);
         if (view != null) gameObjectViews.add(view);
     }
 
+    //TODO documentation
     @Override
     public void onObjectRemovedFromWorld(GameObject obj) {
         for (int i = 0; i < gameObjectViews.size(); i++) {

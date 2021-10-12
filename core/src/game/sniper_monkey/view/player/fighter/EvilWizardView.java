@@ -54,6 +54,7 @@ public class EvilWizardView extends GameObjectView {
         animations.put(FighterAnimation.DYING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(death, 7), Animation.PlayMode.LOOP_PINGPONG));
     }
 
+    //TODO documentation
     @Override
     public void updateSprite() {
         sprite = animations.get(model.getCurrentFighterAnimation()).getKeyFrame(Time.getElapsedTime());

@@ -21,6 +21,7 @@ public final class SpriteUtils {
     private SpriteUtils() {
     }
 
+    //TODO documentation
     public static Sprite getDefaultSprite() {
         return defaultSprite;
     }

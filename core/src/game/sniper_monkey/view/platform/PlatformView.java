@@ -13,6 +13,7 @@ import game.sniper_monkey.view.GameObjectView;
 public class PlatformView extends GameObjectView {
     Platform model;
 
+    //TODO documentation
     public PlatformView(Platform model) {
         super(new Vector2(0, 0), new Sprite(new Texture("images/CuteForest/Tileset.png"), 16, 0, 16, 16), model);
         this.model = model;
