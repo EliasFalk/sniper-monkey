@@ -80,6 +80,9 @@ public class GameController {
 
         BottomHUDController p1BottomHUD = new BottomHUDController(gameScreen, player1, "cfg/player1_keybinds.cfg", Placement.LEFT);
         BottomHUDController p2BottomHUD = new BottomHUDController(gameScreen, player2, "cfg/player2_keybinds.cfg", Placement.RIGHT);
+
+        player1.registerSwappedFighterObserver(p1BottomHUD);
+        player2.registerSwappedFighterObserver(p2BottomHUD);
     }
 
     //TODO documentation

@@ -9,7 +9,9 @@ import game.sniper_monkey.model.world.CallbackTimer;
 import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.model.world.TimerObserver;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,6 +41,7 @@ public class Player extends GameObject {
     private final FluctuatingAttribute blockFactor = new FluctuatingAttribute(MIN_BLOCK, MAX_BLOCK);
     private final CallbackTimer blockTimer = new CallbackTimer(.2f, () -> canBlock = true);
     private final CallbackTimer swapTimer = new CallbackTimer(SWAP_COOLDOWN, () -> canSwap = true);
+    private final List<SwappedFighterObserver> swappedFighterObservers = new ArrayList<>();
     private final Fighter primaryFighter;
     private final Fighter secondaryFighter;
     private final Map<PlayerInputAction, Boolean> inputActions = new HashMap<>();
@@ -319,6 +322,16 @@ public class Player extends GameObject {
         }
     }
 
+    /**
+     * Returns the class of the active fighter's attack, specified by the attack number.
+     *
+     * @param attackNum The attack specifier. Starts at 0.
+     * @return The class of the specified attack of the active fighter.
+     */
+    public Class<?> getAttackClass(int attackNum) {
+        return activeFighter.getAttackClass(attackNum);
+    }
+
     private void initActiveFighter(Fighter fighter) {
         activeFighter = fighter;
         setHitboxPos(physicsPos.getPosition());
@@ -490,6 +503,24 @@ public class Player extends GameObject {
      */
     public void unregisterSwapCooldownObserver(TimerObserver timerObserver) {
         swapTimer.unRegisterTimerObserver(timerObserver);
+    }
+
+    /**
+     * Subscribes the observer to be notified when the player has swapped fighter.
+     *
+     * @param observer The observer that wants to be subscribed to when the player swapped fighter.
+     */
+    public void registerSwappedFighterObserver(SwappedFighterObserver observer) {
+        swappedFighterObservers.add(observer);
+    }
+
+    /**
+     * Unsubscribes the observer to not be notified when the player has swapped fighter.
+     *
+     * @param observer The observer that wants to be subscribed to when the player swapped fighter.
+     */
+    public void unregisterSwappedFighterObserver(SwappedFighterObserver observer) {
+        swappedFighterObservers.remove(observer);
     }
 
     @FunctionalInterface
