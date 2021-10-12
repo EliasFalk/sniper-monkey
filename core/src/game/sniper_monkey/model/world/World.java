@@ -6,7 +6,7 @@ import game.sniper_monkey.model.Config;
 import game.sniper_monkey.model.TimerBank;
 import game.sniper_monkey.model.collision.CollisionEngine;
 
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Represents the model for the world where all game objects are existing in.
@@ -21,10 +21,13 @@ import java.util.ArrayList;
 public final class World {
     private static World INSTANCE;
 
-    private final ArrayList<GameObject> gameObjects;
-    private final ArrayList<IWorldObserver> observers;
+    private final List<GameObject> gameObjects;
+    private final Queue<GameObject> queuedForAddition;
+    private final Queue<GameObject> queuedForRemoval;
+
+    private final List<IWorldObserver> observers;
     private final CallbackTimer roundTimer;
-    private final ArrayList<ITimerObserver> timerObservers;
+    private final List<ITimerObserver> timerObservers;
     private State currentState = this::startFightingState;
 
     @FunctionalInterface
@@ -36,6 +39,8 @@ public final class World {
         gameObjects = new ArrayList<>();
         observers = new ArrayList<>();
         timerObservers = new ArrayList<>();
+        queuedForAddition = new ArrayDeque<>();
+        queuedForRemoval = new ArrayDeque<>();
 
         Config.readConfigFile("cfg/game.cfg");
         float roundTime = Config.getNumber("cfg/game.cfg", "ROUND_TIME");
@@ -125,33 +130,52 @@ public final class World {
      * Calls update on all GameObjects in the world
      */
     public void update(float deltaTime) {
+        addQueuedGameObjects();
+        removeQueuedGameObjects();
+
         currentState.performState();
-        for (int i = 0; i < gameObjects.size(); i++) {
-            gameObjects.get(i).update(deltaTime);
+        for (GameObject gameObject : gameObjects) {
+            gameObject.update(deltaTime);
         }
+
         // TODO maybe move this somewhere else.
         TimerBank.updateTimers(deltaTime);
     }
 
-    /**
-     * Adds a GameObject to the world
-     *
-     * @param obj the object to add
-     */
-    public void addGameObject(GameObject obj) {
-        gameObjects.add(obj);
-        notifyObserversOfNewObject(obj);
-        CollisionEngine.registerGameObject(obj, obj.isDynamic());
+    private void addQueuedGameObjects() {
+        while(!queuedForAddition.isEmpty()) {
+            GameObject obj = queuedForAddition.remove();
+            gameObjects.add(obj);
+            notifyObserversOfNewObject(obj);
+            CollisionEngine.registerGameObject(obj, obj.isDynamic());
+        }
+    }
+
+    private void removeQueuedGameObjects() {
+        while(!queuedForRemoval.isEmpty()) {
+            GameObject obj = queuedForRemoval.remove();
+            gameObjects.remove(obj);
+            notifyObserversOfRemovedObject(obj);
+            CollisionEngine.unregisterGameObject(obj);;
+        }
     }
 
     /**
-     * Removes a GameObject from the world if it exists
+     * Queues a GameObject for addition to the world,
+     * which means it is added at the start of the next frame
      *
+     * @param obj the object to add
+     */
+    public void queueAddGameObject(GameObject obj) {
+        queuedForAddition.add(obj);
+    }
+
+    /**
+     * Queues a GameObject for removal from the world,
+     * which means it is removed at the start of the next frame
      * @param obj the object to remove
      */
-    public void deleteGameObject(GameObject obj) {
-        gameObjects.remove(obj);
-        notifyObserversOfRemovedObject(obj);
-        CollisionEngine.unregisterGameObject(obj);
+    public void queueRemoveGameObject(GameObject obj) {
+        queuedForRemoval.add(obj);
     }
 }

@@ -1,7 +1,6 @@
 package game.sniper_monkey.model.player.fighter.attack;
 
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.model.collision.Hitbox;
 import game.sniper_monkey.model.world.CallbackTimer;
 import game.sniper_monkey.model.world.World;
 
@@ -54,7 +53,7 @@ public class SwordAttack implements IAttack {
 
     public void deSpawnAttack(Projectile projectile) {
         System.out.println("dabness despwan");
-        World.getInstance().deleteGameObject(projectile);
+        World.getInstance().queueRemoveGameObject(projectile);
     }
 
     @Override

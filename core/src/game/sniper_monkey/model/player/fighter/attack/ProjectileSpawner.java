@@ -7,7 +7,7 @@ public class ProjectileSpawner {
 
     public static Projectile spawnSwordAttack(float damage, float timeToLive, Vector2 playerPos, Vector2 attackSize, int collisionMask) {
         Projectile projectile = new Projectile(damage, timeToLive, playerPos, attackSize, collisionMask);
-        World.getInstance().addGameObject(projectile);
+        World.getInstance().queueAddGameObject(projectile);
         return projectile;
     }
 

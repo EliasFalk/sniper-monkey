@@ -48,7 +48,7 @@ public abstract class GameObject {
      * Removes this GameObject from the world
      */
     protected final void delete() {
-        World.getInstance().deleteGameObject(this);
+        World.getInstance().queueRemoveGameObject(this);
     }
 
     /**

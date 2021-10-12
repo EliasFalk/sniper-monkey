@@ -36,7 +36,7 @@ public class WorldTest {
     @Test
     public void testAddGameObject() {
         GameObject obj = PlayerFactory.createPlayer(new Vector2(50, 50));
-        world.addGameObject(obj);
+        world.queueAddGameObject(obj);
         world.update(1);
         Assert.assertNotEquals(new Vector2(50, 50), obj.getPos());
     }

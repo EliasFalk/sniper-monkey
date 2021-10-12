@@ -8,7 +8,6 @@ import game.sniper_monkey.controller.PlayerController;
 import game.sniper_monkey.model.platform.Platform;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.PlayerFactory;
-import game.sniper_monkey.model.player.fighter.attack.SwordAttack;
 import game.sniper_monkey.view.GameRenderer;
 import game.sniper_monkey.model.world.World;
 
@@ -26,24 +25,24 @@ public class SniperMonkey extends ApplicationAdapter {
         World.getInstance().registerObserver(gameRenderer);
 
         for (int i = 0; i < 400 / 16; i++)
-            World.getInstance().addGameObject(new Platform(new Vector2(-200 + i * 16, -100)));
+            World.getInstance().queueAddGameObject(new Platform(new Vector2(-200 + i * 16, -100)));
 
         //TODO use an external tool to create the map and create a utility to read it
-        World.getInstance().addGameObject(new Platform(new Vector2(16, -100 + 16)));
-        World.getInstance().addGameObject(new Platform(new Vector2(16, -100 + 16 * 2)));
-        World.getInstance().addGameObject(new Platform(new Vector2(16, -100 + 16 * 3)));
-        World.getInstance().addGameObject(new Platform(new Vector2(16, -100 + 16 * 4)));
-        World.getInstance().addGameObject(new Platform(new Vector2(32, -100 + 16 * 4)));
-        World.getInstance().addGameObject(new Platform(new Vector2(32 + 16, -100 + 16 * 4)));
-        World.getInstance().addGameObject(new Platform(new Vector2(32 * 2, -100 + 16 * 4)));
+        World.getInstance().queueAddGameObject(new Platform(new Vector2(16, -100 + 16)));
+        World.getInstance().queueAddGameObject(new Platform(new Vector2(16, -100 + 16 * 2)));
+        World.getInstance().queueAddGameObject(new Platform(new Vector2(16, -100 + 16 * 3)));
+        World.getInstance().queueAddGameObject(new Platform(new Vector2(16, -100 + 16 * 4)));
+        World.getInstance().queueAddGameObject(new Platform(new Vector2(32, -100 + 16 * 4)));
+        World.getInstance().queueAddGameObject(new Platform(new Vector2(32 + 16, -100 + 16 * 4)));
+        World.getInstance().queueAddGameObject(new Platform(new Vector2(32 * 2, -100 + 16 * 4)));
 
-        World.getInstance().addGameObject(new Platform(new Vector2(-32 * 4, -100 + 16 * 5)));
-        World.getInstance().addGameObject(new Platform(new Vector2((-32 - 16) * 4, -100 + 16 * 5)));
-        World.getInstance().addGameObject(new Platform(new Vector2(-32 * 2 * 4, -100 + 16 * 5)));
+        World.getInstance().queueAddGameObject(new Platform(new Vector2(-32 * 4, -100 + 16 * 5)));
+        World.getInstance().queueAddGameObject(new Platform(new Vector2((-32 - 16) * 4, -100 + 16 * 5)));
+        World.getInstance().queueAddGameObject(new Platform(new Vector2(-32 * 2 * 4, -100 + 16 * 5)));
         Player player1 = PlayerFactory.createPlayer1(new Vector2(50, 50));
         Player player2 = PlayerFactory.createPlayer2(new Vector2(-50, 50));
-        World.getInstance().addGameObject(player1);
-        World.getInstance().addGameObject(player2);
+        World.getInstance().queueAddGameObject(player1);
+        World.getInstance().queueAddGameObject(player2);
         player1Controller = new PlayerController(player1, "cfg/player1_keybinds.cfg");
         player2Controller = new PlayerController(player2, "cfg/player2_keybinds.cfg");
     }
