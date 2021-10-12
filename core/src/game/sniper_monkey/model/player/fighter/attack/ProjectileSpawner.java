@@ -5,8 +5,8 @@ import game.sniper_monkey.model.world.World;
 
 public class ProjectileSpawner {
 
-    public static Projectile spawnSwordAttack(float damage, float timeToLive, Vector2 playerPos, Vector2 attackSize, int collisionMask) {
-        Projectile projectile = new Projectile(damage, timeToLive, playerPos, attackSize, collisionMask);
+    public static Projectile spawnSwordAttack(float damage, float timeToLive, Vector2 playerPos, Vector2 attackSize, int collisionMask, float velocity) {
+        Projectile projectile = new Projectile(damage, timeToLive, playerPos, attackSize, collisionMask, velocity);
         World.getInstance().queueAddGameObject(projectile);
         return projectile;
     }

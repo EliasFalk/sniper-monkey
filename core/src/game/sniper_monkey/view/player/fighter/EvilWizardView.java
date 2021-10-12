@@ -58,7 +58,6 @@ public class EvilWizardView extends GameObjectView {
         animations.put(FighterAnimation.ATTACKING1, new Animation<>(model.getAttack1Length()/8, AnimationUtils.cutSpriteSheet(attack1, 8), Animation.PlayMode.NORMAL));
     }
 
-    //TODO documentation
     @Override
     public void updateSprite() {
         if(model.getCurrentFighterAnimation() != lastAnimation) {

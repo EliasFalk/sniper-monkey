@@ -149,7 +149,6 @@ public class Player extends GameObject {
         if (inputActions.get(PlayerInputAction.ATTACK1)) {
             if (activeFighter.performAttack(0, this.getPos(), getHitboxMask())) {
                 stamina.decrease(activeFighter.getStaminaDecrease(0));
-                //currentFighterAnimation = FighterAnimation.ATTACKING1;
                 abilityState = this::attacking1State;
             }
 
@@ -199,11 +198,9 @@ public class Player extends GameObject {
         if (inputActions.get(PlayerInputAction.JUMP)) {
             jump();
             movementState = this::inAirState;
-            return;
         }
         if (physicsPos.getVelocity().y < 0) {
             movementState = this::inAirState;
-            return;
         }
     }
 
