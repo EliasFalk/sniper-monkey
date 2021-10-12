@@ -1,5 +1,7 @@
 package game.sniper_monkey.view;
 
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -8,8 +10,10 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.model.world.IWorldObserver;
 import game.sniper_monkey.model.world.World;
+import game.sniper_monkey.view.hud.HUDView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A class storing view data (all HUDViews and GameObjectViews) as well as renders these using
@@ -19,19 +23,19 @@ import java.util.ArrayList;
  * @author Elias Falk
  * @author Kevin Jeryd
  */
-public class GameRenderer implements IWorldObserver {
-    private final ArrayList<GameObjectView> gameObjectViews;
+public class GameScreen extends ScreenAdapter implements IWorldObserver  {
+    private final List<GameObjectView> gameObjectViews;
     SpriteBatch batch;
     ShapeRenderer sr;
     Stage stage;
-    OrthographicCamera camera = new OrthographicCamera(1280 / 2f, 720 / 2f);
-    boolean debugMode = (Math.random() > 0.5); // TODO epic.
+    OrthographicCamera camera = new OrthographicCamera(1920 / 2f, 1080 / 2f);
+    boolean debugMode = true;
     RoundTimerView roundTimerView;
 
     /**
      * Creates a GameRenderer
      */
-    public GameRenderer() {
+    public GameScreen() {
         stage = new Stage();
         batch = new SpriteBatch();
         gameObjectViews = new ArrayList<>();
@@ -55,10 +59,13 @@ public class GameRenderer implements IWorldObserver {
         camera.update();
     }
 
-    /**
-     * Renders a background and then all of the views stored in the GameRenderer
-     */
-    public void render() {
+    @Override
+    public void show() {
+
+    }
+
+    @Override
+    public void render(float deltaTime) {
         ScreenUtils.clear(1, 1, 1, 1);
 
         batch.begin();
@@ -86,9 +93,30 @@ public class GameRenderer implements IWorldObserver {
         stage.draw();
     }
 
+    @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
     /**
      * Disposes of the SpriteBatch and ShapeRenderer
      */
+    @Override
     public void dispose() {
         batch.dispose();
         sr.dispose();
@@ -110,5 +138,13 @@ public class GameRenderer implements IWorldObserver {
                 return;
             }
         }
+    }
+
+    public void addHudView(HUDView hudView) {
+        hudView.addActors(stage);
+    }
+
+    public void removeHudView(HUDView hudView) {
+//        hudView.addActors(stage);
     }
 }

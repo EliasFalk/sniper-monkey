@@ -45,7 +45,7 @@ public abstract class GameObject {
     public void update(float deltaTime) {}
 
     /**
-     * Removes this GameObject from the world
+     * Removes this GameObject from the world at the start of the next frame
      */
     protected final void delete() {
         World.getInstance().queueRemoveGameObject(this);

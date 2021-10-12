@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.player.FighterAnimation;
 import game.sniper_monkey.model.player.Player;
+import game.sniper_monkey.model.player.ReadablePlayer;
 import game.sniper_monkey.utils.time.Time;
 import game.sniper_monkey.utils.view.AnimationUtils;
 import game.sniper_monkey.utils.view.SpriteUtils;
@@ -23,7 +24,7 @@ import java.util.Map;
  */
 public class EvilWizardView extends GameObjectView {
     private static final Vector2 drawOffset = new Vector2(-106, -83);
-    private final Player model;
+    private final ReadablePlayer model;
     private final float frameDuration = 0.1f;
     private FighterAnimation lastAnimation;
 

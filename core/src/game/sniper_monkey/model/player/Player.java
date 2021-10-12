@@ -7,10 +7,14 @@ import game.sniper_monkey.model.collision.CollisionEngine;
 import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.world.CallbackTimer;
 import game.sniper_monkey.model.world.GameObject;
+import game.sniper_monkey.model.world.TimerObserver;
 import game.sniper_monkey.utils.collision.CollisionMasks;
 import game.sniper_monkey.model.world.World;
+import game.sniper_monkey.utils.collision.CollisionResponse;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,8 +26,7 @@ import java.util.Map;
  * @author Kevin Jeryd
  * @author Dadi Andrason
  */
-public class Player extends GameObject {
-    // TODO read these values from config file
+public class Player extends GameObject implements ReadablePlayer, ControllablePlayer, DamageablePlayer {
     private static final float MAX_X_VEL;
     private static final float VEL_GAIN;
     private static final float JUMP_GAIN;
@@ -38,17 +41,22 @@ public class Player extends GameObject {
     private final FluctuatingAttribute stamina = new FluctuatingAttribute(MAX_STAMINA);
     private final FluctuatingAttribute health = new FluctuatingAttribute(MAX_HEALTH);
     private final FluctuatingAttribute blockFactor = new FluctuatingAttribute(MIN_BLOCK, MAX_BLOCK);
+    private final CallbackTimer blockTimer = new CallbackTimer(.2f, () -> canBlock = true);
+    private final CallbackTimer swapTimer = new CallbackTimer(SWAP_COOLDOWN, () -> canSwap = true);
+    private final List<SwappedFighterObserver> swappedFighterObservers = new ArrayList<>();
     private final Fighter primaryFighter;
     private final Fighter secondaryFighter;
     private final Map<PlayerInputAction, Boolean> inputActions = new HashMap<>();
     private final float blockDefenseFactor;
-    private final PhysicsPosition physicsPos = new PhysicsPosition(new Vector2(0, 0));
+    private PhysicsPosition physicsPos = new PhysicsPosition(new Vector2(0, 0));
     boolean isGrounded = true;
     private Fighter activeFighter;
     private FighterAnimation currentFighterAnimation; // TODO set this to static for very many fun
     private boolean lookingRight;
     private State movementState = this::groundedState;
     private State abilityState = this::inactiveState;
+    private boolean canBlock = true;
+    private boolean canSwap = true;
 
 
     static {
@@ -113,10 +121,12 @@ public class Player extends GameObject {
         if (inputActions.get(PlayerInputAction.BLOCK)) {
             blockFactor.setRegenerating(false);
             blockFactor.setDraining(true, BASE_BLOCK_DRAIN);
+            blockTimer.reset();
         } else {
             blockFactor.setDraining(false);
             blockFactor.setRegenerating(true, BASE_BLOCK_REGEN);
             abilityState = this::inactiveState;
+            blockTimer.start();
             movementState.performState();
         }
     }
@@ -163,8 +173,11 @@ public class Player extends GameObject {
             abilityState = this::attacking2State;
             return;
         } else if (inputActions.get(PlayerInputAction.BLOCK)) {
-            abilityState = this::blockingState;
-            return;
+            if (canBlock) {
+                abilityState = this::blockingState;
+                canBlock = false;
+                return;
+            }
         } else if (inputActions.get(PlayerInputAction.SWAP_FIGHTER)) {
             // TODO swapFighter
             abilityState = this::swappingFighterState;
@@ -202,9 +215,11 @@ public class Player extends GameObject {
         if (inputActions.get(PlayerInputAction.JUMP)) {
             jump();
             movementState = this::inAirState;
+            return;
         }
         if (physicsPos.getVelocity().y < 0) {
             movementState = this::inAirState;
+            return;
         }
     }
 
@@ -319,6 +334,29 @@ public class Player extends GameObject {
         return activeFighter.getClass();
     }
 
+    /**
+     * Returns the class of the inactive fighter.
+     *
+     * @return The class of the inactive fighter.
+     */
+    public Class<?> getInactiveFighterClass() {
+        if (activeFighter == primaryFighter) {
+            return secondaryFighter.getClass();
+        } else {
+            return primaryFighter.getClass();
+        }
+    }
+
+    /**
+     * Returns the class of the active fighter's attack, specified by the attack number.
+     *
+     * @param attackNum The attack specifier. Starts at 0.
+     * @return The class of the specified attack of the active fighter.
+     */
+    public Class<?> getAttackClass(int attackNum) {
+        return activeFighter.getAttackClass(attackNum);
+    }
+
     private void initActiveFighter(Fighter fighter) {
         activeFighter = fighter;
         setHitboxPos(physicsPos.getPosition());
@@ -351,36 +389,138 @@ public class Player extends GameObject {
 
     private void updatePlayerPos(float deltaTime) {
         physicsPos.update(deltaTime);
-        handleCollision(deltaTime);
+        isGrounded = false;
+        physicsPos = CollisionResponse.handleCollision(deltaTime, getHitbox(), getHitboxMask(), physicsPos, () -> {}, () -> {
+            if(physicsPos.getVelocity().y < 0) isGrounded = true;
+        });
         super.setPosition(physicsPos.getPosition());
     }
 
-    // TODO refactor this behemoth
-    private void handleCollision(float deltaTime) {
 
-        // executes shawn mendez. inspired by shawn's collision algorithm
-        boolean collidesXAxisNextFrame = CollisionEngine.getCollision(getHitbox(), new Vector2(physicsPos.getVelocity().x, 0).scl(deltaTime), getHitboxMask());
-        if (collidesXAxisNextFrame) {
-            // while it doesn't collide with an x position approaching the object it will collide with, then see if it collides with an x position a tiny bit closer until it collides.
-            while (!CollisionEngine.getCollision(getHitbox(), new Vector2(Math.signum(physicsPos.getVelocity().x) / 2f, 0), getHitboxMask())) {
-                setHitboxPos(new Vector2(getHitbox().getPosition().x + Math.signum(physicsPos.getVelocity().x) / 2f, getHitbox().getPosition().y));
-            }
-            // Then set x velocity to zero, and the x position is already set to the closest it can get to the object it collides with.
-            physicsPos.setVelocity(new Vector2(0, physicsPos.getVelocity().y));
-        }
+    /**
+     * Subscribes the observer to changes made when the health attribute changes.
+     *
+     * @param observer The observer that wants to be subscribed to the changes.
+     */
+    public void registerHealthObserver(FluctuatingAttributeObserver observer) {
+        health.registerObserver(observer);
+    }
 
-        setHitboxPos(getHitbox().getPosition().add(physicsPos.getVelocity().x * deltaTime, 0));
+    /**
+     * Unsubscribes the observer to changes made when the health attribute changes.
+     *
+     * @param observer The observer that wants to be unsubscribed to the changes.
+     */
+    public void unregisterHealthObserver(FluctuatingAttributeObserver observer) {
+        health.unRegisterObserver(observer);
+    }
 
-        isGrounded = false;
-        if (CollisionEngine.getCollision(getHitbox(), new Vector2(0, physicsPos.getVelocity().y).scl(deltaTime), getHitboxMask())) {
-            if (physicsPos.getVelocity().y < 0) isGrounded = true;
-            while (!CollisionEngine.getCollision(getHitbox(), new Vector2(0, Math.signum(physicsPos.getVelocity().y) / 2f), getHitboxMask())) {
-                setHitboxPos(new Vector2(getHitbox().getPosition().x, getHitbox().getPosition().y + Math.signum(physicsPos.getVelocity().y) / 2f));
-            }
-            physicsPos.setVelocity(new Vector2(physicsPos.getVelocity().x, 0));
-        }
-        setHitboxPos(getHitbox().getPosition().add(0, physicsPos.getVelocity().y * deltaTime));
-        physicsPos.setPosition(getHitbox().getPosition());
+    /**
+     * Subscribes the observer to changes made when the stamina attribute changes.
+     *
+     * @param observer The observer that wants to be subscribed to the changes.
+     */
+    public void registerStaminaObserver(FluctuatingAttributeObserver observer) {
+        stamina.registerObserver(observer);
+    }
+
+    /**
+     * Unsubscribes the observer to changes made when the stamina attribute changes.
+     *
+     * @param observer The observer that wants to be unsubscribed to the changes.
+     */
+    public void unregisterStaminaObserver(FluctuatingAttributeObserver observer) {
+        stamina.unRegisterObserver(observer);
+    }
+
+    /**
+     * Subscribes the observer to changes made when the block attribute changes.
+     *
+     * @param observer The observer that wants to be subscribed to the changes.
+     */
+    public void registerBlockObserver(FluctuatingAttributeObserver observer) {
+        blockFactor.registerObserver(observer);
+    }
+
+    /**
+     * Unsubscribes the observer to changes made when the block attribute changes.
+     *
+     * @param observer The observer that wants to be unsubscribed to the changes.
+     */
+    public void unregisterBlockObserver(FluctuatingAttributeObserver observer) {
+        blockFactor.unRegisterObserver(observer);
+    }
+
+    /**
+     * Subscribes the observer to changes made when the attack cooldown changes.
+     *
+     * @param timerObserver The observer that wants to be subscribed to the changes.
+     */
+    public void registerAttackCooldownObserver(TimerObserver timerObserver) {
+        // TODO since cooldown effects all attacks should set this in player
+    }
+
+    /**
+     * Subscribes the observer to changes made when the attack cooldown changes.
+     *
+     * @param timerObserver The observer that wants to be unsubscribed to the changes.
+     */
+    public void unregisterAttackCooldownObserver(TimerObserver timerObserver) {
+        // TODO
+    }
+
+    /**
+     * Subscribes the observer to changes made when the block cooldown changes.
+     *
+     * @param timerObserver The observer that wants to be subscribed to the changes.
+     */
+    public void registerBlockCooldownObserver(TimerObserver timerObserver) {
+        blockTimer.registerTimerObserver(timerObserver);
+    }
+
+    /**
+     * Unsubscribes the observer to changes made when the block cooldown changes.
+     *
+     * @param timerObserver The observer that wants to be unsubscribed to the changes.
+     */
+    public void unregisterBlockCooldownObserver(TimerObserver timerObserver) {
+        blockTimer.unRegisterTimerObserver(timerObserver);
+    }
+
+    /**
+     * Subscribes the observer to changes made when the swap cooldown changes.
+     *
+     * @param timerObserver The observer that wants to be subscribed to the changes.
+     */
+    public void registerSwapCooldownObserver(TimerObserver timerObserver) {
+        swapTimer.registerTimerObserver(timerObserver);
+    }
+
+    /**
+     * Unsubscribes the observer to changes made when the swap cooldown changes.
+     *
+     * @param timerObserver The observer that wants to be subscribed to the changes.
+     */
+    public void unregisterSwapCooldownObserver(TimerObserver timerObserver) {
+        swapTimer.unRegisterTimerObserver(timerObserver);
+    }
+
+    /**
+     * Subscribes the observer to be notified when the player has swapped fighter.
+     *
+     * @param observer The observer that wants to be subscribed to when the player swapped fighter.
+     */
+    public void registerSwappedFighterObserver(SwappedFighterObserver observer) {
+        swappedFighterObservers.add(observer);
+    }
+
+    /**
+     * Unsubscribes the observer to not be notified when the player has swapped fighter.
+     *
+     * @param observer The observer that wants to be subscribed to when the player swapped fighter.
+     */
+    public void unregisterSwappedFighterObserver(SwappedFighterObserver observer) {
+        swappedFighterObservers.remove(observer);
     }
 
     @FunctionalInterface

@@ -1,6 +1,9 @@
 package game.sniper_monkey.model.player;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Representing a range of float values which can fluctuate over time by regenerating or draining slowly
  * or by instantaneously increasing or decreasing.
@@ -10,6 +13,8 @@ package game.sniper_monkey.model.player;
  * @author Dadi Andrason
  */
 public class FluctuatingAttribute {
+
+    private final List<FluctuatingAttributeObserver> observers;
     private final float maxValue;
     private final float minValue;
     private float regenerationAmount;
@@ -32,6 +37,7 @@ public class FluctuatingAttribute {
         setDrainAmount(drainAmount);
         setRegenerationAmount(regenerationAmount);
         currentValue = maxValue;
+        observers = new ArrayList<>();
     }
 
     /**
@@ -96,11 +102,11 @@ public class FluctuatingAttribute {
      */
     public void update(float deltaTime) {
         if (isDraining && isRegenerating) {
-            currentValue = Math.max(minValue, Math.min(maxValue, currentValue + (regenerationAmount - drainAmount) * deltaTime));
+            setCurrentValue(currentValue + (regenerationAmount - drainAmount) * deltaTime);
         } else if (isRegenerating) {
-            currentValue = Math.min(currentValue + regenerationAmount * deltaTime, maxValue);
+            setCurrentValue(currentValue + regenerationAmount * deltaTime);
         } else if (isDraining) {
-            currentValue = Math.max(currentValue - drainAmount * deltaTime, minValue);
+            setCurrentValue(currentValue - drainAmount * deltaTime);
         }
     }
 
@@ -117,6 +123,9 @@ public class FluctuatingAttribute {
     //TODO documentation
     public void setCurrentValue(float currentValue) {
         this.currentValue = Math.max(minValue, Math.min(maxValue, currentValue));
+        for (FluctuatingAttributeObserver observer : observers) {
+            observer.onPercentageChange((this.currentValue - minValue) / (maxValue-minValue));
+        }
     }
 
     //TODO documentation
@@ -165,6 +174,14 @@ public class FluctuatingAttribute {
             throw new IllegalArgumentException("Amount cannot be negative.");
         }
         setCurrentValue(currentValue - amount);
+    }
+
+    public void registerObserver(FluctuatingAttributeObserver observer) {
+        observers.add(observer);
+    }
+
+    public void unRegisterObserver(FluctuatingAttributeObserver observer) {
+        observers.remove(observer);
     }
 }
 

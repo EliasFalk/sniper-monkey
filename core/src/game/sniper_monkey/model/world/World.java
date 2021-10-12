@@ -6,7 +6,10 @@ import game.sniper_monkey.model.Config;
 import game.sniper_monkey.model.TimerBank;
 import game.sniper_monkey.model.collision.CollisionEngine;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
 
 /**
  * Represents the model for the world where all game objects are existing in.
@@ -134,8 +137,8 @@ public final class World {
         removeQueuedGameObjects();
 
         currentState.performState();
-        for (GameObject gameObject : gameObjects) {
-            gameObject.update(deltaTime);
+        for (GameObject obj : gameObjects) {
+            obj.update(deltaTime);
         }
 
         // TODO maybe move this somewhere else.
@@ -161,6 +164,16 @@ public final class World {
     }
 
     /**
+     * Queues a GameObject for removal from the world,
+     * which means it is removed at the start of the next frame
+     *
+     * @param obj the object to remove
+     */
+    public void queueRemoveGameObject(GameObject obj) {
+        queuedForRemoval.add(obj);
+    }
+
+    /**
      * Queues a GameObject for addition to the world,
      * which means it is added at the start of the next frame
      *
@@ -168,14 +181,5 @@ public final class World {
      */
     public void queueAddGameObject(GameObject obj) {
         queuedForAddition.add(obj);
-    }
-
-    /**
-     * Queues a GameObject for removal from the world,
-     * which means it is removed at the start of the next frame
-     * @param obj the object to remove
-     */
-    public void queueRemoveGameObject(GameObject obj) {
-        queuedForRemoval.add(obj);
     }
 }
