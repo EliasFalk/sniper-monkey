@@ -4,6 +4,9 @@ import game.sniper_monkey.model.Callback;
 import game.sniper_monkey.model.TimerBank;
 import game.sniper_monkey.model.UpdatableTimer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * An UpdatableTimer with a callback that is called once it has finished counting down.
  *
@@ -17,6 +20,7 @@ public class CallbackTimer implements UpdatableTimer {
     private float timeLeft;
     private boolean running;
     private boolean looping;
+    private final List<TimerObserver> observers;
 
     /**
      * Creates a timer with a callback method which will be called upon when the timer finishes.
@@ -33,6 +37,7 @@ public class CallbackTimer implements UpdatableTimer {
         timeLeft = timerLength;
         this.looping = loop;
         TimerBank.addTimer(this);
+        observers = new ArrayList<>();
     }
 
     /**
@@ -89,6 +94,9 @@ public class CallbackTimer implements UpdatableTimer {
             }
             callback.call();
         }
+        for (TimerObserver observer : observers) {
+            observer.onTimeUpdated(timerLength, timeLeft);
+        }
     }
 
     /**
@@ -98,6 +106,9 @@ public class CallbackTimer implements UpdatableTimer {
     public void reset() {
         timeLeft = timerLength;
         running = false;
+        for (TimerObserver observer : observers) {
+            observer.onTimeUpdated(timerLength, timeLeft);
+        }
     }
 
     /**
@@ -144,5 +155,24 @@ public class CallbackTimer implements UpdatableTimer {
      */
     public boolean isRunning() {
         return running;
+    }
+
+    /**
+     * Subscribes the timer observer to the timer. When the time left changes it notifies the subscribers with the time left and timer length.
+     *
+     * @param timerObserver The timer observer that wants to be notified.
+     */
+    public void registerTimerObserver(TimerObserver timerObserver) {
+        observers.add(timerObserver);
+    }
+
+    /**
+     * Unsubscribes the timer observer from the timer.
+     *
+     * @param timerObserver The timer observer that no longer wants to be notified.
+     */
+    public void unRegisterTimerObserver(TimerObserver timerObserver) {
+        observers.remove(timerObserver);
+//        Input.Keys.PE
     }
 }

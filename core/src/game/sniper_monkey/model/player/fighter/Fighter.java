@@ -78,5 +78,17 @@ public abstract class Fighter {
         return attacks.get(attackNum).getStaminaCost();
     }
 
+    /**
+     * Returns the class of the attack specified by attackNum.
+     *
+     * @param attackNum The attack number. Starts at 0.
+     * @return The class of the attack.
+     */
+    public Class<?> getAttackClass(int attackNum) {
+        if (attackNum >= attacks.size()) {
+            throw new IllegalArgumentException("attack " + attackNum + " does not exist");
+        }
+        return attacks.get(attackNum).getClass();
+    }
 
 }

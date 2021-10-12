@@ -21,7 +21,11 @@ public final class SpriteUtils {
     private SpriteUtils() {
     }
 
-    //TODO documentation
+    /**
+     * Returns a missing texture sprite.
+     *
+     * @return A sprite with a "missing texture" texture.
+     */
     public static Sprite getDefaultSprite() {
         return defaultSprite;
     }
