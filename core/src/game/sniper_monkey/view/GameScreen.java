@@ -1,12 +1,13 @@
 package game.sniper_monkey.view;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
+import game.sniper_monkey.model.player.Player;
+import game.sniper_monkey.model.player.SwappedFighterObserver;
 import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.model.world.IWorldObserver;
 import game.sniper_monkey.model.world.World;
@@ -23,7 +24,7 @@ import java.util.List;
  * @author Elias Falk
  * @author Kevin Jeryd
  */
-public class GameScreen extends ScreenAdapter implements IWorldObserver  {
+public class GameScreen extends ScreenAdapter implements IWorldObserver, SwappedFighterObserver {
     private final List<GameObjectView> gameObjectViews;
     SpriteBatch batch;
     ShapeRenderer sr;
@@ -146,5 +147,12 @@ public class GameScreen extends ScreenAdapter implements IWorldObserver  {
 
     public void removeHudView(HUDView hudView) {
 //        hudView.addActors(stage);
+    }
+
+    @Override
+    public void onFighterSwap(Player player) {
+        // TODO refactor
+        onObjectRemovedFromWorld(player);
+        onObjectAddedToWorld(player);
     }
 }

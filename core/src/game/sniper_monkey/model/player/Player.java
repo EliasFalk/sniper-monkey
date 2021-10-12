@@ -8,7 +8,6 @@ import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.world.CallbackTimer;
 import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.model.world.TimerObserver;
-import game.sniper_monkey.utils.collision.CollisionMasks;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -139,12 +138,16 @@ public class Player extends GameObject {
     }
 
     private void swappingFighterState() {
-        // TODO swap fighter
-
-        // if swapped fighter go to inactive state. Swapping fighter could take some time?
-        if (true) {
-            abilityState = this::inactiveState;
+        swapFighters();
+        swapTimer.reset();
+        swapTimer.start();
+        physicsPos.setPosition(new Vector2(100, 100)); // TODO set to spawn pos
+        super.setPosition(physicsPos.getPosition());
+        for (SwappedFighterObserver observer : swappedFighterObservers) {
+            observer.onFighterSwap(this);
         }
+        abilityState = this::inactiveState;
+        canSwap = false;
     }
 
     private void inactiveState() {
@@ -166,8 +169,10 @@ public class Player extends GameObject {
             }
         } else if (inputActions.get(PlayerInputAction.SWAP_FIGHTER)) {
             // TODO swapFighter
-            abilityState = this::swappingFighterState;
-            return;
+            if (canSwap) {
+                abilityState = this::swappingFighterState;
+                return;
+            }
         }
         movementState.performState();
     }
