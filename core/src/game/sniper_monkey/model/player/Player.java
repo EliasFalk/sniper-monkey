@@ -9,6 +9,7 @@ import game.sniper_monkey.model.world.CallbackTimer;
 import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.model.world.TimerObserver;
 import game.sniper_monkey.utils.collision.CollisionMasks;
+import game.sniper_monkey.utils.collision.CollisionResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,8 +25,7 @@ import java.util.Map;
  * @author Kevin Jeryd
  * @author Dadi Andrason
  */
-public class Player extends GameObject {
-    // TODO read these values from config file
+public class Player extends GameObject implements ReadablePlayer, ControllablePlayer, DamageablePlayer {
     private static final float MAX_X_VEL;
     private static final float VEL_GAIN;
     private static final float JUMP_GAIN;
@@ -47,7 +47,7 @@ public class Player extends GameObject {
     private final Fighter secondaryFighter;
     private final Map<PlayerInputAction, Boolean> inputActions = new HashMap<>();
     private final float blockDefenseFactor;
-    private final PhysicsPosition physicsPos = new PhysicsPosition(new Vector2(0, 0));
+    private PhysicsPosition physicsPos = new PhysicsPosition(new Vector2(0, 0));
     boolean isGrounded = true;
     private Fighter activeFighter;
     private FighterAnimation currentFighterAnimation; // TODO set this to static for very many fun
@@ -375,36 +375,11 @@ public class Player extends GameObject {
 
     private void updatePlayerPos(float deltaTime) {
         physicsPos.update(deltaTime);
-        handleCollision(deltaTime);
-        super.setPosition(physicsPos.getPosition());
-    }
-
-    // TODO refactor this behemoth
-    private void handleCollision(float deltaTime) {
-
-        // executes shawn mendez. inspired by shawn's collision algorithm
-        boolean collidesXAxisNextFrame = CollisionEngine.getCollision(getHitbox(), new Vector2(physicsPos.getVelocity().x, 0).scl(deltaTime), getHitboxMask());
-        if (collidesXAxisNextFrame) {
-            // while it doesn't collide with an x position approaching the object it will collide with, then see if it collides with an x position a tiny bit closer until it collides.
-            while (!CollisionEngine.getCollision(getHitbox(), new Vector2(Math.signum(physicsPos.getVelocity().x) / 2f, 0), getHitboxMask())) {
-                setHitboxPos(new Vector2(getHitbox().getPosition().x + Math.signum(physicsPos.getVelocity().x) / 2f, getHitbox().getPosition().y));
-            }
-            // Then set x velocity to zero, and the x position is already set to the closest it can get to the object it collides with.
-            physicsPos.setVelocity(new Vector2(0, physicsPos.getVelocity().y));
-        }
-
-        setHitboxPos(getHitbox().getPosition().add(physicsPos.getVelocity().x * deltaTime, 0));
-
         isGrounded = false;
-        if (CollisionEngine.getCollision(getHitbox(), new Vector2(0, physicsPos.getVelocity().y).scl(deltaTime), getHitboxMask())) {
-            if (physicsPos.getVelocity().y < 0) isGrounded = true;
-            while (!CollisionEngine.getCollision(getHitbox(), new Vector2(0, Math.signum(physicsPos.getVelocity().y) / 2f), getHitboxMask())) {
-                setHitboxPos(new Vector2(getHitbox().getPosition().x, getHitbox().getPosition().y + Math.signum(physicsPos.getVelocity().y) / 2f));
-            }
-            physicsPos.setVelocity(new Vector2(physicsPos.getVelocity().x, 0));
-        }
-        setHitboxPos(getHitbox().getPosition().add(0, physicsPos.getVelocity().y * deltaTime));
-        physicsPos.setPosition(getHitbox().getPosition());
+        physicsPos = CollisionResponse.handleCollision(deltaTime, getHitbox(), getHitboxMask(), physicsPos, () -> {}, () -> {
+            if(physicsPos.getVelocity().y < 0) isGrounded = true;
+        });
+        super.setPosition(physicsPos.getPosition());
     }
 
 
