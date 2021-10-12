@@ -6,7 +6,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import game.sniper_monkey.utils.view.HUDUtils;
 
 /**
  * A view that represents the secondary fighter, including a corresponding image of the idle animation and the fighter's display name.
@@ -34,6 +36,47 @@ public class SecondaryFighterView implements HUDView {
         this.fighterName.setAlignment(Align.center);
         this.x = x;
         this.y = y;
+    }
+
+    /**
+     * Creates a secondary fighter view based on the fighter class.
+     *
+     * @param fighterClass The class of the fighter.
+     * @param x            The x position of the view.
+     * @param y            The y position of the view.
+     */
+    public SecondaryFighterView(Class<?> fighterClass, float x, float y) {
+        this(HUDUtils.getCorrespondingTextureRegion(fighterClass), x, y, HUDUtils.getFighterDisplayName(fighterClass));
+    }
+
+    /**
+     * Updates the fighter name and fighter image based on the fighterClass.
+     *
+     * @param fighterClass The fighter class to be updated with.
+     */
+    public void updateFighterView(Class<?> fighterClass) {
+        updateImage(HUDUtils.getCorrespondingTextureRegion(fighterClass));
+        updateFighterName(HUDUtils.getFighterDisplayName(fighterClass));
+    }
+
+    /**
+     * Updates the secondary fighter view with a new image.
+     *
+     * @param textureRegion The texture region to be updated with.
+     */
+    public void updateImage(TextureRegion textureRegion) {
+        TextureRegionDrawable trd = new TextureRegionDrawable(textureRegion);
+        img.setDrawable(trd);
+    }
+
+
+    /**
+     * Updates the name under the displayed fighter.
+     *
+     * @param name The name of the displayed fighter.
+     */
+    public void updateFighterName(String name) {
+        fighterName.setText(name);
     }
 
     @Override

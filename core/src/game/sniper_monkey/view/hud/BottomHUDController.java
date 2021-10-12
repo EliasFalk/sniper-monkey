@@ -82,9 +82,7 @@ public class BottomHUDController implements SwappedFighterObserver {
     }
 
     private void createSecondaryFighterView() {
-        // TODO maybe move this into SecondaryFighterView since it's sort of view related?
         TextureRegion inactiveFighter = HUDUtils.getCorrespondingTextureRegion(player.getInactiveFighterClass());
-        String inactiveFighterName = HUDUtils.getFighterDisplayName(player.getInactiveFighterClass());
 
         float relativeMarginOfFighter = 0;
         if (placement == Placement.RIGHT) {
@@ -93,14 +91,15 @@ public class BottomHUDController implements SwappedFighterObserver {
         } else if (placement == Placement.LEFT) {
             relativeMarginOfFighter = -fighterXMargin - inactiveFighter.getRegionWidth();
         }
-        secondaryFighterView = new SecondaryFighterView(inactiveFighter, x + relativeMarginOfFighter, y + fighterYMargin, inactiveFighterName);
+        secondaryFighterView = new SecondaryFighterView(player.getInactiveFighterClass(), x + relativeMarginOfFighter, y + fighterYMargin);
         gameScreen.addHudView(secondaryFighterView);
     }
 
     @Override
     public void onFighterSwap(Player player) {
-        // TODO
-        // set new attack names
-        // set new secondary fighter name & sprite
+        secondaryFighterView.updateFighterView(player.getInactiveFighterClass());
+        // TODO remove comment when attacks are implemented.
+//        attack1.setText(HUDUtils.getAttackDisplayName(player.getAttackClass(0)));
+//        attack2.setText(HUDUtils.getAttackDisplayName(player.getAttackClass(1)));
     }
 }
