@@ -8,6 +8,7 @@ import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.world.CallbackTimer;
 import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.model.world.TimerObserver;
+import game.sniper_monkey.utils.collision.CollisionMasks;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,7 +79,7 @@ public class Player extends GameObject {
      *
      * @param position The initial position of the player.
      */
-    public Player(Vector2 position, Fighter primaryFighter, Fighter secondaryFighter) {
+    public Player(Vector2 position, Fighter primaryFighter, Fighter secondaryFighter, int collisionMask) {
         super(position, true);
         physicsPos.setPosition(position);
         this.primaryFighter = primaryFighter;
@@ -87,6 +88,16 @@ public class Player extends GameObject {
         initActiveFighter(primaryFighter);
         resetInputActions();
         blockDefenseFactor = 0.4f;
+        setHitboxMask(collisionMask);
+    }
+
+    /**
+     * Creates a player with a position in the world
+     *
+     * @param position The initial position of the player.
+     */
+    public Player(Vector2 position, Fighter primaryFighter, Fighter secondaryFighter) {
+        this(position, primaryFighter, secondaryFighter, 0);
     }
 
     /**
@@ -372,10 +383,10 @@ public class Player extends GameObject {
     private void handleCollision(float deltaTime) {
 
         // executes shawn mendez. inspired by shawn's collision algorithm
-        boolean collidesXAxisNextFrame = CollisionEngine.getCollision(getHitbox(), new Vector2(physicsPos.getVelocity().x, 0).scl(deltaTime));
+        boolean collidesXAxisNextFrame = CollisionEngine.getCollision(getHitbox(), new Vector2(physicsPos.getVelocity().x, 0).scl(deltaTime), getHitboxMask());
         if (collidesXAxisNextFrame) {
             // while it doesn't collide with an x position approaching the object it will collide with, then see if it collides with an x position a tiny bit closer until it collides.
-            while (!CollisionEngine.getCollision(getHitbox(), new Vector2(Math.signum(physicsPos.getVelocity().x) / 2f, 0))) {
+            while (!CollisionEngine.getCollision(getHitbox(), new Vector2(Math.signum(physicsPos.getVelocity().x) / 2f, 0), getHitboxMask())) {
                 setHitboxPos(new Vector2(getHitbox().getPosition().x + Math.signum(physicsPos.getVelocity().x) / 2f, getHitbox().getPosition().y));
             }
             // Then set x velocity to zero, and the x position is already set to the closest it can get to the object it collides with.
@@ -385,9 +396,9 @@ public class Player extends GameObject {
         setHitboxPos(getHitbox().getPosition().add(physicsPos.getVelocity().x * deltaTime, 0));
 
         isGrounded = false;
-        if (CollisionEngine.getCollision(getHitbox(), new Vector2(0, physicsPos.getVelocity().y).scl(deltaTime))) {
+        if (CollisionEngine.getCollision(getHitbox(), new Vector2(0, physicsPos.getVelocity().y).scl(deltaTime), getHitboxMask())) {
             if (physicsPos.getVelocity().y < 0) isGrounded = true;
-            while (!CollisionEngine.getCollision(getHitbox(), new Vector2(0, Math.signum(physicsPos.getVelocity().y) / 2f))) {
+            while (!CollisionEngine.getCollision(getHitbox(), new Vector2(0, Math.signum(physicsPos.getVelocity().y) / 2f), getHitboxMask())) {
                 setHitboxPos(new Vector2(getHitbox().getPosition().x, getHitbox().getPosition().y + Math.signum(physicsPos.getVelocity().y) / 2f));
             }
             physicsPos.setVelocity(new Vector2(physicsPos.getVelocity().x, 0));
