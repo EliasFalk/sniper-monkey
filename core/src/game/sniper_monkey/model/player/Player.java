@@ -306,6 +306,19 @@ public class Player extends GameObject {
         return activeFighter.getClass();
     }
 
+    /**
+     * Returns the class of the inactive fighter.
+     *
+     * @return The class of the inactive fighter.
+     */
+    public Class<?> getInactiveFighterClass() {
+        if (activeFighter == primaryFighter) {
+            return secondaryFighter.getClass();
+        } else {
+            return primaryFighter.getClass();
+        }
+    }
+
     private void initActiveFighter(Fighter fighter) {
         activeFighter = fighter;
         setHitboxPos(physicsPos.getPosition());

@@ -12,17 +12,17 @@ import game.sniper_monkey.model.world.TimerObserver;
  *
  * @author Elias Falk
  */
-public class KeyInputView extends HUDView implements TimerObserver {
+public class KeyInputView implements TimerObserver, HUDView {
 
     private final float x;
     private final float y;
     private String key;
     private String text;
-    private final Bar bar;
+    private final FillableBar fillableBar;
     private final Label keyLabel;
     private final Label sideTextLabel;
-    private final float width;
-    private final float height;
+    private static final float width = 30f;
+    private static final float height = 30f;
 
 
     /**
@@ -39,11 +39,9 @@ public class KeyInputView extends HUDView implements TimerObserver {
         this.y = y;
         this.key = key;
         this.text = text;
-        this.width = 30f;
-        this.height = 30f;
 
         // TODO move these into their own methods?
-        bar = new Bar(x, y, width, height, Color.LIGHT_GRAY, FillDirection.UP);
+        fillableBar = new FillableBar(x, y, width, height, Color.LIGHT_GRAY, FillDirection.UP);
         keyLabel = new Label(key, new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         keyLabel.setPosition(x + width / 2, y + height / 2, Align.center);
         sideTextLabel = new Label(text, new Label.LabelStyle(new BitmapFont(), Color.BLACK));
@@ -52,6 +50,24 @@ public class KeyInputView extends HUDView implements TimerObserver {
         } else if (textPlacement == Placement.LEFT) {
             sideTextLabel.setPosition(x - 10 - sideTextLabel.getWidth(), y + (height / 2 - sideTextLabel.getHeight() / 2));
         }
+    }
+
+    /**
+     * Returns the width of the part of the key input view that represents the key cap.
+     *
+     * @return The width of the part of the key input view that represents the key cap.
+     */
+    public static float getWidth() {
+        return width;
+    }
+
+    /**
+     * Returns the height of the part of the key input view that represents the key cap.
+     *
+     * @return The height of the part of the key input view that represents the key cap.
+     */
+    public static float getHeight() {
+        return height;
     }
 
     /**
@@ -65,7 +81,7 @@ public class KeyInputView extends HUDView implements TimerObserver {
 
     @Override
     public void addActors(Stage stage) {
-        stage.addActor(bar);
+        stage.addActor(fillableBar);
         stage.addActor(keyLabel);
         stage.addActor(sideTextLabel);
     }
@@ -73,6 +89,6 @@ public class KeyInputView extends HUDView implements TimerObserver {
     @Override
     public void onTimeUpdated(float timerLength, float timeLeft) {
         // could update some label with the actual time left.
-        bar.update(1 - timeLeft / timerLength);
+        fillableBar.update(1 - timeLeft / timerLength);
     }
 }

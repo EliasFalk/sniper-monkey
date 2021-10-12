@@ -5,7 +5,13 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class Bar extends Actor {
+/**
+ * A bar that can be "filled" meaning a bar that can represent a fluctuating value.
+ *
+ * @author Elias Falk
+ * @author Vincent Hellner
+ */
+public class FillableBar extends Actor {
 
     private final ShapeRenderer shapeRenderer;
 
@@ -18,12 +24,22 @@ public class Bar extends Actor {
     private Color color;
     private FillDirection fillDir;
 
-    public Bar(float x, float y, float width, float height, Color color, FillDirection fillDir) {
+    /**
+     * Creates a fillable bar. Is "filled" by default.
+     *
+     * @param x       The x position of the bar. Defined in shape render's coordinate system.
+     * @param y       The y position of the bar. Defined in shape render's coordinate system.
+     * @param width   The width of the bar including the border. Defined in shape render's coordinate system.
+     * @param height  The height of the bar including the border. Defined in shape render's coordinate system.
+     * @param color   The color of the part that fluctuates.
+     * @param fillDir The direction of which the bar will be filled.
+     */
+    public FillableBar(float x, float y, float width, float height, Color color, FillDirection fillDir) {
         shapeRenderer = new ShapeRenderer();
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
+        this.width = width - borderThickness / 2;
+        this.height = height - borderThickness / 2;
         this.color = color;
         this.fillDir = fillDir;
     }

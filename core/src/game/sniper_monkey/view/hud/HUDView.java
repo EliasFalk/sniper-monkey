@@ -9,8 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
  * @author Elias Falk
  * @author Vincent Hellner
  */
-public abstract class HUDView {
+public interface HUDView {
 
     //TODO documentation
-    public abstract void addActors(Stage stage);
+    void addActors(Stage stage);
 }
