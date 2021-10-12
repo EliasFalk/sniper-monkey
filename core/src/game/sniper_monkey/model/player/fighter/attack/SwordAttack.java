@@ -42,7 +42,7 @@ public class SwordAttack implements IAttack {
     private final CallbackTimer cbTimer;
     private final float attackLength = 0.8f;
     private final float projectileTimeToLive = attackLength;
-    private float velocity = 1;
+    private Vector2 velocity = new Vector2(1,0);
 
     public SwordAttack() {
         this.cbTimer = new CallbackTimer(attackLength, () -> canAttack = true);

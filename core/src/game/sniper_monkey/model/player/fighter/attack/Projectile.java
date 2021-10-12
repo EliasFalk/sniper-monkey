@@ -1,10 +1,9 @@
 package game.sniper_monkey.model.player.fighter.attack;
 
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.model.collision.CollisionEngine;
+import game.sniper_monkey.model.PhysicsPosition;
 import game.sniper_monkey.model.world.CallbackTimer;
 import game.sniper_monkey.model.world.GameObject;
-import game.sniper_monkey.model.world.World;
 
 public class Projectile extends GameObject {
 
@@ -12,10 +11,24 @@ public class Projectile extends GameObject {
     private final float timeToLive;
     public final Vector2 size;
     private CallbackTimer timeToLiveTimer;
+    private PhysicsPosition physicsPosition;
 
-    public Projectile(float damage, float timeToLive, Vector2 playerPos, Vector2 attackSize, int collisionMask, float velocity) {
+    public Projectile(float damage, float timeToLive, Vector2 playerPos, Vector2 attackSize, int collisionMask, Vector2 velocity) {
         super(playerPos, true);
-        timeToLiveTimer = new CallbackTimer(timeToLive, () -> delete());
+        timeToLiveTimer = new CallbackTimer(timeToLive, this::delete);
+        timeToLiveTimer.reset();
+        timeToLiveTimer.start();
+        setHitboxMask(collisionMask);
+        this.size = attackSize;
+        this.damage = damage;
+        this.timeToLive = timeToLive;
+        physicsPosition = new PhysicsPosition(playerPos);
+        physicsPosition.setVelocity(velocity);
+    }
+
+    public Projectile(float damage, float timeToLive, Vector2 playerPos, Vector2 attackSize, int collisionMask) {
+        super(playerPos, true);
+        timeToLiveTimer = new CallbackTimer(timeToLive, this::delete);
         timeToLiveTimer.reset();
         timeToLiveTimer.start();
         setHitboxMask(collisionMask);
@@ -23,6 +36,7 @@ public class Projectile extends GameObject {
         this.damage = damage;
         this.timeToLive = timeToLive;
     }
+
 
     @Override
     public void update(float deltaTime) {
