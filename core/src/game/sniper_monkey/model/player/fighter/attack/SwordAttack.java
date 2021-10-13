@@ -1,9 +1,7 @@
 package game.sniper_monkey.model.player.fighter.attack;
 
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.model.collision.Hitbox;
 import game.sniper_monkey.model.world.CallbackTimer;
-import game.sniper_monkey.model.world.World;
 
 /**
  * An attack that represents the "Evil Wizard's" first attack
@@ -49,12 +47,13 @@ public class SwordAttack implements IAttack {
     }
 
     @Override
-    public boolean performAttack(float attackFactor, Vector2 playerPos, int collisionMask) {
+    public boolean performAttack(float attackFactor, Vector2 playerPos, int collisionMask, boolean lookingRight, Vector2 hitboxSize) {
         if (canAttack) {
-            playerPos.x += 60;
-            playerPos.y += 0;
-            ProjectileSpawner.spawnSwordAttack(damage, projectileTimeToLive, playerPos, attackSize, collisionMask, velocity);
+            float xSpawnPos = lookingRight ? hitboxSize.x : 0;
+            Vector2 spawnPos = playerPos.add(xSpawnPos,0);
+            AttackObjectSpawner.spawnEvilMagicSwingAttack(damage, projectileTimeToLive, spawnPos, collisionMask, lookingRight);
             cbTimer.reset();
+
             cbTimer.start();
             System.out.println("test1");
             canAttack = false;

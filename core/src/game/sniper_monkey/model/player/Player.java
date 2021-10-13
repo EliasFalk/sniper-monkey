@@ -160,7 +160,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     private void inactiveState() {
         if (inputActions.get(PlayerInputAction.ATTACK1)) {
 
-            if (activeFighter.performAttack(0, this.getPos().add(Math.signum(physicsPos.getVelocity().x)*10,0), getHitboxMask())) {
+            if (activeFighter.performAttack(0, this.getPos(), getHitboxMask(), isLookingRight(), getHitbox().getSize())) {
 
                 stamina.decrease(activeFighter.getStaminaDecrease(0));
                 abilityState = this::attacking1State;
