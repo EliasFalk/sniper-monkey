@@ -309,7 +309,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
      * @param damageAmount a float 0..n. Is the damage that the other fighter has done to the player.
      */
     public void takeDamage(float damageAmount) {
-        if (false/*currentState == blockingState*/) { // change when state checking has been implemented
+        if (inputActions.get(PlayerInputAction.BLOCK)) { // change when state checking has been implemented
             health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR) * (1 - blockDefenseFactor));
         } else {
             health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR)); // TODO make getter for defense factor instead?

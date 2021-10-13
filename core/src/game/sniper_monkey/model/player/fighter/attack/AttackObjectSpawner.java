@@ -5,8 +5,8 @@ import game.sniper_monkey.model.world.World;
 
 public class AttackObjectSpawner {
 
-    public static void spawnEvilMagicSwingAttack(float damage, float timeToLive, Vector2 playerPos, int collisionMask, boolean lookingRight) {
-        AttackObject swing = new EvilMagicSwing(damage, timeToLive, playerPos, collisionMask, lookingRight);
+    public static void spawnEvilMagicSwingAttack(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, boolean lookingRight) {
+        AttackObject swing = new EvilMagicSwing(damage, timeToLive, spawnPos, collisionMask, lookingRight);
         World.getInstance().queueAddGameObject(swing);
     }
 

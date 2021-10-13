@@ -25,8 +25,8 @@ public abstract class AttackObject extends GameObject {
     private final Map<Class<?>, Consumer<GameObject>> objectCollidedDispatch;
 
 
-    public AttackObject(float damage, float timeToLive, Vector2 playerPos, int collisionMask, Vector2 velocity) {
-        super(playerPos, true);
+    public AttackObject(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, Vector2 velocity) {
+        super(spawnPos, true);
         timeToLiveTimer = new CallbackTimer(timeToLive, this::delete);
         timeToLiveTimer.reset();
         timeToLiveTimer.start();
@@ -40,8 +40,8 @@ public abstract class AttackObject extends GameObject {
     }
 
     // TODO make dis melee
-    public AttackObject(float damage, float timeToLive, Vector2 playerPos, int collisionMask) {
-        this(damage, timeToLive, playerPos, collisionMask, new Vector2(0,0));
+    public AttackObject(float damage, float timeToLive, Vector2 spawnPos, int collisionMask) {
+        this(damage, timeToLive, spawnPos, collisionMask, new Vector2(0,0));
     }
 
 
