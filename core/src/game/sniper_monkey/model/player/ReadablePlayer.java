@@ -1,5 +1,7 @@
 package game.sniper_monkey.model.player;
 
+import game.sniper_monkey.model.player.fighter.Fighter;
+
 /**
  * Interface for a player which data can be read
  *
@@ -25,5 +27,5 @@ public interface ReadablePlayer {
      *
      * @return The Class of the active fighter
      */
-    Class<?> getActiveFighterClass();
+    Class<? extends Fighter> getActiveFighterClass();
 }

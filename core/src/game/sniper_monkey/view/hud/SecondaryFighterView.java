@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.utils.view.HUDUtils;
 
 /**
@@ -45,7 +46,7 @@ public class SecondaryFighterView implements HUDView {
      * @param x            The x position of the view.
      * @param y            The y position of the view.
      */
-    public SecondaryFighterView(Class<?> fighterClass, float x, float y) {
+    public SecondaryFighterView(Class<? extends Fighter> fighterClass, float x, float y) {
         this(HUDUtils.getCorrespondingTextureRegion(fighterClass), x, y, HUDUtils.getFighterDisplayName(fighterClass));
     }
 
@@ -54,7 +55,7 @@ public class SecondaryFighterView implements HUDView {
      *
      * @param fighterClass The fighter class to be updated with.
      */
-    public void updateFighterView(Class<?> fighterClass) {
+    public void updateFighterView(Class<? extends Fighter> fighterClass) {
         updateImage(HUDUtils.getCorrespondingTextureRegion(fighterClass));
         updateFighterName(HUDUtils.getFighterDisplayName(fighterClass));
     }

@@ -3,12 +3,10 @@ package game.sniper_monkey.model.player;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.Config;
 import game.sniper_monkey.model.PhysicsPosition;
-import game.sniper_monkey.model.collision.CollisionEngine;
 import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.world.CallbackTimer;
 import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.model.world.TimerObserver;
-import game.sniper_monkey.utils.collision.CollisionMasks;
 import game.sniper_monkey.utils.collision.CollisionResponse;
 
 import java.util.ArrayList;
@@ -316,7 +314,8 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
      *
      * @return Type of the active fighter.
      */
-    public Class<?> getActiveFighterClass() {
+    @Override
+    public Class<? extends Fighter> getActiveFighterClass() {
         return activeFighter.getClass();
     }
 
@@ -325,7 +324,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
      *
      * @return The class of the inactive fighter.
      */
-    public Class<?> getInactiveFighterClass() {
+    public Class<? extends Fighter> getInactiveFighterClass() {
         if (activeFighter == primaryFighter) {
             return secondaryFighter.getClass();
         } else {
