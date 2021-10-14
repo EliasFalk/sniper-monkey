@@ -278,21 +278,11 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         }
     }
 
-    /**
-     * Updates the inputActions map by setting the action to true, which translates to "player try to do this action".
-     *
-     * @param action The input action to be set.
-     */
     @Override
     public void setInputAction(PlayerInputAction action) {
         inputActions.replace(action, true);
     }
 
-    /**
-     * Decreases the players health.
-     *
-     * @param damageAmount a float 0..n. Is the damage that the other fighter has done to the player.
-     */
     @Override
     public void takeDamage(float damageAmount) {
         if (false/*currentState == blockingState*/) { // change when state checking has been implemented
@@ -356,11 +346,6 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         }
     }
 
-    /**
-     * Updates the class player every frame
-     *
-     * @param deltaTime The time between frames.
-     */
     @Override
     public void update(float deltaTime) {
         stamina.update(deltaTime);

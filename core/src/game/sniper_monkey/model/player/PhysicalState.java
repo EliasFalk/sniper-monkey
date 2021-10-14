@@ -1,7 +1,7 @@
 package game.sniper_monkey.model.player;
 
 /**
- * Enum representing the different physical states a player can have
+ * Enum representing the different physical states a player can have.
  *
  * @author Elias Falk
  * @author Vincent Hellner

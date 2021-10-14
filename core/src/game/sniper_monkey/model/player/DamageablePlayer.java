@@ -7,9 +7,9 @@ package game.sniper_monkey.model.player;
  */
 public interface DamageablePlayer {
     /**
-     * Takes a certain amount of damage from the player
+     * Takes a certain amount of damage from the player.
      *
-     * @param damageAmount The amount of damage to take
+     * @param damageAmount The amount of damage to take.
      */
     void takeDamage(float damageAmount);
 }
