@@ -10,9 +10,7 @@ import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.world.CallbackTimer;
 import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.model.world.TimerObserver;
-import game.sniper_monkey.utils.collision.CollisionMasks;
 import game.sniper_monkey.utils.collision.CollisionResponse;
-import game.sniper_monkey.view.SoundPlayer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -320,7 +318,8 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
      *
      * @return Type of the active fighter.
      */
-    public Class<?> getActiveFighterClass() {
+    @Override
+    public Class<? extends Fighter> getActiveFighterClass() {
         return activeFighter.getClass();
     }
 
@@ -329,7 +328,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
      *
      * @return The class of the inactive fighter.
      */
-    public Class<?> getInactiveFighterClass() {
+    public Class<? extends Fighter> getInactiveFighterClass() {
         if (activeFighter == primaryFighter) {
             return secondaryFighter.getClass();
         } else {
