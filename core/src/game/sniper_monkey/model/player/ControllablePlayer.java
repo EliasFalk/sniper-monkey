@@ -7,8 +7,10 @@ package game.sniper_monkey.model.player;
  */
 public interface ControllablePlayer {
     /**
-     * Set an input action of the ControllablePlayer
+     * Set an input action of the ControllablePlayer.
+     *
      * @param action The action to set.
+     * @see PlayerInputAction
      */
     void setInputAction(PlayerInputAction action);
 }

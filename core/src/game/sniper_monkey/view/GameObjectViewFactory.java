@@ -3,9 +3,10 @@ package game.sniper_monkey.view;
 import game.sniper_monkey.model.platform.Platform;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.fighter.EvilWizard;
+import game.sniper_monkey.model.player.fighter.Fighter;
+import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.view.platform.PlatformView;
 import game.sniper_monkey.view.player.fighter.EvilWizardView;
-import game.sniper_monkey.model.world.GameObject;
 
 import java.util.HashMap;
 
@@ -16,10 +17,11 @@ import java.util.HashMap;
  */
 public final class GameObjectViewFactory {
 
-    private GameObjectViewFactory() {}
+    private GameObjectViewFactory() {
+    }
 
-    private static final HashMap<Class<?>, ViewCreator> viewCreatorDispatch = new HashMap<>();
-    private static final HashMap<Class<?>, ViewCreator> fighterDispatch = new HashMap<>();
+    private static final HashMap<Class<? extends GameObject>, ViewCreator> viewCreatorDispatch = new HashMap<>();
+    private static final HashMap<Class<? extends Fighter>, ViewCreator> fighterDispatch = new HashMap<>();
 
     static {
         //Lambdas calling the corresponding create function based on the type of the GameObject supplied.
