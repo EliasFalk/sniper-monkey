@@ -54,6 +54,12 @@ public abstract class AttackObject extends GameObject {
         setHitboxPos(attackHitboxPos);
         setHitboxSize(attackHitboxSize);
 
+        if (velocity.x < 0 && lookingRight) {
+            velocity.scl(-1);
+        } else if (velocity.x > 0 && !lookingRight) {
+            velocity.scl(-1);
+        }
+
         objectCollidedDispatch = new HashMap<>();
     }
 
@@ -92,5 +98,8 @@ public abstract class AttackObject extends GameObject {
     @Override
     public void update(float deltaTime) {
         checkCollision();
+        if (!velocity.isZero()) {
+            setHitboxPos(getHitbox().getPosition().add(velocity));
+        }
     }
 }

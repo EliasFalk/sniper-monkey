@@ -12,9 +12,11 @@ public class BowAttack implements IAttack {
     private final float projectileTimeToLive = attackLength;
     private final float hitStun = 0.2f;
     private final float stamina = 10;
+    private final Vector2 velocity;
 
     public BowAttack() {
         this.cbTimer = new CallbackTimer(attackLength, () -> canAttack = true);
+        velocity = new Vector2(20, 0);
     }
 
     @Override
@@ -22,7 +24,7 @@ public class BowAttack implements IAttack {
         if (canAttack) {
             float xSpawnPos = lookingRight ? hitboxSize.x : 0;
             Vector2 spawnPos = playerPos.add(xSpawnPos,0);
-            AttackObjectSpawner.spawnEvilMagicSwingAttack(attackFactor*damage, projectileTimeToLive, spawnPos, collisionMask, lookingRight);
+            AttackObjectSpawner.spawnHuntressArrowShot(attackFactor*damage, projectileTimeToLive, spawnPos, collisionMask, lookingRight, velocity);
             cbTimer.reset();
             cbTimer.start();
             canAttack = false;
@@ -34,21 +36,21 @@ public class BowAttack implements IAttack {
 
     @Override
     public float getStaminaCost() {
-        return 0;
+        return stamina;
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+        return canAttack;
     }
 
     @Override
     public float getAttackLength() {
-        return 0;
+        return attackLength;
     }
 
     @Override
     public float getHitStun() {
-        return 0;
+        return hitStun;
     }
 }
