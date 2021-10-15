@@ -26,7 +26,7 @@ public class GameController {
         gameScreen = new GameScreen();
         World.getInstance().registerObserver(gameScreen);
 
-        for (int i = 0; i < 400 / 8; i++)
+        for (int i = 0; i < 400 / 16; i++)
             World.getInstance().queueAddGameObject(new Platform(new Vector2(-200 + i * 16, -100)));
 
         //TODO use an external tool to create the map and create a utility to read it
