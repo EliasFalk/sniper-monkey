@@ -9,10 +9,7 @@ import game.sniper_monkey.model.world.CallbackTimer;
 import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.view.GameObjectViewFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -42,7 +39,7 @@ public abstract class AttackObject extends GameObject {
      * @param collisionMask an int 0..n. A collision mask to prevent the hitbox from colliding with the attacker.
      * @param velocity a Vector2. The velocity that the object has.
      */
-    public AttackObject(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, Vector2 velocity) {
+    public AttackObject(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, boolean lookingRight, Vector2 velocity, Vector2 attackHitboxSize) {
         super(spawnPos, true);
         timeToLiveTimer = new CallbackTimer(timeToLive, this::delete);
         timeToLiveTimer.reset();
@@ -52,6 +49,10 @@ public abstract class AttackObject extends GameObject {
         this.damage = damage;
         this.timeToLive = timeToLive;
         this.velocity = velocity;
+
+        Vector2 attackHitboxPos = spawnPos.add(lookingRight ? 0 : -attackHitboxSize.x, 0);
+        setHitboxPos(attackHitboxPos);
+        setHitboxSize(attackHitboxSize);
 
         objectCollidedDispatch = new HashMap<>();
     }
@@ -65,8 +66,8 @@ public abstract class AttackObject extends GameObject {
      * @param spawnPos a Vector2. A coordinate of the position where the hitbox is supposed to spawn.
      * @param collisionMask an int 0..n. A collision mask to prevent the hitbox from colliding with the attacker.
      */
-    public AttackObject(float damage, float timeToLive, Vector2 spawnPos, int collisionMask) {
-        this(damage, timeToLive, spawnPos, collisionMask, new Vector2(0,0));
+    public AttackObject(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, boolean lookingRight, Vector2 attackHitboxSize) {
+        this(damage, timeToLive, spawnPos, collisionMask, lookingRight, new Vector2(0,0), attackHitboxSize);
     }
 
 

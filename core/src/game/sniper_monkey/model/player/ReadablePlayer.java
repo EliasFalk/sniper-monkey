@@ -36,6 +36,7 @@ public interface ReadablePlayer {
      */
     Class<? extends Fighter> getInactiveFighterClass();
 
-    float getAttack1Length();
+    float getAttackLength(int attackNum);
+
 
 }

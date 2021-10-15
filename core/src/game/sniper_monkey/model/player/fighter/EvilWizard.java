@@ -1,6 +1,7 @@
 package game.sniper_monkey.model.player.fighter;
 
 import com.badlogic.gdx.math.Vector2;
+import com.sun.jdi.connect.AttachingConnector;
 import game.sniper_monkey.model.player.fighter.attack.AttackFactory;
 
 /**
@@ -20,5 +21,6 @@ public class EvilWizard extends Fighter {
     public EvilWizard() {
         super(attack, defense, speed, hitboxSize);
         attacks.add(AttackFactory.createSwordAttack());
+        attacks.add(AttackFactory.createFireBoltAttack());
     }
 }

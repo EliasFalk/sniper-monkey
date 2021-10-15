@@ -163,10 +163,9 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         }
     }
 
-    public float getAttack1Length() {
-        return activeFighter.getAttackLength(0);
+    public float getAttackLength(int attackNum) {
+        return activeFighter.getAttackLength(attackNum);
     }
-
 
 
     private void inactiveState() {

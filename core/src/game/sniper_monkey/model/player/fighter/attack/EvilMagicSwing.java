@@ -13,7 +13,7 @@ import game.sniper_monkey.model.world.GameObject;
  */
 public class EvilMagicSwing extends AttackObject {
 
-    private final Vector2 attackHitboxSize = new Vector2(90,115);
+    private static final Vector2 attackHitboxSize = new Vector2(90,115);
 
     /**
      * Creates an EvilMagicSwing object and adds a hit response that executes when colliding with a player.
@@ -25,11 +25,9 @@ public class EvilMagicSwing extends AttackObject {
      * @param lookingRight a boolean. Is the direction the player is facing. True if player is facing to the right, false if the player is facing the left.
      */
     public EvilMagicSwing(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, boolean lookingRight) {
-        super(damage, timeToLive, spawnPos, collisionMask);
+        super(damage, timeToLive, spawnPos, collisionMask, lookingRight, attackHitboxSize);
 
-        Vector2 attackHitboxPos = spawnPos.add(lookingRight ? 0 : -attackHitboxSize.x, 0);
-        setHitboxPos(attackHitboxPos);
-        setHitboxSize(attackHitboxSize);
+
 
         addHitResponse(Player.class, gameObject -> {
             System.out.println(damage);

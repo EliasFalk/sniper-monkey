@@ -6,4 +6,8 @@ public class AttackFactory {
         return new SwordAttack();
     }
 
+    public static IAttack createFireBoltAttack() {
+        return new StrongSwordAttack();
+    }
+
 }

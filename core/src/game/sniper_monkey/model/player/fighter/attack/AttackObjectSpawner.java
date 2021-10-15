@@ -29,5 +29,10 @@ public class AttackObjectSpawner {
         World.getInstance().queueAddGameObject(swing);
     }
 
+    public static void spawnEvilStrongAttack(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, boolean lookingRight) {
+        AttackObject firebolt = new EvilStrongAttack(damage, timeToLive, spawnPos, collisionMask, lookingRight);
+        World.getInstance().queueAddGameObject(firebolt);
+    }
+
 
 }
