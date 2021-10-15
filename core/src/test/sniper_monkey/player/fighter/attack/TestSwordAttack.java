@@ -43,9 +43,27 @@ public class TestSwordAttack {
     }
 
     @Test
+    public void testSwordAttackMiss() {
+        Player player1 = PlayerFactory.createPlayer1(new Vector2(700, 0));
+        Player player2 = PlayerFactory.createPlayer2(new Vector2(0, 0));
+        player1.setInputAction(PlayerInputAction.ATTACK1);
+        world.queueAddGameObject(player1);
+        world.queueAddGameObject(player2);
+        world.update(0.1f);
+        world.update(0.1f);
+        Assert.assertEquals(100f, player2.getHealth(), 0);
+    }
+
+    @Test
     public void testGetAttackLength() {
         SwordAttack swordAttack = new SwordAttack();
         Assert.assertEquals(0.8f, swordAttack.getAttackLength(), 0);
+    }
+
+    @Test
+    public void testGetHitStun() {
+        SwordAttack swordAttack = new SwordAttack();
+        Assert.assertEquals(0.2f, swordAttack.getHitStun(), 0);
     }
 
 }
