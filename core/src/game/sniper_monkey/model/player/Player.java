@@ -306,11 +306,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         return activeFighter.getClass();
     }
 
-    /**
-     * Returns the class of the inactive fighter.
-     *
-     * @return The class of the inactive fighter.
-     */
+    @Override
     public Class<? extends Fighter> getInactiveFighterClass() {
         if (activeFighter == primaryFighter) {
             return secondaryFighter.getClass();

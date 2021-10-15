@@ -28,4 +28,11 @@ public interface ReadablePlayer {
      * @return Type of the active fighter.
      */
     Class<? extends Fighter> getActiveFighterClass();
+
+    /**
+     * Returns the class of the inactive fighter.
+     *
+     * @return The class of the inactive fighter.
+     */
+    Class<? extends Fighter> getInactiveFighterClass();
 }
