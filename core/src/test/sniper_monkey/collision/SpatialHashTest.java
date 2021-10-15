@@ -19,7 +19,7 @@ public class SpatialHashTest {
     @Before
     public void initHitbox() {
         sh = new SpatialHash(64, 64);
-        testObject = new WorldBrick(new Vector2(0, 0),"test", false);
+        testObject = new WorldBrick(new Vector2(0, 0),"test");
     }
 
     @Test

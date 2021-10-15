@@ -26,11 +26,14 @@ public final class MapReader {
     private static final DocumentBuilder db = createDocumentBuilder();
     private static final String MAPS_DIR = "core/assets/map/";
 
+    /**
+     * Reads the spawn points in the map and returns them as a Map
+     * @param mapPath The path to the map relative to the maps directory
+     * @return        A Map with the spawn points
+     */
     public static Map<String, Vector2> readSpawnPoints(String mapPath) {
         Document mapDoc = readDocument(MAPS_DIR + mapPath);
-
         Node spawnGroup = getSpawnGroup(mapDoc);
-
         return getSpawnPoints(spawnGroup);
     }
 

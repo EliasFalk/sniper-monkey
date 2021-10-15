@@ -19,10 +19,10 @@ public class WorldBrick extends GameObject {
      *
      * @param position a Vector2 with an (x,y) value.
      */
-    public WorldBrick(Vector2 position, String type, boolean ghostPlatform) {
+    public WorldBrick(Vector2 position, String type) {
         super(position, false);
         this.type = type;
         setHitboxSize(new Vector2(16, 16));
-        setGhost(ghostPlatform);
+        setGhost(type.startsWith("ghost-"));
     }
 }

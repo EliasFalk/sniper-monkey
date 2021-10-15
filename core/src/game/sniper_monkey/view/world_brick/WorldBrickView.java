@@ -24,13 +24,30 @@ public class WorldBrickView extends GameObjectView {
         brickSprites.put("left_grass", new Sprite(new Texture("images/CuteForest/Tileset.png"), 0, 0, 16, 16));
         brickSprites.put("right_grass", new Sprite(new Texture("images/CuteForest/Tileset.png"), 32, 0, 16, 16));
         brickSprites.put("dirt", new Sprite(new Texture("images/CuteForest/Tileset.png"), 16, 16, 16, 16));
+
+        brickSprites.put("float_grass", new Sprite(new Texture("images/CuteForest/Tileset.png"), 80, 32, 16, 16));
+
+        brickSprites.put("inner_house", new Sprite(new Texture("images/CuteForest/Tileset.png"), 96, 64, 16, 16));
+        brickSprites.put("top_left_house", new Sprite(new Texture("images/CuteForest/Tileset.png"), 80, 48, 16, 16));
+        brickSprites.put("roof", new Sprite(new Texture("images/CuteForest/Tileset.png"), 96, 48, 16, 16));
+        brickSprites.put("top_right_house", new Sprite(new Texture("images/CuteForest/Tileset.png"), 112, 48, 16, 16));
+        brickSprites.put("right_house", new Sprite(new Texture("images/CuteForest/Tileset.png"), 112, 64, 16, 16));
+        brickSprites.put("left_house", new Sprite(new Texture("images/CuteForest/Tileset.png"), 80, 64, 16, 16));
     }
 
     private WorldBrick model;
 
     //TODO documentation
     public WorldBrickView(WorldBrick model) {
-        super(new Vector2(0, 0), brickSprites.getOrDefault(model.type, SpriteUtils.getDefaultSprite()), model);
+        super(new Vector2(0, 0), chooseSprite(model.type), model);
         this.model = model;
+    }
+
+    private static Sprite chooseSprite(String type) {
+        if(type.startsWith("ghost-")) {
+            type = type.split("-")[1];
+        }
+        System.out.println(type);
+        return brickSprites.getOrDefault(type, SpriteUtils.getDefaultSprite());
     }
 }
