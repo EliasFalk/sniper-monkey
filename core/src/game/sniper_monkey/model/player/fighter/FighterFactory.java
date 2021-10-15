@@ -13,4 +13,8 @@ public class FighterFactory {
     public static Fighter createEvilWizard() {
         return new EvilWizard();
     }
+
+    public static Fighter createHuntressBow() {
+        return new HuntressBow();
+    }
 }
