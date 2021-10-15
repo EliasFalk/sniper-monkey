@@ -90,6 +90,12 @@ public abstract class Fighter {
         }
         return attacks.get(attackNum).getClass();
     }
+
+    /**
+     * Checks if the fighter is mid-attack and during an animation.
+     *
+     * @return true if the fighter is mid attack, false if not.
+     */
     public boolean isAttacking() {
         boolean isAttacking = false;
         for (IAttack attack : attacks) {
@@ -100,6 +106,11 @@ public abstract class Fighter {
         return isAttacking;
     }
 
+    /**
+     * Gets the length of the specified attack in seconds.
+     * @param attackNum is the index of the attack.
+     * @return a float 0..n. where the float is the length of the attack in seconds.
+     */
     public float getAttackLength(int attackNum) {
         return attacks.get(attackNum).getAttackLength();
     }
