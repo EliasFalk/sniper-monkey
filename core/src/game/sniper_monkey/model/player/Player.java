@@ -3,6 +3,8 @@ package game.sniper_monkey.model.player;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.Config;
 import game.sniper_monkey.model.PhysicsPosition;
+import game.sniper_monkey.model.SoundEffect;
+import game.sniper_monkey.model.SoundManager;
 import game.sniper_monkey.model.collision.CollisionEngine;
 import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.world.CallbackTimer;
@@ -10,6 +12,7 @@ import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.model.world.TimerObserver;
 import game.sniper_monkey.utils.collision.CollisionMasks;
 import game.sniper_monkey.utils.collision.CollisionResponse;
+import game.sniper_monkey.view.SoundPlayer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -200,6 +203,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
 
         if (inputActions.get(PlayerInputAction.JUMP)) {
             jump();
+            SoundManager.PlaySoundEffect(SoundEffect.JUMP);
             movementState = this::inAirState;
             return;
         }
