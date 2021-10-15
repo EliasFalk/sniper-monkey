@@ -155,12 +155,10 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
             stamina.decrease(activeFighter.getStaminaDecrease(2));
             abilityState = this::attacking2State;
             return;
-        } else if (inputActions.get(PlayerInputAction.BLOCK)) {
-            if (canBlock) {
-                abilityState = this::blockingState;
-                canBlock = false;
-                return;
-            }
+        } else if (canBlock && inputActions.get(PlayerInputAction.BLOCK)) {
+            abilityState = this::blockingState;
+            canBlock = false;
+            return;
         } else if (inputActions.get(PlayerInputAction.SWAP_FIGHTER)) {
             // TODO swapFighter
             abilityState = this::swappingFighterState;
