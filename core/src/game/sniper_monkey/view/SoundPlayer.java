@@ -2,21 +2,24 @@ package game.sniper_monkey.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import game.sniper_monkey.model.ISoundManagerObserver;
-import game.sniper_monkey.model.SoundEffect;
-import game.sniper_monkey.model.world.World;
+import game.sniper_monkey.model.IAudibleEventObserver;
+import game.sniper_monkey.model.AudibleEvent;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
-public final class SoundPlayer implements ISoundManagerObserver {
+public final class SoundPlayer implements IAudibleEventObserver {
 
     private static SoundPlayer INSTANCE;
-    private final Map<SoundEffect, Sound> sounds;
+    private final Map<AudibleEvent, Sound> sounds;
+    private final Random random;
+    private static final float PITCH_VARIATION = 0.1f;
 
     private SoundPlayer() {
+        random = new Random();
         sounds = new HashMap<>();
-        sounds.put(SoundEffect.JUMP, Gdx.audio.newSound(Gdx.files.internal("untitled.wav")));
+        sounds.put(AudibleEvent.JUMP, Gdx.audio.newSound(Gdx.files.internal("Jump.wav")));
     }
 
     public static SoundPlayer getInstance() {
@@ -25,9 +28,13 @@ public final class SoundPlayer implements ISoundManagerObserver {
     }
 
     @Override
-    public void OnSoundEffectPlayed(SoundEffect sound) {
-        if(sounds.containsKey(sound))
-            sounds.get(sound).play();
+    public void OnAudibleEvent(AudibleEvent event) {
+        if(sounds.containsKey(event))
+        {
+            Sound sound = sounds.get(event);
+            float randomPitchVar = (random.nextFloat() - 0.5f) * (PITCH_VARIATION / 0.5f);
+            sound.setPitch(sound.play(), 1 + randomPitchVar);
+        }
     }
 
     @Override

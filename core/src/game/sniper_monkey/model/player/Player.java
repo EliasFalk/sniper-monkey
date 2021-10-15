@@ -3,9 +3,8 @@ package game.sniper_monkey.model.player;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.Config;
 import game.sniper_monkey.model.PhysicsPosition;
-import game.sniper_monkey.model.SoundEffect;
-import game.sniper_monkey.model.SoundManager;
-import game.sniper_monkey.model.collision.CollisionEngine;
+import game.sniper_monkey.model.AudibleEvent;
+import game.sniper_monkey.model.AudibleEventManager;
 import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.world.CallbackTimer;
 import game.sniper_monkey.model.world.GameObject;
@@ -197,7 +196,6 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
 
         if (inputActions.get(PlayerInputAction.JUMP)) {
             jump();
-            SoundManager.PlaySoundEffect(SoundEffect.JUMP);
             movementState = this::inAirState;
             return;
         }
@@ -227,6 +225,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     private void jump() {
         Vector2 newVel = physicsPos.getVelocity().add(new Vector2(0, JUMP_GAIN));
         physicsPos.setVelocity(newVel);
+        AudibleEventManager.createEvent(AudibleEvent.JUMP);
     }
 
     private void handleHorizontalMovement() {
@@ -292,6 +291,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         } else {
             health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR)); // TODO make getter for defense factor instead?
         }
+        AudibleEventManager.createEvent(AudibleEvent.HURT);
     }
 
     /**

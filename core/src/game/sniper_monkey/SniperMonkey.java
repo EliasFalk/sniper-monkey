@@ -2,7 +2,7 @@ package game.sniper_monkey;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import game.sniper_monkey.model.SoundManager;
+import game.sniper_monkey.model.AudibleEventManager;
 import game.sniper_monkey.view.SoundPlayer;
 
 public class SniperMonkey extends ApplicationAdapter {
@@ -11,7 +11,7 @@ public class SniperMonkey extends ApplicationAdapter {
     //TODO documentation
     @Override
     public void create() {
-        SoundManager.registerObserver(SoundPlayer.getInstance());
+        AudibleEventManager.registerObserver(SoundPlayer.getInstance());
 
         gameController = new GameController();
         gameController.create();
