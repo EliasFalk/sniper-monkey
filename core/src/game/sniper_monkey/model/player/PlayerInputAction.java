@@ -1,6 +1,8 @@
 package game.sniper_monkey.model.player;
 
-/** //TODO documentation
+/**
+ * The actions that a player can try to do.
+ *
  * @author Elias Falk
  */
 public enum PlayerInputAction {

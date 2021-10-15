@@ -5,6 +5,8 @@ import game.sniper_monkey.model.world_brick.WorldBrick;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.fighter.EvilWizard;
 import game.sniper_monkey.view.world_brick.WorldBrickView;
+import game.sniper_monkey.model.player.fighter.Fighter;
+import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.view.player.fighter.EvilWizardView;
 import game.sniper_monkey.model.world.GameObject;
 
@@ -17,7 +19,8 @@ import java.util.HashMap;
  */
 public final class GameObjectViewFactory {
 
-    private GameObjectViewFactory() {}
+    private GameObjectViewFactory() {
+    }
 
     private static final HashMap<Class<? extends GameObject>, ViewCreator> viewCreatorDispatch = new HashMap<>();
     private static final HashMap<Class<? extends Fighter>, ViewCreator> fighterDispatch = new HashMap<>();

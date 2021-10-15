@@ -1,5 +1,7 @@
 package game.sniper_monkey.model.player;
 
+import game.sniper_monkey.model.player.fighter.Fighter;
+
 /**
  * Interface for a player which data can be read
  *
@@ -7,23 +9,30 @@ package game.sniper_monkey.model.player;
  */
 public interface ReadablePlayer {
     /**
-     * Get the current animation
+     * Returns the physical state of the player.
      *
-     * @return The current fighter animation
+     * @return The physical state of the player.
+     * @see PhysicalState
      */
-    FighterAnimation getCurrentFighterAnimation();
+    PhysicalState getCurrentPhysicalState();
 
     /**
-     * Is the player looking right
-     *
-     * @return Whether or not the player is looking right
+     * Returns true if the player is facing the right. False if facing the left.
+     * @return True if the player is facing the right. False if facing the left.
      */
     boolean isLookingRight();
 
     /**
-     * Get the class of the active fighter
+     * Get the type of the active fighter.
      *
-     * @return The Class of the active fighter
+     * @return Type of the active fighter.
      */
-    Class<?> getActiveFighterClass();
+    Class<? extends Fighter> getActiveFighterClass();
+
+    /**
+     * Returns the class of the inactive fighter.
+     *
+     * @return The class of the inactive fighter.
+     */
+    Class<? extends Fighter> getInactiveFighterClass();
 }
