@@ -115,6 +115,11 @@ public abstract class Fighter {
         return attacks.get(attackNum).getAttackLength();
     }
 
+    /**
+     * Gets the length of the hitstun of the specified attack in seconds.
+     * @param attackNum is the index of the attack.
+     * @return a float 0..n. where the float is the length of the hitstun in seconds.
+     */
     public float getHitStunTime(int attackNum) {
         return attacks.get(attackNum).getHitStun();
     }

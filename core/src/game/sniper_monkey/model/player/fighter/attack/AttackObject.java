@@ -15,6 +15,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+/**
+ * An abstract AttackObject class. Is a generic object in the world that can collide with a player and do something depending on the concrete implementation of the object.
+ * I.E. a EvilMagicSwing object damages the player it colldes with.
+ *
+ * @author Dadi Andrason
+ * @author Kevin Jeryd
+ *
+ */
 public abstract class AttackObject extends GameObject {
 
     private final float damage;
@@ -25,6 +33,15 @@ public abstract class AttackObject extends GameObject {
     private final Map<Class<?>, Consumer<GameObject>> objectCollidedDispatch;
 
 
+    /**
+     * Creates an attackobject. Is used by the concrete classes that inherit this class.
+     *
+     * @param damage a float 0..n. Is how much damage the AttackObject is going to do.
+     * @param timeToLive a float 0..n. Determines for how long the object exists for in seconds.
+     * @param spawnPos a Vector2. A coordinate of the position where the hitbox is supposed to spawn.
+     * @param collisionMask an int 0..n. A collision mask to prevent the hitbox from colliding with the attacker.
+     * @param velocity a Vector2. The velocity that the object has.
+     */
     public AttackObject(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, Vector2 velocity) {
         super(spawnPos, true);
         timeToLiveTimer = new CallbackTimer(timeToLive, this::delete);
@@ -39,7 +56,15 @@ public abstract class AttackObject extends GameObject {
         objectCollidedDispatch = new HashMap<>();
     }
 
-    // TODO make dis melee
+    /**
+     * The same as the constructor above.
+     * However, this one spawns an object that has no velocity and therefore doesnt move.
+     *
+     * @param damage a float 0..n. Is how much damage the AttackObject is going to do.
+     * @param timeToLive a float 0..n. Determines for how long the object exists for in seconds.
+     * @param spawnPos a Vector2. A coordinate of the position where the hitbox is supposed to spawn.
+     * @param collisionMask an int 0..n. A collision mask to prevent the hitbox from colliding with the attacker.
+     */
     public AttackObject(float damage, float timeToLive, Vector2 spawnPos, int collisionMask) {
         this(damage, timeToLive, spawnPos, collisionMask, new Vector2(0,0));
     }
@@ -54,6 +79,11 @@ public abstract class AttackObject extends GameObject {
         }
     }
 
+    /**
+     * Adds a "response" to what happens when an object collides with a player.
+     * @param gameObjectType the type of the object. I.e. Player.class
+     * @param response the action that happens when the object collides with a player. I.e. player takes damage.
+     */
     protected void addHitResponse(Class<?> gameObjectType, Consumer<GameObject> response) {
         objectCollidedDispatch.put(gameObjectType, response);
     }
