@@ -1,9 +1,10 @@
 package game.sniper_monkey.view;
 
-import game.sniper_monkey.model.platform.Platform;
+import game.sniper_monkey.model.player.fighter.Fighter;
+import game.sniper_monkey.model.world_brick.WorldBrick;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.fighter.EvilWizard;
-import game.sniper_monkey.view.platform.PlatformView;
+import game.sniper_monkey.view.world_brick.WorldBrickView;
 import game.sniper_monkey.view.player.fighter.EvilWizardView;
 import game.sniper_monkey.model.world.GameObject;
 
@@ -18,13 +19,13 @@ public final class GameObjectViewFactory {
 
     private GameObjectViewFactory() {}
 
-    private static final HashMap<Class<?>, ViewCreator> viewCreatorDispatch = new HashMap<>();
-    private static final HashMap<Class<?>, ViewCreator> fighterDispatch = new HashMap<>();
+    private static final HashMap<Class<? extends GameObject>, ViewCreator> viewCreatorDispatch = new HashMap<>();
+    private static final HashMap<Class<? extends Fighter>, ViewCreator> fighterDispatch = new HashMap<>();
 
     static {
         //Lambdas calling the corresponding create function based on the type of the GameObject supplied.
         viewCreatorDispatch.put(Player.class, obj -> createFighterView((Player) obj));
-        viewCreatorDispatch.put(Platform.class, obj -> new PlatformView((Platform) obj));
+        viewCreatorDispatch.put(WorldBrick.class, obj -> new WorldBrickView((WorldBrick) obj));
     }
 
     static {
