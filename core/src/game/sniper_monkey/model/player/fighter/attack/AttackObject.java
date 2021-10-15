@@ -55,9 +55,9 @@ public abstract class AttackObject extends GameObject {
         setHitboxSize(attackHitboxSize);
 
         if (velocity.x < 0 && lookingRight) {
-            velocity.scl(-1);
+            velocity.scl(-1, 1);
         } else if (velocity.x > 0 && !lookingRight) {
-            velocity.scl(-1);
+            velocity.scl(-1, 1);
         }
 
         objectCollidedDispatch = new HashMap<>();
