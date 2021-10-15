@@ -16,6 +16,7 @@ public class EvilMagicSwing extends AttackObject {
     private final Vector2 attackHitboxSize = new Vector2(90,115);
 
     /**
+     * Creates an EvilMagicSwing object and adds a hit response that executes when colliding with a player.
      *
      * @param damage a float 0..n. Is how much damage the AttackObject is going to do.
      * @param timeToLive a float 0..n. Determines for how long the object exists for in seconds.
