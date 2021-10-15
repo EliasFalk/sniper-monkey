@@ -15,8 +15,9 @@ public class Platform extends GameObject {
      *
      * @param position a Vector2 with an (x,y) value.
      */
-    public Platform(Vector2 position) {
+    public Platform(Vector2 position, boolean ghostPlatform) {
         super(position, false);
         setHitboxSize(new Vector2(16, 16));
+        setGhost(ghostPlatform);
     }
 }

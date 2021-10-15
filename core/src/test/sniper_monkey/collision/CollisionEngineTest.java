@@ -17,8 +17,8 @@ public class CollisionEngineTest {
 
     @BeforeClass
     public static void InsertObj() {
-        obj = new Platform(new Vector2(0, 0));
-        objDynamic = new Platform(new Vector2(0, 0));
+        obj = new Platform(new Vector2(0, 0), false);
+        objDynamic = new Platform(new Vector2(0, 0), false);
         CollisionEngine.registerGameObject(obj, false);
     }
 

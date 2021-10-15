@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import game.sniper_monkey.controller.PlayerController;
+import game.sniper_monkey.utils.MapReader;
 import game.sniper_monkey.model.platform.Platform;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.PlayerFactory;
@@ -23,24 +24,26 @@ public class GameController {
 
     //TODO documentation
     public void create() {
+        MapReader.readMap();
+
         gameScreen = new GameScreen();
         World.getInstance().registerObserver(gameScreen);
 
         for (int i = 0; i < 400 / 16; i++)
-            World.getInstance().queueAddGameObject(new Platform(new Vector2(-200 + i * 16, -100)));
+            World.getInstance().queueAddGameObject(new Platform(new Vector2(-200 + i * 16, -100), false));
 
         //TODO use an external tool to create the map and create a utility to read it
-        World.getInstance().queueAddGameObject(new Platform(new Vector2(16, -100 + 16)));
-        World.getInstance().queueAddGameObject(new Platform(new Vector2(16, -100 + 16 * 2)));
-        World.getInstance().queueAddGameObject(new Platform(new Vector2(16, -100 + 16 * 3)));
-        World.getInstance().queueAddGameObject(new Platform(new Vector2(16, -100 + 16 * 4)));
-        World.getInstance().queueAddGameObject(new Platform(new Vector2(32, -100 + 16 * 4)));
-        World.getInstance().queueAddGameObject(new Platform(new Vector2(32 + 16, -100 + 16 * 4)));
-        World.getInstance().queueAddGameObject(new Platform(new Vector2(32 * 2, -100 + 16 * 4)));
+        World.getInstance().queueAddGameObject(new Platform(new Vector2(16, -100 + 16), false));
+        World.getInstance().queueAddGameObject(new Platform(new Vector2(16, -100 + 16 * 2), false));
+        World.getInstance().queueAddGameObject(new Platform(new Vector2(16, -100 + 16 * 3), false));
+        World.getInstance().queueAddGameObject(new Platform(new Vector2(16, -100 + 16 * 4), false));
+        World.getInstance().queueAddGameObject(new Platform(new Vector2(32, -100 + 16 * 4), false));
+        World.getInstance().queueAddGameObject(new Platform(new Vector2(32 + 16, -100 + 16 * 4), false));
+        World.getInstance().queueAddGameObject(new Platform(new Vector2(32 * 2, -100 + 16 * 4), false));
 
-        World.getInstance().queueAddGameObject(new Platform(new Vector2(-32 * 4, -100 + 16 * 5)));
-        World.getInstance().queueAddGameObject(new Platform(new Vector2((-32 - 16) * 4, -100 + 16 * 5)));
-        World.getInstance().queueAddGameObject(new Platform(new Vector2(-32 * 2 * 4, -100 + 16 * 5)));
+        World.getInstance().queueAddGameObject(new Platform(new Vector2(-32 * 4, -100 + 16 * 5), false));
+        World.getInstance().queueAddGameObject(new Platform(new Vector2((-32 - 16) * 4, -100 + 16 * 5), false));
+        World.getInstance().queueAddGameObject(new Platform(new Vector2(-32 * 2 * 4, -100 + 16 * 5), false));
         Player player1 = PlayerFactory.createPlayer1(new Vector2(50, 50));
         Player player2 = PlayerFactory.createPlayer2(new Vector2(-50, 50));
         World.getInstance().queueAddGameObject(player1);

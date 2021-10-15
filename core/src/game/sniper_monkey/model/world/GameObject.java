@@ -2,6 +2,7 @@ package game.sniper_monkey.model.world;
 
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.collision.Hitbox;
+import game.sniper_monkey.utils.collision.CollisionMasks;
 
 /**
  * A abstract GameObject used in the world. It has a position and hitbox as well as support for
@@ -110,7 +111,26 @@ public abstract class GameObject {
      * @param mask The new mask to add onto the current mask.
      */
     protected void addHitboxMask(int mask) {
-        hitbox.addMask(mask);;
+        hitbox.addMask(mask);
+    }
+
+    /**
+     * Removes a part of the mask from this GameObjects Hitbox.
+     *
+     * @param mask The mask to remove from the current mask.
+     */
+    protected void removeHitboxMask(int mask) {
+        hitbox.removeMask(mask);
+    }
+
+    /**
+     * Sets or unsets the ghost mask of this GameObject making it either respond to collision or not.
+     *
+     * @param ghost Whether or not this GameObject will act as a ghost.
+     */
+    protected void setGhost(boolean ghost) {
+        if(ghost) addHitboxMask(CollisionMasks.GHOST);
+        else removeHitboxMask(CollisionMasks.GHOST);
     }
 
     /**
