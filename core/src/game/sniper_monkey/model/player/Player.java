@@ -130,6 +130,10 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         }
     }
 
+    public float getHealth() {
+        return health.getCurrentValue();
+    }
+
     private void attacking1State() {
         currentPhysicalState = PhysicalState.ATTACKING1;
         if (!activeFighter.isAttacking()) {
