@@ -16,14 +16,14 @@ public class BowAttack implements IAttack {
 
     public BowAttack() {
         this.cbTimer = new CallbackTimer(attackLength, () -> canAttack = true);
-        velocity = new Vector2(20, 0);
+        velocity = new Vector2(10, 0);
     }
 
     @Override
     public boolean performAttack(float attackFactor, Vector2 playerPos, int collisionMask, boolean lookingRight, Vector2 hitboxSize) {
         if (canAttack) {
             float xSpawnPos = lookingRight ? hitboxSize.x : 0;
-            Vector2 spawnPos = playerPos.add(xSpawnPos,0);
+            Vector2 spawnPos = playerPos.add(xSpawnPos,30);
             AttackObjectSpawner.spawnHuntressArrowShot(attackFactor*damage, projectileTimeToLive, spawnPos, collisionMask, lookingRight, velocity);
             cbTimer.reset();
             cbTimer.start();
