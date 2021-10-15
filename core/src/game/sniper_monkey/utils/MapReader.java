@@ -13,17 +13,54 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapReader {
-    private static final DocumentBuilder db = createDocumentBuilder();
+/**
+ * A static utility that can read and convert Tiled map files along with tileset files.
+ *
+ * @author Vincent Hellner
+ * @author Elias Falk
+ */
+public final class MapReader {
+    private MapReader() {}
 
-    public static String[][] readMap() {
+    private static final DocumentBuilder db = createDocumentBuilder();
+    private static final String MAPS_DIR = "core/assets/map/";
+
+    /**
+     * Reads a tmx map along with a tileset and creates a map of Strings containing the names of each tile.
+     *
+     * @param mapPath     The path relative to the map directory of the map file.
+     * @param tilesetPath The path relative to the map directory of the tileset file.
+     * @return            A 2D array of Strings representing the map where each entry is the name of the tile or "air" if there is no tile.
+     */
+    public static String[][] readMap(String mapPath, String tilesetPath) {
         Document mapDoc;
         Document tilesetDoc;
 
-        mapDoc = readDocument("core/assets/map/grass_map/untitled.tmx");
-        tilesetDoc = readDocument("core/assets/map/grass_map/Tileset.tsx");
+        mapDoc = readDocument(MAPS_DIR + mapPath);
+        tilesetDoc = readDocument(MAPS_DIR + tilesetPath);
 
         return translateMapData(mapDoc, tilesetDoc);
+    }
+
+    /**
+     * Reads a tmx map along with a tileset and creates a map of Strings containing the names of each tile.
+     *
+     * @param mapFolder The path relative to the map directory of a folder containing both a map and a tileset file.
+     *                  If there are multiple map or tileset files the last files in the directory will be read.
+     * @return          A 2D array of Strings representing the map where each entry is the name of the tile or "air" if there is no tile.
+     */
+    public static String[][] readMap(String mapFolder) {
+        FileHandle dirHandle = Gdx.files.internal(MAPS_DIR + mapFolder);
+
+        String tileSet = "";
+        String tileMap = "";
+
+        for (FileHandle entry : dirHandle.list()) {
+           if(entry.extension().equals("tmx")) tileMap = entry.name();
+           else if(entry.extension().equals("tsx")) tileSet = entry.name();
+        }
+
+        return readMap(mapFolder + "/" + tileMap, mapFolder + "/" + tileSet);
     }
 
     private static String[][] translateMapData(Document mapDoc, Document tilesetDoc) {
@@ -63,7 +100,7 @@ public class MapReader {
     private static Map<Integer, String> readTileNames(Document tilesetDoc) {
         Map<Integer, String> tileNames = new HashMap<>();
         NodeList tileData = tilesetDoc.getElementsByTagName("tile");
-        for(Node node : XmlUtil.asList(tileData)) {
+        for(Node node : NodeListUtil.asList(tileData)) {
             int id = Integer.parseInt(node.getAttributes().item(0).getTextContent());
             String name = node.getAttributes().item(1).getTextContent();
             tileNames.put(id, name);

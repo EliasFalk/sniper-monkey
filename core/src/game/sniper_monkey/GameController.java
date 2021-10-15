@@ -24,8 +24,6 @@ public class GameController {
 
     //TODO documentation
     public void create() {
-        MapReader.readMap();
-
         gameScreen = new GameScreen();
         World.getInstance().registerObserver(gameScreen);
 
