@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class CallbackTimer implements UpdatableTimer {
 
-    private final float timerLength;
+    private float timerLength;
     private final Callback callback;
     private float timeLeft;
     private boolean running;
@@ -175,4 +175,11 @@ public class CallbackTimer implements UpdatableTimer {
         observers.remove(timerObserver);
 //        Input.Keys.PE
     }
+
+    // TODO doc
+    public void setTimerLength(float timerLength) {
+        if (timerLength < 0) throw new IllegalArgumentException("timerLength cannot be negative.");
+        this.timerLength = timerLength;
+    }
+
 }

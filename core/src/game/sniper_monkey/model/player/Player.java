@@ -3,13 +3,10 @@ package game.sniper_monkey.model.player;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.Config;
 import game.sniper_monkey.model.PhysicsPosition;
-import game.sniper_monkey.model.collision.CollisionEngine;
 import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.world.CallbackTimer;
 import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.model.world.TimerObserver;
-import game.sniper_monkey.utils.collision.CollisionMasks;
-import game.sniper_monkey.model.world.World;
 import game.sniper_monkey.utils.collision.CollisionResponse;
 
 import java.util.ArrayList;
@@ -27,6 +24,7 @@ import java.util.Map;
  * @author Dadi Andrason
  */
 public class Player extends GameObject implements ReadablePlayer, ControllablePlayer, DamageablePlayer {
+
     private static final float MAX_X_VEL;
     private static final float VEL_GAIN;
     private static final float JUMP_GAIN;
@@ -43,6 +41,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     private final FluctuatingAttribute blockFactor = new FluctuatingAttribute(MIN_BLOCK, MAX_BLOCK);
     private final CallbackTimer blockTimer = new CallbackTimer(.2f, () -> canBlock = true);
     private final CallbackTimer swapTimer = new CallbackTimer(SWAP_COOLDOWN, () -> canSwap = true);
+    private final CallbackTimer hitStun = new CallbackTimer(0, () -> canAttack = true);
     private final List<SwappedFighterObserver> swappedFighterObservers = new ArrayList<>();
     private final Fighter primaryFighter;
     private final Fighter secondaryFighter;
@@ -57,6 +56,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     private State abilityState = this::inactiveState;
     private boolean canBlock = true;
     private boolean canSwap = true;
+    private boolean canAttack = true;
 
 
     static {
@@ -134,12 +134,21 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     private void attacking1State() {
         currentFighterAnimation = FighterAnimation.ATTACKING1;
         if (!activeFighter.isAttacking()) {
+            hitStun.setTimerLength(activeFighter.getHitStunTime(0));
+            hitStun.reset();
+            hitStun.start();
             abilityState = this::inactiveState;
         }
     }
 
     private void attacking2State() {
-
+        currentFighterAnimation = FighterAnimation.ATTACKING2;
+        if (!activeFighter.isAttacking()) {
+            hitStun.setTimerLength(activeFighter.getHitStunTime(1));
+            hitStun.reset();
+            hitStun.start();
+            abilityState = this::inactiveState;
+        }
     }
 
     private void swappingFighterState() {
@@ -158,20 +167,22 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
 
 
     private void inactiveState() {
-        if (inputActions.get(PlayerInputAction.ATTACK1)) {
+        if (inputActions.get(PlayerInputAction.ATTACK1) && canAttack) {
 
             if (activeFighter.performAttack(0, this.getPos(), getHitboxMask(), isLookingRight(), getHitbox().getSize())) {
-
+                canAttack = false;
                 stamina.decrease(activeFighter.getStaminaDecrease(0));
                 abilityState = this::attacking1State;
+                return;
             }
 
-            return;
-        } else if (inputActions.get(PlayerInputAction.ATTACK2)) {
-            // TODO performAttack
-            stamina.decrease(activeFighter.getStaminaDecrease(1));
-            abilityState = this::attacking2State;
-            return;
+        } else if (inputActions.get(PlayerInputAction.ATTACK2) && canAttack) {
+            if (activeFighter.performAttack(1, this.getPos(), getHitboxMask(), isLookingRight(), getHitbox().getSize())) {
+                canAttack = false;
+                stamina.decrease(activeFighter.getStaminaDecrease(1));
+                abilityState = this::attacking2State;
+                return;
+            }
         } else if (inputActions.get(PlayerInputAction.BLOCK)) {
             if (canBlock) {
                 abilityState = this::blockingState;
@@ -362,6 +373,8 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         setHitboxPos(physicsPos.getPosition());
         setHitboxSize(fighter.getHitboxSize());
         stamina.setRegenerationAmount(BASE_STAMINA_REGEN * activeFighter.SPEED_FACTOR);
+
+        // hitStun2 = new CallbackTimer(activeFighter.getHitStunTime(1), () -> canAttack = true);
     }
 
     private void handleLookingDirection() {
@@ -452,24 +465,6 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     }
 
     /**
-     * Subscribes the observer to changes made when the attack cooldown changes.
-     *
-     * @param timerObserver The observer that wants to be subscribed to the changes.
-     */
-    public void registerAttackCooldownObserver(TimerObserver timerObserver) {
-        // TODO since cooldown effects all attacks should set this in player
-    }
-
-    /**
-     * Subscribes the observer to changes made when the attack cooldown changes.
-     *
-     * @param timerObserver The observer that wants to be unsubscribed to the changes.
-     */
-    public void unregisterAttackCooldownObserver(TimerObserver timerObserver) {
-        // TODO
-    }
-
-    /**
      * Subscribes the observer to changes made when the block cooldown changes.
      *
      * @param timerObserver The observer that wants to be subscribed to the changes.
@@ -521,6 +516,24 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
      */
     public void unregisterSwappedFighterObserver(SwappedFighterObserver observer) {
         swappedFighterObservers.remove(observer);
+    }
+
+    /**
+     * Subscribes the observer to changes made when the hitstun changes.
+     *
+     * @param timerObserver The observer that wants to be subscribed to the changes.
+     */
+    public void registerHitStunObserver(TimerObserver timerObserver) {
+        hitStun.registerTimerObserver(timerObserver);
+    }
+
+    /**
+     * Unsubscribes the observer to changes made when the hitstun changes.
+     *
+     * @param timerObserver The observer that wants to be subscribed to the changes.
+     */
+    public void unregisterHitStunObserver(TimerObserver timerObserver) {
+        hitStun.unRegisterTimerObserver(timerObserver);
     }
 
     @FunctionalInterface

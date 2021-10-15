@@ -28,6 +28,7 @@ public class SwordAttack implements IAttack {
     private final CallbackTimer cbTimer;
     private final float attackLength = 0.8f;
     private final float projectileTimeToLive = attackLength;
+    private final float hitStun = 2f;
 
     public SwordAttack() {
         this.cbTimer = new CallbackTimer(attackLength, () -> canAttack = true);
@@ -71,6 +72,11 @@ public class SwordAttack implements IAttack {
     @Override
     public float getAttackLength() {
         return attackLength;
+    }
+
+    @Override
+    public float getHitStun() {
+        return hitStun;
     }
 
     public float getDamage() {

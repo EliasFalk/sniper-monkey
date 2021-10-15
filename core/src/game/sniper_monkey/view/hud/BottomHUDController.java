@@ -75,8 +75,8 @@ public class BottomHUDController implements SwappedFighterObserver {
         gameScreen.addHudView(block);
         gameScreen.addHudView(swapFighter);
 
-        player.registerAttackCooldownObserver(attack1);
-        player.registerAttackCooldownObserver(attack2);
+        player.registerHitStunObserver(attack1);
+        player.registerHitStunObserver(attack2);
         player.registerBlockCooldownObserver(block);
         player.registerSwapCooldownObserver(swapFighter);
     }

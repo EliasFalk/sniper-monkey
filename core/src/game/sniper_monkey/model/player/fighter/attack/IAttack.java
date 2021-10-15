@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
  * and read its stamina cost.
  *
  * @author Elias Falk
+ * @author Dadi Andrason
  */
 public interface IAttack {
     boolean performAttack(float attackFactor, Vector2 playerPos, int collisionMask, boolean lookingRight, Vector2 hitboxSize);
@@ -21,4 +22,5 @@ public interface IAttack {
 
     float getAttackLength();
 
+    float getHitStun();
 }

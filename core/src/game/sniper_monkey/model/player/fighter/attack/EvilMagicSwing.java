@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.world.GameObject;
 
-import java.util.function.Consumer;
 
 public class EvilMagicSwing extends AttackObject {
 
@@ -20,8 +19,10 @@ public class EvilMagicSwing extends AttackObject {
         addHitResponse(Player.class, gameObject -> {
             System.out.println("hitted player");
             //TODO add take damage functionality
+            System.out.println(damage);
 
-
+            Player player = (Player) gameObject;
+            player.takeDamage(damage);
 
             delete(); // after hit
         });

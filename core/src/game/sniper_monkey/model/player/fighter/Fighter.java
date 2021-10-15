@@ -104,4 +104,8 @@ public abstract class Fighter {
         return attacks.get(attackNum).getAttackLength();
     }
 
+    public float getHitStunTime(int attackNum) {
+        return attacks.get(attackNum).getHitStun();
+    }
+
 }
