@@ -35,20 +35,20 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     private static final float BASE_BLOCK_DRAIN;
     private static final float BASE_STAMINA_REGEN;
     private static final float SWAP_COOLDOWN;
+    private static final float BLOCK_COOLDOWN;
     private final FluctuatingAttribute stamina = new FluctuatingAttribute(MAX_STAMINA);
     private final FluctuatingAttribute health = new FluctuatingAttribute(MAX_HEALTH);
     private final FluctuatingAttribute blockFactor = new FluctuatingAttribute(MIN_BLOCK, MAX_BLOCK);
-    private final CallbackTimer blockTimer = new CallbackTimer(.2f, () -> canBlock = true);
+    private final CallbackTimer blockTimer = new CallbackTimer(BLOCK_COOLDOWN, () -> canBlock = true);
     private final CallbackTimer swapTimer = new CallbackTimer(SWAP_COOLDOWN, () -> canSwap = true);
     private final List<SwappedFighterObserver> swappedFighterObservers = new ArrayList<>();
     private final Fighter primaryFighter;
     private final Fighter secondaryFighter;
     private final Map<PlayerInputAction, Boolean> inputActions = new HashMap<>();
-    private final float blockDefenseFactor;
     private PhysicsPosition physicsPos = new PhysicsPosition(new Vector2(0, 0));
     boolean isGrounded = true;
     private Fighter activeFighter;
-    private FighterAnimation currentFighterAnimation; // TODO set this to static for very many fun
+    private PhysicalState currentPhysicalState; // TODO set this to static for very many fun
     private boolean lookingRight;
     private State movementState = this::groundedState;
     private State abilityState = this::inactiveState;
@@ -70,6 +70,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         BASE_BLOCK_DRAIN = Config.getNumber(filepath, "BASE_BLOCK_DRAIN");
         BASE_STAMINA_REGEN = Config.getNumber(filepath, "BASE_STAMINA_REGEN");
         SWAP_COOLDOWN = Config.getNumber(filepath, "SWAP_COOLDOWN");
+        BLOCK_COOLDOWN = Config.getNumber(filepath, "BLOCK_COOLDOWN");
     }
 
     /**
@@ -82,10 +83,9 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         physicsPos.setPosition(position);
         this.primaryFighter = primaryFighter;
         this.secondaryFighter = secondaryFighter;
-        currentFighterAnimation = FighterAnimation.IDLING;
+        currentPhysicalState = PhysicalState.IDLING;
         initActiveFighter(primaryFighter);
         resetInputActions();
-        blockDefenseFactor = 0.4f;
         setHitboxMask(collisionMask);
     }
 
@@ -113,15 +113,14 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
      * If it isn't, reset the blockDefenseFactor and set the next state.
      */
     private void blockingState() {
-        // TODO set correct blocking values, read these from config. If different values in different movement states, use percentage of config value.
-        currentFighterAnimation = FighterAnimation.DYING;
+        currentPhysicalState = PhysicalState.DYING;
         if (inputActions.get(PlayerInputAction.BLOCK)) {
             blockFactor.setRegenerating(false);
             blockFactor.setDraining(true, BASE_BLOCK_DRAIN);
             blockTimer.reset();
         } else {
             blockFactor.setDraining(false);
-            blockFactor.setRegenerating(true, BASE_BLOCK_REGEN);
+            blockFactor.setRegenerating(true, BASE_BLOCK_REGEN); // TODO discuss: should stamina effect the speed of block regen?
             abilityState = this::inactiveState;
             blockTimer.start();
             movementState.performState();
@@ -156,12 +155,10 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
             stamina.decrease(activeFighter.getStaminaDecrease(2));
             abilityState = this::attacking2State;
             return;
-        } else if (inputActions.get(PlayerInputAction.BLOCK)) {
-            if (canBlock) {
-                abilityState = this::blockingState;
-                canBlock = false;
-                return;
-            }
+        } else if (canBlock && inputActions.get(PlayerInputAction.BLOCK)) {
+            abilityState = this::blockingState;
+            canBlock = false;
+            return;
         } else if (inputActions.get(PlayerInputAction.SWAP_FIGHTER)) {
             // TODO swapFighter
             abilityState = this::swappingFighterState;
@@ -184,16 +181,15 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
 
         handleHorizontalMovement();
         if (physicsPos.getVelocity().y < 0) {
-            currentFighterAnimation = FighterAnimation.FALLING;
+            currentPhysicalState = PhysicalState.FALLING;
         } else if (physicsPos.getVelocity().y > 0) {
-            currentFighterAnimation = FighterAnimation.JUMPING;
+            currentPhysicalState = PhysicalState.JUMPING;
         }
 
     }
 
-    // State helper methods
     private void groundedState() {
-        currentFighterAnimation = FighterAnimation.IDLING;
+        currentPhysicalState = PhysicalState.IDLING;
         handleHorizontalMovement();
 
         if (inputActions.get(PlayerInputAction.JUMP)) {
@@ -207,6 +203,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         }
     }
 
+    // State helper methods
     private void moveLeft() {
         Vector2 newVel = physicsPos.getVelocity().add(new Vector2(-VEL_GAIN, 0));
         if (newVel.x <= -MAX_X_VEL) {
@@ -230,11 +227,11 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
 
     private void handleHorizontalMovement() {
         if (inputActions.get(PlayerInputAction.MOVE_RIGHT)) {
-            currentFighterAnimation = FighterAnimation.MOVING;
+            currentPhysicalState = PhysicalState.MOVING;
             moveRight();
         }
         if (inputActions.get(PlayerInputAction.MOVE_LEFT)) {
-            currentFighterAnimation = FighterAnimation.MOVING;
+            currentPhysicalState = PhysicalState.MOVING;
             moveLeft();
         }
     }
@@ -247,12 +244,13 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         }
     }
 
-    //TODO documentation
-    public FighterAnimation getCurrentFighterAnimation() {
-        return currentFighterAnimation;
+    @Override
+    public PhysicalState getCurrentPhysicalState() {
+        return currentPhysicalState;
     }
 
-    //TODO documentation
+
+    @Override
     public boolean isLookingRight() {
         return lookingRight;
     }
@@ -278,23 +276,15 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         }
     }
 
-    /**
-     * Updates the inputActions map by setting the action to true, which translates to "player try to do this action".
-     *
-     * @param action The input action to be set.
-     */
+    @Override
     public void setInputAction(PlayerInputAction action) {
         inputActions.replace(action, true);
     }
 
-    /**
-     * Decreases the players health.
-     *
-     * @param damageAmount a float 0..n. Is the damage that the other fighter has done to the player.
-     */
+    @Override
     public void takeDamage(float damageAmount) {
         if (false/*currentState == blockingState*/) { // change when state checking has been implemented
-            health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR) * (1 - blockDefenseFactor));
+            health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR) * (1 - blockFactor.getCurrentValue()));
         } else {
             health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR)); // TODO make getter for defense factor instead?
         }
@@ -309,21 +299,12 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         return health.getCurrentValue() == 0;
     }
 
-    /**
-     * Get the type of the active fighter. Will be a subclass of Fighter.
-     *
-     * @return Type of the active fighter.
-     */
     @Override
     public Class<? extends Fighter> getActiveFighterClass() {
         return activeFighter.getClass();
     }
 
-    /**
-     * Returns the class of the inactive fighter.
-     *
-     * @return The class of the inactive fighter.
-     */
+    @Override
     public Class<? extends Fighter> getInactiveFighterClass() {
         if (activeFighter == primaryFighter) {
             return secondaryFighter.getClass();
@@ -350,18 +331,15 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     }
 
     private void handleLookingDirection() {
-        if (physicsPos.getVelocity().x > 0) {
+        boolean isMovingRight = physicsPos.getVelocity().x > 0;
+        boolean isMovingLeft = physicsPos.getVelocity().x < 0;
+        if (isMovingRight) {
             lookingRight = true;
-        } else if (physicsPos.getVelocity().x < 0) {
+        } else if (isMovingLeft) {
             lookingRight = false;
         }
     }
 
-    /**
-     * Updates the class player every frame
-     *
-     * @param deltaTime The time between frames.
-     */
     @Override
     public void update(float deltaTime) {
         stamina.update(deltaTime);

@@ -1,13 +1,13 @@
 package game.sniper_monkey.model.player;
 
 /**
- * Enum representing different animations a fighter can have
+ * Enum representing the different physical states a player can have.
  *
  * @author Elias Falk
  * @author Vincent Hellner
  * @author Kevin Jeryd
  */
-public enum FighterAnimation {
+public enum PhysicalState {
     ATTACKING1,
     ATTACKING2,
     JUMPING,
