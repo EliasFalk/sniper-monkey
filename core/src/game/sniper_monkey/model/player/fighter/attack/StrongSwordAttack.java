@@ -6,7 +6,7 @@ import game.sniper_monkey.model.world.CallbackTimer;
 import java.util.Vector;
 
 /**
- * An attack that represents the "Evil Wizard's" secondary attack, a ranged one.
+ * An attack that represents the "Evil Wizard's" secondary attack, a stronger one.
  *
  * @author Kevin Jeryd
  * @author Dadi Andrason
@@ -16,8 +16,8 @@ import java.util.Vector;
  *
  * Uses CallbackTimer
  * Uses World
- * Uses ProjectileSpawner
- * Uses Projectile
+ * Uses AttackObjectSpawner
+ * Uses AttackObject
  */
 public class StrongSwordAttack implements IAttack {
 
@@ -29,6 +29,9 @@ public class StrongSwordAttack implements IAttack {
     private final float hitStun = 0.5f;
     private final float stamina = 15;
 
+    /**
+     * Creates an object of the strong sword attack.
+     */
     public StrongSwordAttack() {
         this.cbTimer = new CallbackTimer(attackLength, () -> canAttack = true);
 

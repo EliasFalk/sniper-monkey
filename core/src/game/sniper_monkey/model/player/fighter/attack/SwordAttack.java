@@ -14,8 +14,8 @@ import game.sniper_monkey.model.world.CallbackTimer;
  *
  * Uses CallbackTimer
  * Uses World
- * Uses ProjectileSpawner
- * Uses Projectile
+ * Uses AttackObjectSpawner
+ * Uses AttackObject
  */
 public class SwordAttack implements IAttack {
 

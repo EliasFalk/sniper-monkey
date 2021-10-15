@@ -31,7 +31,7 @@ public abstract class AttackObject extends GameObject {
 
 
     /**
-     * Creates an attackobject. Is used by the concrete classes that inherit this class.
+     * Creates an attackobject. Is used by the concrete attack object classes that have a projectile.
      *
      * @param damage a float 0..n. Is how much damage the AttackObject is going to do.
      * @param timeToLive a float 0..n. Determines for how long the object exists for in seconds.
