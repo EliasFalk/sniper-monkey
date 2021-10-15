@@ -1,3 +1,4 @@
 # sniper-monkey
 
-https://raw.githubusercontent.com/EliasFalk/sniper-monkey/main/.github/images/simp_sniper_monkey.mp4
+https://user-images.githubusercontent.com/17299402/137557480-efd505a9-92ff-4714-9e86-e3be68d022d6.mp4
+
