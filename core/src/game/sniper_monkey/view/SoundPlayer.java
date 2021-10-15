@@ -19,7 +19,8 @@ public final class SoundPlayer implements IAudibleEventObserver {
     private SoundPlayer() {
         random = new Random();
         sounds = new HashMap<>();
-        sounds.put(AudibleEvent.JUMP, Gdx.audio.newSound(Gdx.files.internal("Jump.wav")));
+        sounds.put(AudibleEvent.JUMP, Gdx.audio.newSound(Gdx.files.internal("jump.wav")));
+        sounds.put(AudibleEvent.HURT, Gdx.audio.newSound(Gdx.files.internal("evil_oof.wav")));
     }
 
     public static SoundPlayer getInstance() {
