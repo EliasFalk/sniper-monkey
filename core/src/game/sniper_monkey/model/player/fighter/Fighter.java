@@ -84,7 +84,7 @@ public abstract class Fighter {
      * @param attackNum The attack number. Starts at 0.
      * @return The class of the attack.
      */
-    public Class<?> getAttackClass(int attackNum) {
+    public Class<? extends IAttack> getAttackClass(int attackNum) {
         if (attackNum >= attacks.size()) {
             throw new IllegalArgumentException("attack " + attackNum + " does not exist");
         }
