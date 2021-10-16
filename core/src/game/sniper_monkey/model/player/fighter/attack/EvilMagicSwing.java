@@ -2,7 +2,6 @@ package game.sniper_monkey.model.player.fighter.attack;
 
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.player.Player;
-import game.sniper_monkey.model.world.GameObject;
 
 /**
  * A class of the attackswords "swing". This is basically the attacks "projectile" and is the thing that determines if it collides with the opponent.

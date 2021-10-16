@@ -3,6 +3,8 @@ package game.sniper_monkey.model.player.fighter.attack;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.world.CallbackTimer;
 
+import java.util.Vector;
+
 /**
  * An attack that represents the "Evil Wizard's" secondary attack, a stronger one.
  *
@@ -21,9 +23,9 @@ public class StrongSwordAttack implements IAttack {
 
     private static final float damage = 20;
     private static final float attackLength = 1.2f;
-    private static final float projectileTimeToLive = 5f;
+    private static final float projectileTimeToLive = attackLength;
     private static final float hitStunLength = 0.5f;
-    private static final float staminaCost = 15;
+    private final static float staminaCost = 15;
     private final CallbackTimer cbTimer;
     private boolean isFinished = true;
 
