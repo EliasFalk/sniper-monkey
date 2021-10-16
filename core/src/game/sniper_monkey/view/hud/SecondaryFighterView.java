@@ -16,9 +16,26 @@ import game.sniper_monkey.utils.view.HUDUtils;
  */
 public class SecondaryFighterView implements HUDView {
     private Image img;
-    private float x;
-    private float y;
+    private final float x;
+    private final float y;
     private Label fighterName;
+    private final float yTextOffset = -15f;
+
+    /**
+     * Creates a view that represents the secondary fighter.
+     *
+     * @param textureRegion The texture region to be used to represent the fighter.
+     * @param x             The x position of the texture region.
+     * @param y             The y position of the texture region.
+     * @param fighterName   The display name of the fighter.
+     * @param flipX         Whether to flip the image horizontally.
+     */
+    public SecondaryFighterView(TextureRegion textureRegion, float x, float y, String fighterName, boolean flipX) {
+        this.x = x;
+        this.y = y;
+        createFighterImage(textureRegion, x, y, flipX);
+        createFighterNameLabel(x, y, fighterName);
+    }
 
     /**
      * Creates a view that represents the secondary fighter.
@@ -29,14 +46,19 @@ public class SecondaryFighterView implements HUDView {
      * @param fighterName   The display name of the fighter.
      */
     public SecondaryFighterView(TextureRegion textureRegion, float x, float y, String fighterName) {
-        this.img = new Image(textureRegion);
-        img.setAlign(Align.center);
-        img.setPosition(x, y);
-        this.fighterName = new Label(fighterName, new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        this.fighterName.setPosition(x + img.getWidth() / 2 - this.fighterName.getWidth() / 2, y - 15);
-        this.fighterName.setAlignment(Align.center);
-        this.x = x;
-        this.y = y;
+        this(textureRegion, x, y, fighterName, false);
+    }
+
+    /**
+     * Creates a secondary fighter view based on the fighter class.
+     *
+     * @param fighterClass The class of the fighter.
+     * @param x            The x position of the view.
+     * @param y            The y position of the view.
+     * @param flipX        Whether to flip the image horizontally.
+     */
+    public SecondaryFighterView(Class<? extends Fighter> fighterClass, float x, float y, boolean flipX) {
+        this(HUDUtils.getCorrespondingTextureRegion(fighterClass), x, y, HUDUtils.getFighterDisplayName(fighterClass), flipX);
     }
 
     /**
@@ -48,6 +70,19 @@ public class SecondaryFighterView implements HUDView {
      */
     public SecondaryFighterView(Class<? extends Fighter> fighterClass, float x, float y) {
         this(HUDUtils.getCorrespondingTextureRegion(fighterClass), x, y, HUDUtils.getFighterDisplayName(fighterClass));
+    }
+
+    private void createFighterImage(TextureRegion textureRegion, float x, float y, boolean flipX) {
+        textureRegion.flip(flipX, false);
+        this.img = new Image(textureRegion);
+        img.setAlign(Align.center);
+        img.setPosition(x, y);
+    }
+
+    private void createFighterNameLabel(float x, float y, String fighterName) {
+        this.fighterName = new Label(fighterName, new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        this.fighterName.setPosition(x + img.getWidth() / 2 - this.fighterName.getWidth() / 2, y + yTextOffset);
+        this.fighterName.setAlignment(Align.center);
     }
 
     /**

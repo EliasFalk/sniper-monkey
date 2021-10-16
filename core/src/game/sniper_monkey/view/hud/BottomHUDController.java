@@ -27,8 +27,8 @@ public class BottomHUDController implements SwappedFighterObserver {
     private KeyInputView attack2;
     private KeyInputView block;
     private KeyInputView swapFighter;
-    private String keybindsFilePath;
-    private Placement placement;
+    private final String keybindsFilePath;
+    private final Placement placement;
     private float x;
     private float y;
 
@@ -45,11 +45,11 @@ public class BottomHUDController implements SwappedFighterObserver {
         this.player = player;
         this.placement = placement;
         this.keybindsFilePath = keybindsFilePath;
-        Config.readConfigFile(keybindsFilePath);
         init();
     }
 
     private void init() {
+        Config.readConfigFile(keybindsFilePath);
         createKeys();
         createSecondaryFighterView();
     }
@@ -85,13 +85,15 @@ public class BottomHUDController implements SwappedFighterObserver {
         TextureRegion inactiveFighter = HUDUtils.getCorrespondingTextureRegion(player.getInactiveFighterClass());
 
         float relativeMarginOfFighter = 0;
+        boolean flip = false;
         if (placement == Placement.RIGHT) {
-            inactiveFighter.flip(true, false);
             relativeMarginOfFighter = KeyInputView.getWidth() + fighterXMargin;
+            flip = true;
         } else if (placement == Placement.LEFT) {
             relativeMarginOfFighter = -fighterXMargin - inactiveFighter.getRegionWidth();
+            flip = false;
         }
-        secondaryFighterView = new SecondaryFighterView(player.getInactiveFighterClass(), x + relativeMarginOfFighter, y + fighterYMargin);
+        secondaryFighterView = new SecondaryFighterView(player.getInactiveFighterClass(), x + relativeMarginOfFighter, y + fighterYMargin, flip);
         gameScreen.addHudView(secondaryFighterView);
     }
 

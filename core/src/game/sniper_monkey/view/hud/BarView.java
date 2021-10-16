@@ -24,6 +24,8 @@ public class BarView implements FluctuatingAttributeObserver, HUDView {
 
     /**
      * Creates a new bar view with a fillable bar and a side text representing the percentage filled.
+     * The side text will always be positioned in the middle of the height of the bar.
+     * The side text has a decimal format of XX.X. For example 33.3. Which represents that the bar is 33.3% filled.
      *
      * @param x             The x position of the fillable bar.
      * @param y             The y position of the fillable bar.
@@ -34,23 +36,30 @@ public class BarView implements FluctuatingAttributeObserver, HUDView {
      * @param textAlignment The alignment of the side text. Currently only accepts left, right or center.
      */
     public BarView(float x, float y, float width, float height, Color color, FillDirection fillDir, int textAlignment) {
-        barLabel = new Label(String.format(new DecimalFormat("#.##").format(100), 0f), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        barLabel.setFontScale(1, 1);
-        float labelPos = x;
-        if (textAlignment == Align.left) {
-            labelPos = x - sideTextMargin - barLabel.getWidth();
-        } else if (textAlignment == Align.center) {
-            labelPos = x + width / 2 - barLabel.getWidth() / 2;
-        } else if (textAlignment == Align.right) {
-            labelPos = x + sideTextMargin + width;
-        }
-        barLabel.setPosition(labelPos, y);
-        barLabel.setAlignment(Align.center);
+        createBarLabel(x, y, width, height, textAlignment);
         fillableBar = new FillableBar(x, y, width, height, color, fillDir);
     }
 
+    private void createBarLabel(float x, float y, float barWidth, float barHeight, int textAlignment) {
+        barLabel = new Label(String.format(new DecimalFormat("#.##").format(100), 0f), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        barLabel.setFontScale(1, 1);
+        float yLabelPos = y + barHeight / 2 - barLabel.getHeight() / 2;
+        float xLabelPos = x;
+        if (textAlignment == Align.left) {
+            xLabelPos = x - sideTextMargin - barLabel.getWidth();
+        } else if (textAlignment == Align.center) {
+            xLabelPos = x + barWidth / 2 - barLabel.getWidth() / 2;
+        } else if (textAlignment == Align.right) {
+            xLabelPos = x + sideTextMargin + barWidth;
+        }
+
+        barLabel.setPosition(xLabelPos, yLabelPos);
+        barLabel.setAlignment(Align.center);
+    }
+
     /**
-     * Creates a new bar view with a fillable bar and a side text representing the percentage filled. The width is 150, height 20 and text alignment center.
+     * Creates a new bar view with a fillable bar and a side text representing the percentage filled.
+     * The width is 150, height 20 and text alignment center.
      *
      * @param x       The x position of the fillable bar.
      * @param y       The y position of the fillable bar.

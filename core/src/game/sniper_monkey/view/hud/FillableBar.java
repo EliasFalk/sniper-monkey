@@ -38,8 +38,8 @@ public class FillableBar extends Actor {
         shapeRenderer = new ShapeRenderer();
         this.x = x;
         this.y = y;
-        this.width = width - borderThickness / 2;
-        this.height = height - borderThickness / 2;
+        this.width = width - borderThickness;
+        this.height = height - borderThickness;
         this.color = color;
         this.fillDir = fillDir;
     }
@@ -48,23 +48,36 @@ public class FillableBar extends Actor {
     public void draw(Batch batch, float alpha) {
         batch.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.DARK_GRAY);
-        shapeRenderer.rect(x - borderThickness / 2, y - borderThickness / 2, width + borderThickness, height + borderThickness);
-        shapeRenderer.setColor(Color.WHITE);
-        shapeRenderer.rect(x, y, width, height);
-
-        shapeRenderer.setColor(color);
-        if (fillDir == FillDirection.RIGHT) {
-            shapeRenderer.rect(x, y, width * fraction, height);
-        } else if (fillDir == FillDirection.LEFT) {
-            shapeRenderer.rect(x + width * (1 - fraction), y, width * fraction, height);
-        } else if (fillDir == FillDirection.UP) {
-            shapeRenderer.rect(x, y, width, height * fraction);
-        } else if (fillDir == FillDirection.DOWN) {
-            shapeRenderer.rect(x, y + height * (1 - fraction), width, height * fraction);
-        }
+        drawBorder(Color.BLACK);
+        drawInnerBar(Color.WHITE);
+        drawChangingBar();
         shapeRenderer.end();
         batch.begin();
+    }
+
+    private void drawChangingBar() {
+        float drawOffset = borderThickness / 2;
+        shapeRenderer.setColor(color);
+        if (fillDir == FillDirection.RIGHT) {
+            shapeRenderer.rect(x + drawOffset, y + drawOffset, width * fraction, height);
+        } else if (fillDir == FillDirection.LEFT) {
+            shapeRenderer.rect(x + drawOffset + width * (1 - fraction), y + drawOffset, width * fraction, height);
+        } else if (fillDir == FillDirection.UP) {
+            shapeRenderer.rect(x + drawOffset, y + drawOffset, width, height * fraction);
+        } else if (fillDir == FillDirection.DOWN) {
+            shapeRenderer.rect(x + drawOffset, y + drawOffset + height * (1 - fraction), width, height * fraction);
+        }
+    }
+
+    private void drawInnerBar(Color color) {
+        float drawOffset = borderThickness / 2;
+        shapeRenderer.setColor(color);
+        shapeRenderer.rect(x + drawOffset, y + drawOffset, width, height);
+    }
+
+    private void drawBorder(Color color) {
+        shapeRenderer.setColor(color);
+        shapeRenderer.rect(x, y, width + borderThickness, height + borderThickness);
     }
 
     public void update(float fraction) {
