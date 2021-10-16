@@ -63,7 +63,7 @@ public class TestSwordAttack {
     @Test
     public void testGetHitStun() {
         SwordAttack swordAttack = new SwordAttack();
-        Assert.assertEquals(0.2f, swordAttack.getHitStun(), 0);
+        Assert.assertEquals(0.2f, swordAttack.getHitStunLength(), 0);
     }
 
 }

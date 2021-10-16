@@ -121,7 +121,7 @@ public abstract class Fighter {
      * @return a float 0..n. where the float is the length of the hitstun in seconds.
      */
     public float getHitStunTime(int attackNum) {
-        return attacks.get(attackNum).getHitStun();
+        return attacks.get(attackNum).getHitStunLength();
     }
 
 }
