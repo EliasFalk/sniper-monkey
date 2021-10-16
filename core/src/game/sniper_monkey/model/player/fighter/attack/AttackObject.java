@@ -1,13 +1,9 @@
 package game.sniper_monkey.model.player.fighter.attack;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Null;
-import game.sniper_monkey.model.PhysicsPosition;
 import game.sniper_monkey.model.collision.CollisionEngine;
 import game.sniper_monkey.model.world.CallbackTimer;
 import game.sniper_monkey.model.world.GameObject;
-import game.sniper_monkey.view.GameObjectViewFactory;
 
 import java.util.*;
 import java.util.function.Consumer;
