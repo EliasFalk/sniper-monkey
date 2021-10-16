@@ -65,8 +65,12 @@ public class BottomHUDController implements SwappedFighterObserver {
             textPlacement = Placement.LEFT;
         }
 
-        attack1 = new KeyInputView(x, y, Input.Keys.toString((int) Config.getNumber(keybindsFilePath, "ATTACK1")), "player.getAttack1Name()", textPlacement); //TODO get correct attack name
-        attack2 = new KeyInputView(x, y + KeyInputView.getHeight() + keyInputMargin, Input.Keys.toString((int) Config.getNumber(keybindsFilePath, "ATTACK2")), "player.getAttack2Name()", textPlacement); // TODO get correct attack name
+        attack1 = new KeyInputView(x, y,
+                Input.Keys.toString((int) Config.getNumber(keybindsFilePath, "ATTACK1")),
+                HUDUtils.getAttackDisplayName(player.getAttackClass(0)), textPlacement);
+        attack2 = new KeyInputView(x, y + KeyInputView.getHeight() + keyInputMargin,
+                Input.Keys.toString((int) Config.getNumber(keybindsFilePath, "ATTACK2")),
+                HUDUtils.getAttackDisplayName(player.getAttackClass(1)), textPlacement);
         block = new KeyInputView(x, y + (KeyInputView.getHeight() + keyInputMargin) * 2, Input.Keys.toString((int) Config.getNumber(keybindsFilePath, "BLOCK")), "Block", textPlacement);
         swapFighter = new KeyInputView(x, y + (KeyInputView.getHeight() + keyInputMargin) * 3, Input.Keys.toString((int) Config.getNumber(keybindsFilePath, "SWAP_FIGHTER")), "Swap fighter", textPlacement);
 
@@ -98,8 +102,7 @@ public class BottomHUDController implements SwappedFighterObserver {
     @Override
     public void onFighterSwap(Player player) {
         secondaryFighterView.updateFighterView(player.getInactiveFighterClass());
-        // TODO remove comment when attacks are implemented.
-//        attack1.setText(HUDUtils.getAttackDisplayName(player.getAttackClass(0)));
-//        attack2.setText(HUDUtils.getAttackDisplayName(player.getAttackClass(1)));
+        attack1.setText(HUDUtils.getAttackDisplayName(player.getAttackClass(0)));
+        attack2.setText(HUDUtils.getAttackDisplayName(player.getAttackClass(1)));
     }
 }
