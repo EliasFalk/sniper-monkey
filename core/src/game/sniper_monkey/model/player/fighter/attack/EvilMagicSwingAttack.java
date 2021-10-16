@@ -17,7 +17,7 @@ import game.sniper_monkey.model.world.CallbackTimer;
  * Uses AttackObjectSpawner
  * Uses AttackObject
  */
-public class SwordAttack implements IAttack {
+public class EvilMagicSwingAttack implements IAttack {
 
 
     private static final float damage = 15;
@@ -32,7 +32,7 @@ public class SwordAttack implements IAttack {
     /**
      * Creates an object of a SwordAttack.
      */
-    public SwordAttack() {
+    public EvilMagicSwingAttack() {
         this.cbTimer = new CallbackTimer(attackLength, () -> isFinished = true);
     }
 
@@ -41,7 +41,7 @@ public class SwordAttack implements IAttack {
         if (isFinished) {
             float xSpawnPos = lookingRight ? hitboxSize.x : 0;
             Vector2 spawnPos = playerPos.add(xSpawnPos, 0);
-            AttackObjectSpawner.spawnEvilMagicSwingAttack(attackFactor * damage, attackObjectTimeToLive, spawnPos, collisionMask, lookingRight);
+            AttackObjectSpawner.spawnEvilMagicSwing(attackFactor * damage, attackObjectTimeToLive, spawnPos, collisionMask, lookingRight);
             cbTimer.reset();
             cbTimer.start();
             isFinished = false;

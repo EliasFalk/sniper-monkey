@@ -3,8 +3,6 @@ package game.sniper_monkey.model.player.fighter.attack;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.world.CallbackTimer;
 
-import java.util.Vector;
-
 /**
  * An attack that represents the "Evil Wizard's" secondary attack, a stronger one.
  *
@@ -19,7 +17,7 @@ import java.util.Vector;
  * Uses AttackObjectSpawner
  * Uses AttackObject
  */
-public class StrongSwordAttack implements IAttack {
+public class EvilMagicHammerAttack implements IAttack {
 
     private static final float damage = 20;
     private static final float attackLength = 1.2f;
@@ -32,7 +30,7 @@ public class StrongSwordAttack implements IAttack {
     /**
      * Creates an object of the strong sword attack.
      */
-    public StrongSwordAttack() {
+    public EvilMagicHammerAttack() {
         this.cbTimer = new CallbackTimer(attackLength, () -> isFinished = true);
 
     }
@@ -43,7 +41,7 @@ public class StrongSwordAttack implements IAttack {
         if (isFinished) {
             float xSpawnPos = lookingRight ? hitboxSize.x : 0;
             Vector2 spawnPos = playerPos.add(xSpawnPos, 0);
-            AttackObjectSpawner.spawnEvilStrongAttack(attackFactor * damage, projectileTimeToLive, spawnPos, collisionMask, lookingRight);
+            AttackObjectSpawner.spawnEvilMagicHammer(attackFactor * damage, projectileTimeToLive, spawnPos, collisionMask, lookingRight);
             // TODO delay attack?
             cbTimer.reset();
             cbTimer.start();

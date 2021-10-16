@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import game.sniper_monkey.model.player.fighter.EvilWizard;
 import game.sniper_monkey.model.player.fighter.Fighter;
+import game.sniper_monkey.model.player.fighter.attack.EvilMagicHammerAttack;
+import game.sniper_monkey.model.player.fighter.attack.EvilMagicSwingAttack;
 import game.sniper_monkey.model.player.fighter.attack.IAttack;
-import game.sniper_monkey.model.player.fighter.attack.StrongSwordAttack;
-import game.sniper_monkey.model.player.fighter.attack.SwordAttack;
 
 public class HUDUtils {
 
@@ -53,9 +53,9 @@ public class HUDUtils {
      * @throws IllegalArgumentException If no display name can be found for that class.
      */
     public static String getAttackDisplayName(Class<? extends IAttack> attack) {
-        if (attack == StrongSwordAttack.class) {
+        if (attack == EvilMagicHammerAttack.class) {
             return "Evil Hammer Smash";
-        } else if (attack == SwordAttack.class) {
+        } else if (attack == EvilMagicSwingAttack.class) {
             return "Evil Magic Swing";
         } else {
             throw new IllegalArgumentException("No display name found for this attack class.");

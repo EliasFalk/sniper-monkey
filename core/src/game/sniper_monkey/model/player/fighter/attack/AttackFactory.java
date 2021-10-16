@@ -7,25 +7,27 @@ package game.sniper_monkey.model.player.fighter.attack;
  * @author Kevin Jeryd
  *
  * Uses IAttack
- * Uses SwordAttack
- * Uses StrongSwordAttack
+ * Uses EvilMagicSwingAttack
+ * Uses EvilMagicHammerAttack
  */
 public class AttackFactory {
 
     /**
-     * Creates an attack of type SwordAttack
+     * Creates an attack of type evil magic swing attack.
+     *
      * @return a new SwordAttack object.
      */
-    public static IAttack createSwordAttack() {
-        return new SwordAttack();
+    public static IAttack createEvilMagicSwingAttack() {
+        return new EvilMagicSwingAttack();
     }
 
     /**
-     * Creates an attack of type StrongSwordAttack
+     * Creates an attack of type evil magic hammer attack.
+     *
      * @return a new StrongSwordAttack object.
      */
-    public static IAttack createStrongSwordAttack() {
-        return new StrongSwordAttack();
+    public static IAttack createEvilMagicHammerAttack() {
+        return new EvilMagicHammerAttack();
     }
 
 }
