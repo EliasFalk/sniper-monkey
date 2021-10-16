@@ -49,5 +49,5 @@ public interface IAttack {
      *
      * @return a float 0..n. where the float is the length of the hitstun in seconds.
      */
-    float getHitStun();
+    float getHitStunLength();
 }

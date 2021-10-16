@@ -8,13 +8,13 @@ import game.sniper_monkey.model.Config;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.PlayerFactory;
 import game.sniper_monkey.model.player.PlayerInputAction;
-import game.sniper_monkey.model.player.fighter.attack.SwordAttack;
+import game.sniper_monkey.model.player.fighter.attack.EvilMagicSwingAttack;
 import game.sniper_monkey.model.world.World;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class TestSwordAttack {
+public class TestEvilMagicSwingAttack {
 
     World world = World.getInstance();
     static String cfg;
@@ -31,7 +31,7 @@ public class TestSwordAttack {
     }
 
     @Test
-    public void testSwordAttack() {
+    public void testEvilMagicSwingAttack() {
         Player player1 = PlayerFactory.createPlayer1(new Vector2(70, 0));
         Player player2 = PlayerFactory.createPlayer2(new Vector2(0, 0));
         player1.setInputAction(PlayerInputAction.ATTACK1);
@@ -43,7 +43,7 @@ public class TestSwordAttack {
     }
 
     @Test
-    public void testSwordAttackMiss() {
+    public void testEvilMagicSwingAttackMiss() {
         Player player1 = PlayerFactory.createPlayer1(new Vector2(700, 0));
         Player player2 = PlayerFactory.createPlayer2(new Vector2(0, 0));
         player1.setInputAction(PlayerInputAction.ATTACK1);
@@ -56,14 +56,14 @@ public class TestSwordAttack {
 
     @Test
     public void testGetAttackLength() {
-        SwordAttack swordAttack = new SwordAttack();
-        Assert.assertEquals(0.8f, swordAttack.getAttackLength(), 0);
+        EvilMagicSwingAttack evilMagicSwingAttack = new EvilMagicSwingAttack();
+        Assert.assertEquals(0.8f, evilMagicSwingAttack.getAttackLength(), 0);
     }
 
     @Test
     public void testGetHitStun() {
-        SwordAttack swordAttack = new SwordAttack();
-        Assert.assertEquals(0.2f, swordAttack.getHitStun(), 0);
+        EvilMagicSwingAttack evilMagicSwingAttack = new EvilMagicSwingAttack();
+        Assert.assertEquals(0.2f, evilMagicSwingAttack.getHitStunLength(), 0);
     }
 
 }

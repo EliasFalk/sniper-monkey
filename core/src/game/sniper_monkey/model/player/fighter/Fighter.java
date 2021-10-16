@@ -58,11 +58,11 @@ public abstract class Fighter {
      *
      * @param attackNum A number between 0..n which determines which of the (n-1) attacks to perform.
      */
-    public boolean performAttack(int attackNum, Vector2 playerPos, int collisionMask, boolean lookingRight, Vector2 hitboxSize) {
+    public boolean performAttack(int attackNum, Vector2 playerPos, int collisionMask, boolean lookingRight) {
         if (attackNum >= attacks.size()) {
             throw new IllegalArgumentException("attack " + attackNum + " does not exist");
         }
-        return attacks.get(attackNum).performAttack(ATTACK_FACTOR, playerPos, collisionMask, lookingRight, hitboxSize);
+        return attacks.get(attackNum).performAttack(ATTACK_FACTOR, playerPos, collisionMask, lookingRight, getHitboxSize());
     }
 
     /**
@@ -84,7 +84,7 @@ public abstract class Fighter {
      * @param attackNum The attack number. Starts at 0.
      * @return The class of the attack.
      */
-    public Class<?> getAttackClass(int attackNum) {
+    public Class<? extends IAttack> getAttackClass(int attackNum) {
         if (attackNum >= attacks.size()) {
             throw new IllegalArgumentException("attack " + attackNum + " does not exist");
         }
@@ -121,7 +121,7 @@ public abstract class Fighter {
      * @return a float 0..n. where the float is the length of the hitstun in seconds.
      */
     public float getHitStunTime(int attackNum) {
-        return attacks.get(attackNum).getHitStun();
+        return attacks.get(attackNum).getHitStunLength();
     }
 
 }

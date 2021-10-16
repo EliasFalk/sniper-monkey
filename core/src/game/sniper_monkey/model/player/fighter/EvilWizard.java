@@ -19,7 +19,7 @@ public class EvilWizard extends Fighter {
      */
     public EvilWizard() {
         super(attack, defense, speed, hitboxSize);
-        attacks.add(AttackFactory.createSwordAttack());
-        attacks.add(AttackFactory.createStrongSwordAttack());
+        attacks.add(AttackFactory.createEvilMagicSwingAttack());
+        attacks.add(AttackFactory.createEvilMagicHammerAttack());
     }
 }

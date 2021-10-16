@@ -5,7 +5,9 @@ import game.sniper_monkey.model.collision.CollisionEngine;
 import game.sniper_monkey.model.world.CallbackTimer;
 import game.sniper_monkey.model.world.GameObject;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -23,7 +25,7 @@ public abstract class AttackObject extends GameObject {
     private CallbackTimer timeToLiveTimer;
     private Vector2 velocity;
 
-    private final Map<Class<?>, Consumer<GameObject>> objectCollidedDispatch;
+    private final Map<Class<? extends GameObject>, Consumer<GameObject>> objectCollidedDispatch;
 
 
     /**
@@ -78,10 +80,11 @@ public abstract class AttackObject extends GameObject {
 
     /**
      * Adds a "response" to what happens when an object collides with a player.
+     *
      * @param gameObjectType the type of the object. I.e. Player.class
-     * @param response the action that happens when the object collides with a player. I.e. player takes damage.
+     * @param response       the action that happens when the object collides with a player. I.e. player takes damage.
      */
-    protected void addHitResponse(Class<?> gameObjectType, Consumer<GameObject> response) {
+    protected void addHitResponse(Class<? extends GameObject> gameObjectType, Consumer<GameObject> response) {
         objectCollidedDispatch.put(gameObjectType, response);
     }
 
