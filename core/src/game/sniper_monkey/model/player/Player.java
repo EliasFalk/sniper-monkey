@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.Config;
 import game.sniper_monkey.model.PhysicsPosition;
 import game.sniper_monkey.model.player.fighter.Fighter;
+import game.sniper_monkey.model.player.fighter.attack.IAttack;
 import game.sniper_monkey.model.world.CallbackTimer;
 import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.model.world.TimerObserver;
@@ -171,7 +172,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     private void inactiveState() {
         if (inputActions.get(PlayerInputAction.ATTACK1) && canAttack) {
 
-            if (activeFighter.performAttack(0, this.getPos(), getHitboxMask(), isLookingRight(), getHitbox().getSize())) {
+            if (activeFighter.performAttack(0, this.getPos(), getHitboxMask(), isLookingRight())) {
                 canAttack = false;
                 stamina.decrease(activeFighter.getStaminaDecrease(0));
                 abilityState = this::attacking1State;
@@ -179,7 +180,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
             }
 
         } else if (inputActions.get(PlayerInputAction.ATTACK2) && canAttack) {
-            if (activeFighter.performAttack(1, this.getPos(), getHitboxMask(), isLookingRight(), getHitbox().getSize())) {
+            if (activeFighter.performAttack(1, this.getPos(), getHitboxMask(), isLookingRight())) {
                 canAttack = false;
                 stamina.decrease(activeFighter.getStaminaDecrease(1));
                 abilityState = this::attacking2State;
@@ -349,7 +350,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
      * @param attackNum The attack specifier. Starts at 0.
      * @return The class of the specified attack of the active fighter.
      */
-    public Class<?> getAttackClass(int attackNum) {
+    public Class<? extends IAttack> getAttackClass(int attackNum) {
         return activeFighter.getAttackClass(attackNum);
     }
 
