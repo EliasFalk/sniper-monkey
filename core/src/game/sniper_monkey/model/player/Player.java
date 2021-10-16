@@ -135,21 +135,9 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         return health.getCurrentValue();
     }
 
-    private void attacking1State() {
-        currentPhysicalState = PhysicalState.ATTACKING1;
+    private void attackingState() {
+        hitStun.reset();
         if (!activeFighter.isAttacking()) {
-            hitStun.setTimerLength(activeFighter.getHitStunTime(0));
-            hitStun.reset();
-            hitStun.start();
-            abilityState = this::inactiveState;
-        }
-    }
-
-    private void attacking2State() {
-        currentPhysicalState = PhysicalState.ATTACKING2;
-        if (!activeFighter.isAttacking()) {
-            hitStun.setTimerLength(activeFighter.getHitStunTime(1));
-            hitStun.reset();
             hitStun.start();
             abilityState = this::inactiveState;
         }
@@ -171,11 +159,12 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
 
     private void inactiveState() {
         if (inputActions.get(PlayerInputAction.ATTACK1) && canAttack) {
-
             if (activeFighter.performAttack(0, this.getPos(), getHitboxMask(), isLookingRight())) {
                 canAttack = false;
                 stamina.decrease(activeFighter.getStaminaDecrease(0));
-                abilityState = this::attacking1State;
+                hitStun.setTimerLength(activeFighter.getHitStunTime(0));
+                currentPhysicalState = PhysicalState.ATTACKING1;
+                abilityState = this::attackingState;
                 return;
             }
 
@@ -183,7 +172,9 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
             if (activeFighter.performAttack(1, this.getPos(), getHitboxMask(), isLookingRight())) {
                 canAttack = false;
                 stamina.decrease(activeFighter.getStaminaDecrease(1));
-                abilityState = this::attacking2State;
+                hitStun.setTimerLength(activeFighter.getHitStunTime(1));
+                currentPhysicalState = PhysicalState.ATTACKING2;
+                abilityState = this::attackingState;
                 return;
             }
         } else if (canBlock && inputActions.get(PlayerInputAction.BLOCK)) {
