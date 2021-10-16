@@ -23,6 +23,7 @@ public class KeyInputView implements TimerObserver, HUDView {
     private final Label sideTextLabel;
     private static final float width = 30f;
     private static final float height = 30f;
+    private float sideLabelOffset = 10f;
 
 
     /**
@@ -40,16 +41,27 @@ public class KeyInputView implements TimerObserver, HUDView {
         this.key = key;
         this.text = text;
 
-        // TODO move these into their own methods?
         fillableBar = new FillableBar(x, y, width, height, Color.LIGHT_GRAY, FillDirection.UP);
-        keyLabel = new Label(key, new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        keyLabel.setPosition(x + width / 2, y + height / 2, Align.center);
+        keyLabel = createKeyLabel(x, y, key);
+        sideTextLabel = createSideLabel(x, y, text, textPlacement);
+    }
+
+    private Label createSideLabel(float x, float y, String text, Placement textPlacement) {
+        final Label sideTextLabel;
         sideTextLabel = new Label(text, new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         if (textPlacement == Placement.RIGHT) {
-            sideTextLabel.setPosition(x + width + 10, y + (height / 2 - sideTextLabel.getHeight() / 2));
+            sideTextLabel.setPosition(x + width + sideLabelOffset, y + (height / 2 - sideTextLabel.getHeight() / 2));
         } else if (textPlacement == Placement.LEFT) {
-            sideTextLabel.setPosition(x - 10 - sideTextLabel.getWidth(), y + (height / 2 - sideTextLabel.getHeight() / 2));
+            sideTextLabel.setPosition(x - sideLabelOffset - sideTextLabel.getWidth(), y + (height / 2 - sideTextLabel.getHeight() / 2));
         }
+        return sideTextLabel;
+    }
+
+    private Label createKeyLabel(float x, float y, String key) {
+        final Label keyLabel;
+        keyLabel = new Label(key, new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        keyLabel.setPosition(x + width / 2, y + height / 2, Align.center);
+        return keyLabel;
     }
 
     /**

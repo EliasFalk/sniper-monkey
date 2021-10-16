@@ -19,6 +19,7 @@ public class SecondaryFighterView implements HUDView {
     private float x;
     private float y;
     private Label fighterName;
+    private float yTextOffset = -15f;
 
     /**
      * Creates a view that represents the secondary fighter.
@@ -29,14 +30,23 @@ public class SecondaryFighterView implements HUDView {
      * @param fighterName   The display name of the fighter.
      */
     public SecondaryFighterView(TextureRegion textureRegion, float x, float y, String fighterName) {
+        this.x = x;
+        this.y = y;
+        createFighterImage(textureRegion, x, y);
+        createFighterNameLabel(x, y, fighterName);
+
+    }
+
+    private void createFighterImage(TextureRegion textureRegion, float x, float y) {
         this.img = new Image(textureRegion);
         img.setAlign(Align.center);
         img.setPosition(x, y);
+    }
+
+    private void createFighterNameLabel(float x, float y, String fighterName) {
         this.fighterName = new Label(fighterName, new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        this.fighterName.setPosition(x + img.getWidth() / 2 - this.fighterName.getWidth() / 2, y - 15);
+        this.fighterName.setPosition(x + img.getWidth() / 2 - this.fighterName.getWidth() / 2, y + yTextOffset);
         this.fighterName.setAlignment(Align.center);
-        this.x = x;
-        this.y = y;
     }
 
     /**
