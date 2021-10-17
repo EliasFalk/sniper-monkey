@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.player.PhysicalState;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.ReadablePlayer;
-import game.sniper_monkey.utils.time.Time;
 import game.sniper_monkey.utils.view.AnimationUtils;
 import game.sniper_monkey.utils.view.SpriteUtils;
 import game.sniper_monkey.view.GameObjectView;
@@ -26,21 +25,21 @@ public class EvilWizardView extends GameObjectView {
     private static final Vector2 drawOffset = new Vector2(-106, -83);
     private final ReadablePlayer model;
     private final float frameDuration = 0.1f;
-
-    private PhysicalState lastAnimation;
-
     private final Map<PhysicalState, Animation<Sprite>> animations = new HashMap<>();
+    private long animationStartTime;
+    private PhysicalState lastAnimation;
 
     /**
      * Creates an EvilWizardView
+     *
      * @param model The Player
      */
     public EvilWizardView(Player model) {
         super(drawOffset, SpriteUtils.getDefaultSprite(), model);
         this.model = model;
-        //TODO: good.
         initAnimationHash();
         lastAnimation = PhysicalState.IDLING;
+        animationStartTime = System.currentTimeMillis();
     }
 
     private void initAnimationHash() {
@@ -58,19 +57,23 @@ public class EvilWizardView extends GameObjectView {
         animations.put(PhysicalState.JUMPING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(jump, 2), Animation.PlayMode.LOOP));
         animations.put(PhysicalState.FALLING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(fall, 2), Animation.PlayMode.LOOP));
         animations.put(PhysicalState.DYING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(death, 7), Animation.PlayMode.LOOP_PINGPONG));
-        animations.put(PhysicalState.ATTACKING1, new Animation<>(model.getAttackLength(0)/8, AnimationUtils.cutSpriteSheet(attack1, 8), Animation.PlayMode.NORMAL));
-        animations.put(PhysicalState.ATTACKING2, new Animation<>(model.getAttackLength(1)/8, AnimationUtils.cutSpriteSheet(attack2, 8), Animation.PlayMode.NORMAL));
+        animations.put(PhysicalState.ATTACKING1, new Animation<>(model.getAttackLength(0) / 8, AnimationUtils.cutSpriteSheet(attack1, 8), Animation.PlayMode.NORMAL));
+        animations.put(PhysicalState.ATTACKING2, new Animation<>(model.getAttackLength(1) / 8, AnimationUtils.cutSpriteSheet(attack2, 8), Animation.PlayMode.NORMAL));
 
     }
 
-    //TODO documentation
     @Override
     public void updateSprite() {
-        if(model.getCurrentPhysicalState() != lastAnimation) {
-            Time.resetElapsedTime();
+        sprite = animations.get(model.getCurrentPhysicalState()).getKeyFrame(getStateTime());
+        sprite.setFlip(!model.isLookingRight(), false);
+    }
+
+    // TODO move this somewhere else
+    private float getStateTime() {
+        if (model.getCurrentPhysicalState() != lastAnimation) {
+            animationStartTime = System.currentTimeMillis();
             lastAnimation = model.getCurrentPhysicalState();
         }
-        sprite = animations.get(model.getCurrentPhysicalState()).getKeyFrame(Time.getElapsedTime());
-        sprite.setFlip(!model.isLookingRight(), false);
+        return (System.currentTimeMillis() - animationStartTime) / 1000f;
     }
 }
