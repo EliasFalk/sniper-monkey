@@ -1,2 +1,6 @@
 language: java
 jdk: openjdk15
+
+branches:
+  only:
+    - main
