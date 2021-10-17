@@ -38,7 +38,7 @@ public class FighterTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetStaminaDecrease() {
-        fighter.getStaminaDecrease(0);
+        fighter.getStaminaCost(0);
     }
 
 }

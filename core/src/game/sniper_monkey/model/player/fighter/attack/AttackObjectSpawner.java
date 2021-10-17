@@ -39,7 +39,7 @@ public class AttackObjectSpawner {
      * @param lookingRight  a boolean. Is the direction the player is facing. True if player is facing to the right, false if the player is facing the left.
      */
     public static void spawnEvilMagicHammer(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, boolean lookingRight) {
-        AttackObject strongSwing = new EvilStrongSwing(damage, timeToLive, spawnPos, collisionMask, lookingRight);
+        AttackObject strongSwing = new EvilMagicHammer(damage, timeToLive, spawnPos, collisionMask, lookingRight);
         World.getInstance().queueAddGameObject(strongSwing);
     }
 

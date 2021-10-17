@@ -71,7 +71,7 @@ public abstract class Fighter {
      * @param attackNum An int 0..n representing a attack of the fighter.
      * @return The stamina cost of the attack.
      */
-    public float getStaminaDecrease(int attackNum) {
+    public float getStaminaCost(int attackNum) {
         if (attackNum >= attacks.size()) {
             throw new IllegalArgumentException("attack " + attackNum + " does not exist");
         }
