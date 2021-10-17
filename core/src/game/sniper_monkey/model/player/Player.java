@@ -156,27 +156,17 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         return activeFighter.getAttackLength(attackNum);
     }
 
-
     private void inactiveState() {
-        if (inputActions.get(PlayerInputAction.ATTACK1) && canAttack) {
-            if (activeFighter.performAttack(0, this.getPos(), getHitboxMask(), isLookingRight())) {
-                canAttack = false;
-                stamina.decrease(activeFighter.getStaminaDecrease(0));
-                hitStun.setTimerLength(activeFighter.getHitStunTime(0));
-                currentPhysicalState = PhysicalState.ATTACKING1;
-                abilityState = this::attackingState;
-                return;
-            }
-
-        } else if (inputActions.get(PlayerInputAction.ATTACK2) && canAttack) {
-            if (activeFighter.performAttack(1, this.getPos(), getHitboxMask(), isLookingRight())) {
-                canAttack = false;
-                stamina.decrease(activeFighter.getStaminaDecrease(1));
-                hitStun.setTimerLength(activeFighter.getHitStunTime(1));
-                currentPhysicalState = PhysicalState.ATTACKING2;
-                abilityState = this::attackingState;
-                return;
-            }
+        if (inputActions.get(PlayerInputAction.ATTACK1) && canAttack && stamina.getCurrentValue() - activeFighter.getStaminaCost(0) >= 0 && !activeFighter.isAttacking()) {
+            performAttack(0);
+            currentPhysicalState = PhysicalState.ATTACKING1;
+            abilityState = this::attackingState;
+            return;
+        } else if (inputActions.get(PlayerInputAction.ATTACK2) && canAttack && stamina.getCurrentValue() - activeFighter.getStaminaCost(1) >= 0 && !activeFighter.isAttacking()) {
+            performAttack(1);
+            currentPhysicalState = PhysicalState.ATTACKING2;
+            abilityState = this::attackingState;
+            return;
         } else if (canBlock && inputActions.get(PlayerInputAction.BLOCK)) {
             abilityState = this::blockingState;
             canBlock = false;
@@ -266,6 +256,13 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         }
     }
 
+    private void performAttack(int attackNum) {
+        activeFighter.performAttack(attackNum, this.getPos(), getHitboxMask(), isLookingRight());
+        stamina.decrease(activeFighter.getStaminaCost(attackNum));
+        hitStun.setTimerLength(activeFighter.getHitStunTime(attackNum));
+        canAttack = false;
+    }
+
     @Override
     public PhysicalState getCurrentPhysicalState() {
         return currentPhysicalState;
@@ -308,7 +305,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         if (inputActions.get(PlayerInputAction.BLOCK)) { // change when state checking has been implemented
             health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR) * (1 - blockFactor.getCurrentValue()));
         } else {
-            health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR)); // TODO make getter for defense factor instead?
+            health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR));
         }
     }
 
@@ -349,7 +346,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         activeFighter = fighter;
         setHitboxPos(physicsPos.getPosition());
         setHitboxSize(fighter.getHitboxSize());
-        stamina.setRegenerationAmount(BASE_STAMINA_REGEN * activeFighter.SPEED_FACTOR);
+        stamina.setRegenerating(true, BASE_STAMINA_REGEN * activeFighter.SPEED_FACTOR);
     }
 
     private void handleLookingDirection() {
