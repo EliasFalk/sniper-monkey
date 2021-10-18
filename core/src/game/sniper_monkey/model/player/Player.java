@@ -144,12 +144,16 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     }
 
     private void swappingFighterState() {
-        // TODO swap fighter
-
-        // if swapped fighter go to inactive state. Swapping fighter could take some time?
-        if (true) {
-            abilityState = this::inactiveState;
+        swapFighters();
+        swapTimer.reset();
+        swapTimer.start();
+        physicsPos.setPosition(new Vector2(100, 100)); // TODO set to spawn pos
+        super.setPosition(physicsPos.getPosition());
+        for (SwappedFighterObserver observer : swappedFighterObservers) {
+            observer.onFighterSwap(this);
         }
+        abilityState = this::inactiveState;
+        canSwap = false;
     }
 
     public float getAttackLength(int attackNum) {
@@ -173,8 +177,10 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
             return;
         } else if (inputActions.get(PlayerInputAction.SWAP_FIGHTER)) {
             // TODO swapFighter
-            abilityState = this::swappingFighterState;
-            return;
+            if (canSwap) {
+                abilityState = this::swappingFighterState;
+                return;
+            }
         }
         movementState.performState();
     }

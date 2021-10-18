@@ -83,6 +83,9 @@ public class GameController {
 
         player1.registerSwappedFighterObserver(p1BottomHUD);
         player2.registerSwappedFighterObserver(p2BottomHUD);
+
+        player1.registerSwappedFighterObserver(gameScreen);
+        player2.registerSwappedFighterObserver(gameScreen);
     }
 
     //TODO documentation
