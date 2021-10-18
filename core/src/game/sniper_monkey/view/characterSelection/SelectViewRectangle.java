@@ -37,8 +37,10 @@ public class SelectViewRectangle extends Actor {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         if (selected) {
             drawOuterRectangle();
+        } else {
+            removeOuterRectangle(color);
         }
-        drawRectangle(Color.BLUE);
+        drawRectangle(color);
         shapeRenderer.end();
         batch.begin();
     }
@@ -53,6 +55,11 @@ public class SelectViewRectangle extends Actor {
 
     private void drawOuterRectangle() {
         shapeRenderer.setColor(Color.ORANGE);
+        shapeRenderer.rect(x, y, width+borderThickness, height+borderThickness);
+    }
+
+    private void removeOuterRectangle(Color color) {
+        shapeRenderer.setColor(color);
         shapeRenderer.rect(x, y, width+borderThickness, height+borderThickness);
     }
 
