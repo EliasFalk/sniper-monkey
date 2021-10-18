@@ -58,11 +58,11 @@ public abstract class Fighter {
      *
      * @param attackNum A number between 0..n which determines which of the (n-1) attacks to perform.
      */
-    public void performAttack(int attackNum) {
+    public boolean performAttack(int attackNum, Vector2 playerPos, int collisionMask, boolean lookingRight) {
         if (attackNum >= attacks.size()) {
             throw new IllegalArgumentException("attack " + attackNum + " does not exist");
         }
-        attacks.get(attackNum).performAttack(ATTACK_FACTOR);
+        return attacks.get(attackNum).performAttack(ATTACK_FACTOR, playerPos, collisionMask, lookingRight, getHitboxSize());
     }
 
     /**
@@ -71,7 +71,7 @@ public abstract class Fighter {
      * @param attackNum An int 0..n representing a attack of the fighter.
      * @return The stamina cost of the attack.
      */
-    public float getStaminaDecrease(int attackNum) {
+    public float getStaminaCost(int attackNum) {
         if (attackNum >= attacks.size()) {
             throw new IllegalArgumentException("attack " + attackNum + " does not exist");
         }
@@ -84,11 +84,44 @@ public abstract class Fighter {
      * @param attackNum The attack number. Starts at 0.
      * @return The class of the attack.
      */
-    public Class<?> getAttackClass(int attackNum) {
+    public Class<? extends IAttack> getAttackClass(int attackNum) {
         if (attackNum >= attacks.size()) {
             throw new IllegalArgumentException("attack " + attackNum + " does not exist");
         }
         return attacks.get(attackNum).getClass();
+    }
+
+    /**
+     * Checks if the fighter is mid-attack and during an animation.
+     *
+     * @return true if the fighter is mid attack, false if not.
+     */
+    public boolean isAttacking() {
+        boolean isAttacking = false;
+        for (IAttack attack : attacks) {
+            if (!attack.isFinished()) {
+                isAttacking = true;
+            }
+        }
+        return isAttacking;
+    }
+
+    /**
+     * Gets the length of the specified attack in seconds.
+     * @param attackNum is the index of the attack.
+     * @return a float 0..n. where the float is the length of the attack in seconds.
+     */
+    public float getAttackLength(int attackNum) {
+        return attacks.get(attackNum).getAttackLength();
+    }
+
+    /**
+     * Gets the length of the hitstun of the specified attack in seconds.
+     * @param attackNum is the index of the attack.
+     * @return a float 0..n. where the float is the length of the hitstun in seconds.
+     */
+    public float getHitStunTime(int attackNum) {
+        return attacks.get(attackNum).getHitStunLength();
     }
 
 }

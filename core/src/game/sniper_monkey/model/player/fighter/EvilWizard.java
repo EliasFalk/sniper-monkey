@@ -1,6 +1,7 @@
 package game.sniper_monkey.model.player.fighter;
 
 import com.badlogic.gdx.math.Vector2;
+import game.sniper_monkey.model.player.fighter.attack.AttackFactory;
 
 /**
  * An Evil Wizard (spooky)
@@ -9,7 +10,7 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class EvilWizard extends Fighter {
     private static final float attack = 1;
-    private static final float defense = 1;
+    private static final float defense = 0.2f;
     private static final float speed = 1;
     private static final Vector2 hitboxSize = new Vector2(40, 55);
 
@@ -18,6 +19,7 @@ public class EvilWizard extends Fighter {
      */
     public EvilWizard() {
         super(attack, defense, speed, hitboxSize);
-        // TODO attacks.add(SomeAttack);
+        attacks.add(AttackFactory.createEvilMagicSwingAttack());
+        attacks.add(AttackFactory.createEvilMagicHammerAttack());
     }
 }

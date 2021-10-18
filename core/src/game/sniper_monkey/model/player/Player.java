@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.Config;
 import game.sniper_monkey.model.PhysicsPosition;
 import game.sniper_monkey.model.player.fighter.Fighter;
+import game.sniper_monkey.model.player.fighter.attack.IAttack;
 import game.sniper_monkey.model.world.CallbackTimer;
 import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.model.world.TimerObserver;
@@ -24,6 +25,7 @@ import java.util.Map;
  * @author Dadi Andrason
  */
 public class Player extends GameObject implements ReadablePlayer, ControllablePlayer, DamageablePlayer {
+
     private static final float MAX_X_VEL;
     private static final float VEL_GAIN;
     private static final float JUMP_GAIN;
@@ -41,6 +43,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     private final FluctuatingAttribute blockFactor = new FluctuatingAttribute(MIN_BLOCK, MAX_BLOCK);
     private final CallbackTimer blockTimer = new CallbackTimer(BLOCK_COOLDOWN, () -> canBlock = true);
     private final CallbackTimer swapTimer = new CallbackTimer(SWAP_COOLDOWN, () -> canSwap = true);
+    private final CallbackTimer hitStun = new CallbackTimer(0, () -> canAttack = true);
     private final List<SwappedFighterObserver> swappedFighterObservers = new ArrayList<>();
     private final Fighter primaryFighter;
     private final Fighter secondaryFighter;
@@ -54,6 +57,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     private State abilityState = this::inactiveState;
     private boolean canBlock = true;
     private boolean canSwap = true;
+    private boolean canAttack = true;
 
 
     static {
@@ -127,12 +131,16 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         }
     }
 
-    private void attacking1State() {
-
+    public float getHealth() {
+        return health.getCurrentValue();
     }
 
-    private void attacking2State() {
-
+    private void attackingState() {
+        hitStun.reset();
+        if (!activeFighter.isAttacking()) {
+            hitStun.start();
+            abilityState = this::inactiveState;
+        }
     }
 
     private void swappingFighterState() {
@@ -144,16 +152,20 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         }
     }
 
+    public float getAttackLength(int attackNum) {
+        return activeFighter.getAttackLength(attackNum);
+    }
+
     private void inactiveState() {
-        if (inputActions.get(PlayerInputAction.ATTACK1)) {
-            // TODO performAttack
-            stamina.decrease(activeFighter.getStaminaDecrease(1));
-            abilityState = this::attacking1State;
+        if (inputActions.get(PlayerInputAction.ATTACK1) && canAttack && stamina.getCurrentValue() - activeFighter.getStaminaCost(0) >= 0 && !activeFighter.isAttacking()) {
+            performAttack(0);
+            currentPhysicalState = PhysicalState.ATTACKING1;
+            abilityState = this::attackingState;
             return;
-        } else if (inputActions.get(PlayerInputAction.ATTACK2)) {
-            // TODO performAttack
-            stamina.decrease(activeFighter.getStaminaDecrease(2));
-            abilityState = this::attacking2State;
+        } else if (inputActions.get(PlayerInputAction.ATTACK2) && canAttack && stamina.getCurrentValue() - activeFighter.getStaminaCost(1) >= 0 && !activeFighter.isAttacking()) {
+            performAttack(1);
+            currentPhysicalState = PhysicalState.ATTACKING2;
+            abilityState = this::attackingState;
             return;
         } else if (canBlock && inputActions.get(PlayerInputAction.BLOCK)) {
             abilityState = this::blockingState;
@@ -244,6 +256,13 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         }
     }
 
+    private void performAttack(int attackNum) {
+        activeFighter.performAttack(attackNum, this.getPos(), getHitboxMask(), isLookingRight());
+        stamina.decrease(activeFighter.getStaminaCost(attackNum));
+        hitStun.setTimerLength(activeFighter.getHitStunTime(attackNum));
+        canAttack = false;
+    }
+
     @Override
     public PhysicalState getCurrentPhysicalState() {
         return currentPhysicalState;
@@ -283,10 +302,10 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
 
     @Override
     public void takeDamage(float damageAmount) {
-        if (false/*currentState == blockingState*/) { // change when state checking has been implemented
+        if (inputActions.get(PlayerInputAction.BLOCK)) { // change when state checking has been implemented
             health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR) * (1 - blockFactor.getCurrentValue()));
         } else {
-            health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR)); // TODO make getter for defense factor instead?
+            health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR));
         }
     }
 
@@ -319,7 +338,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
      * @param attackNum The attack specifier. Starts at 0.
      * @return The class of the specified attack of the active fighter.
      */
-    public Class<?> getAttackClass(int attackNum) {
+    public Class<? extends IAttack> getAttackClass(int attackNum) {
         return activeFighter.getAttackClass(attackNum);
     }
 
@@ -327,7 +346,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         activeFighter = fighter;
         setHitboxPos(physicsPos.getPosition());
         setHitboxSize(fighter.getHitboxSize());
-        stamina.setRegenerationAmount(BASE_STAMINA_REGEN * activeFighter.SPEED_FACTOR);
+        stamina.setRegenerating(true, BASE_STAMINA_REGEN * activeFighter.SPEED_FACTOR);
     }
 
     private void handleLookingDirection() {
@@ -415,24 +434,6 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     }
 
     /**
-     * Subscribes the observer to changes made when the attack cooldown changes.
-     *
-     * @param timerObserver The observer that wants to be subscribed to the changes.
-     */
-    public void registerAttackCooldownObserver(TimerObserver timerObserver) {
-        // TODO since cooldown effects all attacks should set this in player
-    }
-
-    /**
-     * Subscribes the observer to changes made when the attack cooldown changes.
-     *
-     * @param timerObserver The observer that wants to be unsubscribed to the changes.
-     */
-    public void unregisterAttackCooldownObserver(TimerObserver timerObserver) {
-        // TODO
-    }
-
-    /**
      * Subscribes the observer to changes made when the block cooldown changes.
      *
      * @param timerObserver The observer that wants to be subscribed to the changes.
@@ -484,6 +485,24 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
      */
     public void unregisterSwappedFighterObserver(SwappedFighterObserver observer) {
         swappedFighterObservers.remove(observer);
+    }
+
+    /**
+     * Subscribes the observer to changes made when the hitstun changes.
+     *
+     * @param timerObserver The observer that wants to be subscribed to the changes.
+     */
+    public void registerHitStunObserver(TimerObserver timerObserver) {
+        hitStun.registerTimerObserver(timerObserver);
+    }
+
+    /**
+     * Unsubscribes the observer to changes made when the hitstun changes.
+     *
+     * @param timerObserver The observer that wants to be subscribed to the changes.
+     */
+    public void unregisterHitStunObserver(TimerObserver timerObserver) {
+        hitStun.unRegisterTimerObserver(timerObserver);
     }
 
     @FunctionalInterface

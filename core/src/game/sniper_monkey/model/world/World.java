@@ -140,6 +140,7 @@ public final class World {
         for (GameObject obj : gameObjects) {
             obj.update(deltaTime);
         }
+
         // TODO maybe move this somewhere else.
         TimerBank.updateTimers(deltaTime);
     }
