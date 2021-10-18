@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import game.sniper_monkey.model.world.TimerObserver;
+import game.sniper_monkey.utils.view.FontUtils;
 
 /**
  * A view that represents a pressable key on the keyboard.
@@ -45,7 +46,7 @@ public class KeyInputView implements TimerObserver, HUDView {
         this.textPlacement = textPlacement;
         fillableBar = new FillableBar(x, y, width, height, Color.LIGHT_GRAY, FillDirection.UP);
         keyLabel = createKeyLabel(x, y, key);
-        sideTextLabel = new Label(text, new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        sideTextLabel = new Label(text, FontUtils.getNormalFont(14));
         updateSideLabel();
     }
 

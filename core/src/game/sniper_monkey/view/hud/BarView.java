@@ -1,11 +1,11 @@
 package game.sniper_monkey.view.hud;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import game.sniper_monkey.model.player.FluctuatingAttributeObserver;
+import game.sniper_monkey.utils.view.FontUtils;
 
 import java.text.DecimalFormat;
 
@@ -41,7 +41,7 @@ public class BarView implements FluctuatingAttributeObserver, HUDView {
     }
 
     private void createBarLabel(float x, float y, float barWidth, float barHeight, int textAlignment) {
-        barLabel = new Label(String.format(new DecimalFormat("#.##").format(100), 0f), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        barLabel = new Label(String.format(new DecimalFormat("#.##").format(100), 0f), FontUtils.getNormalFont(14, 2));
         barLabel.setFontScale(1, 1);
         float yLabelPos = y + barHeight / 2 - barLabel.getHeight() / 2;
         float xLabelPos = x;
