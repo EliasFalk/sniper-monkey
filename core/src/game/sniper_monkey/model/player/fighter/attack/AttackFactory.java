@@ -30,4 +30,7 @@ public class AttackFactory {
         return new EvilMagicHammerAttack();
     }
 
+    public static IAttack createBowAttack() {
+        return new BowAttack();
+    }
 }
