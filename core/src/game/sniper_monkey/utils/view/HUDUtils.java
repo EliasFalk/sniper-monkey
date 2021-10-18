@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import game.sniper_monkey.model.player.fighter.EvilWizard;
 import game.sniper_monkey.model.player.fighter.Fighter;
+import game.sniper_monkey.model.player.fighter.HuntressBow;
+import game.sniper_monkey.model.player.fighter.attack.BowAttack;
 import game.sniper_monkey.model.player.fighter.attack.EvilMagicHammerAttack;
 import game.sniper_monkey.model.player.fighter.attack.EvilMagicSwingAttack;
 import game.sniper_monkey.model.player.fighter.attack.IAttack;
@@ -21,6 +23,9 @@ public class HUDUtils {
         if (fighter == EvilWizard.class) {
             Texture idle = new Texture("images/evil_wizard_2/Idle.png");
             return new TextureRegion(idle, 104, 69, 64, 100);
+        } else if(fighter == HuntressBow.class) {
+            Texture idle = new Texture("images/huntress_2/idle.png");
+            return new TextureRegion(idle, 52, 48, 46, 52);
         }
         // TODO do for future fighters when they have been implemented.
         else {
@@ -38,6 +43,8 @@ public class HUDUtils {
     public static String getFighterDisplayName(Class<? extends Fighter> fighter) {
         if (fighter == EvilWizard.class) {
             return "Evil Wizard";
+        } else if(fighter == HuntressBow.class) {
+            return "Huntress Bow";
         }
         // TODO do for future fighters when they have been implemented.
         else {
@@ -57,8 +64,12 @@ public class HUDUtils {
             return "Evil Hammer Smash";
         } else if (attack == EvilMagicSwingAttack.class) {
             return "Evil Magic Swing";
-        } else {
-            throw new IllegalArgumentException("No display name found for this attack class.");
+        } else if(attack == BowAttack.class) {
+            return "Bow Attack";
+        }
+        else {
+            return "";
+//            throw new IllegalArgumentException("No display name found for this attack class.");
         }
     }
 }

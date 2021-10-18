@@ -1,8 +1,8 @@
 package game.sniper_monkey.model.player.fighter.attack;
 
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.model.platform.Platform;
 import game.sniper_monkey.model.player.Player;
+import game.sniper_monkey.model.world_brick.WorldBrick;
 
 public class Arrow extends AttackObject {
 
@@ -22,7 +22,7 @@ public class Arrow extends AttackObject {
             delete(); // after hit
         });
 
-        addHitResponse(Platform.class, gameObject -> {
+        addHitResponse(WorldBrick.class, gameObject -> {
             delete(); // after hit
         });
 

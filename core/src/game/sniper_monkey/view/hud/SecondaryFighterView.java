@@ -81,7 +81,7 @@ public class SecondaryFighterView implements HUDView {
 
     private void createFighterNameLabel(float x, float y, String fighterName) {
         this.fighterName = new Label(fighterName, new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        this.fighterName.setPosition(x + img.getWidth() / 2 - this.fighterName.getWidth() / 2, y + yTextOffset);
+        this.fighterName.setPosition(x + img.getPrefWidth() / 2 - this.fighterName.getPrefWidth() / 2, y + yTextOffset);
         this.fighterName.setAlignment(Align.center);
     }
 
@@ -102,7 +102,11 @@ public class SecondaryFighterView implements HUDView {
      */
     public void updateImage(TextureRegion textureRegion) {
         TextureRegionDrawable trd = new TextureRegionDrawable(textureRegion);
+        float h = textureRegion.getRegionHeight();
+        float w = textureRegion.getRegionWidth();
         img.setDrawable(trd);
+        img.setWidth(w);
+        img.setHeight(h);
     }
 
 

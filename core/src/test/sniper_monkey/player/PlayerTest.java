@@ -5,11 +5,11 @@ import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.Config;
-import game.sniper_monkey.model.platform.Platform;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.PlayerFactory;
 import game.sniper_monkey.model.player.PlayerInputAction;
 import game.sniper_monkey.model.world.World;
+import game.sniper_monkey.model.world_brick.WorldBrick;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -30,7 +30,7 @@ public class PlayerTest {
         }, config);
         values = "cfg/player_values.cfg";
         Config.readConfigFile(values);
-        World.getInstance().queueAddGameObject(new Platform(new Vector2(100, 0))); // adds one platform so that the player can stand on it.
+        World.getInstance().queueAddGameObject(new WorldBrick(new Vector2(100, 0), "")); // adds one platform so that the player can stand on it.
         World.getInstance().update(deltaTime);
     }
 

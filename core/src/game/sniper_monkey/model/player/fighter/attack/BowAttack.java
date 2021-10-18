@@ -10,7 +10,7 @@ public class BowAttack implements IAttack {
     private final CallbackTimer cbTimer;
     private final float attackLength = 0.8f;
     private final float projectileTimeToLive = attackLength;
-    private final float hitStun = 0.2f;
+    private final float hitStunLength = 0.2f;
     private final float stamina = 10;
     private final Vector2 velocity;
 
@@ -50,7 +50,7 @@ public class BowAttack implements IAttack {
     }
 
     @Override
-    public float getHitStun() {
-        return hitStun;
+    public float getHitStunLength() {
+        return hitStunLength;
     }
 }

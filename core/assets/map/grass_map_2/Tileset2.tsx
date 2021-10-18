@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tileset version="1.5" tiledversion="1.7.2" name="Tileset" tilewidth="16" tileheight="16" tilecount="48" columns="8">
+ <image source="../../images/CuteForest/Tileset.png" width="128" height="96"/>
+ <tile id="0" type="0"/>
+ <tile id="1" type="1"/>
+ <tile id="2" type="2"/>
+ <tile id="3" type="3"/>
+ <tile id="4" type="4"/>
+ <tile id="5" type="5"/>
+ <tile id="6" type="6"/>
+ <tile id="7" type="7"/>
+ <tile id="8" type="8"/>
+ <tile id="9" type="9"/>
+ <tile id="10" type="10"/>
+ <tile id="11" type="11"/>
+ <tile id="12" type="12"/>
+ <tile id="13" type="13"/>
+ <tile id="14" type="14"/>
+ <tile id="16" type="16"/>
+ <tile id="17" type="17"/>
+ <tile id="18" type="18"/>
+ <tile id="19" type="19"/>
+ <tile id="20" type="20"/>
+ <tile id="21" type="21"/>
+ <tile id="24" type="24"/>
+ <tile id="25" type="25"/>
+ <tile id="26" type="26"/>
+ <tile id="27" type="27"/>
+ <tile id="28" type="28"/>
+ <tile id="29" type="ghost-29"/>
+ <tile id="30" type="ghost-30"/>
+ <tile id="31" type="ghost-31"/>
+ <tile id="32" type="32"/>
+ <tile id="33" type="33"/>
+ <tile id="34" type="34"/>
+ <tile id="35" type="35"/>
+ <tile id="36" type="36"/>
+ <tile id="37" type="ghost-37"/>
+ <tile id="38" type="ghost-38"/>
+ <tile id="39" type="ghost-39"/>
+ <tile id="40" type="40"/>
+ <tile id="41" type="41"/>
+ <tile id="42" type="42"/>
+ <tile id="43" type="43"/>
+ <tile id="44" type="44"/>
+</tileset>

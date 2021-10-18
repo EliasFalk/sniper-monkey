@@ -9,7 +9,6 @@ import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.player.fighter.HuntressBow;
 import game.sniper_monkey.model.player.fighter.attack.Arrow;
 import game.sniper_monkey.model.world.GameObject;
-import game.sniper_monkey.view.platform.PlatformView;
 import game.sniper_monkey.view.player.fighter.ArrowView;
 import game.sniper_monkey.view.player.fighter.EvilWizardView;
 import game.sniper_monkey.model.world.GameObject;

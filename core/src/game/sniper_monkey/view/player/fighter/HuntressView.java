@@ -15,6 +15,8 @@ import game.sniper_monkey.view.GameObjectView;
 import java.util.HashMap;
 import java.util.Map;
 
+// TODO docs
+// TODO fix sprite & hitbox
 public class HuntressView extends GameObjectView {
 
     private static final Vector2 drawOffset = new Vector2(-52, -48);

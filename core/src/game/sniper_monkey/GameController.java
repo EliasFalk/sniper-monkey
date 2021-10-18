@@ -29,7 +29,7 @@ public class GameController {
         gameScreen = new GameScreen();
         World.getInstance().registerObserver(gameScreen);
 
-        String[][] map = MapReader.readMapTiles("grass_map");
+        String[][] map = MapReader.readMapTiles("grass_map_2");
         Vector2 mapOffset = new Vector2((-map[0].length / 2.f) * 16, (-map.length / 2.f) * 16);
         for(int y = 0; y < map.length; y++) {
             for(int x = 0; x < map[y].length; x++) {
