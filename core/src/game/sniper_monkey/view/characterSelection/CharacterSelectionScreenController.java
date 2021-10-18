@@ -6,7 +6,7 @@ public class CharacterSelectionScreenController {
     public void create() {
         characterSelectionScreen = new CharacterSelectionScreen();
 
-         characterSelectionScreen.addSelectView(new SelectView());
+         //characterSelectionScreen.addSelectView(new SelectView());
 
 
 

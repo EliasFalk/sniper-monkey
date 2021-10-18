@@ -19,13 +19,13 @@ public class SelectView {
     private int amountOfFighters = 8;
 
     public SelectView() {
-        rectangles = new HashMap<>();
-        for (int i = 0; i < amountOfFighters; i++) {
-            createFighterNameLabel("Fighter " + (i+1), (startingX + startingX*i + marginBetweenRectangles*i), startingY - 20);
-            selectViewRectangle = new SelectViewRectangle(fighterNameLabel, startingX + startingX*i + marginBetweenRectangles*i, startingY, 100, 100, Color.BLACK);
-            rectangles.put(fighterNameLabel, selectViewRectangle);
-        }
-        rectangles.get(fighterNameLabel).setSelected(true);
+        //rectangles = new HashMap<>();
+        //for (int i = 0; i < amountOfFighters; i++) {
+        //    createFighterNameLabel("Fighter " + (i+1), (startingX + startingX*i + marginBetweenRectangles*i), startingY - 20);
+            //selectViewRectangle = new SelectViewRectangle(fighterNameLabel, startingX + startingX*i + marginBetweenRectangles*i, startingY, 100, 100, Color.BLACK);
+        //    rectangles.put(fighterNameLabel, selectViewRectangle);
+        //}
+        //rectangles.get(fighterNameLabel).setSelected(true);
     }
 
 

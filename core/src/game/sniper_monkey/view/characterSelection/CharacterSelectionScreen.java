@@ -11,8 +11,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
+import game.sniper_monkey.model.player.fighter.EvilWizard;
+import game.sniper_monkey.model.player.fighter.Fighter;
+import game.sniper_monkey.model.player.fighter.FighterFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CharacterSelectionScreen extends ScreenAdapter  {
@@ -21,9 +26,12 @@ public class CharacterSelectionScreen extends ScreenAdapter  {
     ShapeRenderer sr;
     Stage stage;
 
-    private final Label testLabel;
-    private int amountOfFighters = 8;
-    private int selectedRectangleIndex = 1;
+    //Make it so amountOfFighters is the length of the fighterList
+    private final int amountOfFighters = 8;
+    private int selectedRectangleIndex = 0;
+
+    //Create a list with potential fighters to choose from? Should it be the sprite of each fighter?
+    private final List<Class<? extends Fighter>> fighterList = new ArrayList<>();
 
     public CharacterSelectionScreen() {
         stage = new Stage();
@@ -31,35 +39,39 @@ public class CharacterSelectionScreen extends ScreenAdapter  {
 
         sr = new ShapeRenderer();
 
-        testLabel = new Label("test", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        testLabel.setFontScale(4,4);
-        testLabel.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
-        testLabel.setAlignment(Align.center);
-
-        stage.addActor(testLabel);
+        fighterList.add(EvilWizard.class);
+        fighterList.add(EvilWizard.class);
+        fighterList.add(EvilWizard.class);
+        fighterList.add(EvilWizard.class);
+        fighterList.add(EvilWizard.class);
+        fighterList.add(EvilWizard.class);
+        fighterList.add(EvilWizard.class);
+        fighterList.add(EvilWizard.class);
+        fighterList.add(EvilWizard.class);
 
         createRectangles();
     }
 
     Map<Integer, SelectViewRectangle> rectangleMap = new HashMap<Integer, SelectViewRectangle>();
 
-    public void createRectangles() {
+    private void createRectangles() {
         for (int i = 0; i < (amountOfFighters); i++) {
             SelectViewRectangle rect;
 
             //Fix math for width
             if ( i < (amountOfFighters/2)) {
-                rect = new SelectViewRectangle(new Label("Fighter " + i, new Label.LabelStyle(new BitmapFont(), Color.BLACK)), ((i % (amountOfFighters / 2f)+0)) * Gdx.graphics.getWidth() / ((float) amountOfFighters / 2), Gdx.graphics.getHeight() / 4f, 100f, 100f, Color.BLUE);
+                rect = new SelectViewRectangle(fighterList.get(i), ((i % (amountOfFighters / 2f)+0)) * Gdx.graphics.getWidth() / ((float) amountOfFighters / 2), Gdx.graphics.getHeight() / 4f, 100f, 100f, Color.BLUE, stage);
             } else {
-                rect = new SelectViewRectangle(new Label("Fighter " + i, new Label.LabelStyle(new BitmapFont(), Color.BLACK)), ((i % (amountOfFighters / 2f)+0)) * Gdx.graphics.getWidth() / ((float) amountOfFighters / 2), Gdx.graphics.getHeight() / (3 * 4f), 100f, 100f, Color.BLUE);
+                rect = new SelectViewRectangle(fighterList.get(i),((i % (amountOfFighters / 2f)+0)) * Gdx.graphics.getWidth() / ((float) amountOfFighters / 2), Gdx.graphics.getHeight() / (3 * 4f), 100f, 100f, Color.BLUE, stage);
             }
             rectangleMap.put(i, rect);
             stage.addActor(rect);
         }
     }
 
-
-    public void unSelectedRectangles() {
+    //Instead of doing like this, maybe do rectangleMap.get(selectedRectangleIndex-1).setSelected(false); inside setSelectedRectangle
+    //Will break if you go to the left though. Find solution.
+    private void unSelectedRectangles() {
         for (int i = 0; i < rectangleMap.size(); i++) {
             if (i != selectedRectangleIndex) {
                 rectangleMap.get(i).setSelected(false);
@@ -67,12 +79,12 @@ public class CharacterSelectionScreen extends ScreenAdapter  {
         }
     }
 
-    public void setSelectedRectangle() {
+    private void setSelectedRectangle() {
         SelectViewRectangle selectedRectangle = rectangleMap.get(selectedRectangleIndex);
         selectedRectangle.setSelected(true);
     }
 
-    public void handleInput() {
+    private void handleInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.D)){
             setSelectedRectangleIndex(1);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
@@ -82,16 +94,20 @@ public class CharacterSelectionScreen extends ScreenAdapter  {
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
             setSelectedRectangleIndex(-amountOfFighters/2);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-
+            chooseFighter();
         }
     }
 
-    public void setSelectedRectangleIndex(int i) {
+    private void setSelectedRectangleIndex(int i) {
         if (((selectedRectangleIndex+i)%amountOfFighters) < 0) {
             selectedRectangleIndex = ((selectedRectangleIndex+i)%amountOfFighters)+amountOfFighters;
         } else {
             selectedRectangleIndex = ((selectedRectangleIndex+i)%amountOfFighters);
         }
+    }
+
+    private void chooseFighter() {
+
     }
 
     @Override
