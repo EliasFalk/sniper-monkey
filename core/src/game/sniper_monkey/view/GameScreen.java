@@ -27,10 +27,11 @@ import java.util.List;
 public class GameScreen extends ScreenAdapter implements IWorldObserver, SwappedFighterObserver {
     private final List<GameObjectView> gameObjectViews;
     SpriteBatch batch;
-    ShapeRenderer sr;
+    ShapeRenderer PartitionDebugRenderer;
+    ShapeRenderer ObjectDebugRenderer;
     Stage stage;
     OrthographicCamera camera = new OrthographicCamera(1920 / 2f, 1080 / 2f);
-    boolean debugMode = true;
+    boolean debugMode = false;
     RoundTimerView roundTimerView;
 
     /**
@@ -45,7 +46,8 @@ public class GameScreen extends ScreenAdapter implements IWorldObserver, Swapped
         roundTimerView = new RoundTimerView(World.getInstance());
         World.getInstance().registerTimerObserver(roundTimerView);
 
-        sr = new ShapeRenderer();
+        PartitionDebugRenderer = new ShapeRenderer();
+        ObjectDebugRenderer = new ShapeRenderer();
         roundTimerView.addActors(stage);
     }
 
@@ -70,27 +72,30 @@ public class GameScreen extends ScreenAdapter implements IWorldObserver, Swapped
         ScreenUtils.clear(1, 1, 1, 1);
 
         batch.begin();
-        sr.begin(ShapeRenderer.ShapeType.Line);
         batch.setProjectionMatrix(camera.combined);
-        sr.setProjectionMatrix(camera.combined);
+        PartitionDebugRenderer.begin(ShapeRenderer.ShapeType.Line);
+        PartitionDebugRenderer.setProjectionMatrix(camera.combined);
+        ObjectDebugRenderer.begin(ShapeRenderer.ShapeType.Line);
+        ObjectDebugRenderer.setProjectionMatrix(camera.combined);
 
         if (debugMode) {
-            sr.setColor(1, 0, 0, 1);
+            PartitionDebugRenderer.setColor(1, 0, 0, 1);
             int partitionSize = 64; // hard coded based on spatialhash
             for (int x = -10 * partitionSize; x < 10 * partitionSize; x += partitionSize) {
                 for (int y = -10 * partitionSize; y < 10 * partitionSize; y += partitionSize) {
-                    sr.rect(x, y, partitionSize, partitionSize);
+                    PartitionDebugRenderer.rect(x, y, partitionSize, partitionSize);
                 }
             }
         }
 
         for (GameObjectView view : gameObjectViews) {
             view.updateSprite();
-            view.render(sr, batch, debugMode);
+            view.render(ObjectDebugRenderer, batch, debugMode);
         }
 
         batch.end();
-        sr.end();
+        PartitionDebugRenderer.end();
+        ObjectDebugRenderer.end();
         stage.draw();
     }
 
@@ -120,7 +125,7 @@ public class GameScreen extends ScreenAdapter implements IWorldObserver, Swapped
     @Override
     public void dispose() {
         batch.dispose();
-        sr.dispose();
+        PartitionDebugRenderer.dispose();
     }
 
     //TODO documentation

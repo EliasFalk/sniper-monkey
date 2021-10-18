@@ -5,15 +5,18 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import game.sniper_monkey.controller.PlayerController;
-import game.sniper_monkey.model.platform.Platform;
+import game.sniper_monkey.model.world_brick.WorldBrick;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.PlayerFactory;
 import game.sniper_monkey.model.world.World;
+import game.sniper_monkey.utils.MapReader;
 import game.sniper_monkey.view.GameScreen;
 import game.sniper_monkey.view.hud.BarView;
 import game.sniper_monkey.view.hud.BottomHUDController;
 import game.sniper_monkey.view.hud.FillDirection;
 import game.sniper_monkey.view.hud.Placement;
+
+import java.util.Map;
 
 public class GameController {
     GameScreen gameScreen;
@@ -26,23 +29,19 @@ public class GameController {
         gameScreen = new GameScreen();
         World.getInstance().registerObserver(gameScreen);
 
-        for (int i = 0; i < 400 / 16; i++)
-            World.getInstance().queueAddGameObject(new Platform(new Vector2(-200 + i * 16, -100)));
+        String[][] map = MapReader.readMapTiles("grass_map");
+        Vector2 mapOffset = new Vector2((-map[0].length / 2.f) * 16, (-map.length / 2.f) * 16);
+        for(int y = 0; y < map.length; y++) {
+            for(int x = 0; x < map[y].length; x++) {
+                if(!map[y][x].equals("air"))
+                    World.getInstance().queueAddGameObject(new WorldBrick(new Vector2(mapOffset.x + (x * 16), mapOffset.y + y * 16), map[y][x]));
+            }
+        }
 
-        //TODO use an external tool to create the map and create a utility to read it
-        World.getInstance().queueAddGameObject(new Platform(new Vector2(16, -100 + 16)));
-        World.getInstance().queueAddGameObject(new Platform(new Vector2(16, -100 + 16 * 2)));
-        World.getInstance().queueAddGameObject(new Platform(new Vector2(16, -100 + 16 * 3)));
-        World.getInstance().queueAddGameObject(new Platform(new Vector2(16, -100 + 16 * 4)));
-        World.getInstance().queueAddGameObject(new Platform(new Vector2(32, -100 + 16 * 4)));
-        World.getInstance().queueAddGameObject(new Platform(new Vector2(32 + 16, -100 + 16 * 4)));
-        World.getInstance().queueAddGameObject(new Platform(new Vector2(32 * 2, -100 + 16 * 4)));
+        Map<String, Vector2> spawnPoints = MapReader.readSpawnPoints("grass_map/untitled.tmx");
 
-        World.getInstance().queueAddGameObject(new Platform(new Vector2(-32 * 4, -100 + 16 * 5)));
-        World.getInstance().queueAddGameObject(new Platform(new Vector2((-32 - 16) * 4, -100 + 16 * 5)));
-        World.getInstance().queueAddGameObject(new Platform(new Vector2(-32 * 2 * 4, -100 + 16 * 5)));
-        Player player1 = PlayerFactory.createPlayer1(new Vector2(50, 50));
-        Player player2 = PlayerFactory.createPlayer2(new Vector2(-50, 50));
+        Player player1 = PlayerFactory.createPlayer1(spawnPoints.get("player_1").cpy().add(mapOffset));
+        Player player2 = PlayerFactory.createPlayer2(spawnPoints.get("player_2").cpy().add(mapOffset));
         World.getInstance().queueAddGameObject(player1);
         World.getInstance().queueAddGameObject(player2);
         player1Controller = new PlayerController(player1, "cfg/player1_keybinds.cfg");
