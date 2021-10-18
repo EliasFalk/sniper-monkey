@@ -46,19 +46,21 @@ public class CharacterSelectionScreen extends ScreenAdapter  {
     public void createRectangles() {
         for (int i = 0; i < (amountOfFighters); i++) {
             SelectViewRectangle rect;
+
+            //Fix math for width
             if ( i < (amountOfFighters/2)) {
                 rect = new SelectViewRectangle(new Label("Fighter " + i, new Label.LabelStyle(new BitmapFont(), Color.BLACK)), ((i % (amountOfFighters / 2f)+0)) * Gdx.graphics.getWidth() / ((float) amountOfFighters / 2), Gdx.graphics.getHeight() / 4f, 100f, 100f, Color.BLUE);
             } else {
                 rect = new SelectViewRectangle(new Label("Fighter " + i, new Label.LabelStyle(new BitmapFont(), Color.BLACK)), ((i % (amountOfFighters / 2f)+0)) * Gdx.graphics.getWidth() / ((float) amountOfFighters / 2), Gdx.graphics.getHeight() / (3 * 4f), 100f, 100f, Color.BLUE);
             }
-            rectangleMap.put(i+1, rect);
+            rectangleMap.put(i, rect);
             stage.addActor(rect);
         }
     }
 
 
     public void unSelectedRectangles() {
-        for (int i = 1; i <= rectangleMap.size(); i++) {
+        for (int i = 0; i < rectangleMap.size(); i++) {
             if (i != selectedRectangleIndex) {
                 rectangleMap.get(i).setSelected(false);
             }
@@ -85,11 +87,10 @@ public class CharacterSelectionScreen extends ScreenAdapter  {
     }
 
     public void setSelectedRectangleIndex(int i) {
-        //Fix maths so it works when selectedRectangleIndex == amountOfFighters on -1
-        if ((selectedRectangleIndex%amountOfFighters)+i <= 0) {
-            selectedRectangleIndex = amountOfFighters;
+        if (((selectedRectangleIndex+i)%amountOfFighters) < 0) {
+            selectedRectangleIndex = ((selectedRectangleIndex+i)%amountOfFighters)+amountOfFighters;
         } else {
-            selectedRectangleIndex = (selectedRectangleIndex%amountOfFighters)+i;
+            selectedRectangleIndex = ((selectedRectangleIndex+i)%amountOfFighters);
         }
     }
 
