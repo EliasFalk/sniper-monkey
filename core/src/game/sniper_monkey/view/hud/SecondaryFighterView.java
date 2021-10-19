@@ -1,7 +1,5 @@
 package game.sniper_monkey.view.hud;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -9,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import game.sniper_monkey.model.player.fighter.Fighter;
+import game.sniper_monkey.utils.view.FontUtils;
 import game.sniper_monkey.utils.view.HUDUtils;
 
 /**
@@ -19,7 +18,7 @@ public class SecondaryFighterView implements HUDView {
     private final float x;
     private final float y;
     private Label fighterName;
-    private final float yTextOffset = -15f;
+    private final float yTextOffset = -5f;
 
     /**
      * Creates a view that represents the secondary fighter.
@@ -80,8 +79,8 @@ public class SecondaryFighterView implements HUDView {
     }
 
     private void createFighterNameLabel(float x, float y, String fighterName) {
-        this.fighterName = new Label(fighterName, new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        this.fighterName.setPosition(x + img.getPrefWidth() / 2 - this.fighterName.getPrefWidth() / 2, y + yTextOffset);
+        this.fighterName = new Label(fighterName, FontUtils.getNormalFont(16));
+        this.fighterName.setPosition(x + img.getPrefWidth() / 2 - this.fighterName.getPrefWidth() / 2, y + yTextOffset - this.fighterName.getPrefHeight());
         this.fighterName.setAlignment(Align.center);
     }
 
