@@ -22,7 +22,7 @@ public class EvilMagicHammer extends AttackObject {
      * @param collisionMask an int 0..n. A collision mask to prevent the hitbox from colliding with the attacker.
      * @param lookingRight a boolean. Is the direction the player is facing. True if player is facing to the right, false if the player is facing the left.
      */
-    public EvilMagicHammer(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, boolean lookingRight) {
+    protected EvilMagicHammer(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, boolean lookingRight) {
         super(damage, timeToLive, spawnPos, collisionMask, lookingRight, attackHitboxSize);
 
         addHitResponse(Player.class, gameObject -> {

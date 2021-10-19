@@ -15,7 +15,7 @@ public class HuntressBow extends Fighter {
     /**
      * Creates a huntress fighter, with some specific attributes.
      */
-    public HuntressBow() {
+    protected HuntressBow() {
         super(attack, defense, speed, hitboxSize);
         attacks.add(AttackFactory.createBowAttack());
         attacks.add(AttackFactory.createBowTripleAttack());
