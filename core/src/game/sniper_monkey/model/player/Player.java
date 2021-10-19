@@ -48,6 +48,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     private final Fighter primaryFighter;
     private final Fighter secondaryFighter;
     private final Map<PlayerInputAction, Boolean> inputActions = new HashMap<>();
+    private final Vector2 spawnPos;
     private PhysicsPosition physicsPos = new PhysicsPosition(new Vector2(0, 0));
     boolean isGrounded = true;
     private Fighter activeFighter;
@@ -77,14 +78,20 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         BLOCK_COOLDOWN = Config.getNumber(filepath, "BLOCK_COOLDOWN");
     }
 
+
     /**
-     * Creates a player with a position in the world
+     * Creates a player.
      *
-     * @param position The initial position of the player.
+     * @param spawnPos         The spawn position of the player. Will initially be placed here, as well as spawn there when swapping fighter.
+     * @param primaryFighter   The primary fighter, this will initially act as the active fighter.
+     * @param secondaryFighter The secondary fighter. Will become the active fighter after the player swaps fighter.
+     * @param collisionMask    The collision mask of the fighter.
+     * @see game.sniper_monkey.utils.collision.CollisionMasks
      */
-    public Player(Vector2 position, Fighter primaryFighter, Fighter secondaryFighter, int collisionMask) {
-        super(position, true);
-        physicsPos.setPosition(position);
+    public Player(Vector2 spawnPos, Fighter primaryFighter, Fighter secondaryFighter, int collisionMask) {
+        super(spawnPos, true);
+        physicsPos.setPosition(spawnPos);
+        this.spawnPos = spawnPos;
         this.primaryFighter = primaryFighter;
         this.secondaryFighter = secondaryFighter;
         currentPhysicalState = PhysicalState.IDLING;
@@ -96,10 +103,10 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     /**
      * Creates a player with a position in the world
      *
-     * @param position The initial position of the player.
+     * @param spawnPos The initial position of the player.
      */
-    public Player(Vector2 position, Fighter primaryFighter, Fighter secondaryFighter) {
-        this(position, primaryFighter, secondaryFighter, 0);
+    public Player(Vector2 spawnPos, Fighter primaryFighter, Fighter secondaryFighter) {
+        this(spawnPos, primaryFighter, secondaryFighter, 0);
     }
 
     /**
@@ -147,7 +154,8 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         swapFighters();
         swapTimer.reset();
         swapTimer.start();
-        physicsPos.setPosition(new Vector2(100, 100)); // TODO set to spawn pos
+        physicsPos.setPosition(spawnPos);
+        physicsPos.setVelocity(new Vector2(0, 0));
         super.setPosition(physicsPos.getPosition());
         for (SwappedFighterObserver observer : swappedFighterObservers) {
             observer.onFighterSwap(this);
