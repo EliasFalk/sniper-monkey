@@ -1,6 +1,7 @@
 package game.sniper_monkey.view.characterSelection;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -20,6 +21,7 @@ public class SelectViewRectangle extends Actor {
     private final ShapeRenderer shapeRenderer;
 
     private Image img;
+    private Image previewImg;
     private final float x;
     private final float y;
     private final float width;
@@ -42,7 +44,8 @@ public class SelectViewRectangle extends Actor {
         this.fighter = fighter;
         this.stage = stage;
         fighterLabel = new Label(HUDUtils.getFighterDisplayName(fighter), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        createFighterImage(HUDUtils.getCorrespondingTextureRegion(fighter), x, y, true);
+        this.img = createFighterImage(HUDUtils.getCorrespondingTextureRegion(fighter), x, y, true, img);
+        this.previewImg = createFighterImage(HUDUtils.getCorrespondingTextureRegion(fighter), (Gdx.graphics.getWidth()*2)/10f, (Gdx.graphics.getHeight()*6)/10f, true, previewImg);
     }
 
     @Override
@@ -60,15 +63,17 @@ public class SelectViewRectangle extends Actor {
         batch.begin();
     }
 
-    private void createFighterImage(TextureRegion textureRegion, float x, float y, boolean flipX) {
+    private Image createFighterImage(TextureRegion textureRegion, float x, float y, boolean flipX, Image img) {
         textureRegion.flip(flipX, false);
-        this.img = new Image(textureRegion);
+        img = new Image(textureRegion);
         img.setAlign(Align.center);
         img.setPosition(x, y);
+        return img;
     }
 
     private void drawPreviewAnimation() {
-
+        previewImg.setScale(2);
+        stage.addActor(previewImg);
     }
 
     public void addLabel() {
