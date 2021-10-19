@@ -28,7 +28,7 @@ public class SniperMonkey extends ApplicationAdapter {
         }
         characterSelectionScreenController.tick(deltaTime);
         //gameController.tick(deltaTime);
-        gameController.tick(deltaTime);
+        //gameController.tick(deltaTime);
         TimerBank.updateTimers(deltaTime);
     }
 

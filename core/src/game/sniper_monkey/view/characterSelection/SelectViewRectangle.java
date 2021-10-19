@@ -54,9 +54,10 @@ public class SelectViewRectangle extends Actor {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         if (selected) {
             drawOuterRectangle();
+            drawPreviewAnimation();
         } else {
             removeOuterRectangle(color);
-            drawPreviewAnimation();
+            removePreviewAnimation();
         }
         drawRectangle(color);
         shapeRenderer.end();
@@ -74,6 +75,10 @@ public class SelectViewRectangle extends Actor {
     private void drawPreviewAnimation() {
         previewImg.setScale(2);
         stage.addActor(previewImg);
+    }
+
+    private void removePreviewAnimation() {
+        previewImg.remove();
     }
 
     public void addLabel() {
