@@ -4,10 +4,10 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import game.sniper_monkey.model.Config;
-import static org.junit.Assert.*;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class ConfigTest {
 
@@ -25,7 +25,6 @@ public class ConfigTest {
     @Test
     public void testNumberVal() {
         int num = (int) Config.getNumber(cfg, "key1");
-        System.out.println(num);
         assertEquals(123, num);
     }
 

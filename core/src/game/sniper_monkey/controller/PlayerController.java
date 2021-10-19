@@ -13,8 +13,6 @@ import game.sniper_monkey.model.player.PlayerInputAction;
  */
 public class PlayerController {
     private final ControllablePlayer player;
-
-    // TODO read keycodes from config file
     private final int moveLeftKeyCode;
     private final int moveRightKeyCode;
     private final int jumpKeyCode;
@@ -30,7 +28,6 @@ public class PlayerController {
      *
      * @param player a player object. Is used to know which player object the controller controls.
      */
-    // Send something to identify which config / part of config to read.
     public PlayerController(ControllablePlayer player, String filepath) {
         this.player = player;
         Config.readConfigFile(filepath);
