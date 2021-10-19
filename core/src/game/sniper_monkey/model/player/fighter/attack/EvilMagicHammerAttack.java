@@ -30,7 +30,7 @@ public class EvilMagicHammerAttack implements IAttack {
     /**
      * Creates an object of the strong sword attack.
      */
-    public EvilMagicHammerAttack() {
+    protected EvilMagicHammerAttack() {
         this.cbTimer = new CallbackTimer(attackLength, () -> isFinished = true);
 
     }

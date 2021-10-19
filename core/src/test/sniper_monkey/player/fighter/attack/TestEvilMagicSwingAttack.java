@@ -8,7 +8,9 @@ import game.sniper_monkey.model.Config;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.PlayerFactory;
 import game.sniper_monkey.model.player.PlayerInputAction;
+import game.sniper_monkey.model.player.fighter.attack.AttackFactory;
 import game.sniper_monkey.model.player.fighter.attack.EvilMagicSwingAttack;
+import game.sniper_monkey.model.player.fighter.attack.IAttack;
 import game.sniper_monkey.model.world.World;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -24,8 +26,7 @@ public class TestEvilMagicSwingAttack {
     public static void init() {
         cfg = "cfg/game.cfg";
         final HeadlessApplicationConfiguration config = new HeadlessApplicationConfiguration();
-        new HeadlessApplication(new ApplicationAdapter() {
-        }, config);
+        new HeadlessApplication(new ApplicationAdapter() {}, config);
         Config.readConfigFile(cfg);
         roundTime = Config.getNumber(cfg, "ROUND_TIME");
     }
@@ -56,13 +57,13 @@ public class TestEvilMagicSwingAttack {
 
     @Test
     public void testGetAttackLength() {
-        EvilMagicSwingAttack evilMagicSwingAttack = new EvilMagicSwingAttack();
+        IAttack evilMagicSwingAttack = AttackFactory.createEvilMagicSwingAttack();
         Assert.assertEquals(0.8f, evilMagicSwingAttack.getAttackLength(), 0);
     }
 
     @Test
     public void testGetHitStun() {
-        EvilMagicSwingAttack evilMagicSwingAttack = new EvilMagicSwingAttack();
+        IAttack evilMagicSwingAttack = AttackFactory.createEvilMagicSwingAttack();
         Assert.assertEquals(0.2f, evilMagicSwingAttack.getHitStunLength(), 0);
     }
 

@@ -27,7 +27,7 @@ public class BowAttack implements IAttack {
     /**
      * Creates an object of a bow attack.
      */
-    public BowAttack() {
+    protected BowAttack() {
         this.cbTimer = new CallbackTimer(attackLength, () -> isFinished = true);
         velocity = new Vector2(5, 0);
     }

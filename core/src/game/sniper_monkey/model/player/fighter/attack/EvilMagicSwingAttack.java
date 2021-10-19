@@ -29,7 +29,7 @@ public class EvilMagicSwingAttack implements IAttack {
     /**
      * Creates an object of a SwordAttack.
      */
-    public EvilMagicSwingAttack() {
+    protected EvilMagicSwingAttack() {
         this.cbTimer = new CallbackTimer(attackLength, () -> isFinished = true);
     }
 

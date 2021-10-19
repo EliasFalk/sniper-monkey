@@ -27,7 +27,7 @@ public class BowTripleAttack implements IAttack {
     /**
      * Creates an object of the triple bow attack.
      */
-    public BowTripleAttack() {
+    protected BowTripleAttack() {
         this.cbTimer = new CallbackTimer(attackLength, () -> isFinished = true);
         this.velocity = new Vector2(5,0);
     }
