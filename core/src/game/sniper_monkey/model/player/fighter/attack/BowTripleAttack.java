@@ -3,6 +3,16 @@ package game.sniper_monkey.model.player.fighter.attack;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.world.CallbackTimer;
 
+/**
+ * An attack that represents the Huntresses second attack. A triple arrow bow shot.
+ *
+ * @author Dadi Andrason
+ *
+ * Used by AttackFactory
+ *
+ * Uses CallbackTimer
+ * Uses AttackObjectSpawner
+ */
 public class BowTripleAttack implements IAttack {
 
     private final float damage = 12.5f;
@@ -14,6 +24,9 @@ public class BowTripleAttack implements IAttack {
     private final float stamina = 17.5f;
     private Vector2 velocity;
 
+    /**
+     * Creates an object of the triple bow attack.
+     */
     public BowTripleAttack() {
         this.cbTimer = new CallbackTimer(attackLength, () -> isFinished = true);
         this.velocity = new Vector2(5,0);

@@ -14,6 +14,10 @@ public class FighterFactory {
         return new EvilWizard();
     }
 
+    /**
+     * Creates a Huntress fighter with a bow.
+     * @return A fighter with factors and attacks belonging to the Huntress.
+     */
     public static Fighter createHuntressBow() {
         return new HuntressBow();
     }

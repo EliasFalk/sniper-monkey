@@ -20,7 +20,6 @@ public class ArrowView extends GameObjectView {
 
         sprite.setFlip(!model.isLookingRight(), false);
         sprite.setPosition(model.getHitbox().getPosition().x, model.getHitbox().getPosition().y);
-        System.out.println(sprite.getX());
     }
 
 

@@ -30,10 +30,20 @@ public class AttackFactory {
         return new EvilMagicHammerAttack();
     }
 
+    /**
+     * Creates an attack of type BowAttack. Is the first attack for the Huntress.
+     *
+     * @return a new BowAttack object.
+     */
     public static IAttack createBowAttack() {
         return new BowAttack();
     }
 
+    /**
+     * Creates an attack of type BowTripleAttack. Is the second attack for the Huntress.
+     *
+     * @return a new BowTripleAttack object.
+     */
     public static IAttack createBowTripleAttack() {
         return new BowTripleAttack();
     }

@@ -3,10 +3,20 @@ package game.sniper_monkey.model.player.fighter.attack;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.world.CallbackTimer;
 
+/**
+ * An attack that represents the Huntresses first attack.
+ *
+ * @author Dadi Andrason
+ *
+ * Used by AttackFactory
+ *
+ * Uses CallbackTimer
+ * Uses AttackObjectSpawner
+ */
 public class BowAttack implements IAttack {
 
     private final float damage = 15;
-    private boolean canAttack = true;
+    private boolean isFinished = true;
     private final CallbackTimer cbTimer;
     private final float attackLength = 0.8f;
     private final float projectileTimeToLive = attackLength;
@@ -14,20 +24,23 @@ public class BowAttack implements IAttack {
     private final float stamina = 10;
     private final Vector2 velocity;
 
+    /**
+     * Creates an object of a bow attack.
+     */
     public BowAttack() {
-        this.cbTimer = new CallbackTimer(attackLength, () -> canAttack = true);
+        this.cbTimer = new CallbackTimer(attackLength, () -> isFinished = true);
         velocity = new Vector2(5, 0);
     }
 
     @Override
     public boolean performAttack(float attackFactor, Vector2 playerPos, int collisionMask, boolean lookingRight, Vector2 hitboxSize) {
-        if (canAttack) {
+        if (isFinished) {
             float xSpawnPos = lookingRight ? hitboxSize.x : 0;
             Vector2 spawnPos = playerPos.add(xSpawnPos,30);
             AttackObjectSpawner.spawnHuntressArrowShot(attackFactor*damage, projectileTimeToLive, spawnPos, collisionMask, lookingRight, velocity);
             cbTimer.reset();
             cbTimer.start();
-            canAttack = false;
+            isFinished = false;
             return true;
         }
         return false;
@@ -41,7 +54,7 @@ public class BowAttack implements IAttack {
 
     @Override
     public boolean isFinished() {
-        return canAttack;
+        return isFinished;
     }
 
     @Override

@@ -9,13 +9,10 @@ import game.sniper_monkey.model.world.CallbackTimer;
  * @author Kevin Jeryd
  * @author Dadi Andrason
  * <p>
- * Used by SniperMonkey
  * Used by AttackFactory
  * <p>
  * Uses CallbackTimer
- * Uses World
  * Uses AttackObjectSpawner
- * Uses AttackObject
  */
 public class EvilMagicSwingAttack implements IAttack {
 

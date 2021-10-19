@@ -5,10 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import game.sniper_monkey.model.player.fighter.EvilWizard;
 import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.player.fighter.HuntressBow;
-import game.sniper_monkey.model.player.fighter.attack.BowAttack;
-import game.sniper_monkey.model.player.fighter.attack.EvilMagicHammerAttack;
-import game.sniper_monkey.model.player.fighter.attack.EvilMagicSwingAttack;
-import game.sniper_monkey.model.player.fighter.attack.IAttack;
+import game.sniper_monkey.model.player.fighter.attack.*;
 
 public class HUDUtils {
 
@@ -66,8 +63,9 @@ public class HUDUtils {
             return "Evil Magic Swing";
         } else if(attack == BowAttack.class) {
             return "Bow Attack";
-        }
-        else {
+        } else if (attack == BowTripleAttack.class) {
+            return "Bow Triple Attack";
+        } else {
             return "";
 //            throw new IllegalArgumentException("No display name found for this attack class.");
         }
