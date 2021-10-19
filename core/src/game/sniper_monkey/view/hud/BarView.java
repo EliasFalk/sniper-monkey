@@ -41,7 +41,7 @@ public class BarView implements FluctuatingAttributeObserver, HUDView {
     }
 
     private void createBarLabel(float x, float y, float barWidth, float barHeight, int textAlignment) {
-        barLabel = new Label(String.format(new DecimalFormat("#.##").format(100), 0f), FontUtils.getNormalFont(14, 2));
+        barLabel = new Label(String.format(new DecimalFormat("#.##").format(100), 0f), FontUtils.robotoWhite(14, 2));
         barLabel.setFontScale(1, 1);
         float yLabelPos = y + barHeight / 2 - barLabel.getHeight() / 2;
         float xLabelPos = x;

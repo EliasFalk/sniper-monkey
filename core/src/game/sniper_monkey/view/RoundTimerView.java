@@ -22,7 +22,7 @@ public class RoundTimerView implements HUDView, ITimerObserver {
     //TODO documentation
     public RoundTimerView(World model) {
         this.model = model;
-        countdownLabel = new Label(String.format("%03d", model.getRoundDuration()), FontUtils.getNormalFont(50));
+        countdownLabel = new Label(String.format("%03d", model.getRoundDuration()), FontUtils.robotoWhite(50));
         countdownLabel.setPosition(Gdx.graphics.getWidth() / 2f - countdownLabel.getPrefWidth() / 2, Gdx.graphics.getHeight() - 100);
         countdownLabel.setAlignment(Align.center);
     }

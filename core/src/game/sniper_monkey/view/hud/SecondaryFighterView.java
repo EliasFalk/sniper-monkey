@@ -79,7 +79,7 @@ public class SecondaryFighterView implements HUDView {
     }
 
     private void createFighterNameLabel(float x, float y, String fighterName) {
-        this.fighterName = new Label(fighterName, FontUtils.getNormalFont(16));
+        this.fighterName = new Label(fighterName, FontUtils.robotoWhite(16));
         this.fighterName.setPosition(x + img.getPrefWidth() / 2 - this.fighterName.getPrefWidth() / 2, y + yTextOffset - this.fighterName.getPrefHeight());
         this.fighterName.setAlignment(Align.center);
     }

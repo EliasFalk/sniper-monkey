@@ -46,7 +46,7 @@ public class KeyInputView implements TimerObserver, HUDView {
         this.textPlacement = textPlacement;
         fillableBar = new FillableBar(x, y, width, height, Color.LIGHT_GRAY, FillDirection.UP);
         keyLabel = createKeyLabel(x, y, key);
-        sideTextLabel = new Label(text, FontUtils.getNormalFont(14));
+        sideTextLabel = new Label(text, FontUtils.robotoWhite(14));
         updateSideLabel();
     }
 
