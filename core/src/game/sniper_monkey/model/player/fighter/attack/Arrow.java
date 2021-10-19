@@ -29,7 +29,7 @@ public class Arrow extends AttackObject {
      * @param lookingRight  a boolean. Is the direction the player is facing. True if player is facing to the right, false if the player is facing the left.
      * @param velocity      a Vector2. Is the velocity that the arrow has, and determines how fast the arrow moves.
      */
-    public Arrow(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, boolean lookingRight, Vector2 velocity) {
+    protected Arrow(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, boolean lookingRight, Vector2 velocity) {
         super(damage, timeToLive, spawnPos, collisionMask, lookingRight, velocity, attackHitboxSize);
 
         this.lookingRight = lookingRight;
@@ -54,6 +54,6 @@ public class Arrow extends AttackObject {
      */
     public boolean isLookingRight() {
         return lookingRight;
-    }
+    } // this method cannot get tested because of protected constructor :(
 
 }
