@@ -45,6 +45,7 @@ public class AttackObjectSpawner {
 
     public static void spawnHuntressArrowShot(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, boolean lookingRight, Vector2 velocity) {
         AttackObject huntressArrow = new Arrow(damage, timeToLive, spawnPos, collisionMask, lookingRight, velocity);
+        System.out.println("arrow created");
         World.getInstance().queueAddGameObject(huntressArrow);
     }
 

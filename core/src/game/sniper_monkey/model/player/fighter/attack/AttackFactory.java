@@ -33,4 +33,9 @@ public class AttackFactory {
     public static IAttack createBowAttack() {
         return new BowAttack();
     }
+
+    public static IAttack createBowTripleAttack() {
+        return new BowTripleAttack();
+    }
+
 }
