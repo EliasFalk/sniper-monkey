@@ -124,7 +124,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
      * If it isn't, reset the blockDefenseFactor and set the next state.
      */
     private void blockingState() {
-        currentPhysicalState = PhysicalState.DYING;
+        currentPhysicalState = PhysicalState.BLOCKING;
         if (inputActions.get(PlayerInputAction.BLOCK)) {
             blockFactor.setRegenerating(false);
             blockFactor.setDraining(true, BASE_BLOCK_DRAIN);
@@ -316,7 +316,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
 
     @Override
     public void takeDamage(float damageAmount) {
-        if (inputActions.get(PlayerInputAction.BLOCK)) { // change when state checking has been implemented
+        if (currentPhysicalState == PhysicalState.BLOCKING) {
             health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR) * (1 - blockFactor.getCurrentValue()));
         } else {
             health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR));
