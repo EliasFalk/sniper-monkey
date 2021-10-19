@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import game.sniper_monkey.view.characterSelection.CharacterSelectionScreen;
 import game.sniper_monkey.view.characterSelection.CharacterSelectionScreenController;
+import game.sniper_monkey.model.TimerBank;
 
 public class SniperMonkey extends ApplicationAdapter {
     //private GameController gameController;
@@ -27,6 +28,8 @@ public class SniperMonkey extends ApplicationAdapter {
         }
         characterSelectionScreenController.tick(deltaTime);
         //gameController.tick(deltaTime);
+        gameController.tick(deltaTime);
+        TimerBank.updateTimers(deltaTime);
     }
 
     //TODO documentation

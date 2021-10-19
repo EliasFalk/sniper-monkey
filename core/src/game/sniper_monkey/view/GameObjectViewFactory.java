@@ -1,12 +1,18 @@
 package game.sniper_monkey.view;
 
-import game.sniper_monkey.model.platform.Platform;
+import game.sniper_monkey.model.player.fighter.Fighter;
+import game.sniper_monkey.model.world_brick.WorldBrick;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.fighter.EvilWizard;
+import game.sniper_monkey.view.world_brick.WorldBrickView;
 import game.sniper_monkey.model.player.fighter.Fighter;
+import game.sniper_monkey.model.player.fighter.HuntressBow;
+import game.sniper_monkey.model.player.fighter.attack.Arrow;
 import game.sniper_monkey.model.world.GameObject;
-import game.sniper_monkey.view.platform.PlatformView;
+import game.sniper_monkey.view.player.fighter.ArrowView;
 import game.sniper_monkey.view.player.fighter.EvilWizardView;
+import game.sniper_monkey.model.world.GameObject;
+import game.sniper_monkey.view.player.fighter.HuntressView;
 
 import java.util.HashMap;
 
@@ -26,11 +32,13 @@ public final class GameObjectViewFactory {
     static {
         //Lambdas calling the corresponding create function based on the type of the GameObject supplied.
         viewCreatorDispatch.put(Player.class, obj -> createFighterView((Player) obj));
-        viewCreatorDispatch.put(Platform.class, obj -> new PlatformView((Platform) obj));
+        viewCreatorDispatch.put(WorldBrick.class, obj -> new WorldBrickView((WorldBrick) obj));
+        viewCreatorDispatch.put(Arrow.class, obj -> new ArrowView((Arrow) obj));
     }
 
     static {
         fighterDispatch.put(EvilWizard.class, obj -> new EvilWizardView((Player) obj));
+        fighterDispatch.put(HuntressBow.class, obj -> new HuntressView((Player) obj));
     }
 
     private static GameObjectView createFighterView(Player player) {

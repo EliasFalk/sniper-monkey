@@ -1,12 +1,16 @@
 package game.sniper_monkey.view;
 
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
+import game.sniper_monkey.model.player.Player;
+import game.sniper_monkey.model.player.SwappedFighterObserver;
 import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.model.world.IWorldObserver;
 import game.sniper_monkey.model.world.World;
@@ -23,14 +27,18 @@ import java.util.List;
  * @author Elias Falk
  * @author Kevin Jeryd
  */
-public class GameScreen extends ScreenAdapter implements IWorldObserver  {
+public class GameScreen extends ScreenAdapter implements IWorldObserver, SwappedFighterObserver {
     private final List<GameObjectView> gameObjectViews;
     SpriteBatch batch;
-    ShapeRenderer sr;
+    ShapeRenderer PartitionDebugRenderer;
+    ShapeRenderer ObjectDebugRenderer;
     Stage stage;
     OrthographicCamera camera = new OrthographicCamera(1920 / 2f, 1080 / 2f);
-    boolean debugMode = true;
+    boolean debugMode = false;
     RoundTimerView roundTimerView;
+
+    Sprite bg1;
+    Sprite bg2;
 
     /**
      * Creates a GameRenderer
@@ -44,12 +52,28 @@ public class GameScreen extends ScreenAdapter implements IWorldObserver  {
         roundTimerView = new RoundTimerView(World.getInstance());
         World.getInstance().registerTimerObserver(roundTimerView);
 
-        sr = new ShapeRenderer();
+        PartitionDebugRenderer = new ShapeRenderer();
+        ObjectDebugRenderer = new ShapeRenderer();
         roundTimerView.addActors(stage);
+        loadBackground();
+    }
+
+    private void loadBackground() {
+        Texture bg1T = new Texture("images/Taiga-Asset-Pack_v2_vnitti/PNG/Background.png");
+        Texture bg2T = new Texture("images/Taiga-Asset-Pack_v2_vnitti/PNG/Middleground.png");
+
+        bg1 = new Sprite(bg1T);
+        bg2 = new Sprite(bg2T);
+    }
+
+    private void renderBackground(SpriteBatch batch) {
+        batch.draw(bg1, -Gdx.graphics.getWidth() / 2f, -Gdx.graphics.getHeight() / 2f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(bg2, -Gdx.graphics.getWidth() / 2f, -Gdx.graphics.getHeight() / 2f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     /**
      * Updates the projection matrix using a new size
+     *
      * @param width  The new viewport width
      * @param height The new viewport height
      */
@@ -69,27 +93,30 @@ public class GameScreen extends ScreenAdapter implements IWorldObserver  {
         ScreenUtils.clear(1, 1, 1, 1);
 
         batch.begin();
-        sr.begin(ShapeRenderer.ShapeType.Line);
         batch.setProjectionMatrix(camera.combined);
-        sr.setProjectionMatrix(camera.combined);
-
+        PartitionDebugRenderer.begin(ShapeRenderer.ShapeType.Line);
+        PartitionDebugRenderer.setProjectionMatrix(camera.combined);
+        ObjectDebugRenderer.begin(ShapeRenderer.ShapeType.Line);
+        ObjectDebugRenderer.setProjectionMatrix(camera.combined);
+        renderBackground(batch);
         if (debugMode) {
-            sr.setColor(1, 0, 0, 1);
+            PartitionDebugRenderer.setColor(1, 0, 0, 1);
             int partitionSize = 64; // hard coded based on spatialhash
             for (int x = -10 * partitionSize; x < 10 * partitionSize; x += partitionSize) {
                 for (int y = -10 * partitionSize; y < 10 * partitionSize; y += partitionSize) {
-                    sr.rect(x, y, partitionSize, partitionSize);
+                    PartitionDebugRenderer.rect(x, y, partitionSize, partitionSize);
                 }
             }
         }
 
         for (GameObjectView view : gameObjectViews) {
             view.updateSprite();
-            view.render(sr, batch, debugMode);
+            view.render(ObjectDebugRenderer, batch, debugMode);
         }
 
         batch.end();
-        sr.end();
+        PartitionDebugRenderer.end();
+        ObjectDebugRenderer.end();
         stage.draw();
     }
 
@@ -119,7 +146,7 @@ public class GameScreen extends ScreenAdapter implements IWorldObserver  {
     @Override
     public void dispose() {
         batch.dispose();
-        sr.dispose();
+        PartitionDebugRenderer.dispose();
     }
 
     //TODO documentation
@@ -146,5 +173,12 @@ public class GameScreen extends ScreenAdapter implements IWorldObserver  {
 
     public void removeHudView(HUDView hudView) {
 //        hudView.addActors(stage);
+    }
+
+    @Override
+    public void onFighterSwap(Player player) {
+        // TODO refactor
+        onObjectRemovedFromWorld(player);
+        onObjectAddedToWorld(player);
     }
 }

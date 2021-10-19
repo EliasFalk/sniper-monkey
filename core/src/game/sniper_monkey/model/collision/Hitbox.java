@@ -50,8 +50,15 @@ public final class Hitbox {
      * @param mask The new mask to add onto the current mask.
      */
     public void addMask(int mask) {
-        this.mask &= mask;
+        this.mask |= mask;
     }
+
+    /**
+     * Removes a part of the mask from this Hitbox.
+     *
+     * @param mask The mask to remove from the current mask.
+     */
+    public void removeMask(int mask) { this.mask &= ~mask; }
 
     /**
      * Returns the mask of this Hitbox.

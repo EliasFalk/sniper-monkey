@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import game.sniper_monkey.model.world.TimerObserver;
+import game.sniper_monkey.utils.view.FontUtils;
 
 /**
  * A view that represents a pressable key on the keyboard.
@@ -24,6 +25,8 @@ public class KeyInputView implements TimerObserver, HUDView {
     private static final float width = 30f;
     private static final float height = 30f;
     private float sideLabelOffset = 10f;
+    private Placement textPlacement;
+    private final float sideTextWidth = 150f;
 
 
     /**
@@ -40,21 +43,20 @@ public class KeyInputView implements TimerObserver, HUDView {
         this.y = y;
         this.key = key;
         this.text = text;
-
+        this.textPlacement = textPlacement;
         fillableBar = new FillableBar(x, y, width, height, Color.LIGHT_GRAY, FillDirection.UP);
         keyLabel = createKeyLabel(x, y, key);
-        sideTextLabel = createSideLabel(x, y, text, textPlacement);
+        sideTextLabel = new Label(text, FontUtils.robotoWhite(14));
+        updateSideLabel();
     }
 
-    private Label createSideLabel(float x, float y, String text, Placement textPlacement) {
-        final Label sideTextLabel;
-        sideTextLabel = new Label(text, new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+    private void updateSideLabel() {
+        sideTextLabel.setText(text);
         if (textPlacement == Placement.RIGHT) {
             sideTextLabel.setPosition(x + width + sideLabelOffset, y + (height / 2 - sideTextLabel.getHeight() / 2));
         } else if (textPlacement == Placement.LEFT) {
-            sideTextLabel.setPosition(x - sideLabelOffset - sideTextLabel.getWidth(), y + (height / 2 - sideTextLabel.getHeight() / 2));
+            sideTextLabel.setPosition(x - sideLabelOffset - sideTextLabel.getPrefWidth(), y + (height / 2 - sideTextLabel.getHeight() / 2));
         }
-        return sideTextLabel;
     }
 
     private Label createKeyLabel(float x, float y, String key) {
@@ -89,6 +91,7 @@ public class KeyInputView implements TimerObserver, HUDView {
      */
     public void setText(String text) {
         this.text = text;
+        updateSideLabel();
     }
 
     @Override

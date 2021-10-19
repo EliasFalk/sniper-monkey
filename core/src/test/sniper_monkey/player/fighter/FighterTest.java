@@ -4,7 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.player.fighter.Fighter;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
 
 public class FighterTest {
 
@@ -32,12 +33,12 @@ public class FighterTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testPerformAttack() {
-        fighter.performAttack(0);
+        fighter.performAttack(0, new Vector2(1, 1), 0, false);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetStaminaDecrease() {
-        fighter.getStaminaDecrease(0);
+        fighter.getStaminaCost(0);
     }
 
 }

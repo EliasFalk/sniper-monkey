@@ -30,6 +30,8 @@ public final class CollisionResponse {
      * @return A resulting new physics position that represents the objects new position.
      */
     public static PhysicsPosition handleCollision(float deltaTime, Hitbox hitbox, int collisionMask, PhysicsPosition physicsPosition, Callback onXCollision, Callback onYCollision) {
+        collisionMask |= CollisionMasks.GHOST;
+
         Vector2 vel = physicsPosition.getVelocity();
         Vector2 hitboxStartingPos = hitbox.getPosition();
 

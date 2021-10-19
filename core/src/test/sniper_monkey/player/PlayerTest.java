@@ -8,6 +8,8 @@ import game.sniper_monkey.model.Config;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.PlayerFactory;
 import game.sniper_monkey.model.player.PlayerInputAction;
+import game.sniper_monkey.model.world.World;
+import game.sniper_monkey.model.world_brick.WorldBrick;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -28,11 +30,17 @@ public class PlayerTest {
         }, config);
         values = "cfg/player_values.cfg";
         Config.readConfigFile(values);
+        World.getInstance().queueAddGameObject(new WorldBrick(new Vector2(100, 0), "")); // adds one platform so that the player can stand on it.
+        World.getInstance().update(deltaTime);
     }
 
     @Before
     public void initPlayer() {
         player = PlayerFactory.createPlayer(new Vector2(spawnX, spawnY));
+        // update until hits the ground, 5 seconds should be enough.
+        for (int i = 0; i < 300; i++) {
+            player.update(deltaTime); //moved this here since the player is static and will be the same for all tests
+        }
     }
 
     @Test
@@ -92,10 +100,7 @@ public class PlayerTest {
 
     @Test
     public void testJumpWhileGroundedState() {
-        // update until hits the ground, 5 seconds should be enough.
-        for (int i = 0; i < 300; i++) {
-            player.update(deltaTime);
-        }
+
         float prevY = player.getPos().y;
         player.setInputAction(PlayerInputAction.JUMP);
         player.update(deltaTime);
@@ -103,16 +108,18 @@ public class PlayerTest {
     }
 
     @Test
-    public void testJumpWhileInAirState() {
-        // update until hits the ground, 5 seconds should be enough.
-        for (int i = 0; i < 300; i++) {
-            player.update(deltaTime);
-        }
+    public void testJumpWhileInAirState() { //TODO make this less ugly.
 
         player.setInputAction(PlayerInputAction.JUMP);
         player.update(deltaTime);
+
+        for (int i = 0; i < 30; i++) {
+            player.update(deltaTime); // should make this better but this is basically so that the velocity that the player has will become negative. player is still airborne
+        }
+
         float prevY = player.getPos().y;
         player.setInputAction(PlayerInputAction.JUMP);
+
         player.update(deltaTime);
         Assert.assertTrue(prevY > player.getPos().y);
     }

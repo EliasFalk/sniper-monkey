@@ -12,7 +12,7 @@ public final class Time {
     /**
      * The time when the application started in milliseconds
      */
-    public static final long START_TIME = System.currentTimeMillis();
+    public static long START_TIME = System.currentTimeMillis();
 
     private Time() {
     }
@@ -24,5 +24,12 @@ public final class Time {
      */
     public static float getElapsedTime() {
         return (System.currentTimeMillis() - START_TIME) / 1000f;
+    }
+
+    /**
+     * Reset the elapsed time.
+     */
+    public static void resetElapsedTime() {
+        START_TIME = System.currentTimeMillis();
     }
 }

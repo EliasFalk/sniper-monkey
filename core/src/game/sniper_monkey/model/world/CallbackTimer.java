@@ -15,12 +15,12 @@ import java.util.List;
  */
 public class CallbackTimer implements UpdatableTimer {
 
-    private final float timerLength;
     private final Callback callback;
+    private final List<TimerObserver> observers;
+    private float timerLength;
     private float timeLeft;
     private boolean running;
     private boolean looping;
-    private final List<TimerObserver> observers;
 
     /**
      * Creates a timer with a callback method which will be called upon when the timer finishes.
@@ -94,6 +94,10 @@ public class CallbackTimer implements UpdatableTimer {
             }
             callback.call();
         }
+        notifyObservers();
+    }
+
+    private void notifyObservers() {
         for (TimerObserver observer : observers) {
             observer.onTimeUpdated(timerLength, timeLeft);
         }
@@ -106,9 +110,7 @@ public class CallbackTimer implements UpdatableTimer {
     public void reset() {
         timeLeft = timerLength;
         running = false;
-        for (TimerObserver observer : observers) {
-            observer.onTimeUpdated(timerLength, timeLeft);
-        }
+        notifyObservers();
     }
 
     /**
@@ -173,6 +175,17 @@ public class CallbackTimer implements UpdatableTimer {
      */
     public void unRegisterTimerObserver(TimerObserver timerObserver) {
         observers.remove(timerObserver);
-//        Input.Keys.PE
     }
+
+    /**
+     * Sets a new timer length. Notifies the observers with the new the timer length.
+     *
+     * @param timerLength The new length of the timer in seconds. Does not accept negative numbers.
+     */
+    public void setTimerLength(float timerLength) {
+        if (timerLength < 0) throw new IllegalArgumentException("timerLength cannot be negative.");
+        this.timerLength = timerLength;
+        notifyObservers();
+    }
+
 }
