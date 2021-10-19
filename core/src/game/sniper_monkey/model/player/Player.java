@@ -151,17 +151,8 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     }
 
     private void swappingFighterState() {
-        swapFighters();
-        swapTimer.reset();
-        swapTimer.start();
-        physicsPos.setPosition(spawnPos);
-        physicsPos.setVelocity(new Vector2(0, 0));
-        super.setPosition(physicsPos.getPosition());
-        for (SwappedFighterObserver observer : swappedFighterObservers) {
-            observer.onFighterSwap(this);
-        }
+        // TODO discuss: deprecated unless it takes time for the player to respawn. i.e go into void -> respawn after some time
         abilityState = this::inactiveState;
-        canSwap = false;
     }
 
     public float getAttackLength(int attackNum) {
@@ -183,12 +174,10 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
             abilityState = this::blockingState;
             canBlock = false;
             return;
-        } else if (inputActions.get(PlayerInputAction.SWAP_FIGHTER)) {
-            // TODO swapFighter
-            if (canSwap) {
-                abilityState = this::swappingFighterState;
-                return;
-            }
+        } else if (inputActions.get(PlayerInputAction.SWAP_FIGHTER) && canSwap) {
+            swapFighters();
+            abilityState = this::swappingFighterState;
+            return;
         }
         movementState.performState();
     }
@@ -268,6 +257,20 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         } else {
             initActiveFighter(primaryFighter);
         }
+        swapTimer.reset();
+        swapTimer.start();
+        goToRespawnPosition();
+        for (SwappedFighterObserver observer : swappedFighterObservers) {
+            observer.onFighterSwap(this);
+        }
+        abilityState = this::inactiveState;
+        canSwap = false;
+    }
+
+    private void goToRespawnPosition() {
+        physicsPos.setPosition(spawnPos);
+        physicsPos.setVelocity(new Vector2(0, 0));
+        super.setPosition(physicsPos.getPosition());
     }
 
     private void performAttack(int attackNum) {
