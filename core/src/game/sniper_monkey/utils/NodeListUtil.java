@@ -1,10 +1,17 @@
 package game.sniper_monkey.utils;
 
-import java.util.*;
-import org.w3c.dom.*;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import java.util.AbstractList;
+import java.util.Collections;
+import java.util.List;
+import java.util.RandomAccess;
 
 /**
  * An Xml utility used to convert NodeLists to an iterable collection.
+ *
+ * @author -
  */
 public final class NodeListUtil {
     private NodeListUtil() {}
