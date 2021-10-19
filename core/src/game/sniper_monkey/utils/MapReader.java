@@ -8,9 +8,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +20,6 @@ import java.util.Map;
 public final class MapReader {
     private MapReader() {}
 
-    private static final DocumentBuilder db = createDocumentBuilder();
     private static final String MAPS_DIR = "core/assets/map/";
 
     /**
@@ -32,7 +28,7 @@ public final class MapReader {
      * @return        A Map with the spawn points
      */
     public static Map<String, Vector2> readSpawnPoints(String mapPath) {
-        Document mapDoc = readDocument(MAPS_DIR + mapPath);
+        Document mapDoc = XMLUtils.readDocument(MAPS_DIR + mapPath);
         Node spawnGroup = getSpawnGroup(mapDoc);
         return getSpawnPoints(spawnGroup);
     }
@@ -71,8 +67,8 @@ public final class MapReader {
      * @return            A 2D array of Strings representing the map where each entry is the name of the tile or "air" if there is no tile.
      */
     public static String[][] readMapTiles(String mapPath, String tilesetPath) {
-        Document mapDoc = readDocument(MAPS_DIR + mapPath);
-        Document tilesetDoc = readDocument(MAPS_DIR + tilesetPath);
+        Document mapDoc = XMLUtils.readDocument(MAPS_DIR + mapPath);
+        Document tilesetDoc = XMLUtils.readDocument(MAPS_DIR + tilesetPath);
 
         return translateMapData(mapDoc, tilesetDoc);
     }
@@ -141,28 +137,5 @@ public final class MapReader {
             tileNames.put(id, name);
         }
         return tileNames;
-    }
-
-    private static Document readDocument(String s) {
-        Document document;
-        FileHandle mapHandle = Gdx.files.internal(s); //TODO fix path
-        try {
-            document = db.parse(mapHandle.file());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        document.getDocumentElement().normalize();
-        return document;
-    }
-
-    private static DocumentBuilder createDocumentBuilder() {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder db;
-        try {
-            db = dbf.newDocumentBuilder();
-        } catch (ParserConfigurationException e) {
-            throw new RuntimeException(e);
-        }
-        return db;
     }
 }
