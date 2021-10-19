@@ -1,4 +1,4 @@
-package game.sniper_monkey.model.player.fighter.attack;
+package game.sniper_monkey.model.player.fighter.attack.attack_object;
 
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.player.Player;
@@ -16,7 +16,6 @@ public class Arrow extends AttackObject {
         this.lookingRight = lookingRight;
 
         addHitResponse(Player.class, gameObject -> {
-            System.out.println(damage);
             Player player = (Player) gameObject;
             player.takeDamage(damage);
             delete(); // after hit
