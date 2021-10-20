@@ -21,7 +21,7 @@ public class BowTripleAttack implements IAttack {
     private final CallbackTimer cbTimer;
     private final float attackLength = 1.5f;
     private final float projectileTimeToLive = 3f;
-    private final float hitStunLength = 0.5f;
+    private final float hitStunLength = 1f;
     private final float stamina = 17.5f;
     private Vector2 velocity;
 
@@ -30,7 +30,7 @@ public class BowTripleAttack implements IAttack {
      */
     protected BowTripleAttack() {
         this.cbTimer = new CallbackTimer(attackLength, () -> isFinished = true);
-        this.velocity = new Vector2(5,0);
+        this.velocity = new Vector2(5*60,0);
     }
 
     @Override
@@ -39,8 +39,8 @@ public class BowTripleAttack implements IAttack {
             float xSpawnPos = lookingRight ? hitboxSize.x : 0;
             Vector2 spawnPos = playerPos.add(xSpawnPos,30);
             AttackObjectSpawner.spawnHuntressArrowShot(attackFactor*damage, projectileTimeToLive, spawnPos, collisionMask, lookingRight, velocity);
-            AttackObjectSpawner.spawnHuntressArrowShot(attackFactor*damage, projectileTimeToLive, spawnPos, collisionMask, lookingRight, velocity.cpy().add(0,1));
-            AttackObjectSpawner.spawnHuntressArrowShot(attackFactor*damage, projectileTimeToLive, spawnPos, collisionMask, lookingRight, velocity.cpy().add(0,-1));
+            AttackObjectSpawner.spawnHuntressArrowShot(attackFactor*damage, projectileTimeToLive, spawnPos, collisionMask, lookingRight, velocity.cpy().add(0,60));
+            AttackObjectSpawner.spawnHuntressArrowShot(attackFactor*damage, projectileTimeToLive, spawnPos, collisionMask, lookingRight, velocity.cpy().add(0,-60));
             cbTimer.reset();
             cbTimer.start();
             isFinished = false;

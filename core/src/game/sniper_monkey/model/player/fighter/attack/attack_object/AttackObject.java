@@ -98,7 +98,7 @@ public abstract class AttackObject extends GameObject {
     public void update(float deltaTime) {
         checkCollision();
         if (!velocity.isZero()) {
-            setPosition(getHitbox().getPosition().add(velocity));
+            setPosition(getHitbox().getPosition().add(velocity.cpy().scl(deltaTime)));
         }
     }
 }

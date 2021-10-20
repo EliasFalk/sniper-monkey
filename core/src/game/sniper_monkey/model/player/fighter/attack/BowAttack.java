@@ -30,7 +30,7 @@ public class BowAttack implements IAttack {
      */
     protected BowAttack() {
         this.cbTimer = new CallbackTimer(attackLength, () -> isFinished = true);
-        velocity = new Vector2(5, 0);
+        velocity = new Vector2(5*60, 0);
     }
 
     @Override
