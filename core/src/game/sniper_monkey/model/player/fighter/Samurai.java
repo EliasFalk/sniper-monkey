@@ -1,6 +1,7 @@
 package game.sniper_monkey.model.player.fighter;
 
 import com.badlogic.gdx.math.Vector2;
+import game.sniper_monkey.model.player.fighter.attack.AttackFactory;
 
 /**
  *  A samurai fighter.
@@ -18,5 +19,7 @@ public class Samurai extends Fighter {
      */
     protected Samurai() {
         super(attackFactor, defenseFactor, speedFactor, hitboxSize);
+        attacks.add(AttackFactory.createEvilMagicSwingAttack());
+        attacks.add(AttackFactory.createBowTripleAttack());
     }
 }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import game.sniper_monkey.model.player.fighter.EvilWizard;
 import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.player.fighter.HuntressBow;
+import game.sniper_monkey.model.player.fighter.Samurai;
 import game.sniper_monkey.model.player.fighter.attack.*;
 
 public class HUDUtils {
@@ -23,6 +24,9 @@ public class HUDUtils {
         } else if(fighter == HuntressBow.class) {
             Texture idle = new Texture("images/huntress_2/idle.png");
             return new TextureRegion(idle, 52, 48, 46, 52);
+        } else if (fighter == Samurai.class) {
+            Texture idle = new Texture("images/samurai/Idle.png");
+            return new TextureRegion(idle, 81, 78, 33, 55);
         }
         // TODO do for future fighters when they have been implemented.
         else {
@@ -42,6 +46,8 @@ public class HUDUtils {
             return "Evil Wizard";
         } else if(fighter == HuntressBow.class) {
             return "Huntress Bow";
+        } else if (fighter == Samurai.class) {
+            return "Samurai";
         }
         // TODO do for future fighters when they have been implemented.
         else {
@@ -65,6 +71,8 @@ public class HUDUtils {
             return "Bow Attack";
         } else if (attack == BowTripleAttack.class) {
             return "Bow Triple Attack";
+        } else if (attack == SamuraiQuickAttack.class) {
+                return "Samurai Quick Attack";
         } else {
             return "";
 //            throw new IllegalArgumentException("No display name found for this attack class.");

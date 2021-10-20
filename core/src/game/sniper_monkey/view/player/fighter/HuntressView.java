@@ -41,7 +41,6 @@ public class HuntressView extends GameObjectView {
     }
 
     private void initAnimationHash() {
-        // TODO add remaining animations
         Texture idle = new Texture("images/huntress_2/idle.png");
         Texture run = new Texture("images/huntress_2/run.png");
         Texture jump = new Texture("images/huntress_2/jump.png");
