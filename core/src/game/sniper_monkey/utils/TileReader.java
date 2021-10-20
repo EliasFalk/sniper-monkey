@@ -11,6 +11,12 @@ import org.w3c.dom.NodeList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A utility class to read tile sets.
+ *
+ * @author Elias Falk
+ * @author Vincent Hellner
+ */
 public class TileReader {
     private static final String MAPS_DIR = "core/assets/map/";
 

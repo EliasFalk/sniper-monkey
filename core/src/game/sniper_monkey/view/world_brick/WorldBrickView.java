@@ -1,6 +1,5 @@
 package game.sniper_monkey.view.world_brick;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.world_brick.WorldBrick;
@@ -8,7 +7,6 @@ import game.sniper_monkey.utils.TileReader;
 import game.sniper_monkey.utils.view.SpriteUtils;
 import game.sniper_monkey.view.GameObjectView;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -32,7 +30,6 @@ public class WorldBrickView extends GameObjectView {
         if(type.startsWith("ghost-")) {
             type = type.split("-")[1];
         }
-        System.out.println(type);
         return brickSprites.getOrDefault(type, SpriteUtils.getDefaultSprite());
     }
 }

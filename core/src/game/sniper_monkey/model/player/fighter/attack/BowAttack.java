@@ -1,6 +1,7 @@
 package game.sniper_monkey.model.player.fighter.attack;
 
 import com.badlogic.gdx.math.Vector2;
+import game.sniper_monkey.model.player.fighter.attack.attack_object.AttackObjectSpawner;
 import game.sniper_monkey.model.world.CallbackTimer;
 
 public class BowAttack implements IAttack {

@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import game.sniper_monkey.model.world.ITimerObserver;
+import game.sniper_monkey.model.world.TimerObserver;
 import game.sniper_monkey.model.world.World;
 import game.sniper_monkey.utils.view.FontUtils;
 import game.sniper_monkey.view.hud.HUDView;
@@ -14,7 +14,7 @@ import game.sniper_monkey.view.hud.HUDView;
  *
  * @author Kevin Jeryd
  */
-public class RoundTimerView implements HUDView, ITimerObserver {
+public class RoundTimerView implements HUDView, TimerObserver {
 
     private final Label countdownLabel;
     World model;
@@ -32,9 +32,9 @@ public class RoundTimerView implements HUDView, ITimerObserver {
         stage.addActor(countdownLabel);
     }
 
-    //TODO documentation
+
     @Override
-    public void onTimerChange(int time) {
-        countdownLabel.setText(time);
+    public void onTimeUpdated(float timerLength, float timeLeft) {
+        countdownLabel.setText((int) timeLeft);
     }
 }

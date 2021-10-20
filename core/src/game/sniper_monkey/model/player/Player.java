@@ -48,6 +48,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     private final Fighter primaryFighter;
     private final Fighter secondaryFighter;
     private final Map<PlayerInputAction, Boolean> inputActions = new HashMap<>();
+    private final Vector2 spawnPos;
     private PhysicsPosition physicsPos = new PhysicsPosition(new Vector2(0, 0));
     boolean isGrounded = true;
     private Fighter activeFighter;
@@ -77,14 +78,20 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         BLOCK_COOLDOWN = Config.getNumber(filepath, "BLOCK_COOLDOWN");
     }
 
+
     /**
-     * Creates a player with a position in the world
+     * Creates a player.
      *
-     * @param position The initial position of the player.
+     * @param spawnPos         The spawn position of the player. Will initially be placed here, as well as spawn there when swapping fighter.
+     * @param primaryFighter   The primary fighter, this will initially act as the active fighter.
+     * @param secondaryFighter The secondary fighter. Will become the active fighter after the player swaps fighter.
+     * @param collisionMask    The collision mask of the fighter.
+     * @see game.sniper_monkey.utils.collision.CollisionMasks
      */
-    public Player(Vector2 position, Fighter primaryFighter, Fighter secondaryFighter, int collisionMask) {
-        super(position, true);
-        physicsPos.setPosition(position);
+    public Player(Vector2 spawnPos, Fighter primaryFighter, Fighter secondaryFighter, int collisionMask) {
+        super(spawnPos, true);
+        physicsPos.setPosition(spawnPos);
+        this.spawnPos = spawnPos;
         this.primaryFighter = primaryFighter;
         this.secondaryFighter = secondaryFighter;
         currentPhysicalState = PhysicalState.IDLING;
@@ -96,10 +103,10 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     /**
      * Creates a player with a position in the world
      *
-     * @param position The initial position of the player.
+     * @param spawnPos The initial position of the player.
      */
-    public Player(Vector2 position, Fighter primaryFighter, Fighter secondaryFighter) {
-        this(position, primaryFighter, secondaryFighter, 0);
+    public Player(Vector2 spawnPos, Fighter primaryFighter, Fighter secondaryFighter) {
+        this(spawnPos, primaryFighter, secondaryFighter, 0);
     }
 
     /**
@@ -117,7 +124,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
      * If it isn't, reset the blockDefenseFactor and set the next state.
      */
     private void blockingState() {
-        currentPhysicalState = PhysicalState.DYING;
+        currentPhysicalState = PhysicalState.BLOCKING;
         if (inputActions.get(PlayerInputAction.BLOCK)) {
             blockFactor.setRegenerating(false);
             blockFactor.setDraining(true, BASE_BLOCK_DRAIN);
@@ -144,16 +151,8 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     }
 
     private void swappingFighterState() {
-        swapFighters();
-        swapTimer.reset();
-        swapTimer.start();
-        physicsPos.setPosition(new Vector2(100, 100)); // TODO set to spawn pos
-        super.setPosition(physicsPos.getPosition());
-        for (SwappedFighterObserver observer : swappedFighterObservers) {
-            observer.onFighterSwap(this);
-        }
+        // TODO discuss: deprecated unless it takes time for the player to respawn. i.e go into void -> respawn after some time
         abilityState = this::inactiveState;
-        canSwap = false;
     }
 
     public float getAttackLength(int attackNum) {
@@ -175,12 +174,10 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
             abilityState = this::blockingState;
             canBlock = false;
             return;
-        } else if (inputActions.get(PlayerInputAction.SWAP_FIGHTER)) {
-            // TODO swapFighter
-            if (canSwap) {
-                abilityState = this::swappingFighterState;
-                return;
-            }
+        } else if (inputActions.get(PlayerInputAction.SWAP_FIGHTER) && canSwap) {
+            swapFighters();
+            abilityState = this::swappingFighterState;
+            return;
         }
         movementState.performState();
     }
@@ -260,6 +257,20 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         } else {
             initActiveFighter(primaryFighter);
         }
+        swapTimer.reset();
+        swapTimer.start();
+        goToRespawnPosition();
+        for (SwappedFighterObserver observer : swappedFighterObservers) {
+            observer.onFighterSwap(this);
+        }
+        abilityState = this::inactiveState;
+        canSwap = false;
+    }
+
+    private void goToRespawnPosition() {
+        physicsPos.setPosition(spawnPos);
+        physicsPos.setVelocity(new Vector2(0, 0));
+        super.setPosition(physicsPos.getPosition());
     }
 
     private void performAttack(int attackNum) {
@@ -308,7 +319,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
 
     @Override
     public void takeDamage(float damageAmount) {
-        if (inputActions.get(PlayerInputAction.BLOCK)) { // change when state checking has been implemented
+        if (currentPhysicalState == PhysicalState.BLOCKING) {
             health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR) * (1 - blockFactor.getCurrentValue()));
         } else {
             health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR));

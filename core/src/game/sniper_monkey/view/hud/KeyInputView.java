@@ -44,14 +44,27 @@ public class KeyInputView implements TimerObserver, HUDView {
         this.key = key;
         this.text = text;
         this.textPlacement = textPlacement;
-        fillableBar = new FillableBar(x, y, width, height, Color.LIGHT_GRAY, FillDirection.UP);
+        fillableBar = createFillableBar(x, y);
         keyLabel = createKeyLabel(x, y, key);
-        sideTextLabel = new Label(text, FontUtils.robotoWhite(14));
-        updateSideLabel();
+        sideTextLabel = createSideTextLabel(text);
+        positionSideTextLabel(textPlacement);
     }
 
-    private void updateSideLabel() {
+    private Label createSideTextLabel(String text) {
+        return new Label(text, FontUtils.robotoWhite(14));
+    }
+
+    private FillableBar createFillableBar(float x, float y) {
+        Color lightGreen = new Color(93 / 255f, 186 / 255f, 104 / 255f, 0);
+        return new FillableBar(x, y, width, height, lightGreen, FillDirection.UP);
+    }
+
+    private void updateSideLabel(String text, Placement textPlacement) {
         sideTextLabel.setText(text);
+        positionSideTextLabel(textPlacement);
+    }
+
+    private void positionSideTextLabel(Placement textPlacement) {
         if (textPlacement == Placement.RIGHT) {
             sideTextLabel.setPosition(x + width + sideLabelOffset, y + (height / 2 - sideTextLabel.getHeight() / 2));
         } else if (textPlacement == Placement.LEFT) {
@@ -91,7 +104,7 @@ public class KeyInputView implements TimerObserver, HUDView {
      */
     public void setText(String text) {
         this.text = text;
-        updateSideLabel();
+        updateSideLabel(text, textPlacement);
     }
 
     @Override
