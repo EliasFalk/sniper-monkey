@@ -48,7 +48,7 @@ public class SelectViewRectangle extends Actor {
         fighterLabel = new Label(HUDUtils.getFighterDisplayName(fighter), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         this.img = createFighterImage(HUDUtils.getCorrespondingTextureRegion(fighter), x, y, true, img);
         this.previewImg = createFighterImage(HUDUtils.getCorrespondingTextureRegion(fighter), (Gdx.graphics.getWidth()*2)/10f, (Gdx.graphics.getHeight()*6)/10f, true, previewImg);
-        this.player2PreviewImg = createFighterImage(HUDUtils.getCorrespondingTextureRegion(fighter), (Gdx.graphics.getWidth()*10)/10f, (Gdx.graphics.getHeight()*6)/10f, true, player2PreviewImg);
+        this.player2PreviewImg = createFighterImage(HUDUtils.getCorrespondingTextureRegion(fighter), (Gdx.graphics.getWidth()*6)/10f, (Gdx.graphics.getHeight()*6)/10f, true, player2PreviewImg);
     }
 
     @Override
