@@ -8,6 +8,11 @@ import game.sniper_monkey.model.player.fighter.HuntressBow;
 import game.sniper_monkey.model.player.fighter.Samurai;
 import game.sniper_monkey.model.player.fighter.attack.*;
 
+/**
+ * A utility class that returns the corresponding display name, image or similar given a class.
+ *
+ * @author Elias Falk
+ */
 public class HUDUtils {
 
     /**
@@ -67,7 +72,7 @@ public class HUDUtils {
             return "Evil Hammer Smash";
         } else if (attack == EvilMagicSwingAttack.class) {
             return "Evil Magic Swing";
-        } else if(attack == BowAttack.class) {
+        } else if (attack == BowAttack.class) {
             return "Bow Attack";
         } else if (attack == BowTripleAttack.class) {
             return "Bow Triple Attack";

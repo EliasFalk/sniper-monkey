@@ -3,8 +3,7 @@ package game.sniper_monkey.view.player.fighter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.model.player.fighter.attack.Arrow;
-import game.sniper_monkey.utils.time.Time;
+import game.sniper_monkey.model.player.fighter.attack.attack_object.Arrow;
 import game.sniper_monkey.view.GameObjectView;
 
 public class ArrowView extends GameObjectView {

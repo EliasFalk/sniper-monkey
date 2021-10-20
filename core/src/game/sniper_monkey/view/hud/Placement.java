@@ -6,8 +6,6 @@ package game.sniper_monkey.view.hud;
  * @author Elias Falk
  */
 public enum Placement {
-    TOP,
     RIGHT,
-    BOTTOM,
     LEFT
 }

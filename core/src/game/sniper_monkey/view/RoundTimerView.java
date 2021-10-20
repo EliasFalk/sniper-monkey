@@ -1,13 +1,12 @@
 package game.sniper_monkey.view;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import game.sniper_monkey.model.world.ITimerObserver;
+import game.sniper_monkey.model.world.TimerObserver;
 import game.sniper_monkey.model.world.World;
+import game.sniper_monkey.utils.view.FontUtils;
 import game.sniper_monkey.view.hud.HUDView;
 
 /**
@@ -15,7 +14,7 @@ import game.sniper_monkey.view.hud.HUDView;
  *
  * @author Kevin Jeryd
  */
-public class RoundTimerView implements HUDView, ITimerObserver {
+public class RoundTimerView implements HUDView, TimerObserver {
 
     private final Label countdownLabel;
     World model;
@@ -23,9 +22,8 @@ public class RoundTimerView implements HUDView, ITimerObserver {
     //TODO documentation
     public RoundTimerView(World model) {
         this.model = model;
-        countdownLabel = new Label(String.format("%03d", model.getRoundDuration()), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        countdownLabel.setFontScale(4, 4);
-        countdownLabel.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() - 100);
+        countdownLabel = new Label(String.format("%03d", model.getRoundDuration()), FontUtils.robotoWhite(50));
+        countdownLabel.setPosition(Gdx.graphics.getWidth() / 2f - countdownLabel.getPrefWidth() / 2, Gdx.graphics.getHeight() - 100);
         countdownLabel.setAlignment(Align.center);
     }
 
@@ -34,9 +32,9 @@ public class RoundTimerView implements HUDView, ITimerObserver {
         stage.addActor(countdownLabel);
     }
 
-    //TODO documentation
+
     @Override
-    public void onTimerChange(int time) {
-        countdownLabel.setText(time);
+    public void onTimeUpdated(float timerLength, float timeLeft) {
+        countdownLabel.setText((int) timeLeft);
     }
 }

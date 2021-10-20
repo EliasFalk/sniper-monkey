@@ -18,9 +18,9 @@ import org.junit.Test;
 
 public class TestEvilMagicSwingAttack {
 
-    World world = World.getInstance();
-    static String cfg;
-    static float roundTime;
+    private static World world = World.getInstance();
+    private static String cfg;
+    private static float roundTime;
 
     @BeforeClass
     public static void init() {
@@ -29,6 +29,7 @@ public class TestEvilMagicSwingAttack {
         new HeadlessApplication(new ApplicationAdapter() {}, config);
         Config.readConfigFile(cfg);
         roundTime = Config.getNumber(cfg, "ROUND_TIME");
+        world.resetWorld();
     }
 
     @Test

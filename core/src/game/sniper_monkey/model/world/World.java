@@ -30,7 +30,27 @@ public final class World {
     private final List<IWorldObserver> observers;
     private final CallbackTimer roundTimer;
     private final List<ITimerObserver> timerObservers;
-    private State currentState = this::startFightingState;
+
+    //TODO documentation
+    //TIMER OBSERVER STUFF
+    public void registerTimerObserver(TimerObserver timerObserver) {
+        roundTimer.registerTimerObserver(timerObserver);
+    }
+
+    public void unregisterTimerObserver(TimerObserver timerObserver) {
+        roundTimer.unRegisterTimerObserver(timerObserver);
+    }
+
+    private void removeQueuedGameObjects() {
+        while (!queuedForRemoval.isEmpty()) {
+            GameObject obj = queuedForRemoval.remove();
+            gameObjects.remove(obj);
+            notifyObserversOfRemovedObject(obj);
+            CollisionEngine.unregisterGameObject(obj);
+        }
+    }
+
+    private State currentState = this::startFightingState; // TODO move states
 
     @FunctionalInterface
     interface State {
@@ -66,7 +86,6 @@ public final class World {
      */
     private void startFightingState() {
         roundTimer.start();
-        System.out.println("START FIGHT!");
         currentState = this::playingState;
     }
 
@@ -84,7 +103,6 @@ public final class World {
      * Actively waits for input to start the game again.
      */
     private void endGameState() {
-        System.out.println("GAME ENDED!");
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             startFightingState();
         }
@@ -112,15 +130,17 @@ public final class World {
         }
     }
 
-    //TODO documentation
-    //TIMER OBSERVER STUFF
-    public void registerTimerObserver(ITimerObserver timerObserver) {
-        timerObservers.add(timerObserver);
+    /**
+     * Resets the world by removing all the game objects and resetting the round timer.
+     * Notifies all observers that the game objects has been removed.
+     */
+    public void resetWorld() {
+        queuedForRemoval.addAll(gameObjects);
+        removeQueuedGameObjects();
+        roundTimer.reset(); // TODO should maybe not be in world?
+        currentState = this::startFightingState; // TODO move states
     }
 
-    public void unregisterTimerObserver(ITimerObserver deleteTimerObserver) {
-        timerObservers.remove(deleteTimerObserver);
-    }
 
     private void notifyObserversOfTimerChange(int time) {
         for (ITimerObserver timerObserver : timerObservers) {
@@ -152,14 +172,7 @@ public final class World {
         }
     }
 
-    private void removeQueuedGameObjects() {
-        while(!queuedForRemoval.isEmpty()) {
-            GameObject obj = queuedForRemoval.remove();
-            gameObjects.remove(obj);
-            notifyObserversOfRemovedObject(obj);
-            CollisionEngine.unregisterGameObject(obj);;
-        }
-    }
+
 
     /**
      * Queues a GameObject for removal from the world,
@@ -180,4 +193,6 @@ public final class World {
     public void queueAddGameObject(GameObject obj) {
         queuedForAddition.add(obj);
     }
+
+
 }

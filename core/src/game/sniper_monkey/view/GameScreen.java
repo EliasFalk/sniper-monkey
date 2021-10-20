@@ -1,7 +1,10 @@
 package game.sniper_monkey.view;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -34,6 +37,9 @@ public class GameScreen extends ScreenAdapter implements IWorldObserver, Swapped
     boolean debugMode = false;
     RoundTimerView roundTimerView;
 
+    Sprite bg1;
+    Sprite bg2;
+
     /**
      * Creates a GameRenderer
      */
@@ -49,10 +55,25 @@ public class GameScreen extends ScreenAdapter implements IWorldObserver, Swapped
         PartitionDebugRenderer = new ShapeRenderer();
         ObjectDebugRenderer = new ShapeRenderer();
         roundTimerView.addActors(stage);
+        loadBackground();
+    }
+
+    private void loadBackground() {
+        Texture bg1T = new Texture("images/Taiga-Asset-Pack_v2_vnitti/PNG/Background.png");
+        Texture bg2T = new Texture("images/Taiga-Asset-Pack_v2_vnitti/PNG/Middleground.png");
+
+        bg1 = new Sprite(bg1T);
+        bg2 = new Sprite(bg2T);
+    }
+
+    private void renderBackground(SpriteBatch batch) {
+        batch.draw(bg1, -Gdx.graphics.getWidth() / 2f, -Gdx.graphics.getHeight() / 2f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(bg2, -Gdx.graphics.getWidth() / 2f, -Gdx.graphics.getHeight() / 2f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     /**
      * Updates the projection matrix using a new size
+     *
      * @param width  The new viewport width
      * @param height The new viewport height
      */
@@ -77,7 +98,7 @@ public class GameScreen extends ScreenAdapter implements IWorldObserver, Swapped
         PartitionDebugRenderer.setProjectionMatrix(camera.combined);
         ObjectDebugRenderer.begin(ShapeRenderer.ShapeType.Line);
         ObjectDebugRenderer.setProjectionMatrix(camera.combined);
-
+        renderBackground(batch);
         if (debugMode) {
             PartitionDebugRenderer.setColor(1, 0, 0, 1);
             int partitionSize = 64; // hard coded based on spatialhash

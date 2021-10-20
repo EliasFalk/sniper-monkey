@@ -1,4 +1,4 @@
-package game.sniper_monkey.model.player.fighter.attack;
+package game.sniper_monkey.model.player.fighter.attack.attack_object;
 
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.player.Player;
@@ -26,7 +26,6 @@ public class EvilMagicHammer extends AttackObject {
         super(damage, timeToLive, spawnPos, collisionMask, lookingRight, attackHitboxSize);
 
         addHitResponse(Player.class, gameObject -> {
-            System.out.println(damage);
             Player player = (Player) gameObject;
             player.takeDamage(damage);
             delete(); // after hit

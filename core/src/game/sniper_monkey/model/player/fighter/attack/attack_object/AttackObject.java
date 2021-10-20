@@ -1,4 +1,4 @@
-package game.sniper_monkey.model.player.fighter.attack;
+package game.sniper_monkey.model.player.fighter.attack.attack_object;
 
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.collision.CollisionEngine;
