@@ -4,16 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import game.sniper_monkey.model.player.fighter.EvilWizard;
 import game.sniper_monkey.model.player.fighter.Fighter;
-import game.sniper_monkey.model.player.fighter.FighterFactory;
 import game.sniper_monkey.model.player.fighter.HuntressBow;
 
 import java.util.ArrayList;
@@ -29,7 +25,8 @@ public class CharacterSelectionScreen extends ScreenAdapter  {
 
     //Make it so amountOfFighters is the length of the fighterList
     private final int amountOfFighters = 8;
-    private int selectedRectangleIndex = 0;
+    private int player1SelectedRectangleIndex = 0;
+    private int player2SelectedRectangleIndex = 0;
 
     //Create a list with potential fighters to choose from? Should it be the sprite of each fighter?
     private final List<Class<? extends Fighter>> fighterList = new ArrayList<>();
@@ -47,7 +44,7 @@ public class CharacterSelectionScreen extends ScreenAdapter  {
         fighterList.add(HuntressBow.class);
         fighterList.add(EvilWizard.class);
         fighterList.add(EvilWizard.class);
-        fighterList.add(EvilWizard.class);
+        fighterList.add(HuntressBow.class);
         fighterList.add(EvilWizard.class);
 
         createRectangles();
@@ -59,11 +56,10 @@ public class CharacterSelectionScreen extends ScreenAdapter  {
         for (int i = 0; i < (amountOfFighters); i++) {
             SelectViewRectangle rect;
 
-            //Fix math for width
             if ( i < (amountOfFighters/2)) {
-                rect = new SelectViewRectangle(fighterList.get(i), ((i % (amountOfFighters / 2f)+0)) * Gdx.graphics.getWidth() / ((float) amountOfFighters / 2), Gdx.graphics.getHeight() / 4f, 100f, 100f, Color.BLUE, stage);
+                rect = new SelectViewRectangle(fighterList.get(i), ((i % (amountOfFighters / 2f))) * Gdx.graphics.getWidth() / ((float) amountOfFighters / 2)+100, Gdx.graphics.getHeight() / 4f, 100f, 100f, Color.BLUE, stage);
             } else {
-                rect = new SelectViewRectangle(fighterList.get(i),((i % (amountOfFighters / 2f)+0)) * Gdx.graphics.getWidth() / ((float) amountOfFighters / 2), Gdx.graphics.getHeight() / (3 * 4f), 100f, 100f, Color.BLUE, stage);
+                rect = new SelectViewRectangle(fighterList.get(i),((i % (amountOfFighters / 2f))) * Gdx.graphics.getWidth() / ((float) amountOfFighters / 2)+100, Gdx.graphics.getHeight() / (3 * 4f), 100f, 100f, Color.BLUE, stage);
             }
             rectangleMap.put(i, rect);
             stage.addActor(rect);
@@ -74,36 +70,69 @@ public class CharacterSelectionScreen extends ScreenAdapter  {
     //Will break if you go to the left though. Find solution.
     private void unSelectedRectangles() {
         for (int i = 0; i < rectangleMap.size(); i++) {
-            if (i != selectedRectangleIndex) {
-                rectangleMap.get(i).setSelected(false);
+            if (i != player1SelectedRectangleIndex) {
+                rectangleMap.get(i).setPlayer1Selected(false);
             }
         }
     }
 
-    private void setSelectedRectangle() {
-        SelectViewRectangle selectedRectangle = rectangleMap.get(selectedRectangleIndex);
-        selectedRectangle.setSelected(true);
+    private void player2UnselectedRectangles() {
+        for (int i = 0; i < rectangleMap.size(); i++) {
+            if (i != player2SelectedRectangleIndex) {
+                rectangleMap.get(i).setPlayer2Selected(false);
+            }
+        }
     }
 
+    private void setPlayer1SelectedRectangle() {
+        SelectViewRectangle player1SelectedRectangle = rectangleMap.get(player1SelectedRectangleIndex);
+        player1SelectedRectangle.setPlayer1Selected(true);
+    }
+
+    private void setPlayer2SelectedRectangle() {
+        SelectViewRectangle player2SelectedRectangle = rectangleMap.get(player2SelectedRectangleIndex);
+        player2SelectedRectangle.setPlayer2Selected(true);
+    }
+
+
+    //Use T and P for player 1 select fighters. P primary and T secondary
     private void handleInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.D)){
-            setSelectedRectangleIndex(1);
+            setPlayer1SelectedRectangleIndex(1);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-            setSelectedRectangleIndex(-1);
+            setPlayer1SelectedRectangleIndex(-1);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-            setSelectedRectangleIndex(amountOfFighters/2);
+            setPlayer1SelectedRectangleIndex(amountOfFighters/2);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
-            setSelectedRectangleIndex(-amountOfFighters/2);
+            setPlayer1SelectedRectangleIndex(-amountOfFighters/2);
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+            chooseFighter();
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
+            setPlayer2SelectedRectangleIndex(1);
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
+            setPlayer2SelectedRectangleIndex(-1);
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+            setPlayer2SelectedRectangleIndex(amountOfFighters/2);
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+            setPlayer2SelectedRectangleIndex(-amountOfFighters/2);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             chooseFighter();
         }
     }
 
-    private void setSelectedRectangleIndex(int i) {
-        if (((selectedRectangleIndex+i)%amountOfFighters) < 0) {
-            selectedRectangleIndex = ((selectedRectangleIndex+i)%amountOfFighters)+amountOfFighters;
+    private void setPlayer1SelectedRectangleIndex(int i) {
+        if (((player1SelectedRectangleIndex +i)%amountOfFighters) < 0) {
+            player1SelectedRectangleIndex = ((player1SelectedRectangleIndex +i)%amountOfFighters)+amountOfFighters;
         } else {
-            selectedRectangleIndex = ((selectedRectangleIndex+i)%amountOfFighters);
+            player1SelectedRectangleIndex = ((player1SelectedRectangleIndex +i)%amountOfFighters);
+        }
+    }
+
+    private void setPlayer2SelectedRectangleIndex(int i) {
+        if (((player2SelectedRectangleIndex +i)%amountOfFighters) < 0) {
+            player2SelectedRectangleIndex = ((player2SelectedRectangleIndex +i)%amountOfFighters)+amountOfFighters;
+        } else {
+            player2SelectedRectangleIndex = ((player2SelectedRectangleIndex +i)%amountOfFighters);
         }
     }
 
@@ -116,7 +145,10 @@ public class CharacterSelectionScreen extends ScreenAdapter  {
         ScreenUtils.clear(1, 1, 1, 1);
 
         handleInput();
-        setSelectedRectangle();
+        System.out.println("PLAYER 1 INDEX : " + player1SelectedRectangleIndex);
+        System.out.println("PLAYER 2 INDEX : " + player2SelectedRectangleIndex);
+        setPlayer1SelectedRectangle();
+        setPlayer2SelectedRectangle();
         unSelectedRectangles();
 
         batch.begin();

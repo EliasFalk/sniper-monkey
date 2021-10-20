@@ -32,6 +32,7 @@ public class SelectViewRectangle extends Actor {
     private final Label fighterLabel;
     private final Class<? extends Fighter> fighter;
     private final Stage stage;
+    private Color outerRectangleColor;
 
     public SelectViewRectangle(Class<? extends Fighter> fighter, float x, float y, float width, float height, Color color, Stage stage) {
         shapeRenderer = new ShapeRenderer();
@@ -92,7 +93,7 @@ public class SelectViewRectangle extends Actor {
     }
 
     private void drawOuterRectangle() {
-        shapeRenderer.setColor(Color.ORANGE);
+        shapeRenderer.setColor(outerRectangleColor);
         shapeRenderer.rect(x, y, width+borderThickness, height+borderThickness);
     }
 
@@ -101,8 +102,14 @@ public class SelectViewRectangle extends Actor {
         shapeRenderer.rect(x, y, width+borderThickness, height+borderThickness);
     }
 
-    public void setSelected(boolean bool) {
+    public void setPlayer1Selected(boolean bool) {
         this.selected = bool;
+        this.outerRectangleColor = Color.ORANGE;
+    }
+
+    public void setPlayer2Selected(boolean bool) {
+        this.selected = bool;
+        this.outerRectangleColor = Color.GREEN;
     }
 
 }
