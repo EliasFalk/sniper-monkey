@@ -70,17 +70,8 @@ public class CharacterSelectionScreen extends ScreenAdapter  {
     //Will break if you go to the left though. Find solution.
     private void unSelectedRectangles() {
         for (int i = 0; i < rectangleMap.size(); i++) {
-            if (i != player1SelectedRectangleIndex) {
-                rectangleMap.get(i).setPlayer1Selected(false);
-            }
-        }
-    }
-
-    private void player2UnselectedRectangles() {
-        for (int i = 0; i < rectangleMap.size(); i++) {
-            if (i != player2SelectedRectangleIndex) {
-                rectangleMap.get(i).setPlayer2Selected(false);
-            }
+            rectangleMap.get(i).setPlayer1Selected(false);
+            rectangleMap.get(i).setPlayer2Selected(false);
         }
     }
 
@@ -145,11 +136,9 @@ public class CharacterSelectionScreen extends ScreenAdapter  {
         ScreenUtils.clear(1, 1, 1, 1);
 
         handleInput();
-        System.out.println("PLAYER 1 INDEX : " + player1SelectedRectangleIndex);
-        System.out.println("PLAYER 2 INDEX : " + player2SelectedRectangleIndex);
+        unSelectedRectangles();
         setPlayer1SelectedRectangle();
         setPlayer2SelectedRectangle();
-        unSelectedRectangles();
 
         batch.begin();
         sr.begin(ShapeRenderer.ShapeType.Line);

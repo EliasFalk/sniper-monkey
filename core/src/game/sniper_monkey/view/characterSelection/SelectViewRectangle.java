@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -22,13 +21,15 @@ public class SelectViewRectangle extends Actor {
 
     private Image img;
     private Image previewImg;
+    private Image player2PreviewImg;
     private final float x;
     private final float y;
     private final float width;
     private final float height;
     private static final float borderThickness = 6;
     private Color color;
-    private boolean selected;
+    private boolean player1Select;
+    private boolean player2Select;
     private final Label fighterLabel;
     private final Class<? extends Fighter> fighter;
     private final Stage stage;
@@ -47,18 +48,29 @@ public class SelectViewRectangle extends Actor {
         fighterLabel = new Label(HUDUtils.getFighterDisplayName(fighter), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         this.img = createFighterImage(HUDUtils.getCorrespondingTextureRegion(fighter), x, y, true, img);
         this.previewImg = createFighterImage(HUDUtils.getCorrespondingTextureRegion(fighter), (Gdx.graphics.getWidth()*2)/10f, (Gdx.graphics.getHeight()*6)/10f, true, previewImg);
+        this.player2PreviewImg = createFighterImage(HUDUtils.getCorrespondingTextureRegion(fighter), (Gdx.graphics.getWidth()*10)/10f, (Gdx.graphics.getHeight()*6)/10f, true, player2PreviewImg);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        if (selected) {
+        if (player1Select) {
             drawOuterRectangle();
             drawPreviewAnimation();
         } else {
-            removeOuterRectangle(color);
             removePreviewAnimation();
+        }
+
+        if (player2Select) {
+            drawOuterRectangle();
+            drawPlayer2PreviewAnimation();
+        } else {
+            removePlayer2PreviewAnimation();
+        }
+
+        if (!player1Select && !player2Select) {
+            removeOuterRectangle(color);
         }
         drawRectangle(color);
         shapeRenderer.end();
@@ -78,8 +90,17 @@ public class SelectViewRectangle extends Actor {
         stage.addActor(previewImg);
     }
 
+    private void drawPlayer2PreviewAnimation() {
+        player2PreviewImg.setScale(2);
+        stage.addActor(player2PreviewImg);
+    }
+
     private void removePreviewAnimation() {
         previewImg.remove();
+    }
+
+    private void removePlayer2PreviewAnimation() {
+        player2PreviewImg.remove();
     }
 
     public void addLabel() {
@@ -103,13 +124,20 @@ public class SelectViewRectangle extends Actor {
     }
 
     public void setPlayer1Selected(boolean bool) {
-        this.selected = bool;
-        this.outerRectangleColor = Color.ORANGE;
+        this.player1Select = bool;
+        if (player1Select) {
+            this.outerRectangleColor = Color.ORANGE;
+        } else {
+            this.outerRectangleColor = Color.BLUE;
+        }
     }
 
     public void setPlayer2Selected(boolean bool) {
-        this.selected = bool;
-        this.outerRectangleColor = Color.GREEN;
+        this.player2Select = bool;
+        if (player2Select) {
+            this.outerRectangleColor = Color.GREEN;
+        } else {
+            this.outerRectangleColor = Color.BLUE;
+        }
     }
-
 }
