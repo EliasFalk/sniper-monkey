@@ -48,4 +48,13 @@ public class AttackFactory {
         return new BowTripleAttack();
     }
 
+    /**
+     * Creates an object of type SamuraiQuickAttack. Is the Samurai's first attack.
+     * @return a new SamuraiQuickAttack object.
+     */
+    public static IAttack createSamuraiQuickAttack() {
+        return new SamuraiQuickAttack();
+    }
+
+
 }

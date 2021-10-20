@@ -2,6 +2,7 @@ package game.sniper_monkey.model.player.fighter.attack;
 
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.player.fighter.Samurai;
+import game.sniper_monkey.model.player.fighter.attack.attack_object.AttackObjectSpawner;
 import game.sniper_monkey.model.world.CallbackTimer;
 
 /**
@@ -17,9 +18,9 @@ import game.sniper_monkey.model.world.CallbackTimer;
 public class SamuraiQuickAttack implements IAttack {
 
     private static final float damage = 10;
-    private static final float attackLength = 0.5f;
+    private static final float attackLength = 0.4f;
     private static final float attackObjectTimeToLive = attackLength;
-    private static final float hitStunLength = 0.2f;
+    private static final float hitStunLength = 0.15f;
     private static final float staminaCost = 10;
     private final CallbackTimer cbTimer;
     private boolean isFinished = true;
@@ -38,7 +39,7 @@ public class SamuraiQuickAttack implements IAttack {
         if (isFinished) {
             float xSpawnPos = lookingRight ? hitboxSize.x : 0;
             Vector2 spawnPos = playerPos.add(xSpawnPos, 0);
-            //AttackObjectSpawner.spawnEvilMagicSwing(attackFactor * damage, attackObjectTimeToLive, spawnPos, collisionMask, lookingRight);
+            AttackObjectSpawner.spawnSamuraiQuickSwing(attackFactor * damage, attackObjectTimeToLive, spawnPos, collisionMask, lookingRight);
             cbTimer.reset();
             cbTimer.start();
             isFinished = false;

@@ -58,5 +58,19 @@ public class AttackObjectSpawner {
         World.getInstance().queueAddGameObject(huntressArrow);
     }
 
+    /**
+     * Creates an attack object of the Samurai's quick attack swing and adds it to the world.
+     *
+     * @param damage        a float 0..n. A factor of how much more/less damage a fighter does. I.E. if fighter is "strong" then the attackFactor is higher.
+     * @param timeToLive    a float 0..n. Determines for how long the object exists for in seconds.
+     * @param spawnPos      a Vector2. A coordinate of the position where the hitbox is supposed to spawn.
+     * @param collisionMask an int 0..n. A collision mask to prevent the hitbox from colliding with the attacker.
+     * @param lookingRight  a boolean. Is the direction the player is facing. True if player is facing to the right, false if the player is facing the left.
+     */
+    public static void spawnSamuraiQuickSwing(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, boolean lookingRight) {
+        AttackObject samuraiSwing = new SamuraiQuickSwing(damage, timeToLive, spawnPos, collisionMask, lookingRight);
+        World.getInstance().queueAddGameObject(samuraiSwing);
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package game.sniper_monkey.model.player.fighter.attack.attack_object;
 
 import com.badlogic.gdx.math.Vector2;
+import game.sniper_monkey.model.player.DamageablePlayer;
 import game.sniper_monkey.model.player.Player;
 
 /**
@@ -29,18 +30,10 @@ public class EvilMagicSwing extends AttackObject {
 
 
         addHitResponse(Player.class, gameObject -> {
-            Player player = (Player) gameObject;
+            DamageablePlayer player = (DamageablePlayer) gameObject;
             player.takeDamage(damage);
             delete(); // after hit
         });
     }
 
-
-
-
-    @Override
-    public void update(float deltaTime) {
-        super.update(deltaTime);
-
-    }
 }
