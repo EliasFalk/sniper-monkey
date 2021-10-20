@@ -116,7 +116,7 @@ public class GameScreen extends ScreenAdapter implements IWorldObserver, Swapped
 
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().update(width, height, true);
     }
 
     @Override

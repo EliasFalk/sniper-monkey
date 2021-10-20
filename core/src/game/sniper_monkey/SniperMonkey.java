@@ -28,4 +28,9 @@ public class SniperMonkey extends ApplicationAdapter {
     public void dispose() {
         gameController.dispose();
     }
+
+    @Override
+    public void resize(int w, int h) {
+        gameController.onResize(w, h);
+    }
 }

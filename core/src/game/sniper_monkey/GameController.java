@@ -31,10 +31,15 @@ public class GameController implements FluctuatingAttributeObserver {
     private final CallbackTimer roundTimer;
     private GameState currentState;
     private Player player1, player2;
+    private OverlayMenu pauseMenu;
+    private OverlayMenu endMenu;
 
     @Override
     public void onValueChange(float min, float max, float health) {
-        if (health <= min) currentState = this::gameOverState;
+        if (health <= min) {
+            currentState = this::gameOverState;
+            addEndMenuToScreen();
+        }
     }
 
     @FunctionalInterface
@@ -44,7 +49,11 @@ public class GameController implements FluctuatingAttributeObserver {
 
     public GameController() {
         Config.readConfigFile("cfg/game.cfg");
-        roundTimer = new CallbackTimer(Config.getNumber("cfg/game.cfg", "ROUND_TIME"), () -> currentState = this::gameOverState);
+        roundTimer = new CallbackTimer(Config.getNumber("cfg/game.cfg", "ROUND_TIME"), () -> {
+            currentState = this::gameOverState;
+            addEndMenuToScreen();
+        });
+        pauseMenu = createPauseMenu();
         create();
     }
 
@@ -72,6 +81,7 @@ public class GameController implements FluctuatingAttributeObserver {
         if (player1.getHealth() > player2.getHealth()) return 1;
         else if (player2.getHealth() > player1.getHealth()) return 2;
         else return 0;
+
     }
 
     private void startState(float deltaTime) {
@@ -101,9 +111,7 @@ public class GameController implements FluctuatingAttributeObserver {
         }
     }
 
-    OverlayMenu pauseMenu = createOverLayMenu(); // TODO
-
-    private OverlayMenu createOverLayMenu() {
+    private OverlayMenu createPauseMenu() {
         OverlayMenu pauseMenu = new OverlayMenu("Game Paused");
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.font = new BitmapFont();
@@ -115,14 +123,38 @@ public class GameController implements FluctuatingAttributeObserver {
                 currentState = GameController.this::startState;
             }
         });
+
+        Button ass = new TextButton("Ass", textButtonStyle);
         pauseMenu.addButton(resumeGame);
+        pauseMenu.addButton(ass);
         return pauseMenu;
+    }
+
+    private OverlayMenu createEndMenu() {
+        OverlayMenu endMenu = new OverlayMenu("Player " + determineWinner() + " Wins!");
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.font = new BitmapFont();
+        Button goToStart = new TextButton("Return to main menu", textButtonStyle);
+        goToStart.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                gameScreen.removeHudView(endMenu);
+                // TODO go back to start screen
+            }
+        });
+
+        endMenu.addButton(goToStart);
+        return endMenu;
     }
 
 
     private void gameOverState(float deltaTime) {
-        int winner = determineWinner();
-        System.out.println("Player " + winner + " wins!"); //TODO "Player 0 wins!" = "Draw" (do this in HUDView instead)
+
+    }
+
+    private void addEndMenuToScreen() {
+        endMenu = createEndMenu();
+        gameScreen.addHudView(endMenu);
     }
 
     private Vector2 calculateMapOffset(String[][] map) {
@@ -195,5 +227,9 @@ public class GameController implements FluctuatingAttributeObserver {
     //TODO documentation
     public void dispose() {
         gameScreen.dispose();
+    }
+
+    public void onResize(int w, int h) {
+        gameScreen.resize(w, h);
     }
 }

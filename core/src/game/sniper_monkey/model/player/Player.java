@@ -324,6 +324,10 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         } else {
             health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR));
         }
+
+        if(health.getCurrentValue() <= 0) {
+            currentPhysicalState = PhysicalState.DYING;
+        }
     }
 
     /**
