@@ -6,7 +6,14 @@ package game.sniper_monkey.model.player;
  * @author Elias Falk
  */
 public enum PlayerInputAction {
+    /**
+     * The action which
+     */
     JUMP,
+
+    /**
+     *
+     */
     MOVE_LEFT,
     MOVE_RIGHT,
     ATTACK1,

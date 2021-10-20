@@ -126,4 +126,10 @@ public class SecondaryFighterView implements HUDView {
         stage.addActor(img);
         stage.addActor(fighterName);
     }
+
+    @Override
+    public void removeActors() {
+        img.remove();
+        fighterName.remove();
+    }
 }

@@ -13,7 +13,6 @@ import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.SwappedFighterObserver;
 import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.model.world.IWorldObserver;
-import game.sniper_monkey.model.world.World;
 import game.sniper_monkey.view.hud.HUDView;
 
 import java.util.ArrayList;
@@ -46,6 +45,7 @@ public class GameScreen extends ScreenAdapter implements IWorldObserver, Swapped
         stage = new Stage();
         batch = new SpriteBatch();
         gameObjectViews = new ArrayList<>();
+        Gdx.input.setInputProcessor(stage);
 
         PartitionDebugRenderer = new ShapeRenderer();
         ObjectDebugRenderer = new ShapeRenderer();
@@ -166,7 +166,7 @@ public class GameScreen extends ScreenAdapter implements IWorldObserver, Swapped
     }
 
     public void removeHudView(HUDView hudView) {
-//        hudView.addActors(stage);
+        hudView.removeActors();
     }
 
     @Override

@@ -3,7 +3,12 @@ package game.sniper_monkey;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import game.sniper_monkey.controller.PlayerController;
 import game.sniper_monkey.model.Config;
@@ -16,13 +21,8 @@ import game.sniper_monkey.model.world.World;
 import game.sniper_monkey.model.world_brick.WorldBrick;
 import game.sniper_monkey.utils.MapReader;
 import game.sniper_monkey.view.GameScreen;
-import game.sniper_monkey.view.RoundTimerView;
-import game.sniper_monkey.view.hud.BarView;
-import game.sniper_monkey.view.hud.BottomHUDController;
-import game.sniper_monkey.view.hud.FillDirection;
-import game.sniper_monkey.view.hud.Placement;
+import game.sniper_monkey.view.hud.*;
 
-import java.awt.*;
 import java.util.Map;
 
 public class GameController implements FluctuatingAttributeObserver {
@@ -87,6 +87,7 @@ public class GameController implements FluctuatingAttributeObserver {
         TimerBank.updateTimers(deltaTime);
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) { //TODO config for key bind
+            gameScreen.addHudView(pauseMenu);
             currentState = this::pauseState;
         }
     }
@@ -96,8 +97,28 @@ public class GameController implements FluctuatingAttributeObserver {
         roundTimer.stop();
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) { //TODO config for key bind
             currentState = this::startState;
+            gameScreen.removeHudView(pauseMenu);
         }
     }
+
+    OverlayMenu pauseMenu = createOverLayMenu(); // TODO
+
+    private OverlayMenu createOverLayMenu() {
+        OverlayMenu pauseMenu = new OverlayMenu("Game Paused");
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.font = new BitmapFont();
+        Button resumeGame = new TextButton("Resume", textButtonStyle);
+        resumeGame.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                gameScreen.removeHudView(pauseMenu);
+                currentState = GameController.this::startState;
+            }
+        });
+        pauseMenu.addButton(resumeGame);
+        return pauseMenu;
+    }
+
 
     private void gameOverState(float deltaTime) {
         int winner = determineWinner();
