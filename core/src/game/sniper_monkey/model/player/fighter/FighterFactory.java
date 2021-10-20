@@ -21,4 +21,12 @@ public class FighterFactory {
     public static Fighter createHuntressBow() {
         return new HuntressBow();
     }
+
+    /**
+     * Creates a Samurai fighter.
+     * @return A fighter with factors and attacks belonging to the Samurai.
+     */
+    public static Fighter createSamurai() {
+        return new Samurai();
+    }
 }
