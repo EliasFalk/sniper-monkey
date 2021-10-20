@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
+import game.sniper_monkey.GameController;
+import game.sniper_monkey.model.world.CallbackTimer;
 import game.sniper_monkey.model.world.TimerObserver;
 import game.sniper_monkey.model.world.World;
 import game.sniper_monkey.utils.view.FontUtils;
@@ -17,12 +19,10 @@ import game.sniper_monkey.view.hud.HUDView;
 public class RoundTimerView implements HUDView, TimerObserver {
 
     private final Label countdownLabel;
-    World model;
 
     //TODO documentation
-    public RoundTimerView(World model) {
-        this.model = model;
-        countdownLabel = new Label(String.format("%03d", model.getRoundDuration()), FontUtils.robotoWhite(50));
+    public RoundTimerView() {
+        countdownLabel = new Label("0", FontUtils.robotoWhite(50));
         countdownLabel.setPosition(Gdx.graphics.getWidth() / 2f - countdownLabel.getPrefWidth() / 2, Gdx.graphics.getHeight() - 100);
         countdownLabel.setAlignment(Align.center);
     }

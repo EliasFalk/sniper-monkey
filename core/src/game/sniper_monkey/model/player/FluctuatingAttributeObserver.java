@@ -1,5 +1,5 @@
 package game.sniper_monkey.model.player;
 
 public interface FluctuatingAttributeObserver {
-    void onPercentageChange(float newFraction);
+    void onValueChange(float min, float max, float current);
 }

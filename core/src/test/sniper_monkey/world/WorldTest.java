@@ -30,11 +30,6 @@ public class WorldTest {
     }
 
     @Test
-    public void testGetRoundDuration() {
-        Assert.assertEquals(roundTime, world.getRoundDuration(), 0);
-    }
-
-    @Test
     public void testAddGameObject() {
         GameObject obj = PlayerFactory.createPlayer(new Vector2(50, 50));
         world.queueAddGameObject(obj);

@@ -35,7 +35,6 @@ public class GameScreen extends ScreenAdapter implements IWorldObserver, Swapped
     Stage stage;
     OrthographicCamera camera = new OrthographicCamera(1920 / 2f, 1080 / 2f);
     boolean debugMode = false;
-    RoundTimerView roundTimerView;
 
     Sprite bg1;
     Sprite bg2;
@@ -48,13 +47,8 @@ public class GameScreen extends ScreenAdapter implements IWorldObserver, Swapped
         batch = new SpriteBatch();
         gameObjectViews = new ArrayList<>();
 
-        //TODO: REFACTOR OBSERVER
-        roundTimerView = new RoundTimerView(World.getInstance());
-        World.getInstance().registerTimerObserver(roundTimerView);
-
         PartitionDebugRenderer = new ShapeRenderer();
         ObjectDebugRenderer = new ShapeRenderer();
-        roundTimerView.addActors(stage);
         loadBackground();
     }
 
@@ -67,8 +61,8 @@ public class GameScreen extends ScreenAdapter implements IWorldObserver, Swapped
     }
 
     private void renderBackground(SpriteBatch batch) {
-        batch.draw(bg1, -Gdx.graphics.getWidth() / 2f, -Gdx.graphics.getHeight() / 2f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.draw(bg2, -Gdx.graphics.getWidth() / 2f, -Gdx.graphics.getHeight() / 2f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(bg1, -camera.viewportWidth / 2f, -camera.viewportHeight / 2f, camera.viewportWidth, camera.viewportHeight);
+        batch.draw(bg2, -camera.viewportWidth / 2f, -camera.viewportHeight / 2f, camera.viewportWidth, camera.viewportHeight);
     }
 
     /**

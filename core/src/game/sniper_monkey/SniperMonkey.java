@@ -11,7 +11,6 @@ public class SniperMonkey extends ApplicationAdapter {
     @Override
     public void create() {
         gameController = new GameController();
-        gameController.create();
     }
 
     //TODO documentation
@@ -22,7 +21,6 @@ public class SniperMonkey extends ApplicationAdapter {
             return;
         }
         gameController.tick(deltaTime);
-        TimerBank.updateTimers(deltaTime);
     }
 
     //TODO documentation
