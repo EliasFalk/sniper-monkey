@@ -21,6 +21,7 @@ public class Shuriken extends AttackObject {
 
     /**
      * Creates a shuriken with specified attributes and adds a hitresponse to it that executes when colliding with a player.
+     * Gets removed if it collides with a wall.
      *
      * @param damage        a float 0..n. Is how much damage the AttackObject is going to do.
      * @param timeToLive    a float 0..n. Determines for how long the object exists for in seconds.
