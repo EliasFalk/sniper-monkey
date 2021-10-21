@@ -13,7 +13,6 @@ public class SniperMonkey extends ApplicationAdapter {
     //TODO documentation
     @Override
     public void create() {
-        gameController = new GameController();
         /*gameController = new GameController();
         gameController.create();*/
         characterSelectionScreenController = new CharacterSelectionScreenController();
@@ -27,7 +26,6 @@ public class SniperMonkey extends ApplicationAdapter {
         if (Gdx.graphics.getDeltaTime() > 1) {
             return;
         }
-        gameController.tick(deltaTime);
         characterSelectionScreenController.tick(deltaTime);
         //gameController.tick(deltaTime);
         //gameController.tick(deltaTime);
@@ -41,8 +39,10 @@ public class SniperMonkey extends ApplicationAdapter {
         //gameController.dispose();
     }
 
+    /*
     @Override
     public void resize(int w, int h) {
         gameController.onResize(w, h);
     }
+     */
 }
