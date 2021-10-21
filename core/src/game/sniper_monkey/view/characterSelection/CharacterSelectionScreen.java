@@ -10,13 +10,19 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import game.sniper_monkey.model.player.fighter.EvilWizard;
 import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.player.fighter.HuntressBow;
+import game.sniper_monkey.model.player.fighter.Samurai;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CharacterSelectionScreen extends ScreenAdapter  {
+/**
+ *
+ * @author Kevin Jeryd
+ * @author Dadi Andrason
+ */
+public class CharacterSelectionScreen extends ScreenAdapter {
 
     SpriteBatch batch;
     ShapeRenderer sr;
@@ -37,11 +43,11 @@ public class CharacterSelectionScreen extends ScreenAdapter  {
         this.characterSelectionScreenController = characterSelectionController;
 
         fighterList.add(EvilWizard.class);
-        fighterList.add(EvilWizard.class);
+        fighterList.add(Samurai.class);
         fighterList.add(HuntressBow.class);
         fighterList.add(EvilWizard.class);
         fighterList.add(HuntressBow.class);
-        fighterList.add(EvilWizard.class);
+        fighterList.add(Samurai.class);
         fighterList.add(EvilWizard.class);
         fighterList.add(HuntressBow.class);
 
@@ -62,6 +68,7 @@ public class CharacterSelectionScreen extends ScreenAdapter  {
             } else {
                 rect = new SelectViewRectangle(fighterList.get(i),((i % (characterSelectionScreenController.amountOfFighters / 2f))) * Gdx.graphics.getWidth() / ((float) characterSelectionScreenController.amountOfFighters / 2)+100, Gdx.graphics.getHeight() / (3 * 4f), 100f, 100f, Color.BLUE, stage);
             }
+            characterSelectionScreenController.registerObserver(rect);
             rectangleMap.put(i, rect);
             stage.addActor(rect);
         }
@@ -92,11 +99,6 @@ public class CharacterSelectionScreen extends ScreenAdapter  {
         unSelectedRectangles();
         setPlayer1SelectedRectangle();
         setPlayer2SelectedRectangle();
-
-        if (characterSelectionScreenController.allFightersPicked()) {
-            System.out.println("Welcome my friend");
-            //move on to next screen
-        }
 
         batch.begin();
         sr.begin(ShapeRenderer.ShapeType.Line);
@@ -131,8 +133,4 @@ public class CharacterSelectionScreen extends ScreenAdapter  {
         batch.dispose();
         sr.dispose();
     }
-
-
-
-
 }

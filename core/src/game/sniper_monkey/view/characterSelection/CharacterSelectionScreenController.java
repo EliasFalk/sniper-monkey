@@ -6,7 +6,16 @@ import game.sniper_monkey.model.player.fighter.EvilWizard;
 import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.player.fighter.FighterFactory;
 import game.sniper_monkey.model.player.fighter.HuntressBow;
+import game.sniper_monkey.model.world.GameObject;
+import game.sniper_monkey.model.world.IWorldObserver;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ *
+ * @author Kevin Jeryd
+ */
 public class CharacterSelectionScreenController {
     CharacterSelectionScreen characterSelectionScreen;
 
@@ -17,11 +26,18 @@ public class CharacterSelectionScreenController {
     private Fighter player2PrimaryFighter;
     private Fighter player2SecondaryFighter;
 
+    private final List<ICharacterSelectedObserver> observers;
+
     public int amountOfFighters;
+
+    private ArrayList<Fighter> chosenFighters = new ArrayList<Fighter>();
+
+    public CharacterSelectionScreenController() {
+        this.observers = new ArrayList<>();;
+    }
 
     public void create() {
         characterSelectionScreen = new CharacterSelectionScreen(this);
-
          //characterSelectionScreen.addSelectView(new SelectView());
 
     }
@@ -54,26 +70,26 @@ public class CharacterSelectionScreenController {
 
     private void choosePlayer1PrimaryFighter() {
         player1PrimaryFighter = chooseFighterHelper(characterSelectionScreen.fighterList.get(player1SelectedRectangleIndex));
+        onAddedCharacter(player1PrimaryFighter);
     }
 
     private void choosePlayer1SecondaryFighter() {
         player1SecondaryFighter = chooseFighterHelper(characterSelectionScreen.fighterList.get(player1SelectedRectangleIndex));
+        onAddedCharacter(player1SecondaryFighter);
     }
 
     private void choosePlayer2PrimaryFighter() {
         player2PrimaryFighter = chooseFighterHelper(characterSelectionScreen.fighterList.get(player2SelectedRectangleIndex));
+        onAddedCharacter(player2PrimaryFighter);
     }
 
     private void choosePlayer2SecondaryFighter() {
         player2SecondaryFighter = chooseFighterHelper(characterSelectionScreen.fighterList.get(player2SelectedRectangleIndex));
+        onAddedCharacter(player2SecondaryFighter);
     }
 
     public boolean allFightersPicked() {
-        if (player1PrimaryFighter != null && player1SecondaryFighter != null && player2PrimaryFighter != null && player2SecondaryFighter != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return player1PrimaryFighter != null && player1SecondaryFighter != null && player2PrimaryFighter != null && player2SecondaryFighter != null;
     }
 
     public void handleInput() {
@@ -102,6 +118,44 @@ public class CharacterSelectionScreenController {
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_RIGHT)) {
             choosePlayer2SecondaryFighter();
         }
+    }
+
+
+    //Observer stuff
+    //TODO documentation
+    public void registerObserver(ICharacterSelectedObserver observer) {
+        observers.add(observer);
+    }
+
+    //TODO documentation
+    public void unregisterObserver(ICharacterSelectedObserver observer) {
+        observers.remove(observer);
+    }
+
+    private void notifyObserversOfChosenFighter(Fighter fighter) {
+        for (ICharacterSelectedObserver observer : observers) {
+            observer.onChosenCharacter(fighter);
+        }
+    }
+
+    private void notifyObserversOfRemovedFighter(Fighter fighter) {
+        for (ICharacterSelectedObserver observer : observers) {
+            observer.onChosenCharacter(fighter);
+        }
+    }
+
+    private void onAddedCharacter(Fighter fighter) {
+        chosenFighters.add(fighter);
+        notifyObserversOfChosenFighter(fighter);
+        if (chosenFighters.size() == 4) {
+            //Go to next state
+        }
+    }
+
+    //Make so you can remove characters
+    private void onRemovedCharacter(Fighter fighter) {
+        notifyObserversOfRemovedFighter(fighter);
+        chosenFighters.add(fighter);
     }
 
     public void tick(float deltaTime) {

@@ -15,7 +15,11 @@ import com.badlogic.gdx.utils.Align;
 import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.utils.view.HUDUtils;
 
-public class SelectViewRectangle extends Actor {
+/**
+ *
+ * @author Kevin Jeryd
+ */
+public class SelectViewRectangle extends Actor implements ICharacterSelectedObserver {
 
     private final ShapeRenderer shapeRenderer;
 
@@ -57,6 +61,7 @@ public class SelectViewRectangle extends Actor {
         batch.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
+        //Where both players are on the same rectangle
         if (player1Select && player2Select) {
             drawDoubleOuterRectangle();
             drawPlayer1PreviewAnimation();
@@ -76,6 +81,7 @@ public class SelectViewRectangle extends Actor {
                 removePlayer2PreviewAnimation();
             }
 
+            //Where none of the players are on the rectangle just add blue to the outer rectangle
             if (!player1Select && !player2Select) {
                 removeOuterRectangle(color);
             }
@@ -161,5 +167,10 @@ public class SelectViewRectangle extends Actor {
         } else {
             this.player2OuterRectangleColor = Color.BLUE;
         }
+    }
+
+    @Override
+    public void onChosenCharacter(Fighter fighter) {
+        //Draw chosen character
     }
 }
