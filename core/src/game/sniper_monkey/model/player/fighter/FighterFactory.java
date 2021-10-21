@@ -1,9 +1,23 @@
 package game.sniper_monkey.model.player.fighter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
+ * A factory that serves as an interface for creating all the different fighters.
+ * <p>
+ * Used by PlayerFactory.
+ *
  * @author Elias Falk
  */
 public class FighterFactory {
+    private static final Map<Class<? extends Fighter>, FighterCreator> correspondingFighters = new HashMap<>();
+
+    static {
+        correspondingFighters.put(EvilWizard.class, FighterFactory::createEvilWizard);
+        correspondingFighters.put(Samurai.class, FighterFactory::createSamurai);
+        correspondingFighters.put(HuntressBow.class, FighterFactory::createHuntressBow);
+    }
 
     /**
      * Creates an Evil Wizard fighter.
@@ -16,6 +30,7 @@ public class FighterFactory {
 
     /**
      * Creates a Huntress fighter with a bow.
+     *
      * @return A fighter with factors and attacks belonging to the Huntress.
      */
     public static Fighter createHuntressBow() {
@@ -24,9 +39,19 @@ public class FighterFactory {
 
     /**
      * Creates a Samurai fighter.
+     *
      * @return A fighter with factors and attacks belonging to the Samurai.
      */
     public static Fighter createSamurai() {
         return new Samurai();
+    }
+
+    public static Fighter getFighter(Class<? extends Fighter> fighterClass) {
+        return correspondingFighters.get(fighterClass).getFighter();
+    }
+
+    @FunctionalInterface
+    private interface FighterCreator {
+        Fighter getFighter();
     }
 }
