@@ -40,7 +40,7 @@ public class BowTripleAttackTest {
     @Test
     public void testGetHitStun() {
         IAttack bowTripleAttack = AttackFactory.createBowTripleAttack();
-        assertEquals(0.5f, bowTripleAttack.getHitStunLength(), 0);
+        assertEquals(1f, bowTripleAttack.getHitStunLength(), 0);
     }
 
     @Test
