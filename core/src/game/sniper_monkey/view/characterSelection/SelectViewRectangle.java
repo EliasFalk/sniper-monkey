@@ -19,13 +19,13 @@ import game.sniper_monkey.utils.view.HUDUtils;
  *
  * @author Kevin Jeryd
  */
-public class SelectViewRectangle extends Actor {
+public class SelectViewRectangle extends Actor implements ICharacterSelectedObserver {
 
     private final ShapeRenderer shapeRenderer;
 
     private Image img;
-    private Image previewImg;
-    private Image player2PreviewImg;
+    private Image player1PreviewImage;
+    private Image player2PreviewImage;
     private final float x;
     private final float y;
     private final float width;
@@ -39,6 +39,8 @@ public class SelectViewRectangle extends Actor {
     private final Stage stage;
     private Color player1OuterRectangleColor;
     private Color player2OuterRectangleColor;
+    private float player1PreviewImageScaling = 2;
+    private float player2PreviewImageScaling = 2;
 
     public SelectViewRectangle(Class<? extends Fighter> fighter, float x, float y, float width, float height, Color color, Stage stage) {
         shapeRenderer = new ShapeRenderer();
@@ -52,8 +54,8 @@ public class SelectViewRectangle extends Actor {
         this.stage = stage;
         fighterLabel = new Label(HUDUtils.getFighterDisplayName(fighter), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         this.img = createFighterImage(HUDUtils.getCorrespondingTextureRegion(fighter), x, y, true, img);
-        this.previewImg = createFighterImage(HUDUtils.getCorrespondingTextureRegion(fighter), (Gdx.graphics.getWidth()*2)/10f, (Gdx.graphics.getHeight()*6)/10f, true, previewImg);
-        this.player2PreviewImg = createFighterImage(HUDUtils.getCorrespondingTextureRegion(fighter), (Gdx.graphics.getWidth()*6)/10f, (Gdx.graphics.getHeight()*6)/10f, true, player2PreviewImg);
+        this.player1PreviewImage = createFighterImage(HUDUtils.getCorrespondingTextureRegion(fighter), (Gdx.graphics.getWidth()*2)/10f, (Gdx.graphics.getHeight()*6)/10f, true, player1PreviewImage);
+        this.player2PreviewImage = createFighterImage(HUDUtils.getCorrespondingTextureRegion(fighter), (Gdx.graphics.getWidth()*6)/10f, (Gdx.graphics.getHeight()*6)/10f, true, player2PreviewImage);
     }
 
     @Override
@@ -109,21 +111,21 @@ public class SelectViewRectangle extends Actor {
     }
 
     private void drawPlayer1PreviewAnimation() {
-        previewImg.setScale(2);
-        stage.addActor(previewImg);
+        player1PreviewImage.setScale(player1PreviewImageScaling);
+        stage.addActor(player1PreviewImage);
     }
 
     private void drawPlayer2PreviewAnimation() {
-        player2PreviewImg.setScale(2);
-        stage.addActor(player2PreviewImg);
+        player2PreviewImage.setScale(player2PreviewImageScaling);
+        stage.addActor(player2PreviewImage);
     }
 
     private void removePlayer1PreviewAnimation() {
-        previewImg.remove();
+        player1PreviewImage.remove();
     }
 
     private void removePlayer2PreviewAnimation() {
-        player2PreviewImg.remove();
+        player2PreviewImage.remove();
     }
 
     public void addLabel() {
@@ -170,4 +172,15 @@ public class SelectViewRectangle extends Actor {
     }
 
 
+    @Override
+    public void onPlayer1CharacterSelected() {
+        player1PreviewImageScaling = 1.2f;
+        player1PreviewImage.setPosition((Gdx.graphics.getWidth()*1.5f)/10f, (Gdx.graphics.getHeight()*6)/10f);
+    }
+
+    @Override
+    public void onPlayer2CharacterSelected() {
+        player2PreviewImageScaling = 1.2f;
+        player2PreviewImage.setPosition((Gdx.graphics.getWidth()*5.5f)/10f, (Gdx.graphics.getHeight()*6)/10f);
+    }
 }

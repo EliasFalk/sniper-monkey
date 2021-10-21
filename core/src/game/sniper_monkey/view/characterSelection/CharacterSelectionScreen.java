@@ -71,6 +71,9 @@ public class CharacterSelectionScreen extends ScreenAdapter {
             } else {
                 rect = new SelectViewRectangle(fighterList.get(i),((i % (characterSelectionScreenController.amountOfFighters / 2f))) * Gdx.graphics.getWidth() / ((float) characterSelectionScreenController.amountOfFighters / 2)+100, Gdx.graphics.getHeight() / (3 * 4f), 100f, 100f, Color.BLUE, stage);
             }
+
+            characterSelectionScreenController.registerObserver(rect);
+
             rectangleMap.put(i, rect);
             stage.addActor(rect);
         }
@@ -108,26 +111,6 @@ public class CharacterSelectionScreen extends ScreenAdapter {
         batch.end();
         sr.end();
         stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-    }
-
-    @Override
-    public void show() {
-    }
-
-    @Override
-    public void hide() {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
     }
 
     @Override
