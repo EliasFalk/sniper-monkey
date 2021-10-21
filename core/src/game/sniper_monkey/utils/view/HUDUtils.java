@@ -78,6 +78,8 @@ public class HUDUtils {
             return "Bow Triple Attack";
         } else if (attack == SamuraiQuickAttack.class) {
                 return "Samurai Quick Attack";
+        } else if (attack == SamuraiShurikenAttack.class) {
+            return "Samurai Triple Shuriken";
         } else {
             return "";
 //            throw new IllegalArgumentException("No display name found for this attack class.");
