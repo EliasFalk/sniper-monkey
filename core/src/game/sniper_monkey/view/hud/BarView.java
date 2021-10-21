@@ -12,6 +12,12 @@ import java.text.DecimalFormat;
 
 /**
  * A view that represents a fillable bar and a side text related to the fillable bar.
+ * <p>
+ * Uses FluctuatingAttributeObserver.
+ * Uses HUDView.
+ * Uses FillableBar.
+ * <p>
+ * Used by GameController.
  *
  * @author Elias Falk
  * @author Vincent Hellner

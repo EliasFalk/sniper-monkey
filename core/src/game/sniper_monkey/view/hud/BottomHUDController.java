@@ -11,6 +11,16 @@ import game.sniper_monkey.view.GameScreen;
 
 /**
  * Controls the bottom part of the HUD of a player including the key inputs and secondary fighter.
+ * <p>
+ * Uses SwappedFighterObserver.
+ * Uses Player. // TODO discuss: sad dependency
+ * Uses GameScreen.
+ * Uses SecondaryFighterView.
+ * Uses KeyInputView.
+ * Uses Placement.
+ * Uses Config.
+ * <p>
+ * Used by GameController.
  *
  * @author Elias Falk
  */

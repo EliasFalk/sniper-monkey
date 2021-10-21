@@ -13,6 +13,16 @@ import game.sniper_monkey.utils.view.FontUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A view for a general overlay that represents a menu with x amount of buttons and a title as well as a covering lightbox.
+ * <p>
+ * Uses HUDView.
+ * <p>
+ * Used by GameController.
+ *
+ * @author Elias Falk
+ * @author Vincent Hellner
+ */
 public class OverlayMenu implements HUDView {
     private final float yStart = Gdx.graphics.getHeight() - 200f;
     private final float yButtonStart = yStart - 100f;
@@ -23,6 +33,11 @@ public class OverlayMenu implements HUDView {
     private Label title;
     private Image lightBox;
 
+    /**
+     * Creates an overlay menu with a lightbox and title and an empty set of buttons.
+     *
+     * @param titleText The title of the overlay menu.
+     */
     public OverlayMenu(String titleText) {
         createTitleLabel(titleText);
         buttons = new ArrayList<>();
@@ -54,6 +69,11 @@ public class OverlayMenu implements HUDView {
         }
     }
 
+    /**
+     * Adds, styles and places the button to the overlay menu.
+     *
+     * @param button The button to be added to the overlay.
+     */
     public void addButton(Button button) {
         buttons.add(button);
         transformButtons();
@@ -77,5 +97,13 @@ public class OverlayMenu implements HUDView {
         }
     }
 
+    /**
+     * Updates the text of title.
+     *
+     * @param text The new title.
+     */
+    public void updateTitleText(String text) {
+        title.setText(text);
+    }
 
 }
