@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.Select;
 import game.sniper_monkey.model.player.fighter.EvilWizard;
 import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.player.fighter.HuntressBow;
@@ -29,6 +30,7 @@ public class CharacterSelectionScreen extends ScreenAdapter {
     Stage stage;
 
     CharacterSelectionScreenController characterSelectionScreenController;
+    SelectedFighterView selectedFighterView;
 
 
     //Create a list with potential fighters to choose from? Should it be the sprite of each fighter?
@@ -41,6 +43,7 @@ public class CharacterSelectionScreen extends ScreenAdapter {
         sr = new ShapeRenderer();
 
         this.characterSelectionScreenController = characterSelectionController;
+        this.selectedFighterView = new SelectedFighterView(stage);
 
         fighterList.add(EvilWizard.class);
         fighterList.add(Samurai.class);
@@ -68,7 +71,6 @@ public class CharacterSelectionScreen extends ScreenAdapter {
             } else {
                 rect = new SelectViewRectangle(fighterList.get(i),((i % (characterSelectionScreenController.amountOfFighters / 2f))) * Gdx.graphics.getWidth() / ((float) characterSelectionScreenController.amountOfFighters / 2)+100, Gdx.graphics.getHeight() / (3 * 4f), 100f, 100f, Color.BLUE, stage);
             }
-            characterSelectionScreenController.registerObserver(rect);
             rectangleMap.put(i, rect);
             stage.addActor(rect);
         }

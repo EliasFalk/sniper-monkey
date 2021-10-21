@@ -2,12 +2,7 @@ package game.sniper_monkey.view.characterSelection;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import game.sniper_monkey.model.player.fighter.EvilWizard;
-import game.sniper_monkey.model.player.fighter.Fighter;
-import game.sniper_monkey.model.player.fighter.FighterFactory;
-import game.sniper_monkey.model.player.fighter.HuntressBow;
-import game.sniper_monkey.model.world.GameObject;
-import game.sniper_monkey.model.world.IWorldObserver;
+import game.sniper_monkey.model.player.fighter.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,15 +21,9 @@ public class CharacterSelectionScreenController {
     private Fighter player2PrimaryFighter;
     private Fighter player2SecondaryFighter;
 
-    private final List<ICharacterSelectedObserver> observers;
-
     public int amountOfFighters;
 
     private ArrayList<Fighter> chosenFighters = new ArrayList<Fighter>();
-
-    public CharacterSelectionScreenController() {
-        this.observers = new ArrayList<>();;
-    }
 
     public void create() {
         characterSelectionScreen = new CharacterSelectionScreen(this);
@@ -63,6 +52,8 @@ public class CharacterSelectionScreenController {
             return FighterFactory.createEvilWizard();
         } else if (fighter == HuntressBow.class) {
             return FighterFactory.createHuntressBow();
+        } else if (fighter == Samurai.class) {
+            return FighterFactory.createSamurai();
         } else {
             throw new IllegalArgumentException("No fighter found with that class");
         }
@@ -70,22 +61,22 @@ public class CharacterSelectionScreenController {
 
     private void choosePlayer1PrimaryFighter() {
         player1PrimaryFighter = chooseFighterHelper(characterSelectionScreen.fighterList.get(player1SelectedRectangleIndex));
-        onAddedCharacter(player1PrimaryFighter);
+        characterSelectionScreen.selectedFighterView.drawPlayer1PrimaryFighter(player1PrimaryFighter);
     }
 
     private void choosePlayer1SecondaryFighter() {
         player1SecondaryFighter = chooseFighterHelper(characterSelectionScreen.fighterList.get(player1SelectedRectangleIndex));
-        onAddedCharacter(player1SecondaryFighter);
+        characterSelectionScreen.selectedFighterView.drawPlayer1SecondaryFighter(player1SecondaryFighter);
     }
 
     private void choosePlayer2PrimaryFighter() {
         player2PrimaryFighter = chooseFighterHelper(characterSelectionScreen.fighterList.get(player2SelectedRectangleIndex));
-        onAddedCharacter(player2PrimaryFighter);
+        characterSelectionScreen.selectedFighterView.drawPlayer2PrimaryFighter(player2PrimaryFighter);
     }
 
     private void choosePlayer2SecondaryFighter() {
         player2SecondaryFighter = chooseFighterHelper(characterSelectionScreen.fighterList.get(player2SelectedRectangleIndex));
-        onAddedCharacter(player2SecondaryFighter);
+        characterSelectionScreen.selectedFighterView.drawPlayer2SecondaryFighter(player2SecondaryFighter);
     }
 
     public boolean allFightersPicked() {
@@ -121,32 +112,8 @@ public class CharacterSelectionScreenController {
     }
 
 
-    //Observer stuff
-    //TODO documentation
-    public void registerObserver(ICharacterSelectedObserver observer) {
-        observers.add(observer);
-    }
-
-    //TODO documentation
-    public void unregisterObserver(ICharacterSelectedObserver observer) {
-        observers.remove(observer);
-    }
-
-    private void notifyObserversOfChosenFighter(Fighter fighter) {
-        for (ICharacterSelectedObserver observer : observers) {
-            observer.onChosenCharacter(fighter);
-        }
-    }
-
-    private void notifyObserversOfRemovedFighter(Fighter fighter) {
-        for (ICharacterSelectedObserver observer : observers) {
-            observer.onChosenCharacter(fighter);
-        }
-    }
-
     private void onAddedCharacter(Fighter fighter) {
         chosenFighters.add(fighter);
-        notifyObserversOfChosenFighter(fighter);
         if (chosenFighters.size() == 4) {
             //Go to next state
         }
@@ -154,8 +121,7 @@ public class CharacterSelectionScreenController {
 
     //Make so you can remove characters
     private void onRemovedCharacter(Fighter fighter) {
-        notifyObserversOfRemovedFighter(fighter);
-        chosenFighters.add(fighter);
+        chosenFighters.remove(fighter);
     }
 
     public void tick(float deltaTime) {

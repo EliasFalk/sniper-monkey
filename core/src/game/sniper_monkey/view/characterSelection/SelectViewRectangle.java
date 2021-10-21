@@ -19,7 +19,7 @@ import game.sniper_monkey.utils.view.HUDUtils;
  *
  * @author Kevin Jeryd
  */
-public class SelectViewRectangle extends Actor implements ICharacterSelectedObserver {
+public class SelectViewRectangle extends Actor {
 
     private final ShapeRenderer shapeRenderer;
 
@@ -169,8 +169,5 @@ public class SelectViewRectangle extends Actor implements ICharacterSelectedObse
         }
     }
 
-    @Override
-    public void onChosenCharacter(Fighter fighter) {
-        //Draw chosen character
-    }
+
 }
