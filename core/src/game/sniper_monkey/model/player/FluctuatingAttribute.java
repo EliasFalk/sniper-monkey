@@ -7,6 +7,10 @@ import java.util.List;
 /**
  * Representing a range of float values which can fluctuate over time by regenerating or draining slowly
  * or by instantaneously increasing or decreasing.
+ * <p>
+ * Uses FluctuatingAttributeObserver.
+ * <p>
+ * Used by Player.
  *
  * @author Elias Falk
  * @author Vincent Hellner
@@ -120,32 +124,56 @@ public class FluctuatingAttribute {
         return currentValue;
     }
 
-    //TODO documentation
-    public void setCurrentValue(float currentValue) {
-        this.currentValue = Math.max(minValue, Math.min(maxValue, currentValue));
+    /**
+     * Sets the current value of the attribute to a new value.
+     * If the value is greater than the attributes max value the current value will become the max value.
+     * If the value is less than the attributes minimum value the current value will become the min value.
+     *
+     * @param newValue The new value to set the current value of the attribute to.
+     */
+    public void setCurrentValue(float newValue) {
+        this.currentValue = Math.max(minValue, Math.min(maxValue, newValue));
         for (FluctuatingAttributeObserver observer : observers) {
             observer.onValueChange(minValue, maxValue, this.currentValue);
         }
     }
 
-    //TODO documentation
+    /**
+     * Sets whether to decrease the attributes value with a new drain amount every second based on the time between frames (deltaTime).
+     *
+     * @param draining    Whether to drain every frame.
+     * @param drainAmount The amount to decrease the current amount with every second based on the time between frames.
+     */
     public void setDraining(boolean draining, float drainAmount) {
         isDraining = draining;
         setDrainAmount(drainAmount);
     }
 
-    //TODO documentation
+    /**
+     * Sets whether to decrease the attributes value every second based on the time between frames (deltaTime).
+     *
+     * @param draining Whether to drain every frame.
+     */
     public void setDraining(boolean draining) {
         setDraining(draining, drainAmount);
     }
 
-    //TODO documentation
+    /**
+     * Sets whether to increase the attributes value with a new regeneration amount every second based on the time between frames (deltaTime).
+     *
+     * @param regenerating       Whether to regenerate the attribute every frame.
+     * @param regenerationAmount The amount to increase the current amount with every second based on the time between frames.
+     */
     public void setRegenerating(boolean regenerating, float regenerationAmount) {
         isRegenerating = regenerating;
         setRegenerationAmount(regenerationAmount);
     }
 
-    //TODO documentation
+    /**
+     * Sets whether to increase the attributes value every second based on the time between frames (deltaTime).
+     *
+     * @param regenerating Whether to regenerate every frame.
+     */
     public void setRegenerating(boolean regenerating) {
         setRegenerating(regenerating, regenerationAmount);
     }
@@ -176,10 +204,20 @@ public class FluctuatingAttribute {
         setCurrentValue(currentValue - amount);
     }
 
+    /**
+     * Registers an observer that will be notified every time a new value of the attribute is set.
+     *
+     * @param observer The observer to be notified.
+     */
     public void registerObserver(FluctuatingAttributeObserver observer) {
         observers.add(observer);
     }
 
+    /**
+     * Unregisters an observer that will no longer be notified every time a new value of the attribute is set.
+     *
+     * @param observer The observer to be no longer notified.
+     */
     public void unRegisterObserver(FluctuatingAttributeObserver observer) {
         observers.remove(observer);
     }
