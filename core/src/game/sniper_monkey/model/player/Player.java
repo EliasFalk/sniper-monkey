@@ -469,7 +469,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
      * @param timerObserver The observer that wants to be unsubscribed to the changes.
      */
     public void unregisterBlockCooldownObserver(TimerObserver timerObserver) {
-        blockTimer.unRegisterTimerObserver(timerObserver);
+        blockTimer.unregisterTimerObserver(timerObserver);
     }
 
     /**
@@ -487,7 +487,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
      * @param timerObserver The observer that wants to be subscribed to the changes.
      */
     public void unregisterSwapCooldownObserver(TimerObserver timerObserver) {
-        swapTimer.unRegisterTimerObserver(timerObserver);
+        swapTimer.unregisterTimerObserver(timerObserver);
     }
 
     /**
@@ -523,7 +523,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
      * @param timerObserver The observer that wants to be subscribed to the changes.
      */
     public void unregisterHitStunObserver(TimerObserver timerObserver) {
-        hitStun.unRegisterTimerObserver(timerObserver);
+        hitStun.unregisterTimerObserver(timerObserver);
     }
 
     @FunctionalInterface
