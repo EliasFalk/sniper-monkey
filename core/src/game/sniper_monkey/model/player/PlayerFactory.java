@@ -6,10 +6,17 @@ import game.sniper_monkey.model.player.fighter.FighterFactory;
 import game.sniper_monkey.utils.collision.CollisionMasks;
 
 /**
+ * A factory that serves as the interface to creating players.
+ * <p>
+ * Uses FighterFactory.
+ * <p>
+ * Used by GameController.
+ *
  * @author Elias Falk
  */
 public class PlayerFactory {
-
+    private PlayerFactory() {
+    }
 
     /**
      * Creates a player with two fighters

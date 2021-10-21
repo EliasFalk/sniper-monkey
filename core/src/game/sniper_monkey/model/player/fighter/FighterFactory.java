@@ -11,6 +11,8 @@ import java.util.Map;
  * @author Elias Falk
  */
 public class FighterFactory {
+    private FighterFactory() {
+    }
     private static final Map<Class<? extends Fighter>, FighterCreator> correspondingFighters = new HashMap<>();
 
     static {
@@ -46,6 +48,12 @@ public class FighterFactory {
         return new Samurai();
     }
 
+    /**
+     * Returns a fighter object corresponding to the given fighter class.
+     *
+     * @param fighterClass The class of the fighter.
+     * @return A fighter object corresponding to the fighter class.
+     */
     public static Fighter getFighter(Class<? extends Fighter> fighterClass) {
         return correspondingFighters.get(fighterClass).getFighter();
     }
