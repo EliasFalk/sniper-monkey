@@ -107,8 +107,10 @@ public class CallbackTimerTest {
     @Test
     public void testSettingAutoUpdate() {
         cbTimer.setAutoUpdate(true);
+        TimerBank.updateTimers(0);
         Assert.assertTrue(TimerBank.contains(cbTimer));
         cbTimer.setAutoUpdate(false);
+        TimerBank.updateTimers(0);
         Assert.assertFalse(TimerBank.contains(cbTimer));
     }
 

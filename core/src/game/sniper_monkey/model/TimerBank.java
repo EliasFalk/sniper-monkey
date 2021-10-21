@@ -10,12 +10,16 @@ import java.util.List;
  */
 public final class TimerBank {
 
-    private TimerBank() {}
+    private TimerBank() {
+    }
 
     private static final List<UpdatableTimer> timers = new ArrayList<>();
+    private static final List<UpdatableTimer> timersToBeAdded = new ArrayList<>();
+    private static final List<UpdatableTimer> timersTobeRemoved = new ArrayList<>();
 
     /**
      * Adds an updatable timer to the bank.
+     * The timer won't be added until the next call on update.
      *
      * @param timer The timer to be added to the bank.
      * @return True if the timer was added to the bank. False if the timer already exists in the bank.
@@ -23,13 +27,14 @@ public final class TimerBank {
      */
     public static boolean addTimer(UpdatableTimer timer) {
         if (timer == null) throw new IllegalArgumentException("Timer cannot be null.");
-        if (timers.contains(timer)) return false;
-        timers.add(timer);
+        if (timers.contains(timer) || timersToBeAdded.contains(timer)) return false;
+        timersToBeAdded.add(timer);
         return true;
     }
 
     /**
      * Removes and existing timer from the bank.
+     * The timer won't be removed until the next call on update.
      *
      * @param timer The timer to be removed to the bank.
      * @return True if the timer was removed from the bank.
@@ -38,8 +43,8 @@ public final class TimerBank {
      */
     public static boolean removeTimer(UpdatableTimer timer) {
         if (timer == null) throw new IllegalArgumentException("Timer cannot be null.");
-        if (!timers.contains(timer)) return false;
-        timers.remove(timer);
+        if (!timers.contains(timer) || timersTobeRemoved.contains(timer)) return false;
+        timersTobeRemoved.add(timer);
         return true;
     }
 
@@ -49,9 +54,17 @@ public final class TimerBank {
      * @param deltaTime The time between frames.
      */
     public static void updateTimers(float deltaTime) {
+        addAndRemoveQueuedTimers();
         for (UpdatableTimer timer : timers) {
             timer.update(deltaTime);
         }
+    }
+
+    private static void addAndRemoveQueuedTimers() {
+        timers.addAll(timersToBeAdded);
+        timers.removeAll(timersTobeRemoved);
+        timersToBeAdded.clear();
+        timersTobeRemoved.clear();
     }
 
     /**
