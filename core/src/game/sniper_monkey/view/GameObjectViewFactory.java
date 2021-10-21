@@ -1,15 +1,18 @@
 package game.sniper_monkey.view;
 
+import game.sniper_monkey.model.player.fighter.Fighter;
+import game.sniper_monkey.model.player.fighter.Samurai;
+import game.sniper_monkey.model.player.fighter.attack.attack_object.Shuriken;
+import game.sniper_monkey.model.world_brick.WorldBrick;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.fighter.EvilWizard;
+import game.sniper_monkey.view.player.fighter.*;
+import game.sniper_monkey.view.world_brick.WorldBrickView;
 import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.player.fighter.HuntressBow;
 import game.sniper_monkey.model.player.fighter.attack.attack_object.Arrow;
 import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.model.world_brick.WorldBrick;
-import game.sniper_monkey.view.player.fighter.ArrowView;
-import game.sniper_monkey.view.player.fighter.EvilWizardView;
-import game.sniper_monkey.view.player.fighter.HuntressView;
 import game.sniper_monkey.view.world_brick.WorldBrickView;
 
 import java.util.HashMap;
@@ -32,11 +35,13 @@ public final class GameObjectViewFactory {
         viewCreatorDispatch.put(Player.class, obj -> createFighterView((Player) obj));
         viewCreatorDispatch.put(WorldBrick.class, obj -> new WorldBrickView((WorldBrick) obj));
         viewCreatorDispatch.put(Arrow.class, obj -> new ArrowView((Arrow) obj));
+        viewCreatorDispatch.put(Shuriken.class, obj -> new ShurikenView((Shuriken) obj));
     }
 
     static {
         fighterDispatch.put(EvilWizard.class, obj -> new EvilWizardView((Player) obj));
         fighterDispatch.put(HuntressBow.class, obj -> new HuntressView((Player) obj));
+        fighterDispatch.put(Samurai.class, obj -> new SamuraiView((Player) obj));
     }
 
     private static GameObjectView createFighterView(Player player) {

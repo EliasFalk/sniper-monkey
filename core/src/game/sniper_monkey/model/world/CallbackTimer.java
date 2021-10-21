@@ -9,6 +9,11 @@ import java.util.List;
 
 /**
  * An UpdatableTimer with a callback that is called once it has finished counting down.
+ * <p>
+ * Used by GameController.
+ * Used by Player.
+ * Used by concrete attacks, such as BowAttack.
+ * Used by AttackObject.
  *
  * @author Elias Falk
  * @author Vincent Hellner

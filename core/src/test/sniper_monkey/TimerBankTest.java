@@ -2,12 +2,17 @@ package sniper_monkey;
 
 import game.sniper_monkey.model.TimerBank;
 import game.sniper_monkey.model.world.CallbackTimer;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import org.junit.Test;
-
 public class TimerBankTest {
+
+    @BeforeClass
+    public static void init() {
+        TimerBank.clear();
+    }
 
     @Test
     public void addTimerTest() {

@@ -37,7 +37,7 @@ public abstract class AttackObject extends GameObject {
      * @param collisionMask an int 0..n. A collision mask to prevent the hitbox from colliding with the attacker.
      * @param velocity a Vector2. The velocity that the object has.
      */
-    public AttackObject(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, boolean lookingRight, Vector2 velocity, Vector2 attackHitboxSize) {
+    protected AttackObject(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, boolean lookingRight, Vector2 velocity, Vector2 attackHitboxSize) {
         super(spawnPos, true);
         timeToLiveTimer = new CallbackTimer(timeToLive, this::delete);
         timeToLiveTimer.reset();
@@ -70,7 +70,7 @@ public abstract class AttackObject extends GameObject {
      * @param spawnPos a Vector2. A coordinate of the position where the hitbox is supposed to spawn.
      * @param collisionMask an int 0..n. A collision mask to prevent the hitbox from colliding with the attacker.
      */
-    public AttackObject(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, boolean lookingRight, Vector2 attackHitboxSize) {
+    protected AttackObject(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, boolean lookingRight, Vector2 attackHitboxSize) {
         this(damage, timeToLive, spawnPos, collisionMask, lookingRight, new Vector2(0,0), attackHitboxSize);
     }
 
@@ -98,7 +98,7 @@ public abstract class AttackObject extends GameObject {
     public void update(float deltaTime) {
         checkCollision();
         if (!velocity.isZero()) {
-            setPosition(getHitbox().getPosition().add(velocity));
+            setPosition(getHitbox().getPosition().add(velocity.cpy().scl(deltaTime)));
         }
     }
 }
