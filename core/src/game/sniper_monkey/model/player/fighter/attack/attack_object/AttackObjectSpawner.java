@@ -72,5 +72,19 @@ public class AttackObjectSpawner {
         World.getInstance().queueAddGameObject(samuraiSwing);
     }
 
+    /**
+     * Creates an attackobject of the Samurai's shuriken and adds it to the world.
+     *
+     * @param damage        a float 0..n. Is how much damage the AttackObject is going to do.
+     * @param timeToLive    a float 0..n. Determines for how long the object exists for in seconds.
+     * @param spawnPos      a Vector2. A coordinate of the position where the hitbox of the shuriken is supposed to spawn.
+     * @param collisionMask an int 0..n. A collision mask to prevent the hitbox of the shuriken from colliding with the attacker.
+     * @param lookingRight  a boolean. Is the direction the player is facing. True if player is facing to the right, false if the player is facing the left.
+     * @param velocity      a Vector2. Is the velocity that the shuriken has, and determines how fast the shuriken moves.
+     */
+    public static void spawnSamuraiShuriken(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, boolean lookingRight, Vector2 velocity) {
+        AttackObject samuraiShuriken = new Shuriken(damage, timeToLive, spawnPos, collisionMask, lookingRight, velocity);
+        World.getInstance().queueAddGameObject(samuraiShuriken);
+    }
 
 }

@@ -56,5 +56,11 @@ public class AttackFactory {
         return new SamuraiQuickAttack();
     }
 
-
+    /**
+     * Creates an object of the type SamuraiShurikenAttack. Is the second attack for the Samurai.
+     * @return a new SamuraiShurikenObject.
+     */
+    public static IAttack createSamuraiShurikenAttack() {
+        return new SamuraiShurikenAttack();
+    }
 }

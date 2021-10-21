@@ -20,6 +20,6 @@ public class Samurai extends Fighter {
     protected Samurai() {
         super(attackFactor, defenseFactor, speedFactor, hitboxSize);
         attacks.add(AttackFactory.createSamuraiQuickAttack());
-        attacks.add(AttackFactory.createBowTripleAttack());
+        attacks.add(AttackFactory.createSamuraiShurikenAttack());
     }
 }
