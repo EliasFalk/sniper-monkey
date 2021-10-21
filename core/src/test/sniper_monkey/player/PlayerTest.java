@@ -36,6 +36,7 @@ public class PlayerTest {
         Config.readConfigFile(playerValues);
         Config.readConfigFile(physicsValues);
         World.getInstance().resetWorld();
+        TimerBank.clear();
         // create a ~800 pixels long platform.
         for (int i = -400; i < 400; i += 16) {
             World.getInstance().queueAddGameObject(new WorldBrick(new Vector2(i, -100), "1"));
