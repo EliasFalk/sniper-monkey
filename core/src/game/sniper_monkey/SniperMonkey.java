@@ -7,28 +7,30 @@ import game.sniper_monkey.view.characterSelection.CharacterSelectionScreenContro
 import game.sniper_monkey.model.TimerBank;
 
 public class SniperMonkey extends ApplicationAdapter {
-    //private GameController gameController;
+    private GameController gameController;
+    public static IController activeController = new IController() {
+        @Override
+        public void tick(float deltaTime) {
+
+        }
+    };
 
     private CharacterSelectionScreenController characterSelectionScreenController;
     //TODO documentation
     @Override
     public void create() {
-        /*gameController = new GameController();
-        gameController.create();*/
-        characterSelectionScreenController = new CharacterSelectionScreenController();
-        characterSelectionScreenController.create();
+        activeController = new CharacterSelectionScreenController();
     }
 
     //TODO documentation
     @Override
     public void render() {
+        System.out.println(activeController);
         float deltaTime = Math.min(1 / 10f, Gdx.graphics.getDeltaTime());
         if (Gdx.graphics.getDeltaTime() > 1) {
             return;
         }
-        characterSelectionScreenController.tick(deltaTime);
-        //gameController.tick(deltaTime);
-        //gameController.tick(deltaTime);
+        activeController.tick(deltaTime);
         TimerBank.updateTimers(deltaTime);
     }
 

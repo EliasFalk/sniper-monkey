@@ -8,6 +8,7 @@ import game.sniper_monkey.model.Config;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.PlayerFactory;
 import game.sniper_monkey.model.player.PlayerInputAction;
+import game.sniper_monkey.model.player.fighter.FighterFactory;
 import game.sniper_monkey.model.player.fighter.attack.AttackFactory;
 import game.sniper_monkey.model.player.fighter.attack.IAttack;
 import game.sniper_monkey.model.world.World;
@@ -33,8 +34,8 @@ public class BowAttackTest {
 
     @Test
     public void testBowAttack() {
-        Player player1 = PlayerFactory.createPlayer1(new Vector2(0, 0));
-        Player player2 = PlayerFactory.createPlayer2(new Vector2(70, 0));
+        Player player1 = PlayerFactory.createPlayer1(new Vector2(0, 0), FighterFactory.createHuntressBow(), FighterFactory.createHuntressBow());
+        Player player2 = PlayerFactory.createPlayer2(new Vector2(70, 0), FighterFactory.createHuntressBow(), FighterFactory.createHuntressBow());
         player2.setInputAction(PlayerInputAction.ATTACK1);
         world.queueAddGameObject(player1);
         world.queueAddGameObject(player2);
@@ -72,8 +73,8 @@ public class BowAttackTest {
 
     @Test
     public void testBowAttackMiss() {
-        Player player1 = PlayerFactory.createPlayer1(new Vector2(700, 0));
-        Player player2 = PlayerFactory.createPlayer2(new Vector2(0, 0));
+        Player player1 = PlayerFactory.createPlayer1(new Vector2(700, 0), FighterFactory.createHuntressBow(), FighterFactory.createHuntressBow());
+        Player player2 = PlayerFactory.createPlayer2(new Vector2(0, 0), FighterFactory.createHuntressBow(), FighterFactory.createHuntressBow());
         player2.setInputAction(PlayerInputAction.ATTACK1);
         world.queueAddGameObject(player1);
         world.queueAddGameObject(player2);

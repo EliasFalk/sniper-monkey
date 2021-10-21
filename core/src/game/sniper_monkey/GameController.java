@@ -16,6 +16,7 @@ import game.sniper_monkey.model.TimerBank;
 import game.sniper_monkey.model.player.FluctuatingAttributeObserver;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.PlayerFactory;
+import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.world.CallbackTimer;
 import game.sniper_monkey.model.world.World;
 import game.sniper_monkey.model.world_brick.WorldBrick;
@@ -25,7 +26,7 @@ import game.sniper_monkey.view.hud.*;
 
 import java.util.Map;
 
-public class GameController implements FluctuatingAttributeObserver {
+public class GameController implements FluctuatingAttributeObserver, IController {
     private GameScreen gameScreen;
     private PlayerController player1Controller, player2Controller;
     private final CallbackTimer roundTimer;
@@ -47,7 +48,10 @@ public class GameController implements FluctuatingAttributeObserver {
         void perform(float deltaTime);
     }
 
-    public GameController() {
+    private final Map<String, Fighter> chosenFighters;
+
+    public GameController(Map<String, Fighter> chosenFighters) {
+        this.chosenFighters = chosenFighters;
         Config.readConfigFile("cfg/game.cfg");
         roundTimer = new CallbackTimer(Config.getNumber("cfg/game.cfg", "ROUND_TIME"), () -> {
             currentState = this::gameOverState;
@@ -174,14 +178,14 @@ public class GameController implements FluctuatingAttributeObserver {
         Player player;
         BottomHUDController bottomHUD;
         if (playerNum == 1) {
-            player = PlayerFactory.createPlayer1(spawnPoint);
+            player = PlayerFactory.createPlayer1(spawnPoint, chosenFighters.get("player1PrimaryFighter"), chosenFighters.get("player1SecondaryFighter"));
             player1 = player;
             World.getInstance().queueAddGameObject(player);
             player1Controller = new PlayerController(player, "cfg/player1_keybinds.cfg");
             createBars(player, Placement.LEFT);
             bottomHUD = new BottomHUDController(gameScreen, player, "cfg/player1_keybinds.cfg", Placement.LEFT);
         } else if (playerNum == 2) {
-            player = PlayerFactory.createPlayer2(spawnPoint);
+            player = PlayerFactory.createPlayer2(spawnPoint, chosenFighters.get("player2PrimaryFighter"), chosenFighters.get("player2SecondaryFighter"));
             player2 = player;
             World.getInstance().queueAddGameObject(player);
             player2Controller = new PlayerController(player, "cfg/player2_keybinds.cfg");

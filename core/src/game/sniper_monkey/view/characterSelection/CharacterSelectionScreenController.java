@@ -2,6 +2,9 @@ package game.sniper_monkey.view.characterSelection;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import game.sniper_monkey.GameController;
+import game.sniper_monkey.IController;
+import game.sniper_monkey.SniperMonkey;
 import game.sniper_monkey.model.player.fighter.*;
 
 import java.util.ArrayList;
@@ -13,7 +16,7 @@ import java.util.Map;
  *
  * @author Kevin Jeryd
  */
-public class CharacterSelectionScreenController {
+public class CharacterSelectionScreenController implements IController {
     CharacterSelectionScreen characterSelectionScreen;
 
     public int player1SelectedRectangleIndex = 0;
@@ -30,12 +33,7 @@ public class CharacterSelectionScreenController {
 
     public CharacterSelectionScreenController() {
         this.observers = new ArrayList<>();
-    }
-
-    public void create() {
         characterSelectionScreen = new CharacterSelectionScreen(this);
-         //characterSelectionScreen.addSelectView(new SelectView());
-
     }
 
     private void setPlayer1SelectedRectangleIndex(int i) {
@@ -112,10 +110,6 @@ public class CharacterSelectionScreenController {
         notifyObserversOfPlayer2SelectedCharacter();
     }
 
-    public boolean allFightersPicked() {
-        return player1PrimaryFighter != null && player1SecondaryFighter != null && player2PrimaryFighter != null && player2SecondaryFighter != null;
-    }
-
     public void handleInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.D)){
             setPlayer1SelectedRectangleIndex(1);
@@ -156,8 +150,8 @@ public class CharacterSelectionScreenController {
 
     private void notifyObserversOfPlayer1SelectedCharacter() {
         if (chosenFighters.size() == 4) {
-            //Go to next state
-            System.out.println("GOING TO THE NEXT STATE");
+            System.out.println(chosenFighters);
+            SniperMonkey.activeController = new GameController(chosenFighters);
         } else {
             for (ICharacterSelectedObserver observer : observers) {
                 observer.onPlayer1CharacterSelected();
@@ -167,25 +161,13 @@ public class CharacterSelectionScreenController {
 
     private void notifyObserversOfPlayer2SelectedCharacter() {
         if (chosenFighters.size() == 4) {
-            //Go to next state
-            System.out.println("GOING TO THE NEXT STATE");
+            System.out.println(chosenFighters);
+            SniperMonkey.activeController = new GameController(chosenFighters);
         } else {
             for (ICharacterSelectedObserver observer : observers) {
                 observer.onPlayer2CharacterSelected();
             }
         }
-    }
-
-    private void notifyObserversOfRemovedCharacter() {
-        for (ICharacterSelectedObserver observer : observers) {
-            observer.onPlayer2CharacterSelected();
-        }
-    }
-
-
-    //Make so you can remove characters
-    private void onRemovedCharacter(Fighter fighter) {
-        chosenFighters.remove(fighter);
     }
 
     public void tick(float deltaTime) {

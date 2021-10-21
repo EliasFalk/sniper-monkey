@@ -1,6 +1,7 @@
 package game.sniper_monkey.model.player;
 
 import com.badlogic.gdx.math.Vector2;
+import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.player.fighter.FighterFactory;
 import game.sniper_monkey.utils.collision.CollisionMasks;
 
@@ -26,14 +27,14 @@ public class PlayerFactory {
     }
 
     //TODO documentation
-    public static Player createPlayer1(Vector2 spawnPos) {
+    public static Player createPlayer1(Vector2 spawnPos, Fighter primaryFighter, Fighter secondaryFighter) {
         // TODO change this method thanks
-        return new Player(spawnPos, FighterFactory.createEvilWizard(), FighterFactory.createEvilWizard(), CollisionMasks.PLAYER_1);
+        return new Player(spawnPos, primaryFighter, secondaryFighter, CollisionMasks.PLAYER_1);
     }
 
     //TODO documentation
-    public static Player createPlayer2(Vector2 spawnPos) {
+    public static Player createPlayer2(Vector2 spawnPos, Fighter primaryFighter, Fighter secondaryFighter) {
         // TODO change this method thanks
-        return new Player(spawnPos, FighterFactory.createHuntressBow(), FighterFactory.createSamurai(), CollisionMasks.PLAYER_2);
+        return new Player(spawnPos, primaryFighter, secondaryFighter, CollisionMasks.PLAYER_2);
     }
 }

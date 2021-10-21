@@ -44,10 +44,13 @@ public class PlayerTest {
         World.getInstance().update(deltaTime);
     }
 
+    /*
     @Before
     public void initPlayer() {
         player = PlayerFactory.createPlayer2(new Vector2(spawnX, spawnY));
     }
+
+     */
 
     @Test
     public void testInputActions() {
