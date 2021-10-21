@@ -120,4 +120,11 @@ public class HitboxTest {
         hitbox.setPosition(new Vector2(10, 10));
         assertEquals(new Vector2(10, 10), hitbox.getPosition());
     }
+
+    @Test
+    public void addMask() {
+        hitbox.setMask(0b001);
+        hitbox.addMask(0b100);
+        assertEquals(0b101, hitbox.getMask());
+    }
 }

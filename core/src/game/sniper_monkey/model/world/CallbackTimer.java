@@ -183,7 +183,7 @@ public class CallbackTimer implements UpdatableTimer {
      *
      * @param timerObserver The timer observer that no longer wants to be notified.
      */
-    public void unRegisterTimerObserver(TimerObserver timerObserver) {
+    public void unregisterTimerObserver(TimerObserver timerObserver) {
         observers.remove(timerObserver);
     }
 
