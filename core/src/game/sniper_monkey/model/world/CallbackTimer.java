@@ -26,6 +26,7 @@ public class CallbackTimer implements UpdatableTimer {
     private float timeLeft;
     private boolean running;
     private boolean looping;
+    private boolean stopAutoUpdatingOnFinish;
 
     /**
      * Creates a timer with a callback method which will be called upon when the timer finishes.
@@ -43,6 +44,7 @@ public class CallbackTimer implements UpdatableTimer {
         this.looping = loop;
         TimerBank.addTimer(this);
         observers = new ArrayList<>();
+        stopAutoUpdatingOnFinish = false;
     }
 
     /**
@@ -98,6 +100,9 @@ public class CallbackTimer implements UpdatableTimer {
                 start();
             }
             callback.call();
+            if (stopAutoUpdatingOnFinish && !looping) {
+                TimerBank.removeTimer(this);
+            }
         }
         notifyObservers();
     }
@@ -193,4 +198,20 @@ public class CallbackTimer implements UpdatableTimer {
         notifyObservers();
     }
 
+    /**
+     * Whether the timer removes itself from the timer bank when the timer finishes.
+     */
+    public boolean isStopAutoUpdatingOnFinish() {
+        return stopAutoUpdatingOnFinish;
+    }
+
+    /**
+     * Sets whether to remove the timer from the timer bank once the timer finishes.
+     * If the timer is set to looping the timer will not stop auto update.
+     *
+     * @param stopAutoUpdatingOnFinish Whether to remove the timer from the timer bank once the timer finishes.
+     */
+    public void setStopAutoUpdatingOnFinish(boolean stopAutoUpdatingOnFinish) {
+        this.stopAutoUpdatingOnFinish = stopAutoUpdatingOnFinish;
+    }
 }
