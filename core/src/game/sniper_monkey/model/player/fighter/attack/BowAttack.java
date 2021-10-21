@@ -16,13 +16,14 @@ import game.sniper_monkey.model.world.CallbackTimer;
  */
 public class BowAttack implements IAttack {
 
-    private final float damage = 15;
+    private static final float damage = 15;
+    private static final float attackLength = 0.8f;
+    private static final float attackDelay = 0.4f;
+    private static final float attackObjectTimeToLive = 2.5f;
+    private static final float hitStunLength = 0.2f;
+    private static final float stamina = 10;
     private boolean isFinished = true;
     private final CallbackTimer cbTimer;
-    private final float attackLength = 0.8f;
-    private final float projectileTimeToLive = attackLength;
-    private final float hitStunLength = 0.2f;
-    private final float stamina = 10;
     private final Vector2 velocity;
 
     /**
@@ -38,7 +39,10 @@ public class BowAttack implements IAttack {
         if (isFinished) {
             float xSpawnPos = lookingRight ? hitboxSize.x : 0;
             Vector2 spawnPos = playerPos.add(xSpawnPos,30);
-            AttackObjectSpawner.spawnHuntressArrowShot(attackFactor*damage, projectileTimeToLive, spawnPos, collisionMask, lookingRight, velocity);
+            CallbackTimer attackDelayTimer = new CallbackTimer(attackDelay, () -> AttackObjectSpawner.spawnHuntressArrowShot(attackFactor * damage, attackObjectTimeToLive, spawnPos, collisionMask, lookingRight, velocity));
+            attackDelayTimer.setStopAutoUpdatingOnFinish(true);
+            attackDelayTimer.start();
+
             cbTimer.reset();
             cbTimer.start();
             isFinished = false;

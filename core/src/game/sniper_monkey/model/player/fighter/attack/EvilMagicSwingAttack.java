@@ -20,6 +20,7 @@ public class EvilMagicSwingAttack implements IAttack {
 
     private static final float damage = 15;
     private static final float attackLength = 0.8f;
+    private static final float attackDelay = 0.3f;
     private static final float attackObjectTimeToLive = attackLength;
     private static final float hitStunLength = 0.2f;
     private static final float staminaCost = 10;
@@ -39,7 +40,10 @@ public class EvilMagicSwingAttack implements IAttack {
         if (isFinished) {
             float xSpawnPos = lookingRight ? hitboxSize.x : 0;
             Vector2 spawnPos = playerPos.add(xSpawnPos, 0);
-            AttackObjectSpawner.spawnEvilMagicSwing(attackFactor * damage, attackObjectTimeToLive, spawnPos, collisionMask, lookingRight);
+
+            CallbackTimer attackDelayTimer = new CallbackTimer(attackDelay, () -> AttackObjectSpawner.spawnEvilMagicSwing(attackFactor * damage, attackObjectTimeToLive, spawnPos, collisionMask, lookingRight));
+            attackDelayTimer.setStopAutoUpdatingOnFinish(true);
+            attackDelayTimer.start();
             cbTimer.reset();
             cbTimer.start();
             isFinished = false;

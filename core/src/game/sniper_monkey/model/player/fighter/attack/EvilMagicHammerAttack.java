@@ -22,7 +22,8 @@ public class EvilMagicHammerAttack implements IAttack {
 
     private static final float damage = 20;
     private static final float attackLength = 1.2f;
-    private static final float projectileTimeToLive = attackLength;
+    private static final float attackDelay = 0.6f;
+    private static final float attackObjectTimeToLive = attackLength;
     private static final float hitStunLength = 0.5f;
     private final static float staminaCost = 15;
     private final CallbackTimer cbTimer;
@@ -42,8 +43,11 @@ public class EvilMagicHammerAttack implements IAttack {
         if (isFinished) {
             float xSpawnPos = lookingRight ? hitboxSize.x : 0;
             Vector2 spawnPos = playerPos.add(xSpawnPos, 0);
-            AttackObjectSpawner.spawnEvilMagicHammer(attackFactor * damage, projectileTimeToLive, spawnPos, collisionMask, lookingRight);
-            // TODO delay attack?
+
+            CallbackTimer attackDelayTimer = new CallbackTimer(attackDelay, () -> AttackObjectSpawner.spawnEvilMagicHammer(attackFactor * damage, attackObjectTimeToLive, spawnPos, collisionMask, lookingRight));
+            attackDelayTimer.setStopAutoUpdatingOnFinish(true);
+            attackDelayTimer.start();
+
             cbTimer.reset();
             cbTimer.start();
             isFinished = false;
