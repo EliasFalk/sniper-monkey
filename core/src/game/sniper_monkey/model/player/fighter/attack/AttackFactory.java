@@ -30,7 +30,37 @@ public class AttackFactory {
         return new EvilMagicHammerAttack();
     }
 
+    /**
+     * Creates an attack of type BowAttack. Is the first attack for the Huntress.
+     *
+     * @return a new BowAttack object.
+     */
     public static IAttack createBowAttack() {
         return new BowAttack();
+    }
+
+    /**
+     * Creates an attack of type BowTripleAttack. Is the second attack for the Huntress.
+     *
+     * @return a new BowTripleAttack object.
+     */
+    public static IAttack createBowTripleAttack() {
+        return new BowTripleAttack();
+    }
+
+    /**
+     * Creates an object of type SamuraiQuickAttack. Is the Samurai's first attack.
+     * @return a new SamuraiQuickAttack object.
+     */
+    public static IAttack createSamuraiQuickAttack() {
+        return new SamuraiQuickAttack();
+    }
+
+    /**
+     * Creates an object of the type SamuraiShurikenAttack. Is the second attack for the Samurai.
+     * @return a new SamuraiShurikenObject.
+     */
+    public static IAttack createSamuraiShurikenAttack() {
+        return new SamuraiShurikenAttack();
     }
 }

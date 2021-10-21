@@ -5,41 +5,42 @@ import game.sniper_monkey.model.player.fighter.attack.attack_object.AttackObject
 import game.sniper_monkey.model.world.CallbackTimer;
 
 /**
- * An attack that represents the "Evil Wizard's" first attack
+ * An attack that represents the Huntresses second attack. A triple arrow bow shot.
  *
- * @author Kevin Jeryd
  * @author Dadi Andrason
- * <p>
+ *
  * Used by AttackFactory
- * <p>
+ *
  * Uses CallbackTimer
  * Uses AttackObjectSpawner
  */
-public class EvilMagicSwingAttack implements IAttack {
+public class BowTripleAttack implements IAttack {
 
-
-    private static final float damage = 15;
-    private static final float attackLength = 0.8f;
-    private static final float attackObjectTimeToLive = attackLength;
-    private static final float hitStunLength = 0.2f;
-    private static final float staminaCost = 10;
-    private final CallbackTimer cbTimer;
+    private final float damage = 12.5f;
     private boolean isFinished = true;
-
+    private final CallbackTimer cbTimer;
+    private final float attackLength = 1.5f;
+    private final float projectileTimeToLive = 3f;
+    private final float hitStunLength = 1f;
+    private final float stamina = 17.5f;
+    private Vector2 velocity;
 
     /**
-     * Creates an object of a SwordAttack.
+     * Creates an object of the triple bow attack.
      */
-    protected EvilMagicSwingAttack() {
+    protected BowTripleAttack() {
         this.cbTimer = new CallbackTimer(attackLength, () -> isFinished = true);
+        this.velocity = new Vector2(5*60,0);
     }
 
     @Override
     public boolean performAttack(float attackFactor, Vector2 playerPos, int collisionMask, boolean lookingRight, Vector2 hitboxSize) {
         if (isFinished) {
             float xSpawnPos = lookingRight ? hitboxSize.x : 0;
-            Vector2 spawnPos = playerPos.add(xSpawnPos, 0);
-            AttackObjectSpawner.spawnEvilMagicSwing(attackFactor * damage, attackObjectTimeToLive, spawnPos, collisionMask, lookingRight);
+            Vector2 spawnPos = playerPos.add(xSpawnPos,30);
+            AttackObjectSpawner.spawnHuntressArrowShot(attackFactor*damage, projectileTimeToLive, spawnPos, collisionMask, lookingRight, velocity);
+            AttackObjectSpawner.spawnHuntressArrowShot(attackFactor*damage, projectileTimeToLive, spawnPos, collisionMask, lookingRight, velocity.cpy().add(0,60));
+            AttackObjectSpawner.spawnHuntressArrowShot(attackFactor*damage, projectileTimeToLive, spawnPos, collisionMask, lookingRight, velocity.cpy().add(0,-60));
             cbTimer.reset();
             cbTimer.start();
             isFinished = false;
@@ -50,9 +51,8 @@ public class EvilMagicSwingAttack implements IAttack {
 
     @Override
     public float getStaminaCost() {
-        return staminaCost;
+        return stamina;
     }
-
 
     @Override
     public boolean isFinished() {
@@ -68,6 +68,4 @@ public class EvilMagicSwingAttack implements IAttack {
     public float getHitStunLength() {
         return hitStunLength;
     }
-
-
 }
