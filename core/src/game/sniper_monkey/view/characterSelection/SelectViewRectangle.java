@@ -27,13 +27,14 @@ public class SelectViewRectangle extends Actor {
     private final float width;
     private final float height;
     private static final float borderThickness = 6;
-    private Color color;
+    private final Color color;
     private boolean player1Select;
     private boolean player2Select;
     private final Label fighterLabel;
     private final Class<? extends Fighter> fighter;
     private final Stage stage;
-    private Color outerRectangleColor;
+    private Color player1OuterRectangleColor;
+    private Color player2OuterRectangleColor;
 
     public SelectViewRectangle(Class<? extends Fighter> fighter, float x, float y, float width, float height, Color color, Stage stage) {
         shapeRenderer = new ShapeRenderer();
@@ -55,26 +56,42 @@ public class SelectViewRectangle extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         batch.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        if (player1Select) {
-            drawOuterRectangle();
-            drawPreviewAnimation();
-        } else {
-            removePreviewAnimation();
-        }
 
-        if (player2Select) {
-            drawOuterRectangle();
+        if (player1Select && player2Select) {
+            drawDoubleOuterRectangle();
+            drawPlayer1PreviewAnimation();
             drawPlayer2PreviewAnimation();
         } else {
-            removePlayer2PreviewAnimation();
-        }
+            if (player1Select) {
+                drawPlayer1OuterRectangle();
+                drawPlayer1PreviewAnimation();
+            } else {
+                removePlayer1PreviewAnimation();
+            }
 
-        if (!player1Select && !player2Select) {
-            removeOuterRectangle(color);
+            if (player2Select) {
+                drawPlayer2OuterRectangle();
+                drawPlayer2PreviewAnimation();
+            } else {
+                removePlayer2PreviewAnimation();
+            }
+
+            if (!player1Select && !player2Select) {
+                removeOuterRectangle(color);
+            }
         }
         drawRectangle(color);
         shapeRenderer.end();
         batch.begin();
+    }
+
+    private void drawDoubleOuterRectangle() {
+        shapeRenderer.setColor(player1OuterRectangleColor);
+        shapeRenderer.rect(x, y, width+borderThickness, height+borderThickness);
+        shapeRenderer.end();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(player2OuterRectangleColor);
+        shapeRenderer.rect(x, y, width-borderThickness, height-borderThickness);
     }
 
     private Image createFighterImage(TextureRegion textureRegion, float x, float y, boolean flipX, Image img) {
@@ -85,7 +102,7 @@ public class SelectViewRectangle extends Actor {
         return img;
     }
 
-    private void drawPreviewAnimation() {
+    private void drawPlayer1PreviewAnimation() {
         previewImg.setScale(2);
         stage.addActor(previewImg);
     }
@@ -95,7 +112,7 @@ public class SelectViewRectangle extends Actor {
         stage.addActor(player2PreviewImg);
     }
 
-    private void removePreviewAnimation() {
+    private void removePlayer1PreviewAnimation() {
         previewImg.remove();
     }
 
@@ -113,8 +130,13 @@ public class SelectViewRectangle extends Actor {
         shapeRenderer.rect(x+borderThickness , y+borderThickness, width-borderThickness, height-borderThickness);
     }
 
-    private void drawOuterRectangle() {
-        shapeRenderer.setColor(outerRectangleColor);
+    private void drawPlayer1OuterRectangle() {
+        shapeRenderer.setColor(player1OuterRectangleColor);
+        shapeRenderer.rect(x, y, width+borderThickness, height+borderThickness);
+    }
+
+    private void drawPlayer2OuterRectangle() {
+        shapeRenderer.setColor(player2OuterRectangleColor);
         shapeRenderer.rect(x, y, width+borderThickness, height+borderThickness);
     }
 
@@ -126,18 +148,18 @@ public class SelectViewRectangle extends Actor {
     public void setPlayer1Selected(boolean bool) {
         this.player1Select = bool;
         if (player1Select) {
-            this.outerRectangleColor = Color.ORANGE;
+            this.player1OuterRectangleColor = Color.ORANGE;
         } else {
-            this.outerRectangleColor = Color.BLUE;
+            this.player1OuterRectangleColor = Color.BLUE;
         }
     }
 
     public void setPlayer2Selected(boolean bool) {
         this.player2Select = bool;
         if (player2Select) {
-            this.outerRectangleColor = Color.GREEN;
+            this.player2OuterRectangleColor = Color.GREEN;
         } else {
-            this.outerRectangleColor = Color.BLUE;
+            this.player2OuterRectangleColor = Color.BLUE;
         }
     }
 }
