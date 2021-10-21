@@ -13,4 +13,6 @@ public interface HUDView {
 
     //TODO documentation
     void addActors(Stage stage);
+
+    void removeActors();
 }

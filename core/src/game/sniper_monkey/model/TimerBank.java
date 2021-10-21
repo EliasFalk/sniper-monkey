@@ -63,4 +63,11 @@ public final class TimerBank {
     public static boolean contains(UpdatableTimer timer) {
         return timers.contains(timer);
     }
+
+    /**
+     * Empties the timer bank of all timers and will no longer update these timers.
+     */
+    public static void clear() {
+        timers.clear();
+    }
 }

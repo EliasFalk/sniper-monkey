@@ -1,31 +1,63 @@
 package game.sniper_monkey;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import game.sniper_monkey.controller.PlayerController;
+import game.sniper_monkey.model.Config;
+import game.sniper_monkey.model.TimerBank;
+import game.sniper_monkey.model.player.FluctuatingAttributeObserver;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.PlayerFactory;
+import game.sniper_monkey.model.world.CallbackTimer;
 import game.sniper_monkey.model.world.World;
 import game.sniper_monkey.model.world_brick.WorldBrick;
 import game.sniper_monkey.utils.MapReader;
 import game.sniper_monkey.view.GameScreen;
-import game.sniper_monkey.view.hud.BarView;
-import game.sniper_monkey.view.hud.BottomHUDController;
-import game.sniper_monkey.view.hud.FillDirection;
-import game.sniper_monkey.view.hud.Placement;
+import game.sniper_monkey.view.hud.*;
 
 import java.util.Map;
 
-public class GameController {
-    GameScreen gameScreen;
-    PlayerController player1Controller;
-    PlayerController player2Controller;
-    boolean pause = false;
+public class GameController implements FluctuatingAttributeObserver {
+    private GameScreen gameScreen;
+    private PlayerController player1Controller, player2Controller;
+    private final CallbackTimer roundTimer;
+    private GameState currentState;
+    private Player player1, player2;
+    private OverlayMenu pauseMenu;
+    private OverlayMenu endMenu;
 
-    //TODO documentation
-    public void create() {
+    @Override
+    public void onValueChange(float min, float max, float health) {
+        if (health <= min) {
+            currentState = this::gameOverState;
+            addEndMenuToScreen();
+        }
+    }
+
+    @FunctionalInterface
+    private interface GameState {
+        void perform(float deltaTime);
+    }
+
+    public GameController() {
+        Config.readConfigFile("cfg/game.cfg");
+        roundTimer = new CallbackTimer(Config.getNumber("cfg/game.cfg", "ROUND_TIME"), () -> {
+            currentState = this::gameOverState;
+            addEndMenuToScreen();
+        });
+        pauseMenu = createPauseMenu();
+        create();
+    }
+
+    private void create() {
         gameScreen = new GameScreen();
         World.getInstance().registerObserver(gameScreen);
 
@@ -35,6 +67,94 @@ public class GameController {
         Map<String, Vector2> spawnPoints = MapReader.readSpawnPoints("grass_map_2/grass_2.tmx");
         initPlayer(1, spawnPoints.get("player_1").cpy().add(mapOffset));
         initPlayer(2, spawnPoints.get("player_2").cpy().add(mapOffset));
+
+        RoundTimerView roundTimerView = new RoundTimerView();
+        roundTimer.registerTimerObserver(roundTimerView);
+        gameScreen.addHudView(roundTimerView);
+
+        World.getInstance().update(0);
+
+        currentState = this::startState;
+    }
+
+    private int determineWinner() {
+        if (player1.getHealth() > player2.getHealth()) return 1;
+        else if (player2.getHealth() > player1.getHealth()) return 2;
+        else return 0;
+
+    }
+
+    private void startState(float deltaTime) {
+        //TODO 3.. 2.. 1.. FIGHT!
+        roundTimer.start();
+        currentState = this::fightingState;
+    }
+
+    private void fightingState(float deltaTime) {
+        player1Controller.handleKeyInputs();
+        player2Controller.handleKeyInputs();
+        World.getInstance().update(deltaTime);
+        TimerBank.updateTimers(deltaTime);
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) { //TODO config for key bind
+            gameScreen.addHudView(pauseMenu);
+            currentState = this::pauseState;
+        }
+    }
+
+    private void pauseState(float deltaTime) {
+        //TODO add pause overlay
+        roundTimer.stop();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) { //TODO config for key bind
+            currentState = this::startState;
+            gameScreen.removeHudView(pauseMenu);
+        }
+    }
+
+    private OverlayMenu createPauseMenu() {
+        OverlayMenu pauseMenu = new OverlayMenu("Game Paused");
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.font = new BitmapFont();
+        Button resumeGame = new TextButton("Resume", textButtonStyle);
+        resumeGame.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                gameScreen.removeHudView(pauseMenu);
+                currentState = GameController.this::startState;
+            }
+        });
+
+        Button ass = new TextButton("Ass", textButtonStyle);
+        pauseMenu.addButton(resumeGame);
+        pauseMenu.addButton(ass);
+        return pauseMenu;
+    }
+
+    private OverlayMenu createEndMenu() {
+        OverlayMenu endMenu = new OverlayMenu("Player " + determineWinner() + " Wins!");
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.font = new BitmapFont();
+        Button goToStart = new TextButton("Return to main menu", textButtonStyle);
+        goToStart.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                gameScreen.removeHudView(endMenu);
+                // TODO go back to start screen
+            }
+        });
+
+        endMenu.addButton(goToStart);
+        return endMenu;
+    }
+
+
+    private void gameOverState(float deltaTime) {
+
+    }
+
+    private void addEndMenuToScreen() {
+        endMenu = createEndMenu();
+        gameScreen.addHudView(endMenu);
     }
 
     private Vector2 calculateMapOffset(String[][] map) {
@@ -50,28 +170,29 @@ public class GameController {
         }
     }
 
-    private Player initPlayer(int playerNum, Vector2 spawnPoint) {
+    private void initPlayer(int playerNum, Vector2 spawnPoint) {
         Player player;
+        BottomHUDController bottomHUD;
         if (playerNum == 1) {
             player = PlayerFactory.createPlayer1(spawnPoint);
+            player1 = player;
             World.getInstance().queueAddGameObject(player);
             player1Controller = new PlayerController(player, "cfg/player1_keybinds.cfg");
             createBars(player, Placement.LEFT);
-            BottomHUDController p1BottomHUD = new BottomHUDController(gameScreen, player, "cfg/player1_keybinds.cfg", Placement.LEFT);
-            player.registerSwappedFighterObserver(p1BottomHUD);
-            player.registerSwappedFighterObserver(gameScreen);
+            bottomHUD = new BottomHUDController(gameScreen, player, "cfg/player1_keybinds.cfg", Placement.LEFT);
         } else if (playerNum == 2) {
             player = PlayerFactory.createPlayer2(spawnPoint);
+            player2 = player;
             World.getInstance().queueAddGameObject(player);
             player2Controller = new PlayerController(player, "cfg/player2_keybinds.cfg");
             createBars(player, Placement.RIGHT);
-            BottomHUDController p2BottomHUD = new BottomHUDController(gameScreen, player, "cfg/player2_keybinds.cfg", Placement.RIGHT);
-            player.registerSwappedFighterObserver(p2BottomHUD);
-            player.registerSwappedFighterObserver(gameScreen);
+            bottomHUD = new BottomHUDController(gameScreen, player, "cfg/player2_keybinds.cfg", Placement.RIGHT);
         } else {
             throw new IllegalArgumentException("THERE CAN ONLY BE 2 PLAYERS..."); // TODO
         }
-        return player;
+        player.registerSwappedFighterObserver(bottomHUD);
+        player.registerSwappedFighterObserver(gameScreen);
+        player.registerHealthObserver(this);
     }
 
     private void createBars(Player player, Placement placement) {
@@ -99,14 +220,16 @@ public class GameController {
 
     //TODO documentation
     public void tick(float deltaTime) {
-        World.getInstance().update(deltaTime);
-        player1Controller.handleKeyInputs();
-        player2Controller.handleKeyInputs();
+        currentState.perform(deltaTime);
         gameScreen.render(deltaTime);
     }
 
     //TODO documentation
     public void dispose() {
         gameScreen.dispose();
+    }
+
+    public void onResize(int w, int h) {
+        gameScreen.resize(w, h);
     }
 }
