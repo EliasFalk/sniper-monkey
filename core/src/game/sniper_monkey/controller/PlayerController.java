@@ -8,6 +8,12 @@ import game.sniper_monkey.model.player.PlayerInputAction;
 /**
  * Represents a controller reading keyboard input and updating the internal
  * player's state based on a keybinds config file.
+ * <p>
+ * Uses Config
+ * Uses ControllablePlayer
+ * Uses Gdx.input
+ * <p>
+ * Used by GameController
  *
  * @author Elias Falk
  */

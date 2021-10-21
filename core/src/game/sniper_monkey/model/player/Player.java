@@ -18,6 +18,18 @@ import java.util.Map;
 /**
  * A player GameObject to be controlled in the world, handling its movement, collision, blocking and attacking
  * using two internal Fighter subclasses.
+ * <p>
+ * Uses ReadablePlayer, ControllablePlayer, DamageablePlayer.
+ * Uses GameObject.
+ * Uses FluctuatingAttribute.
+ * Uses CallbackTimer.
+ * Uses Fighter.
+ * Uses PlayerInputAction.
+ * Uses PhysicsPosition.
+ * Uses Config.
+ * <p>
+ * Used by PlayerFactory.
+ * Used by FighterViews.
  *
  * @author Elias Falk
  * @author Vincent Hellner
@@ -138,10 +150,6 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         }
     }
 
-    public float getHealth() {
-        return health.getCurrentValue();
-    }
-
     private void attackingState() {
         hitStun.reset();
         if (!activeFighter.isAttacking()) {
@@ -153,10 +161,6 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     private void swappingFighterState() {
         // TODO discuss: deprecated unless it takes time for the player to respawn. i.e go into void -> respawn after some time
         abilityState = this::inactiveState;
-    }
-
-    public float getAttackLength(int attackNum) {
-        return activeFighter.getAttackLength(attackNum);
     }
 
     private void inactiveState() {
@@ -280,17 +284,6 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         canAttack = false;
     }
 
-    @Override
-    public PhysicalState getCurrentPhysicalState() {
-        return currentPhysicalState;
-    }
-
-
-    @Override
-    public boolean isLookingRight() {
-        return lookingRight;
-    }
-
     private void initInputActions() {
         inputActions.put(PlayerInputAction.JUMP, false);
         inputActions.put(PlayerInputAction.ATTACK1, false);
@@ -313,6 +306,21 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     }
 
     @Override
+    public PhysicalState getCurrentPhysicalState() {
+        return currentPhysicalState;
+    }
+
+    @Override
+    public float getHealth() {
+        return health.getCurrentValue();
+    }
+
+    @Override
+    public boolean isLookingRight() {
+        return lookingRight;
+    }
+
+    @Override
     public void setInputAction(PlayerInputAction action) {
         inputActions.replace(action, true);
     }
@@ -324,15 +332,15 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         } else {
             health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR));
         }
+
+        if (health.getCurrentValue() <= 0) {
+            currentPhysicalState = PhysicalState.DYING;
+        }
     }
 
-    /**
-     * Checks if the player is dead.
-     *
-     * @return true if the player is dead, false if the player is alive.
-     */
-    public boolean isDead() {
-        return health.getCurrentValue() == 0;
+    @Override
+    public float getAttackLength(int attackNum) {
+        return activeFighter.getAttackLength(attackNum);
     }
 
     @Override
@@ -349,12 +357,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         }
     }
 
-    /**
-     * Returns the class of the active fighter's attack, specified by the attack number.
-     *
-     * @param attackNum The attack specifier. Starts at 0.
-     * @return The class of the specified attack of the active fighter.
-     */
+    @Override
     public Class<? extends IAttack> getAttackClass(int attackNum) {
         return activeFighter.getAttackClass(attackNum);
     }
@@ -389,8 +392,9 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     private void updatePlayerPos(float deltaTime) {
         physicsPos.update(deltaTime);
         isGrounded = false;
-        physicsPos = CollisionResponse.handleCollision(deltaTime, getHitbox(), getHitboxMask(), physicsPos, () -> {}, () -> {
-            if(physicsPos.getVelocity().y < 0) isGrounded = true;
+        physicsPos = CollisionResponse.handleCollision(deltaTime, getHitbox(), getHitboxMask(), physicsPos, () -> {
+        }, () -> {
+            if (physicsPos.getVelocity().y < 0) isGrounded = true;
         });
         super.setPosition(physicsPos.getPosition());
     }

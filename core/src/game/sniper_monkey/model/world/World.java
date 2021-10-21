@@ -28,18 +28,6 @@ public final class World {
     private final Queue<GameObject> queuedForRemoval;
 
     private final List<IWorldObserver> observers;
-    private final CallbackTimer roundTimer;
-    private final List<ITimerObserver> timerObservers;
-
-    //TODO documentation
-    //TIMER OBSERVER STUFF
-    public void registerTimerObserver(TimerObserver timerObserver) {
-        roundTimer.registerTimerObserver(timerObserver);
-    }
-
-    public void unregisterTimerObserver(TimerObserver timerObserver) {
-        roundTimer.unRegisterTimerObserver(timerObserver);
-    }
 
     private void removeQueuedGameObjects() {
         while (!queuedForRemoval.isEmpty()) {
@@ -50,23 +38,11 @@ public final class World {
         }
     }
 
-    private State currentState = this::startFightingState; // TODO move states
-
-    @FunctionalInterface
-    interface State {
-        void performState();
-    }
-
     private World() {
         gameObjects = new ArrayList<>();
         observers = new ArrayList<>();
-        timerObservers = new ArrayList<>();
         queuedForAddition = new ArrayDeque<>();
         queuedForRemoval = new ArrayDeque<>();
-
-        Config.readConfigFile("cfg/game.cfg");
-        float roundTime = Config.getNumber("cfg/game.cfg", "ROUND_TIME");
-        roundTimer = new CallbackTimer(roundTime, () -> currentState = this::endGameState);
     }
 
     //TODO documentation
@@ -74,38 +50,6 @@ public final class World {
     public static World getInstance() {
         if (INSTANCE == null) INSTANCE = new World();
         return INSTANCE;
-    }
-
-    //TODO documentation
-    public int getRoundDuration() {
-        return (int) roundTimer.getTimeLeft();
-    }
-
-    /**
-     * Starts the fightingState of the game by activating the roundTimer and setting the next state to playingState
-     */
-    private void startFightingState() {
-        roundTimer.start();
-        currentState = this::playingState;
-    }
-
-    /**
-     * The state of the game while actively combating.
-     * If the roundTimer is done, then switch to the endGameState.
-     * If the roundTimer is still counting, show the time left until the game is done.
-     */
-    private void playingState() {
-        notifyObserversOfTimerChange((int) roundTimer.getTimeLeft());
-    }
-
-    /**
-     * The state of the game when the combating has ended.
-     * Actively waits for input to start the game again.
-     */
-    private void endGameState() {
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            startFightingState();
-        }
     }
 
     //TODO documentation
@@ -137,15 +81,6 @@ public final class World {
     public void resetWorld() {
         queuedForRemoval.addAll(gameObjects);
         removeQueuedGameObjects();
-        roundTimer.reset(); // TODO should maybe not be in world?
-        currentState = this::startFightingState; // TODO move states
-    }
-
-
-    private void notifyObserversOfTimerChange(int time) {
-        for (ITimerObserver timerObserver : timerObservers) {
-            timerObserver.onTimerChange(time);
-        }
     }
 
     /**
@@ -155,12 +90,9 @@ public final class World {
         addQueuedGameObjects();
         removeQueuedGameObjects();
 
-        currentState.performState();
         for (GameObject obj : gameObjects) {
             obj.update(deltaTime);
         }
-
-        // TODO maybe move this somewhere else.
     }
 
     private void addQueuedGameObjects() {
@@ -171,8 +103,6 @@ public final class World {
             CollisionEngine.registerGameObject(obj, obj.isDynamic());
         }
     }
-
-
 
     /**
      * Queues a GameObject for removal from the world,
@@ -193,6 +123,4 @@ public final class World {
     public void queueAddGameObject(GameObject obj) {
         queuedForAddition.add(obj);
     }
-
-
 }

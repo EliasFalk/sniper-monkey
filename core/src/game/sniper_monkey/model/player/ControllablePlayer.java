@@ -1,7 +1,11 @@
 package game.sniper_monkey.model.player;
 
 /**
- * Interface for a readable player
+ * Interface for a readable player.
+ * <p>
+ * Uses PlayerInputAction.
+ * <p>
+ * Used by PlayerController.
  *
  * @author Elias Falk
  */

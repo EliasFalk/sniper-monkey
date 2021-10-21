@@ -115,6 +115,13 @@ public class KeyInputView implements TimerObserver, HUDView {
     }
 
     @Override
+    public void removeActors() {
+        fillableBar.remove();
+        keyLabel.remove();
+        sideTextLabel.remove();
+    }
+
+    @Override
     public void onTimeUpdated(float timerLength, float timeLeft) {
         // could update some label with the actual time left.
         fillableBar.update(1 - timeLeft / timerLength);

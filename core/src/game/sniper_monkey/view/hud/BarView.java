@@ -88,9 +88,15 @@ public class BarView implements FluctuatingAttributeObserver, HUDView {
     }
 
     @Override
-    public void onPercentageChange(float newFraction) {
-        currentValue = newFraction;
-        barLabel.setText(String.format(new DecimalFormat("#.#").format(currentValue * 100), currentValue));
-        fillableBar.update(newFraction);
+    public void removeActors() {
+        fillableBar.remove();
+        barLabel.remove();
+    }
+
+    @Override
+    public void onValueChange(float min, float max, float current) {
+        currentValue = (current - min) / (max - min);
+        barLabel.setText(new DecimalFormat("#.#").format(currentValue * 100));
+        fillableBar.update(currentValue);
     }
 }
