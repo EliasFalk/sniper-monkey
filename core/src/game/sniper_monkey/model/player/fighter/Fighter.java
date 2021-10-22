@@ -112,6 +112,9 @@ public abstract class Fighter {
      * @return a float 0..n. where the float is the length of the attack in seconds.
      */
     public float getAttackLength(int attackNum) {
+        if (attackNum >= attacks.size()) {
+            throw new IllegalArgumentException("attack " + attackNum + " does not exist");
+        }
         return attacks.get(attackNum).getAttackLength();
     }
 
@@ -121,6 +124,9 @@ public abstract class Fighter {
      * @return a float 0..n. where the float is the length of the hitstun in seconds.
      */
     public float getHitStunTime(int attackNum) {
+        if (attackNum >= attacks.size()) {
+            throw new IllegalArgumentException("attack " + attackNum + " does not exist");
+        }
         return attacks.get(attackNum).getHitStunLength();
     }
 
