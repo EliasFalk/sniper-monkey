@@ -18,6 +18,7 @@ public class SamuraiShurikenAttack implements IAttack {
 
     private static final float damage = 12.5f;
     private static final float attackLength = 1.2f;
+    private static final float attackDelay = 0.75f;
     private static final float attackObjectTimeToLive = 3f;
     private static final float hitStunLength = 1f;
     private static final float staminaCost = 20;
@@ -40,9 +41,14 @@ public class SamuraiShurikenAttack implements IAttack {
         if (isFinished) {
             float xSpawnPos = lookingRight ? hitboxSize.x : 0;
             Vector2 spawnPos = playerPos.add(xSpawnPos,30);
-            AttackObjectSpawner.spawnSamuraiShuriken(attackFactor*damage, attackObjectTimeToLive, spawnPos, collisionMask, lookingRight, velocity);
-            AttackObjectSpawner.spawnSamuraiShuriken(attackFactor*damage, attackObjectTimeToLive, spawnPos, collisionMask, lookingRight, velocity.cpy().add(0, 0.3f*60));
-            AttackObjectSpawner.spawnSamuraiShuriken(attackFactor*damage, attackObjectTimeToLive, spawnPos, collisionMask, lookingRight, velocity.cpy().add(0, -0.3f*60));
+            CallbackTimer attackDelayTimer = new CallbackTimer(attackDelay, () -> {
+                AttackObjectSpawner.spawnSamuraiShuriken(attackFactor*damage, attackObjectTimeToLive, spawnPos, collisionMask, lookingRight, velocity);
+                AttackObjectSpawner.spawnSamuraiShuriken(attackFactor*damage, attackObjectTimeToLive, spawnPos, collisionMask, lookingRight, velocity.cpy().add(0, 0.3f*60));
+                AttackObjectSpawner.spawnSamuraiShuriken(attackFactor*damage, attackObjectTimeToLive, spawnPos, collisionMask, lookingRight, velocity.cpy().add(0, -0.3f*60));
+            });
+            attackDelayTimer.setStopAutoUpdatingOnFinish(true);
+            attackDelayTimer.start();
+
             cbTimer.reset();
             cbTimer.start();
             isFinished = false;

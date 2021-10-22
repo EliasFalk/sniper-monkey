@@ -5,7 +5,7 @@ import game.sniper_monkey.model.player.fighter.attack.attack_object.AttackObject
 import game.sniper_monkey.model.world.CallbackTimer;
 
 /**
- * An attack that represents the Huntresses first attack.
+ * A class of the Fantasy Warrior fighters first attack, the electrical Slash.
  *
  * @author Dadi Andrason
  *
@@ -14,35 +14,33 @@ import game.sniper_monkey.model.world.CallbackTimer;
  * Uses CallbackTimer
  * Uses AttackObjectSpawner
  */
-public class BowAttack implements IAttack {
+public class ElectricalSlashAttack implements IAttack {
 
     private static final float damage = 15;
-    private static final float attackLength = 0.8f;
+    private static final float attackLength = 0.6f;
+    private static final float attackObjectTimeToLive = attackLength;
+    private static final float hitStunLength = 0.25f;
+    private static final float staminaCost = 12.5f;
     private static final float attackDelay = 0.4f;
-    private static final float attackObjectTimeToLive = 2.5f;
-    private static final float hitStunLength = 0.2f;
-    private static final float stamina = 10;
-    private boolean isFinished = true;
     private final CallbackTimer cbTimer;
-    private final Vector2 velocity;
+    private boolean isFinished = true;
 
     /**
-     * Creates an object of a bow attack.
+     * Creates an object of the ElectricalSlashAttack
      */
-    protected BowAttack() {
+    protected ElectricalSlashAttack() {
         this.cbTimer = new CallbackTimer(attackLength, () -> isFinished = true);
-        velocity = new Vector2(5*60, 0);
     }
+
 
     @Override
     public boolean performAttack(float attackFactor, Vector2 playerPos, int collisionMask, boolean lookingRight, Vector2 hitboxSize) {
         if (isFinished) {
             float xSpawnPos = lookingRight ? hitboxSize.x : 0;
-            Vector2 spawnPos = playerPos.add(xSpawnPos,30);
-            CallbackTimer attackDelayTimer = new CallbackTimer(attackDelay, () -> AttackObjectSpawner.spawnHuntressArrowShot(attackFactor * damage, attackObjectTimeToLive, spawnPos, collisionMask, lookingRight, velocity));
+            Vector2 spawnPos = playerPos.add(xSpawnPos, 0);
+            CallbackTimer attackDelayTimer = new CallbackTimer(attackDelay, () -> AttackObjectSpawner.spawnElectricalSlash(attackFactor*damage, attackObjectTimeToLive,spawnPos, collisionMask, lookingRight));
             attackDelayTimer.setStopAutoUpdatingOnFinish(true);
             attackDelayTimer.start();
-
             cbTimer.reset();
             cbTimer.start();
             isFinished = false;
@@ -51,10 +49,9 @@ public class BowAttack implements IAttack {
         return false;
     }
 
-
     @Override
     public float getStaminaCost() {
-        return stamina;
+        return staminaCost;
     }
 
     @Override

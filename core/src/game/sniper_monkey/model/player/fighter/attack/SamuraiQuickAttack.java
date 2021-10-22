@@ -21,7 +21,7 @@ public class SamuraiQuickAttack implements IAttack {
     private static final float attackObjectTimeToLive = attackLength;
     private static final float hitStunLength = 0.15f;
     private static final float staminaCost = 10;
-    private static final float attackDelay = 0.5f;
+    private static final float attackDelay = 0.25f;
     private final CallbackTimer cbTimer;
     private boolean isFinished = true;
 

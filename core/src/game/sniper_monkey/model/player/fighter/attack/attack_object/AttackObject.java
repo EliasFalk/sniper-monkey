@@ -87,7 +87,7 @@ public abstract class AttackObject extends GameObject {
     /**
      * Adds a "response" to what happens when an object collides with a player.
      *
-     * @param gameObjectType the type of the object. I.e. Player.class
+     * @param gameObjectType the type of the object. i.e. Player.class
      * @param response       the action that happens when the object collides with a player. I.e. player takes damage.
      */
     protected void addHitResponse(Class<? extends GameObject> gameObjectType, Consumer<GameObject> response) {

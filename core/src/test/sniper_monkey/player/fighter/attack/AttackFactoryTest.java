@@ -14,4 +14,40 @@ public class AttackFactoryTest {
         assertNotNull(attack);
     }
 
+    @Test
+    public void testCreateEvilMagicHammerAttack() {
+        IAttack attack = AttackFactory.createEvilMagicHammerAttack();
+        assertNotNull(attack);
+    }
+    @Test
+    public void testCreateElectricalSmashAttack() {
+        IAttack attack = AttackFactory.createElectricalSmashAttack();
+        assertNotNull(attack);
+    }
+    @Test
+    public void testCreateElectricalSlashAttack() {
+        IAttack attack = AttackFactory.createElectricalSlashAttack();
+        assertNotNull(attack);
+    }
+    @Test
+    public void testCreateBowAttack() {
+        IAttack attack = AttackFactory.createBowAttack();
+        assertNotNull(attack);
+    }
+    @Test
+    public void testCreateBowTripleAttack() {
+        IAttack attack = AttackFactory.createBowTripleAttack();
+        assertNotNull(attack);
+    }
+    @Test
+    public void testCreateSamuraiQuickAttack() {
+        IAttack attack = AttackFactory.createSamuraiQuickAttack();
+        assertNotNull(attack);
+    }
+    @Test
+    public void testCreateSamuraiShurikenAttack() {
+        IAttack attack = AttackFactory.createSamuraiShurikenAttack();
+        assertNotNull(attack);
+    }
+
 }

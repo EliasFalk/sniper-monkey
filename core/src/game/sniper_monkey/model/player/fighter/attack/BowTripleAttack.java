@@ -16,13 +16,14 @@ import game.sniper_monkey.model.world.CallbackTimer;
  */
 public class BowTripleAttack implements IAttack {
 
-    private final float damage = 12.5f;
+    private static final float damage = 12.5f;
+    private static final float attackLength = 1.5f;
+    private static final float attackDelay = 1f;
+    private static final float attackObjectTimeToLive = 2.5f;
+    private static final float hitStunLength = 1f;
+    private static final float stamina = 17.5f;
     private boolean isFinished = true;
     private final CallbackTimer cbTimer;
-    private final float attackLength = 1.5f;
-    private final float projectileTimeToLive = 3f;
-    private final float hitStunLength = 1f;
-    private final float stamina = 17.5f;
     private Vector2 velocity;
 
     /**
@@ -38,9 +39,13 @@ public class BowTripleAttack implements IAttack {
         if (isFinished) {
             float xSpawnPos = lookingRight ? hitboxSize.x : 0;
             Vector2 spawnPos = playerPos.add(xSpawnPos,30);
-            AttackObjectSpawner.spawnHuntressArrowShot(attackFactor*damage, projectileTimeToLive, spawnPos, collisionMask, lookingRight, velocity);
-            AttackObjectSpawner.spawnHuntressArrowShot(attackFactor*damage, projectileTimeToLive, spawnPos, collisionMask, lookingRight, velocity.cpy().add(0,60));
-            AttackObjectSpawner.spawnHuntressArrowShot(attackFactor*damage, projectileTimeToLive, spawnPos, collisionMask, lookingRight, velocity.cpy().add(0,-60));
+            CallbackTimer attackDelayTimer = new CallbackTimer(attackDelay, () -> {
+                AttackObjectSpawner.spawnHuntressArrowShot(attackFactor*damage, attackObjectTimeToLive, spawnPos, collisionMask, lookingRight, velocity);
+                AttackObjectSpawner.spawnHuntressArrowShot(attackFactor*damage, attackObjectTimeToLive, spawnPos, collisionMask, lookingRight, velocity.cpy().add(0, 1f*60));
+                AttackObjectSpawner.spawnHuntressArrowShot(attackFactor*damage, attackObjectTimeToLive, spawnPos, collisionMask, lookingRight, velocity.cpy().add(0, -1f*60));
+            });
+            attackDelayTimer.setStopAutoUpdatingOnFinish(true);
+            attackDelayTimer.start();
             cbTimer.reset();
             cbTimer.start();
             isFinished = false;

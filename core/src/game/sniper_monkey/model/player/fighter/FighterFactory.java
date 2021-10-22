@@ -11,14 +11,16 @@ import java.util.Map;
  * @author Elias Falk
  */
 public class FighterFactory {
-    private FighterFactory() {
-    }
+
+    private FighterFactory() {}
+
     private static final Map<Class<? extends Fighter>, FighterCreator> correspondingFighters = new HashMap<>();
 
     static {
         correspondingFighters.put(EvilWizard.class, FighterFactory::createEvilWizard);
         correspondingFighters.put(Samurai.class, FighterFactory::createSamurai);
         correspondingFighters.put(HuntressBow.class, FighterFactory::createHuntressBow);
+        correspondingFighters.put(FantasyWarrior.class, FighterFactory::createFantasyWarrior);
     }
 
     /**
@@ -46,6 +48,14 @@ public class FighterFactory {
      */
     public static Fighter createSamurai() {
         return new Samurai();
+    }
+
+    /**
+     * Creates a Fantasy warrior fighter.
+     * @return a fighter with factors and attacks belonging to the Fantasy warrior.
+     */
+    public static Fighter createFantasyWarrior() {
+        return new FantasyWarrior();
     }
 
     /**
