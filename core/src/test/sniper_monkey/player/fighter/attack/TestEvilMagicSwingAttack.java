@@ -8,6 +8,7 @@ import game.sniper_monkey.model.Config;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.PlayerFactory;
 import game.sniper_monkey.model.player.PlayerInputAction;
+import game.sniper_monkey.model.player.fighter.FighterFactory;
 import game.sniper_monkey.model.player.fighter.attack.AttackFactory;
 import game.sniper_monkey.model.player.fighter.attack.EvilMagicSwingAttack;
 import game.sniper_monkey.model.player.fighter.attack.IAttack;
@@ -34,8 +35,8 @@ public class TestEvilMagicSwingAttack {
 
     @Test
     public void testEvilMagicSwingAttack() {
-        Player player1 = PlayerFactory.createPlayer1(new Vector2(70, 0));
-        Player player2 = PlayerFactory.createPlayer2(new Vector2(0, 0));
+        Player player1 = PlayerFactory.createPlayer1(new Vector2(70, 0), FighterFactory.createEvilWizard(), FighterFactory.createEvilWizard());
+        Player player2 = PlayerFactory.createPlayer2(new Vector2(0, 0), FighterFactory.createEvilWizard(), FighterFactory.createEvilWizard());
         player1.setInputAction(PlayerInputAction.ATTACK1);
         world.queueAddGameObject(player1);
         world.queueAddGameObject(player2);
@@ -46,8 +47,8 @@ public class TestEvilMagicSwingAttack {
 
     @Test
     public void testEvilMagicSwingAttackMiss() {
-        Player player1 = PlayerFactory.createPlayer1(new Vector2(700, 0));
-        Player player2 = PlayerFactory.createPlayer2(new Vector2(0, 0));
+        Player player1 = PlayerFactory.createPlayer1(new Vector2(700, 0), FighterFactory.createEvilWizard(), FighterFactory.createEvilWizard());
+        Player player2 = PlayerFactory.createPlayer2(new Vector2(0, 0), FighterFactory.createEvilWizard(), FighterFactory.createEvilWizard());
         player1.setInputAction(PlayerInputAction.ATTACK1);
         world.queueAddGameObject(player1);
         world.queueAddGameObject(player2);

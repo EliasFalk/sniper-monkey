@@ -14,6 +14,7 @@ import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.player.fighter.FighterFactory;
 import game.sniper_monkey.model.player.fighter.HuntressBow;
 import game.sniper_monkey.model.player.fighter.attack.IAttack;
+import game.sniper_monkey.model.player.fighter.FighterFactory;
 import game.sniper_monkey.model.world.World;
 import game.sniper_monkey.model.world_brick.WorldBrick;
 import org.junit.Assert;
@@ -57,6 +58,7 @@ public class PlayerTest {
     public void initPlayer() {
         TimerBank.clear();
         player = PlayerFactory.createPlayer1(new Vector2(spawnX, spawnY), primaryFighterClass, secondaryFighterClass);
+        player = PlayerFactory.createPlayer2(new Vector2(spawnX, spawnY), primaryFighterClass, secondaryFighterClass);
     }
 
     @Test

@@ -18,32 +18,22 @@ public class PlayerFactory {
     private PlayerFactory() {
     }
 
-    /**
-     * Creates a player with two fighters
-     *
-     * @return a player object with two fighters.
-     */
-    public static Player createPlayer() {
+    //TODO documentation
+    public static Player createPlayer(Vector2 spawnPos, Fighter primaryFighter, Fighter secondaryFighter, int collisionMasks) {
         // TODO change this method thanks
-        return new Player(FighterFactory.createEvilWizard(), FighterFactory.createEvilWizard());
+        return new Player(spawnPos, primaryFighter, secondaryFighter, collisionMasks);
     }
 
     //TODO documentation
-    public static Player createPlayer(Vector2 spawnPos) {
+    public static Player createPlayer1(Vector2 spawnPos, Fighter primaryFighter, Fighter secondaryFighter) {
         // TODO change this method thanks
-        return new Player(spawnPos, FighterFactory.createEvilWizard(), FighterFactory.createEvilWizard());
+        return createPlayer(spawnPos, primaryFighter, secondaryFighter, CollisionMasks.PLAYER_1);
     }
 
     //TODO documentation
-    public static Player createPlayer1(Vector2 spawnPos) {
+    public static Player createPlayer2(Vector2 spawnPos, Fighter primaryFighter, Fighter secondaryFighter) {
         // TODO change this method thanks
-        return new Player(spawnPos, FighterFactory.createEvilWizard(), FighterFactory.createEvilWizard(), CollisionMasks.PLAYER_1);
-    }
-
-    //TODO documentation
-    public static Player createPlayer2(Vector2 spawnPos) {
-        // TODO change this method thanks
-        return new Player(spawnPos, FighterFactory.createHuntressBow(), FighterFactory.createSamurai(), CollisionMasks.PLAYER_2);
+        return createPlayer(spawnPos, primaryFighter, secondaryFighter, CollisionMasks.PLAYER_2);
     }
 
 
