@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.player.PhysicalState;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.ReadablePlayer;
-import game.sniper_monkey.utils.time.Time;
 import game.sniper_monkey.utils.view.AnimationUtils;
 import game.sniper_monkey.utils.view.SpriteUtils;
 import game.sniper_monkey.view.GameObjectView;
@@ -22,6 +21,7 @@ public class FantasyWarriorView extends GameObjectView {
     private final float frameDuration = 0.1f;
     private final Map<PhysicalState, Animation<Sprite>> animations = new HashMap<>();
     private PhysicalState lastAnimation;
+    private long animationStartTime;
 
 
     /**
@@ -55,12 +55,17 @@ public class FantasyWarriorView extends GameObjectView {
 
     @Override
     public void updateSprite() {
+        sprite = animations.get(model.getCurrentPhysicalState()).getKeyFrame(getStateTime());
+        sprite.setFlip(!model.isLookingRight(), false);
+    }
+
+    // TODO move this somewhere else
+    private float getStateTime() {
         if (model.getCurrentPhysicalState() != lastAnimation) {
-            Time.resetElapsedTime();
+            animationStartTime = System.currentTimeMillis();
             lastAnimation = model.getCurrentPhysicalState();
         }
-        sprite = animations.get(model.getCurrentPhysicalState()).getKeyFrame(Time.getElapsedTime());
-        sprite.setFlip(!model.isLookingRight(), false);
+        return (System.currentTimeMillis() - animationStartTime) / 1000f;
     }
 
 }
