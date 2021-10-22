@@ -7,6 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
  * A bar that can be "filled" meaning a bar that can represent a fluctuating value.
+ * <p>
+ * Uses FillDirection.
+ * <p>
+ * Used by BarView.
+ * Used by KeyInputView.
  *
  * @author Elias Falk
  * @author Vincent Hellner
@@ -80,6 +85,11 @@ public class FillableBar extends Actor {
         shapeRenderer.rect(x, y, width + borderThickness, height + borderThickness);
     }
 
+    /**
+     * Updates the fillable bar with a new fraction. The fraction determines how much of the bar is filled.
+     *
+     * @param fraction The new fraction of how much the bar will be filled.
+     */
     public void update(float fraction) {
         this.fraction = fraction;
     }

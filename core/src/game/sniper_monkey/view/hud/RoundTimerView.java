@@ -9,6 +9,11 @@ import game.sniper_monkey.utils.view.FontUtils;
 
 /**
  * A view for the Round timer shown at the top of the screen
+ * <p>
+ * Uses HUDView.
+ * Uses TimerObserver.
+ * <p>
+ * Used by GameController.
  *
  * @author Kevin Jeryd
  */
@@ -16,14 +21,16 @@ public class RoundTimerView implements HUDView, TimerObserver {
 
     private final Label countdownLabel;
 
-    //TODO documentation
+    /**
+     * Creates a view that displays a large timer at the top middle of the screen.
+     */
     public RoundTimerView() {
         countdownLabel = new Label("0", FontUtils.robotoWhite(50));
         countdownLabel.setPosition(Gdx.graphics.getWidth() / 2f - countdownLabel.getPrefWidth() / 2, Gdx.graphics.getHeight() - 100);
         countdownLabel.setAlignment(Align.center);
     }
 
-    //TODO documentation
+    @Override
     public void addActors(Stage stage) {
         stage.addActor(countdownLabel);
     }
@@ -32,7 +39,6 @@ public class RoundTimerView implements HUDView, TimerObserver {
     public void removeActors() {
         countdownLabel.remove();
     }
-
 
     @Override
     public void onTimeUpdated(float timerLength, float timeLeft) {
