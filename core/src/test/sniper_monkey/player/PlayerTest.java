@@ -403,6 +403,12 @@ public class PlayerTest {
         assertTrue(dmgTakenBlockingAfterRegen < dmgTakenBlockingForLongTime);
     }
 
+    @Test
+    public void testNoAttackWhileAttacking() {
+        player.setInputAction(PlayerInputAction.ATTACK1);
+
+    }
+
     // States
     // block - can't test until attacks have been implemented
     // attack - can't test until attacks have been implemented
