@@ -133,7 +133,7 @@ public class CharacterSelectionScreenController implements IController {
             setPlayer1SelectedRectangleIndex(amountOfFighters/2);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
             setPlayer1SelectedRectangleIndex(-amountOfFighters/2);
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             choosePlayer1PrimaryFighter();
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
             choosePlayer1SecondaryFighter();

@@ -63,7 +63,7 @@ public class CharacterSelectionScreen extends ScreenAdapter {
 
         characterSelectionController.amountOfFighters = fighterList.size();
 
-        this.player1HowToChooseFighter = new Label("Player1 move with WASD\nPlayer1 Primary press P\nPlayer1 Secondary press T\n", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        this.player1HowToChooseFighter = new Label("Player1 move with WASD\nPlayer1 Primary press R\nPlayer1 Secondary press T\n", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         this.player2HowToChooseFighter = new Label("Player2 move with arrow keys\nPlayer2 Primary press ENTER\nPlayer2 Secondary press SHIFT\n", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         this.player2HowToChooseFighter.setPosition(Gdx.graphics.getWidth()-player2HowToChooseFighter.getWidth(), 0);
 
