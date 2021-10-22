@@ -22,6 +22,8 @@ import java.util.Map;
 public class TileReader {
     private static final String MAPS_DIR = "core/assets/map/";
 
+    private TileReader() {}
+
     /**
      * Reads a tileset from the program Tiled (.tsx extension) and returns a map containing the type for each tile together with the correct sprite.
      * Note: the tileset image must exist within the assets folder.

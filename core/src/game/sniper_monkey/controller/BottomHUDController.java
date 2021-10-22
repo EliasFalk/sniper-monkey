@@ -30,11 +30,11 @@ import game.sniper_monkey.view.hud.SecondaryFighterView;
 public class BottomHUDController implements SwappedFighterObserver {
     private final GameScreen gameScreen;
     private final Player player;
-    private final float keyInputMargin = 6f;
-    private final float fighterXMargin = 75f;
-    private final float fighterYMargin = 50f;
-    private final float keyInputsXPosition = 200f;
-    private final float keyInputsYPosition = 25;
+    private static final float keyInputMargin = 6f;
+    private static final float fighterXMargin = 75f;
+    private static final float fighterYMargin = 50f;
+    private static final float keyInputsXPosition = 200f;
+    private static final float keyInputsYPosition = 25;
     private SecondaryFighterView secondaryFighterView;
     private KeyInputView attack1;
     private KeyInputView attack2;
