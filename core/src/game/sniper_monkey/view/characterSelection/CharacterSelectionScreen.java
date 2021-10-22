@@ -9,10 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.ScreenUtils;
-import game.sniper_monkey.model.player.fighter.EvilWizard;
-import game.sniper_monkey.model.player.fighter.Fighter;
-import game.sniper_monkey.model.player.fighter.HuntressBow;
-import game.sniper_monkey.model.player.fighter.Samurai;
+import game.sniper_monkey.model.player.fighter.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,7 +56,7 @@ public class CharacterSelectionScreen extends ScreenAdapter {
         fighterList.add(EvilWizard.class);
         fighterList.add(Samurai.class);
         fighterList.add(HuntressBow.class);
-        fighterList.add(EvilWizard.class);
+        fighterList.add(FantasyWarrior.class);
 
         characterSelectionController.amountOfFighters = fighterList.size();
 
