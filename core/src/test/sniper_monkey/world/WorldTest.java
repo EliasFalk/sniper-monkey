@@ -4,7 +4,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.model.Config;
 import game.sniper_monkey.model.player.PlayerFactory;
 import game.sniper_monkey.model.player.fighter.FighterFactory;
 import game.sniper_monkey.model.world.GameObject;

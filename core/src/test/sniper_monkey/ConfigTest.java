@@ -3,7 +3,7 @@ package sniper_monkey;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
-import game.sniper_monkey.model.Config;
+import game.sniper_monkey.utils.Config;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

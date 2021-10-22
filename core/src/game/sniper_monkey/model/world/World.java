@@ -1,8 +1,5 @@
 package game.sniper_monkey.model.world;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import game.sniper_monkey.model.Config;
 import game.sniper_monkey.model.collision.CollisionEngine;
 
 import java.util.ArrayDeque;
