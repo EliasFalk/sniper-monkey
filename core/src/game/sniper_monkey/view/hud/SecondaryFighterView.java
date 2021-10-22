@@ -23,7 +23,7 @@ public class SecondaryFighterView implements HUDView {
     private final Image img;
     private final float x;
     private final float y;
-    private final Label fighterName;
+    private final Label fighterNameLabel;
     private final float yTextOffset = -5f;
     private final boolean flipX;
 
@@ -41,8 +41,9 @@ public class SecondaryFighterView implements HUDView {
         this.y = y;
         this.flipX = flipX;
         this.img = createFighterImage(textureRegion);
-        updateImage(textureRegion, x, y, flipX);
-        this.fighterName = createFighterNameLabel(x, y, fighterName);
+        formatAndPositionImage(textureRegion, x, y, flipX);
+        this.fighterNameLabel = createFighterNameLabel(fighterName);
+        formatAndPositionLabel(fighterName);
     }
 
     /**
@@ -84,10 +85,8 @@ public class SecondaryFighterView implements HUDView {
         return new Image(textureRegion);
     }
 
-    private Label createFighterNameLabel(float x, float y, String fighterName) {
-        Label label = new Label(fighterName, FontUtils.robotoWhite(16));
-        label.setPosition(x + img.getPrefWidth() / 2 - label.getPrefWidth() / 2, y + yTextOffset - label.getPrefHeight());
-        return label;
+    private Label createFighterNameLabel(String fighterName) {
+        return new Label(fighterName, FontUtils.robotoWhite(16));
     }
 
     /**
@@ -96,8 +95,8 @@ public class SecondaryFighterView implements HUDView {
      * @param fighterClass The fighter class to be updated with.
      */
     public void updateFighterView(Class<? extends Fighter> fighterClass) {
-        updateImage(HUDUtils.getCorrespondingTextureRegion(fighterClass), x, y, flipX);
-        updateFighterName(HUDUtils.getFighterDisplayName(fighterClass));
+        formatAndPositionImage(HUDUtils.getCorrespondingTextureRegion(fighterClass), x, y, flipX);
+        formatAndPositionLabel(HUDUtils.getFighterDisplayName(fighterClass));
     }
 
     /**
@@ -105,7 +104,7 @@ public class SecondaryFighterView implements HUDView {
      *
      * @param textureRegion The texture region to be updated with.
      */
-    private void updateImage(TextureRegion textureRegion, float x, float y, boolean flipX) {
+    private void formatAndPositionImage(TextureRegion textureRegion, float x, float y, boolean flipX) {
         textureRegion.flip(flipX, false);
         TextureRegionDrawable trd = new TextureRegionDrawable(textureRegion);
         float h = textureRegion.getRegionHeight();
@@ -122,19 +121,20 @@ public class SecondaryFighterView implements HUDView {
      *
      * @param name The name of the displayed fighter.
      */
-    public void updateFighterName(String name) {
-        fighterName.setText(name);
+    public void formatAndPositionLabel(String name) {
+        fighterNameLabel.setText(name);
+        fighterNameLabel.setPosition(x + img.getPrefWidth() / 2 - fighterNameLabel.getPrefWidth() / 2, y + yTextOffset - fighterNameLabel.getPrefHeight());
     }
 
     @Override
     public void addActors(Stage stage) {
         stage.addActor(img);
-        stage.addActor(fighterName);
+        stage.addActor(fighterNameLabel);
     }
 
     @Override
     public void removeActors() {
         img.remove();
-        fighterName.remove();
+        fighterNameLabel.remove();
     }
 }
