@@ -223,7 +223,6 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         }
         if (physicsPos.getVelocity().y < 0) {
             movementState = this::inAirState;
-            return;
         }
     }
 
