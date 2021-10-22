@@ -6,5 +6,9 @@ package game.sniper_monkey.utils.time;
  * @author Elias Falk
  */
 public interface UpdatableTimer {
+    /**
+     * Update the timer
+     * @param deltaTime Time since last update in seconds
+     */
     void update(float deltaTime);
 }

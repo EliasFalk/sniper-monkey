@@ -12,12 +12,16 @@ import game.sniper_monkey.model.world.GameObject;
  */
 public class WorldBrick extends GameObject {
 
+    /**
+     * The type of WorldBrick
+     */
     public final String type;
 
     /**
      * Creates a platform object with a position.
      *
      * @param position a Vector2 with an (x,y) value.
+     * @param type The type of WorldBrick, prefixed with "ghost-" if the world brick should be ignored in collision response
      */
     public WorldBrick(Vector2 position, String type) {
         super(position, false);

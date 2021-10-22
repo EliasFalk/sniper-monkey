@@ -81,7 +81,7 @@ public class CallbackTimer implements UpdatableTimer {
 
     /**
      * Updates the timer by decreasing the timeLeft by deltaTime.
-     * The timer finishes when the time left <= 0.
+     * The timer finishes when the time left is equal to 0.
      * If the timer is done it will call the callback method set when creating the timer and set the time left to 0 and stop running.
      * If the timer is set to looping it will reset and start the timer and call the callback method each time the timer finishes.
      *
@@ -194,13 +194,6 @@ public class CallbackTimer implements UpdatableTimer {
         if (timerLength < 0) throw new IllegalArgumentException("timerLength cannot be negative.");
         this.timerLength = timerLength;
         notifyObservers();
-    }
-
-    /**
-     * Whether the timer removes itself from the timer bank when the timer finishes.
-     */
-    public boolean isStopAutoUpdatingOnFinish() {
-        return stopAutoUpdatingOnFinish;
     }
 
     /**

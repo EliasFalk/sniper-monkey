@@ -32,12 +32,16 @@ public class CharacterSelectionScreen extends ScreenAdapter {
     private final Stage stage;
 
     private final CharacterSelectionScreenController characterSelectionScreenController;
+
     public SelectedFighterView selectedFighterView;
 
     private final Label player1HowToChooseFighter;
     private final Label player2HowToChooseFighter;
 
 
+    /**
+     * List of fighter classes
+     */
     public final List<Class<? extends Fighter>> fighterList = new ArrayList<>();
 
     /**

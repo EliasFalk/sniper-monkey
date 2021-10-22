@@ -170,14 +170,14 @@ public class CharacterSelectionScreenController implements IController {
         }
     }
 
-    /**
-     *
-     * @param deltaTime
-     */
+    @Override
     public void tick(float deltaTime) {
         characterSelectionScreen.render(deltaTime);
     }
 
+    /**
+     * Disposes of the screen from memory
+     */
     public void dispose() {
         characterSelectionScreen.dispose();
     }

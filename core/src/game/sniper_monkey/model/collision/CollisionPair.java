@@ -22,7 +22,11 @@ public final class CollisionPair {
      */
     public final Hitbox hitbox;
 
-    //TODO document
+    /**
+     * Create a collision pair
+     * @param gameObject The GameObject to be used in the pair
+     * @param hitbox The Hitbox to be used in the pair
+     */
     public CollisionPair(GameObject gameObject, Hitbox hitbox) {
         this.gameObject = gameObject;
         this.hitbox = hitbox;

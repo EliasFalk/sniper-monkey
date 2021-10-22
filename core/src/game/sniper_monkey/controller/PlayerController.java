@@ -33,6 +33,7 @@ public class PlayerController {
      * Creates a player controller with input keys.
      *
      * @param player a player object. Is used to know which player object the controller controls.
+     * @param filepath filepath to the key bind config file
      */
     public PlayerController(ControllablePlayer player, String filepath) {
         this.player = player;

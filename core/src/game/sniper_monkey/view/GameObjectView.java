@@ -14,7 +14,13 @@ import game.sniper_monkey.model.world.GameObject;
  */
 public abstract class GameObjectView {
     private final GameObject model;
+    /**
+     * Offset to draw sprite at
+     */
     protected Vector2 drawOffset;
+    /**
+     * The sprite of the GameObjectView
+     */
     protected Sprite sprite;
 
     /**

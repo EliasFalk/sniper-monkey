@@ -15,6 +15,11 @@ import game.sniper_monkey.view.GameObjectView;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * View for a Samurai
+ *
+ * @author Dadi Andrason
+ */
 public class SamuraiView extends GameObjectView {
 
     private static final Vector2 drawOffset = new Vector2(-81, -78);

@@ -9,10 +9,17 @@ public final class CollisionMasks
 {
     private CollisionMasks() {}
 
+    /**
+     * Default mask for player 1
+     */
     public static final int PLAYER_1 = 0b00001;
+    /**
+     * Default mask for player 2
+     */
     public static final int PLAYER_2 = 0b00010;
-    public static final int WALL = 0b00100;
-    public static final int PROJECTILE = 0b01000;
+    /**
+     * Mask for ghost objects that are ignored by the collision response algorithm
+     */
     public static final int GHOST = 0b10000;
 
     /**

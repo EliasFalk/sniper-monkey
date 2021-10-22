@@ -19,6 +19,7 @@ public abstract class GameObject {
      * Creates the GameObject at a custom position
      *
      * @param position the starting position
+     * @param isDynamic Whether the GameObject will move around
      */
     public GameObject(Vector2 position, boolean isDynamic) {
         this.position = position;
@@ -28,12 +29,17 @@ public abstract class GameObject {
 
     /**
      * Creates the GameObject at a 0, 0
+     *
+     * @param isDynamic Whether the GameObject will move around
      */
     public GameObject(boolean isDynamic) {
         this(new Vector2(0, 0), isDynamic);
     }
 
-    //TODO documentation
+    /**
+     * Is the GameObject dynamic
+     * @return Whether or not it is dynamic.
+     */
     public boolean isDynamic() {
         return isDynamic;
     }

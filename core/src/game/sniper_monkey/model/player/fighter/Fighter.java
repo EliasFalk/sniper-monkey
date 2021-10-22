@@ -14,8 +14,17 @@ import java.util.List;
  */
 public abstract class Fighter {
 
+    /**
+     * Attack factor of fighter
+     */
     public final float ATTACK_FACTOR;
+    /**
+     * Defense factor of fighter
+     */
     public final float DEFENSE_FACTOR;
+    /**
+     * Speed factor of fighter
+     */
     public final float SPEED_FACTOR;
     protected final List<IAttack> attacks = new ArrayList<>();
     private final Vector2 hitboxSize;

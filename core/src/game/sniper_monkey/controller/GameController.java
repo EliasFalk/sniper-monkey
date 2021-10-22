@@ -26,6 +26,11 @@ import game.sniper_monkey.view.hud.*;
 
 import java.util.Map;
 
+/**
+ * Controller that controls the Game itself
+ *
+ * @author Elias Falk
+ */
 public class GameController implements FluctuatingAttributeObserver, IController {
     private GameScreen gameScreen;
     private PlayerController player1Controller, player2Controller;
@@ -48,6 +53,10 @@ public class GameController implements FluctuatingAttributeObserver, IController
 
     @FunctionalInterface
     private interface GameState {
+        /**
+         * Perform the state
+         * @param deltaTime The time since last update
+         */
         void perform(float deltaTime);
     }
 
@@ -242,18 +251,9 @@ public class GameController implements FluctuatingAttributeObserver, IController
         player.registerBlockObserver(blockBar);
     }
 
-    //TODO documentation
+    @Override
     public void tick(float deltaTime) {
         currentState.perform(deltaTime);
         gameScreen.render(deltaTime);
-    }
-
-    //TODO documentation
-    public void dispose() {
-        gameScreen.dispose();
-    }
-
-    public void onResize(int w, int h) {
-        gameScreen.resize(w, h);
     }
 }

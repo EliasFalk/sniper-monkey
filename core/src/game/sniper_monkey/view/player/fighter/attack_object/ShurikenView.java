@@ -6,6 +6,11 @@ import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.player.fighter.attack.attack_object.Shuriken;
 import game.sniper_monkey.view.GameObjectView;
 
+/**
+ * View for a shuriken
+ *
+ * @author Dadi Andrason
+ */
 public class ShurikenView extends GameObjectView {
 
     Shuriken model;

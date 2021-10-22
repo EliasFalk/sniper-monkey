@@ -14,6 +14,11 @@ import game.sniper_monkey.view.GameObjectView;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * View for a FantasyWarrior
+ *
+ * @author Dadi Andrason
+ */
 public class FantasyWarriorView extends GameObjectView {
 
     private static final Vector2 drawOffset = new Vector2(-78, -72);
@@ -26,6 +31,7 @@ public class FantasyWarriorView extends GameObjectView {
 
     /**
      * Creates a samurai view
+     * @param model The player to use as model
      */
     public FantasyWarriorView(Player model) {
         super(drawOffset, SpriteUtils.getDefaultSprite(), model);

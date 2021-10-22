@@ -6,6 +6,14 @@ import game.sniper_monkey.controller.CharacterSelectionScreenController;
 import game.sniper_monkey.controller.GameController;
 import game.sniper_monkey.controller.IController;
 
+/**
+ * Represents the application
+ *
+ * @author Elias Falk
+ * @author Vincent Hellner
+ * @author Kevin Jeryd
+ * @author Dadi Andrason
+ */
 public class SniperMonkey extends ApplicationAdapter {
     private GameController gameController;
     public static IController activeController = new IController() {

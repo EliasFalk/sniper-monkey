@@ -35,6 +35,8 @@ public class CollisionResponseTest {
         CollisionEngine.registerGameObject(obstacle, true);
         hitbox = new Hitbox(new Vector2(0,0), new Vector2(16, 16));
         pp = new PhysicsPosition(new Vector2(0,0));
+
+        World.getInstance().resetWorld();
     }
 
     @AfterClass

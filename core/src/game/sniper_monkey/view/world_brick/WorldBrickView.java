@@ -18,12 +18,12 @@ import java.util.Map;
 public class WorldBrickView extends GameObjectView {
     private static final Map<String, Sprite> brickSprites = TileReader.readTileSet("grass_map_2/Tileset2.tsx");
 
-    private WorldBrick model;
-
-    //TODO documentation
+    /**
+     * Creates a world brick view
+     * @param model The WorldBrick to be used as model
+     */
     public WorldBrickView(WorldBrick model) {
         super(new Vector2(0, 0), chooseSprite(model.type), model);
-        this.model = model;
     }
 
     private static Sprite chooseSprite(String type) {

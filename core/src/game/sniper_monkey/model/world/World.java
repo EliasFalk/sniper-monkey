@@ -45,19 +45,27 @@ public final class World {
         queuedForRemoval = new ArrayDeque<>();
     }
 
-    //TODO documentation
-    //Singleton
+    /**
+     * Gets the singleton instance
+     * @return The instance
+     */
     public static World getInstance() {
         if (INSTANCE == null) INSTANCE = new World();
         return INSTANCE;
     }
 
-    //TODO documentation
+    /**
+     * Registers a new observer
+     * @param observer The observer to register
+     */
     public void registerObserver(IWorldObserver observer) {
         observers.add(observer);
     }
 
-    //TODO documentation
+    /**
+     * Unregister a previously registered observer
+     * @param observer The observer to unregister
+     */
     public void unregisterObserver(IWorldObserver observer) {
         observers.remove(observer);
     }
@@ -85,6 +93,7 @@ public final class World {
 
     /**
      * Calls update on all GameObjects in the world
+     * @param deltaTime The time since last update in seconds
      */
     public void update(float deltaTime) {
         addQueuedGameObjects();

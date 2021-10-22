@@ -8,5 +8,8 @@ package game.sniper_monkey.utils;
  */
 @FunctionalInterface
 public interface Callback {
+    /**
+     * Call the callback method
+     */
     void call();
 }
