@@ -74,6 +74,7 @@ public class GameController implements FluctuatingAttributeObserver, IController
             addEndMenuToScreen();
         });
         pauseMenu = createPauseMenu();
+        World.getInstance().resetWorld();
         create();
     }
 
