@@ -15,15 +15,16 @@ import java.util.Map;
 
 /**
  * <p>
- *  Used by SniperMonkey
- *  Used by CharacterSelectionScreen
- *  Uses CharacterSelectionScreen
- *  Uses IController
+ * Used by SniperMonkey
+ * Used by CharacterSelectionScreen
+ * Uses CharacterSelectionScreen
+ * Uses IController
  * </p>
+ *
  * @author Kevin Jeryd
  */
 //TODO Fix circular dependency with CharacterSelectionScreen
-public class CharacterSelectionScreenController implements IController {
+public class CharacterSelectionScreenController implements IScreenController {
     CharacterSelectionScreen characterSelectionScreen;
 
     public int player1SelectedRectangleIndex = 0;
@@ -175,12 +176,15 @@ public class CharacterSelectionScreenController implements IController {
         characterSelectionScreen.render(deltaTime);
     }
 
+    @Override
+    public void onResize(int w, int h) {
+        characterSelectionScreen.resize(w, h);
+    }
+
     /**
      * Disposes of the screen from memory
      */
     public void dispose() {
         characterSelectionScreen.dispose();
     }
-
-
 }

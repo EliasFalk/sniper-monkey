@@ -4,7 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import game.sniper_monkey.controller.CharacterSelectionScreenController;
 import game.sniper_monkey.controller.GameController;
-import game.sniper_monkey.controller.IController;
+import game.sniper_monkey.controller.IScreenController;
 
 /**
  * Represents the application
@@ -19,9 +19,14 @@ public class SniperMonkey extends ApplicationAdapter {
     /**
      * The active screen controller to
      */
-    public static IController activeController = new IController() {
+    public static IScreenController activeController = new IScreenController() {
         @Override
         public void tick(float deltaTime) {
+
+        }
+
+        @Override
+        public void onResize(int w, int h) {
 
         }
     };
@@ -50,10 +55,9 @@ public class SniperMonkey extends ApplicationAdapter {
         //gameController.dispose();
     }
 
-    /*
+
     @Override
     public void resize(int w, int h) {
-        gameController.onResize(w, h);
+        activeController.onResize(w, h);
     }
-     */
 }

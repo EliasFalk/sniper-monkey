@@ -31,7 +31,7 @@ import java.util.Map;
  *
  * @author Elias Falk
  */
-public class GameController implements FluctuatingAttributeObserver, IController {
+public class GameController implements FluctuatingAttributeObserver, IScreenController {
     private GameScreen gameScreen;
     private PlayerController player1Controller, player2Controller;
     private final CallbackTimer roundTimer;
@@ -260,5 +260,10 @@ public class GameController implements FluctuatingAttributeObserver, IController
     public void tick(float deltaTime) {
         currentState.perform(deltaTime);
         gameScreen.render(deltaTime);
+    }
+
+    @Override
+    public void onResize(int w, int h) {
+        gameScreen.resize(w, h);
     }
 }

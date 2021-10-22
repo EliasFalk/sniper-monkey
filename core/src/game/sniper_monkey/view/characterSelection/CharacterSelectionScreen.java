@@ -137,4 +137,9 @@ public class CharacterSelectionScreen extends ScreenAdapter {
         batch.dispose();
         sr.dispose();
     }
+
+    @Override
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
+    }
 }
