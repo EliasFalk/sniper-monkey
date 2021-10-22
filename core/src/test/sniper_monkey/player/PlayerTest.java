@@ -58,7 +58,7 @@ public class PlayerTest {
     public void initPlayer() {
         TimerBank.clear();
         player = PlayerFactory.createPlayer1(new Vector2(spawnX, spawnY), primaryFighterClass, secondaryFighterClass);
-        player = PlayerFactory.createPlayer2(new Vector2(spawnX, spawnY), FighterFactory.createSamurai(), FighterFactory.createEvilWizard());
+        player = PlayerFactory.createPlayer2(new Vector2(spawnX, spawnY), primaryFighterClass, secondaryFighterClass);
     }
 
     @Test
