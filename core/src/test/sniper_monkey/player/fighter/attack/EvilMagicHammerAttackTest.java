@@ -51,7 +51,7 @@ public class EvilMagicHammerAttackTest {
 
     @Test
     public void testEvilHammerPerformAttack() {
-        Player player1 = PlayerFactory.createPlayer1(new Vector2(0, 0));
+        Player player1 = PlayerFactory.createPlayer1(new Vector2(0, 0), HuntressBow.class, HuntressBow.class);
         Player player2 = PlayerFactory.createPlayer2(new Vector2(50, 0), EvilWizard.class, HuntressBow.class);
         float player1baseHealth = player1.getHealth();
         World.getInstance().queueAddGameObject(player1);

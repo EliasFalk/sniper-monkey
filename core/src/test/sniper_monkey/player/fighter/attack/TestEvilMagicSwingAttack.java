@@ -11,6 +11,7 @@ import game.sniper_monkey.model.player.PlayerFactory;
 import game.sniper_monkey.model.player.PlayerInputAction;
 import game.sniper_monkey.model.player.fighter.EvilWizard;
 import game.sniper_monkey.model.player.fighter.FantasyWarrior;
+import game.sniper_monkey.model.player.fighter.HuntressBow;
 import game.sniper_monkey.model.player.fighter.attack.AttackFactory;
 import game.sniper_monkey.model.player.fighter.attack.EvilMagicSwingAttack;
 import game.sniper_monkey.model.player.fighter.attack.IAttack;
@@ -53,7 +54,7 @@ public class TestEvilMagicSwingAttack {
     @Test
     public void testEvilMagicSwingPerformAttack() {
         Player player1 = PlayerFactory.createPlayer1(new Vector2(70, 0), EvilWizard.class, FantasyWarrior.class);
-        Player player2 = PlayerFactory.createPlayer2(new Vector2(0, 0));
+        Player player2 = PlayerFactory.createPlayer2(new Vector2(0, 0), HuntressBow.class, HuntressBow.class);
         float player2baseHealth = player2.getHealth();
         World.getInstance().queueAddGameObject(player1);
         World.getInstance().queueAddGameObject(player2);

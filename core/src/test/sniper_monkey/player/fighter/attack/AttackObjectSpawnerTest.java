@@ -8,6 +8,7 @@ import game.sniper_monkey.model.Config;
 import game.sniper_monkey.model.TimerBank;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.PlayerFactory;
+import game.sniper_monkey.model.player.fighter.HuntressBow;
 import game.sniper_monkey.model.player.fighter.attack.attack_object.AttackObjectSpawner;
 import game.sniper_monkey.model.world.World;
 import game.sniper_monkey.model.world_brick.WorldBrick;
@@ -52,7 +53,7 @@ public class AttackObjectSpawnerTest {
         boolean lookingRight = true;
         Vector2 velocity = new Vector2(5*60, 0);
 
-        Player player = PlayerFactory.createPlayer1(new Vector2(20,0));
+        Player player = PlayerFactory.createPlayer1(new Vector2(20,0), HuntressBow.class, HuntressBow.class);
         float playerBaseHealth = player.getHealth();
         World.getInstance().queueAddGameObject(player);
         updateWorld(2);
