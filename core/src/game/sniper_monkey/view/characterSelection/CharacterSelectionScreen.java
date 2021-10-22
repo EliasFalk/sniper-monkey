@@ -20,9 +20,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * <p>
+ *     Used by SniperMonkey
+ *     Used by CharacterSelectionScreenController
+ *     Uses CharacterSelectionScreenController
+ *     Uses SelectedFighterView
+ * </p>
  * @author Kevin Jeryd
- * @author Dadi Andrason
  */
 public class CharacterSelectionScreen extends ScreenAdapter {
 
@@ -39,6 +43,10 @@ public class CharacterSelectionScreen extends ScreenAdapter {
 
     public final List<Class<? extends Fighter>> fighterList = new ArrayList<>();
 
+    /**
+     * Creates the character selection screen which renders different views to make up the character selection state.
+     * @param characterSelectionController The controller of the character selection screen.
+     */
     public CharacterSelectionScreen(CharacterSelectionScreenController characterSelectionController) {
         stage = new Stage();
         batch = new SpriteBatch();
@@ -68,7 +76,7 @@ public class CharacterSelectionScreen extends ScreenAdapter {
         for (int i = 0; i < (characterSelectionScreenController.amountOfFighters); i++) {
             SelectViewRectangle rect;
 
-            //Fix maths
+            //Fix maths for better layout, make it responsive if you add more fighters
             if ( i < (characterSelectionScreenController.amountOfFighters/2)) {
                 rect = new SelectViewRectangle(fighterList.get(i), ((i % (characterSelectionScreenController.amountOfFighters / 2f))) * (Gdx.graphics.getWidth() / ((float) characterSelectionScreenController.amountOfFighters / 2))+270, Gdx.graphics.getHeight() / 3.5f, 150f, 150f, Color.BLUE, stage);
             } else {
@@ -84,22 +92,22 @@ public class CharacterSelectionScreen extends ScreenAdapter {
 
     private void setPlayer1SelectedRectangle() {
         SelectViewRectangle player1SelectedRectangle = rectangleMap.get(characterSelectionScreenController.player1SelectedRectangleIndex);
-        player1SelectedRectangle.setPlayer1Selected(true);
+        player1SelectedRectangle.setPlayer1Hovering(true);
     }
 
     private void setPlayer2SelectedRectangle() {
         SelectViewRectangle player2SelectedRectangle = rectangleMap.get(characterSelectionScreenController.player2SelectedRectangleIndex);
-        player2SelectedRectangle.setPlayer2Selected(true);
+        player2SelectedRectangle.setPlayer2Hovering(true);
     }
 
     private void unSelectedRectangles() {
         for (int i = 0; i < rectangleMap.size(); i++) {
-            rectangleMap.get(i).setPlayer1Selected(false);
-            rectangleMap.get(i).setPlayer2Selected(false);
+            rectangleMap.get(i).setPlayer1Hovering(false);
+            rectangleMap.get(i).setPlayer2Hovering(false);
         }
     }
 
-    private void staticContent() {
+    private void drawInstructionLabels() {
         stage.addActor(player1HowToChooseFighter);
         stage.addActor(player2HowToChooseFighter);
     }
@@ -108,7 +116,7 @@ public class CharacterSelectionScreen extends ScreenAdapter {
     public void render(float deltaTime) {
         ScreenUtils.clear(1, 1, 1, 1);
 
-        staticContent();
+        drawInstructionLabels();
 
         characterSelectionScreenController.handleInput();
         unSelectedRectangles();

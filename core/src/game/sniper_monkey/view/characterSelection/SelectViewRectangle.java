@@ -16,13 +16,15 @@ import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.utils.view.HUDUtils;
 
 /**
- *
+ * <p>
+ *     Used by CharacterSelectionScreenController
+ *     Uses ICharacterSelectedObserver
+ * </p>
  * @author Kevin Jeryd
  */
 public class SelectViewRectangle extends Actor implements ICharacterSelectedObserver {
 
     private final ShapeRenderer shapeRenderer;
-
     private Image img;
     private Image player1PreviewImage;
     private Image player2PreviewImage;
@@ -32,8 +34,8 @@ public class SelectViewRectangle extends Actor implements ICharacterSelectedObse
     private final float height;
     private static final float borderThickness = 6;
     private final Color color;
-    private boolean player1Select;
-    private boolean player2Select;
+    private boolean player1IsHovering;
+    private boolean player2IsHovering;
     private final Label player1HoverFighterLabel;
     private final Label player2HoverFighterLabel;
     private final Stage stage;
@@ -42,6 +44,17 @@ public class SelectViewRectangle extends Actor implements ICharacterSelectedObse
     private float player1PreviewImageScaling = 2;
     private float player2PreviewImageScaling = 2;
 
+    /**
+     * Creates the rectangle object representing a character that you can choose in the selection screen.
+     *
+     * @param fighter Is the fighter that's related to the rectangle.
+     * @param x Is the x-position of the rectangle.
+     * @param y Is the y-position of the rectangle.
+     * @param width Is the width of the rectangle.
+     * @param height Is the height of the rectangle.
+     * @param color Is the color of the rectangle.
+     * @param stage Is the stage the rectangle is supposed to add actors to.
+     */
     public SelectViewRectangle(Class<? extends Fighter> fighter, float x, float y, float width, float height, Color color, Stage stage) {
         shapeRenderer = new ShapeRenderer();
         this.x = x;
@@ -49,7 +62,6 @@ public class SelectViewRectangle extends Actor implements ICharacterSelectedObse
         this.width = width;
         this.height = height;
         this.color = color;
-        addLabel();
         this.stage = stage;
         player1HoverFighterLabel = new Label(HUDUtils.getFighterDisplayName(fighter), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         player1HoverFighterLabel.setPosition((Gdx.graphics.getWidth()*2)/10f, (Gdx.graphics.getHeight()*5.5f)/10f);
@@ -66,14 +78,14 @@ public class SelectViewRectangle extends Actor implements ICharacterSelectedObse
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
         //Where both players are on the same rectangle
-        if (player1Select && player2Select) {
+        if (player1IsHovering && player2IsHovering) {
             drawDoubleOuterRectangle();
             drawPlayer1PreviewAnimation();
             drawPlayer1HoverLabel();
             drawPlayer2PreviewAnimation();
             drawPlayer2HoverLabel();
         } else {
-            if (player1Select) {
+            if (player1IsHovering) {
                 drawPlayer1OuterRectangle();
                 drawPlayer1PreviewAnimation();
                 drawPlayer1HoverLabel();
@@ -82,7 +94,7 @@ public class SelectViewRectangle extends Actor implements ICharacterSelectedObse
                 removePlayer1HoverLabel();
             }
 
-            if (player2Select) {
+            if (player2IsHovering) {
                 drawPlayer2OuterRectangle();
                 drawPlayer2PreviewAnimation();
                 drawPlayer2HoverLabel();
@@ -92,7 +104,7 @@ public class SelectViewRectangle extends Actor implements ICharacterSelectedObse
             }
 
             //Where none of the players are on the rectangle just add blue to the outer rectangle
-            if (!player1Select && !player2Select) {
+            if (!player1IsHovering && !player2IsHovering) {
                 removeOuterRectangle(color);
             }
         }
@@ -152,10 +164,6 @@ public class SelectViewRectangle extends Actor implements ICharacterSelectedObse
         player2PreviewImage.remove();
     }
 
-    public void addLabel() {
-        //stage.addActor(fighterLabel);
-    }
-
     private void drawRectangle(Color color) {
         shapeRenderer.setColor(color);
         stage.addActor(img);
@@ -177,18 +185,29 @@ public class SelectViewRectangle extends Actor implements ICharacterSelectedObse
         shapeRenderer.rect(x, y, width+borderThickness, height+borderThickness);
     }
 
-    public void setPlayer1Selected(boolean bool) {
-        this.player1Select = bool;
-        if (player1Select) {
+    //Could probably refactor the setHovering methods to one method, just needs to find a way to send who is hovering
+    /**
+     * Sets the variable player1IsHovering to true if player1 is on this rectangle
+     * If player1 is hovering set the outerRectangleColor to player1's outerRectangleColor
+     * @param bool The boolean representing if the rectangle is currently hovered over or not by the player.
+     */
+    public void setPlayer1Hovering(boolean bool) {
+        this.player1IsHovering = bool;
+        if (player1IsHovering) {
             this.player1OuterRectangleColor = Color.ORANGE;
         } else {
             this.player1OuterRectangleColor = Color.BLUE;
         }
     }
 
-    public void setPlayer2Selected(boolean bool) {
-        this.player2Select = bool;
-        if (player2Select) {
+    /**
+     * Sets the variable player2IsHovering to true if player2 is on this rectangle
+     * If player2 is hovering set the outerRectangleColor to player2's outerRectangleColor
+     * @param bool The boolean representing if the rectangle is currently hovered over or not by the player.
+     */
+    public void setPlayer2Hovering(boolean bool) {
+        this.player2IsHovering = bool;
+        if (player2IsHovering) {
             this.player2OuterRectangleColor = Color.GREEN;
         } else {
             this.player2OuterRectangleColor = Color.BLUE;

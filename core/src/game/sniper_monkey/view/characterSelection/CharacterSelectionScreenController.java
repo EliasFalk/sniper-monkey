@@ -13,7 +13,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * <p>
+ *  Used by SniperMonkey
+ *  Used by CharacterSelectionScreen
+ *  Uses CharacterSelectionScreen
+ *  Uses IController
+ * </p>
  * @author Kevin Jeryd
  */
 public class CharacterSelectionScreenController implements IController {
@@ -26,11 +31,13 @@ public class CharacterSelectionScreenController implements IController {
     private Fighter player2PrimaryFighter;
     private Fighter player2SecondaryFighter;
     private final List<ICharacterSelectedObserver> observers;
-
     public int amountOfFighters;
 
     private final Map<String, Fighter> chosenFighters = new HashMap<String, Fighter>();
 
+    /**
+     * Creates the controller for the character selection screen.
+     */
     public CharacterSelectionScreenController() {
         this.observers = new ArrayList<>();
         characterSelectionScreen = new CharacterSelectionScreen(this);
@@ -64,6 +71,8 @@ public class CharacterSelectionScreenController implements IController {
         }
     }
 
+    //Could probably refactor the choosePlayer to one method where you send in the fighter that supposed the be set and player1SelectedRectangle index so you can get the fighter.
+    //Needs that the drawPlayer method in selectedFighterView is one that takes in parameters instead of many different
     private void choosePlayer1PrimaryFighter() {
         if (player1PrimaryFighter == null) {
             player1PrimaryFighter = chooseFighterHelper(characterSelectionScreen.fighterList.get(player1SelectedRectangleIndex));
@@ -112,6 +121,9 @@ public class CharacterSelectionScreenController implements IController {
         notifyObserversOfPlayer2SelectedCharacter();
     }
 
+    /**
+     * Handles the input for the character selection menu.
+     */
     public void handleInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.D)){
             setPlayer1SelectedRectangleIndex(1);
@@ -140,14 +152,12 @@ public class CharacterSelectionScreenController implements IController {
         }
     }
 
-    //TODO documentation
+    /**
+     * Registers observers to the ICharacterSelectedObserver so they can be notified on change.
+     * @param observer Is the object that is observing the change.
+     */
     public void registerObserver(ICharacterSelectedObserver observer) {
         observers.add(observer);
-    }
-
-    //TODO documentation
-    public void unregisterObserver(ICharacterSelectedObserver observer) {
-        observers.remove(observer);
     }
 
     private void notifyObserversOfPlayer1SelectedCharacter() {
@@ -172,6 +182,10 @@ public class CharacterSelectionScreenController implements IController {
         }
     }
 
+    /**
+     *
+     * @param deltaTime
+     */
     public void tick(float deltaTime) {
         characterSelectionScreen.render(deltaTime);
     }
