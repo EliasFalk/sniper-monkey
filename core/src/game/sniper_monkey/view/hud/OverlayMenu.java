@@ -29,9 +29,9 @@ public class OverlayMenu implements HUDView {
     private final float buttonHeight = 40f;
     private final float buttonWidth = 300f;
     private final float buttonMargin = 5f;
-    private List<Button> buttons;
+    private final List<Button> buttons;
     private Label title;
-    private Image lightBox;
+    private final Image lightBox;
 
     /**
      * Creates an overlay menu with a lightbox and title and an empty set of buttons.

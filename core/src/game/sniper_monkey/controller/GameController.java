@@ -41,7 +41,7 @@ public class GameController implements FluctuatingAttributeObserver, IController
     private OverlayMenu endMenu;
     private OverlayMenu startOverlay;
     private int startStage = 0;
-    private CallbackTimer startStageTime = new CallbackTimer(1, true, () -> startStage++);
+    private final CallbackTimer startStageTime = new CallbackTimer(1, true, () -> startStage++);
 
     @Override
     public void onValueChange(float min, float max, float health) {

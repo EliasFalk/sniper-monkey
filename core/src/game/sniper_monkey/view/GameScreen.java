@@ -28,15 +28,14 @@ import java.util.List;
  */
 public class GameScreen extends ScreenAdapter implements IWorldObserver, SwappedFighterObserver {
     private final List<GameObjectView> gameObjectViews;
-    SpriteBatch batch;
-    ShapeRenderer PartitionDebugRenderer;
-    ShapeRenderer ObjectDebugRenderer;
-    Stage stage;
-    OrthographicCamera camera = new OrthographicCamera(1920 / 2f, 1080 / 2f);
+    private final SpriteBatch batch;
+    private final ShapeRenderer PartitionDebugRenderer;
+    private final ShapeRenderer ObjectDebugRenderer;
+    private final Stage stage;
+    private final OrthographicCamera camera = new OrthographicCamera(1920 / 2f, 1080 / 2f);
     boolean debugMode = false;
-
-    Sprite bg1;
-    Sprite bg2;
+    private Sprite bg1;
+    private Sprite bg2;
 
     /**
      * Creates a GameRenderer
@@ -112,26 +111,6 @@ public class GameScreen extends ScreenAdapter implements IWorldObserver, Swapped
         PartitionDebugRenderer.end();
         ObjectDebugRenderer.end();
         stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
     }
 
     /**

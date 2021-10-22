@@ -28,8 +28,8 @@ public class KeyInputView implements TimerObserver, HUDView {
     private final Label sideTextLabel;
     private static final float width = 80f;
     private static final float height = 30f;
-    private float sideLabelOffset = 10f;
-    private Placement textPlacement;
+    private final float sideLabelOffset = 10f;
+    private final Placement textPlacement;
 
 
     /**

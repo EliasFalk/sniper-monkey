@@ -24,7 +24,7 @@ import java.text.DecimalFormat;
  */
 public class BarView implements FluctuatingAttributeObserver, HUDView {
     private Label barLabel;
-    private FillableBar fillableBar;
+    private final FillableBar fillableBar;
     private float currentValue = 0;
     private final float sideTextMargin = 10f;
 
