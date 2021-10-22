@@ -10,6 +10,7 @@ import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.PlayerFactory;
 import game.sniper_monkey.model.player.PlayerInputAction;
 import game.sniper_monkey.model.player.fighter.Fighter;
+import game.sniper_monkey.model.player.fighter.FighterFactory;
 import game.sniper_monkey.model.world.World;
 import game.sniper_monkey.model.world_brick.WorldBrick;
 import org.junit.Assert;
@@ -47,13 +48,10 @@ public class PlayerTest {
         World.getInstance().update(deltaTime);
     }
 
-    /*
     @Before
     public void initPlayer() {
-        player = PlayerFactory.createPlayer2(new Vector2(spawnX, spawnY));
+        player = PlayerFactory.createPlayer2(new Vector2(spawnX, spawnY), FighterFactory.createSamurai(), FighterFactory.createEvilWizard());
     }
-
-     */
 
     @Test
     public void testInputActions() {
