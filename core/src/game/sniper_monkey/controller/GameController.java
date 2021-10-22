@@ -62,6 +62,10 @@ public class GameController implements FluctuatingAttributeObserver, IController
 
     private final Map<String, Fighter> chosenFighters;
 
+    /**
+     * Create a GameController
+     * @param chosenFighters The fighters for the players to use
+     */
     public GameController(Map<String, Fighter> chosenFighters) {
         this.chosenFighters = chosenFighters;
         Config.readConfigFile("cfg/game.cfg");

@@ -13,6 +13,9 @@ import game.sniper_monkey.model.player.Player;
  */
 public class ElectricalSmash extends AttackObject {
 
+    /**
+     * Size of the attack objects hitbox
+     */
     public static final Vector2 attackHitboxSize = new Vector2(53, 100);
 
     /**

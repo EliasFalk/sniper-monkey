@@ -15,6 +15,10 @@ public class ShurikenView extends GameObjectView {
 
     Shuriken model;
 
+    /**
+     * Create a shuriken view
+     * @param model The Shuriken to use as model
+     */
     public ShurikenView(Shuriken model) {
         super(new Vector2(0,0), new Sprite(new Texture("images/samurai/shuriken.png"), 0,0,16,14), model);
         this.model = model;

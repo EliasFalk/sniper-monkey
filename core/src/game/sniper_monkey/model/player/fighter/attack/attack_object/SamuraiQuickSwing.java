@@ -15,6 +15,9 @@ import game.sniper_monkey.model.player.Player;
  */
 public class SamuraiQuickSwing extends AttackObject {
 
+    /**
+     * The size of the attack objects hitbox
+     */
     public static final Vector2 attackHitboxSize = new Vector2(69, 71);
 
     /**

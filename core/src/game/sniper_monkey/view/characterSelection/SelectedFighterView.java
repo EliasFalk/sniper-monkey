@@ -79,7 +79,7 @@ public class SelectedFighterView  {
     //Or if drawSecondary take the same method but with different parameters
     /**
      * Draws the selected fighter sprite and the fighters name on the screen when chosen
-     * @param fighter
+     * @param fighter The fighter to draw
      */
     public void drawPlayer1PrimaryFighter(Fighter fighter) {
         createSelectedImage(fighter, player1SelectedImage, (Gdx.graphics.getWidth()*2)/10f, (Gdx.graphics.getHeight()*6)/10f);
@@ -90,7 +90,7 @@ public class SelectedFighterView  {
 
     /**
      * Draws the selected fighter sprite and the fighters name on the screen when chosen
-     * @param fighter
+     * @param fighter The fighter to draw
      */
     public void drawPlayer1SecondaryFighter(Fighter fighter) {
         setChosenFighterLabel(player1SecondarySelectedLabel, "Player 1 Secondary: ", fighter,(Gdx.graphics.getWidth()*2)/10f, (Gdx.graphics.getHeight()*9.3f)/10f);
@@ -99,7 +99,7 @@ public class SelectedFighterView  {
 
     /**
      * Draws the selected fighter sprite and the fighters name on the screen when chosen
-     * @param fighter
+     * @param fighter The fighter to draw
      */
     public void drawPlayer2PrimaryFighter(Fighter fighter) {
         createSelectedImage(fighter, player2SelectedImage, (Gdx.graphics.getWidth()*6)/10f, (Gdx.graphics.getHeight()*6)/10f);
@@ -110,7 +110,7 @@ public class SelectedFighterView  {
 
     /**
      * Draws the selected fighter sprite and the fighters name on the screen when chosen
-     * @param fighter
+     * @param fighter The fighter to draw
      */
     public void drawPlayer2SecondaryFighter(Fighter fighter) {
         setChosenFighterLabel(player2SecondarySelectedLabel, "Player 2 Secondary: ", fighter, (Gdx.graphics.getWidth()*6)/10f, (Gdx.graphics.getHeight()*9.3f)/10f);

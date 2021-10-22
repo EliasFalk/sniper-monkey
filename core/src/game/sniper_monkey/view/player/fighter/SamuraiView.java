@@ -32,6 +32,7 @@ public class SamuraiView extends GameObjectView {
 
     /**
      * Creates a samurai view
+     * @param model The Player to use as model
      */
     public SamuraiView(Player model) {
         super(drawOffset, SpriteUtils.getDefaultSprite(), model);

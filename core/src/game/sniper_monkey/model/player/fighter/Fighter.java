@@ -26,6 +26,9 @@ public abstract class Fighter {
      * Speed factor of fighter
      */
     public final float SPEED_FACTOR;
+    /**
+     * All of the fighters attacks
+     */
     protected final List<IAttack> attacks = new ArrayList<>();
     private final Vector2 hitboxSize;
 
@@ -66,6 +69,10 @@ public abstract class Fighter {
      * Performs the attack specified by the attackNum.
      *
      * @param attackNum A number between 0..n which determines which of the (n-1) attacks to perform.
+     * @param lookingRight Is the player looking right when attacking
+     * @param collisionMask the collision mask to be used to ignore objects when attacking
+     * @param playerPos The position of the attacking player
+     * @return Whether the attack succeeded or not
      */
     public boolean performAttack(int attackNum, Vector2 playerPos, int collisionMask, boolean lookingRight) {
         if (attackNum >= attacks.size()) {

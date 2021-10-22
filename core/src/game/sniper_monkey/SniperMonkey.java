@@ -16,6 +16,9 @@ import game.sniper_monkey.controller.IController;
  */
 public class SniperMonkey extends ApplicationAdapter {
     private GameController gameController;
+    /**
+     * The active screen controller to
+     */
     public static IController activeController = new IController() {
         @Override
         public void tick(float deltaTime) {

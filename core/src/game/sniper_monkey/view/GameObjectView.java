@@ -51,6 +51,7 @@ public abstract class GameObjectView {
      *
      * @param sr    The ShapeRenderer to use.
      * @param batch The SpriteBatch to use.
+     * @param debugMode Should debug mode be used to render the hitbox.
      */
     public void render(ShapeRenderer sr, SpriteBatch batch, boolean debugMode) {
         batch.draw(sprite, model.getPos().x + drawOffset.x, model.getPos().y + drawOffset.y);

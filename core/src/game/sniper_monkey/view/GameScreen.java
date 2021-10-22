@@ -161,10 +161,18 @@ public class GameScreen extends ScreenAdapter implements IWorldObserver, Swapped
         }
     }
 
+    /**
+     * Add a HUDView for the screen to draw
+     * @param hudView The HUDView to add.
+     */
     public void addHudView(HUDView hudView) {
         hudView.addActors(stage);
     }
 
+    /**
+     * Remove a HUDView for the screen to draw
+     * @param hudView The HUDView to add.
+     */
     public void removeHudView(HUDView hudView) {
         hudView.removeActors();
     }

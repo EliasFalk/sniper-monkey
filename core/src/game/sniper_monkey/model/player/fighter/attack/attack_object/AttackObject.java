@@ -36,6 +36,8 @@ public abstract class AttackObject extends GameObject {
      * @param spawnPos a Vector2. A coordinate of the position where the hitbox is supposed to spawn.
      * @param collisionMask an int 0..n. A collision mask to prevent the hitbox from colliding with the attacker.
      * @param velocity a Vector2. The velocity that the object has.
+     * @param lookingRight Is the player looking right when attacking.
+     * @param attackHitboxSize The size of the attack hitbox.
      */
     protected AttackObject(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, boolean lookingRight, Vector2 velocity, Vector2 attackHitboxSize) {
         super(spawnPos, true);
@@ -69,6 +71,8 @@ public abstract class AttackObject extends GameObject {
      * @param timeToLive a float 0..n. Determines for how long the object exists for in seconds.
      * @param spawnPos a Vector2. A coordinate of the position where the hitbox is supposed to spawn.
      * @param collisionMask an int 0..n. A collision mask to prevent the hitbox from colliding with the attacker.
+     * @param lookingRight Is the player looking right when attacking
+     * @param attackHitboxSize The size of the attack hitbox.
      */
     protected AttackObject(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, boolean lookingRight, Vector2 attackHitboxSize) {
         this(damage, timeToLive, spawnPos, collisionMask, lookingRight, new Vector2(0,0), attackHitboxSize);
