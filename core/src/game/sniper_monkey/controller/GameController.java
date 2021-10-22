@@ -1,4 +1,4 @@
-package game.sniper_monkey;
+package game.sniper_monkey.controller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -10,19 +10,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
-import game.sniper_monkey.controller.PlayerController;
+import game.sniper_monkey.SniperMonkey;
 import game.sniper_monkey.model.Config;
-import game.sniper_monkey.model.TimerBank;
 import game.sniper_monkey.model.player.FluctuatingAttributeObserver;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.PlayerFactory;
 import game.sniper_monkey.model.player.fighter.Fighter;
-import game.sniper_monkey.model.world.CallbackTimer;
 import game.sniper_monkey.model.world.World;
 import game.sniper_monkey.model.world_brick.WorldBrick;
-import game.sniper_monkey.utils.MapReader;
+import game.sniper_monkey.utils.map.MapReader;
+import game.sniper_monkey.utils.time.CallbackTimer;
+import game.sniper_monkey.utils.time.TimerBank;
 import game.sniper_monkey.view.GameScreen;
-import game.sniper_monkey.view.characterSelection.CharacterSelectionScreenController;
 import game.sniper_monkey.view.hud.*;
 
 import java.util.Map;

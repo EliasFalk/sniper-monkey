@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import game.sniper_monkey.model.world.TimerObserver;
+import game.sniper_monkey.utils.time.TimerObserver;
 import game.sniper_monkey.utils.view.FontUtils;
 
 /**

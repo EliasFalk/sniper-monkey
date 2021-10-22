@@ -1,11 +1,12 @@
-package game.sniper_monkey.view.characterSelection;
+package game.sniper_monkey.controller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import game.sniper_monkey.GameController;
-import game.sniper_monkey.IController;
 import game.sniper_monkey.SniperMonkey;
-import game.sniper_monkey.model.player.fighter.*;
+import game.sniper_monkey.model.player.fighter.Fighter;
+import game.sniper_monkey.model.player.fighter.FighterFactory;
+import game.sniper_monkey.view.characterSelection.CharacterSelectionScreen;
+import game.sniper_monkey.view.characterSelection.ICharacterSelectedObserver;
 
 import java.util.ArrayList;
 import java.util.HashMap;

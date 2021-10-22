@@ -1,15 +1,17 @@
 package game.sniper_monkey.view;
 
-import game.sniper_monkey.model.player.fighter.*;
-import game.sniper_monkey.model.player.fighter.attack.attack_object.Shuriken;
-import game.sniper_monkey.model.world_brick.WorldBrick;
 import game.sniper_monkey.model.player.Player;
-import game.sniper_monkey.view.player.fighter.*;
-import game.sniper_monkey.view.world_brick.WorldBrickView;
-import game.sniper_monkey.model.player.fighter.Fighter;
+import game.sniper_monkey.model.player.fighter.*;
 import game.sniper_monkey.model.player.fighter.attack.attack_object.Arrow;
+import game.sniper_monkey.model.player.fighter.attack.attack_object.Shuriken;
 import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.model.world_brick.WorldBrick;
+import game.sniper_monkey.view.player.fighter.EvilWizardView;
+import game.sniper_monkey.view.player.fighter.FantasyWarriorView;
+import game.sniper_monkey.view.player.fighter.HuntressView;
+import game.sniper_monkey.view.player.fighter.SamuraiView;
+import game.sniper_monkey.view.player.fighter.attack_object.ArrowView;
+import game.sniper_monkey.view.player.fighter.attack_object.ShurikenView;
 import game.sniper_monkey.view.world_brick.WorldBrickView;
 
 import java.util.HashMap;

@@ -2,8 +2,8 @@ package game.sniper_monkey.model.player.fighter.attack.attack_object;
 
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.collision.CollisionEngine;
-import game.sniper_monkey.model.world.CallbackTimer;
 import game.sniper_monkey.model.world.GameObject;
+import game.sniper_monkey.utils.time.CallbackTimer;
 
 import java.util.HashMap;
 import java.util.List;

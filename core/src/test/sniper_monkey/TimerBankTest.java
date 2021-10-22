@@ -1,7 +1,7 @@
 package sniper_monkey;
 
-import game.sniper_monkey.model.TimerBank;
-import game.sniper_monkey.model.world.CallbackTimer;
+import game.sniper_monkey.utils.time.CallbackTimer;
+import game.sniper_monkey.utils.time.TimerBank;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

@@ -1,8 +1,6 @@
-package game.sniper_monkey.model.world;
+package game.sniper_monkey.utils.time;
 
-import game.sniper_monkey.model.Callback;
-import game.sniper_monkey.model.TimerBank;
-import game.sniper_monkey.model.UpdatableTimer;
+import game.sniper_monkey.utils.Callback;
 
 import java.util.ArrayList;
 import java.util.List;
