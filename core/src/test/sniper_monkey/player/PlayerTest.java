@@ -6,9 +6,7 @@ import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.Config;
 import game.sniper_monkey.model.TimerBank;
-import game.sniper_monkey.model.player.Player;
-import game.sniper_monkey.model.player.PlayerFactory;
-import game.sniper_monkey.model.player.PlayerInputAction;
+import game.sniper_monkey.model.player.*;
 import game.sniper_monkey.model.player.fighter.EvilWizard;
 import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.player.fighter.FighterFactory;
@@ -404,10 +402,97 @@ public class PlayerTest {
     }
 
     @Test
-    public void testNoAttackWhileAttacking() {
+    public void testInputsWhileAttacking() {
         player.setInputAction(PlayerInputAction.ATTACK1);
-
+        updatePlayer(deltaTime);
+        for (int i = 0; i < 10; i++) {
+            player.setInputAction(PlayerInputAction.MOVE_LEFT);
+            player.update(deltaTime);
+        }
+        assertEquals(PhysicalState.ATTACKING1, player.getCurrentPhysicalState());
+        assertEquals(0, getVelocity().x, 0);
     }
+
+    @Test
+    public void testStaminaObserver() {
+        final float[] staminaValue = new float[1];
+        FluctuatingAttributeObserver observer = (min, max, current) -> staminaValue[0] = current;
+        player.registerStaminaObserver(observer);
+
+        float previousStaminaValue = Config.getNumber(playerValues, "MAX_STAMINA");
+        player.setInputAction(PlayerInputAction.ATTACK1);
+        player.update(0);
+        float afterAttackStamina = staminaValue[0];
+        assertTrue(afterAttackStamina < previousStaminaValue);
+
+        player.unregisterStaminaObserver(observer);
+        player.update(1);
+        float unObservedValueBeforeAttacks = staminaValue[0];
+        for (int i = 0; i < 600; i++) {
+            player.setInputAction(PlayerInputAction.ATTACK1);
+            player.update(deltaTime);
+            TimerBank.updateTimers(deltaTime);
+        }
+
+        float unObservedValueAfterAttacks = staminaValue[0];
+        assertEquals(unObservedValueAfterAttacks, unObservedValueBeforeAttacks, 0);
+    }
+
+    @Test
+    public void testHealthObserver() {
+        final float[] currentHealth = new float[1];
+        FluctuatingAttributeObserver observer = (min, max, current) -> currentHealth[0] = current;
+        player.registerHealthObserver(observer);
+        player.takeDamage(10);
+        player.update(0);
+        float afterDmgTaken = currentHealth[0];
+        player.takeDamage(10);
+        player.update(0);
+        float afterDmgTaken2 = currentHealth[0];
+        assertTrue(afterDmgTaken2 < afterDmgTaken);
+
+        player.unregisterHealthObserver(observer);
+        player.update(1);
+        float unObservedHealthValueBeforeDmg = currentHealth[0];
+        player.takeDamage(10);
+        float unObservedHealthValueAfterDmg = currentHealth[0];
+        assertEquals(unObservedHealthValueAfterDmg, unObservedHealthValueBeforeDmg, 0);
+    }
+
+    @Test
+    public void testBlockObserver() {
+        final float[] currentBlockFactor = new float[1];
+        FluctuatingAttributeObserver observer = (min, max, current) -> currentBlockFactor[0] = current;
+        player.registerBlockObserver(observer);
+        player.setInputAction(PlayerInputAction.BLOCK);
+        player.update(0);
+        player.update(0);
+        float initialBlockFactor = currentBlockFactor[0];
+        float blockCooldown = Config.getNumber(playerValues, "BLOCK_COOLDOWN");
+        updatePlayer(blockCooldown + 1);
+        for (int i = 0; i < 60; i++) {
+            player.setInputAction(PlayerInputAction.BLOCK);
+            player.update(deltaTime);
+        }
+        float afterBlockingBlockFactor = currentBlockFactor[0];
+        assertTrue(initialBlockFactor > afterBlockingBlockFactor);
+
+        // somewhat reset the state of the player
+        updatePlayer(100);
+
+        player.unregisterBlockObserver(observer);
+        player.setInputAction(PlayerInputAction.BLOCK);
+        player.update(0);
+        initialBlockFactor = currentBlockFactor[0];
+        updatePlayer(blockCooldown + 1);
+        for (int i = 0; i < 60; i++) {
+            player.setInputAction(PlayerInputAction.BLOCK);
+            player.update(deltaTime);
+        }
+        afterBlockingBlockFactor = currentBlockFactor[0];
+        assertEquals(initialBlockFactor, afterBlockingBlockFactor, 0);
+    }
+
 
     // States
     // block - can't test until attacks have been implemented
