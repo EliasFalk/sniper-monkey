@@ -42,6 +42,7 @@ public class OverlayMenu implements HUDView {
         createTitleLabel(titleText);
         buttons = new ArrayList<>();
         lightBox = new Image(new Texture("images/lightbox.png"));
+        lightBox.setFillParent(true);
     }
 
     private void createTitleLabel(String titleText) {
