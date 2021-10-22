@@ -41,7 +41,7 @@ public class FantasyWarriorView extends GameObjectView {
         Texture fall = new Texture("images/fantasyWarrior/Fall.png");
         Texture death = new Texture("images/fantasyWarrior/Death.png");
         Texture attack1 = new Texture("images/fantasyWarrior/Attack1.png");
-        Texture attack2 = new Texture("images/fantasyWarrior/Attack2.png");
+        Texture attack2 = new Texture("images/fantasyWarrior/Attack3.png");
         animations.clear();
         animations.put(PhysicalState.IDLING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(idle, 10), Animation.PlayMode.LOOP));
         animations.put(PhysicalState.MOVING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(run, 8), Animation.PlayMode.LOOP));
@@ -49,7 +49,7 @@ public class FantasyWarriorView extends GameObjectView {
         animations.put(PhysicalState.FALLING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(fall, 3), Animation.PlayMode.LOOP));
         animations.put(PhysicalState.BLOCKING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(death, 7), Animation.PlayMode.LOOP_PINGPONG));
         animations.put(PhysicalState.ATTACKING1, new Animation<>(model.getAttackLength(0) / 7, AnimationUtils.cutSpriteSheet(attack1, 7), Animation.PlayMode.NORMAL));
-        animations.put(PhysicalState.ATTACKING2, new Animation<>(model.getAttackLength(1) / 6, AnimationUtils.cutSpriteSheet(attack2, 6), Animation.PlayMode.NORMAL));
+        animations.put(PhysicalState.ATTACKING2, new Animation<>(model.getAttackLength(1) / 8, AnimationUtils.cutSpriteSheet(attack2, 8), Animation.PlayMode.NORMAL));
     }
 
     @Override

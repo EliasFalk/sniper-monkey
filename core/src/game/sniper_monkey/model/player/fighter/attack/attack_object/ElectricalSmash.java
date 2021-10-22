@@ -3,23 +3,20 @@ package game.sniper_monkey.model.player.fighter.attack.attack_object;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.player.DamageablePlayer;
 import game.sniper_monkey.model.player.Player;
-import game.sniper_monkey.model.player.ReadablePlayer;
 
 /**
- * A class of the attack object of the fantasy warriors first attack, the ElectricalSlash.
+ * A class for the attack object of the Fantasy warriors second attack, the Electrical smash. This is the literal object in the world that collides with the player.
  *
  * @author Dadi Andrason
  *
  * Used by AttackObjectSpawner
- *
- * Uses DamageablePlayer
  */
-public class ElectricalSlash extends AttackObject {
+public class ElectricalSmash extends AttackObject {
 
-    public static final Vector2 attackHitboxSize = new Vector2(43, 57);
+    public static final Vector2 attackHitboxSize = new Vector2(53, 100);
 
     /**
-     * Creates an object of the actual "slash" from the fantasy warrior's first attack. Adds a hit response to it that executes when hitting a player.
+     * Creates an attack object of the electrical smash attack. Adds a hit response to it that executes when the attack object collides with a player.
      *
      * @param damage a float 0..n. Is how much damage the AttackObject is going to do.
      * @param timeToLive a float 0..n. Determines for how long the object exists for in seconds.
@@ -27,7 +24,7 @@ public class ElectricalSlash extends AttackObject {
      * @param collisionMask an int 0..n. A collision mask to prevent the hitbox from colliding with the attacker.
      * @param lookingRight a boolean. Is the direction the player is facing. True if player is facing to the right, false if the player is facing the left.
      */
-    protected ElectricalSlash(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, boolean lookingRight) {
+    protected ElectricalSmash(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, boolean lookingRight) {
         super(damage, timeToLive, spawnPos, collisionMask, lookingRight, attackHitboxSize);
 
         addHitResponse(Player.class, gameObject -> {
@@ -36,4 +33,7 @@ public class ElectricalSlash extends AttackObject {
             delete();
         });
     }
+
+
+
 }

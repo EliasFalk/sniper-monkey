@@ -20,6 +20,6 @@ public class FantasyWarrior extends Fighter {
     public FantasyWarrior() {
         super(attackFactor, defenseFactor, speedFactor, hitboxSize);
         attacks.add(AttackFactory.createElectricalSlashAttack());
-        //atttack2
+        attacks.add(AttackFactory.createElectricalSmashAttack());
     }
 }
