@@ -74,6 +74,7 @@ public class GameController implements FluctuatingAttributeObserver, IScreenCont
             addEndMenuToScreen();
         });
         pauseMenu = createPauseMenu();
+        startOverlay = new OverlayMenu("3");
         World.getInstance().resetWorld();
         create();
     }
@@ -105,7 +106,6 @@ public class GameController implements FluctuatingAttributeObserver, IScreenCont
     }
 
     private void initStartState() {
-        startOverlay = new OverlayMenu("3");
         gameScreen.addHudView(startOverlay);
         startStage = 0;
         startStageTime.setAutoUpdate(false);
