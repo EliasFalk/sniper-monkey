@@ -101,12 +101,12 @@ public class BottomHUDController implements SwappedFighterObserver {
     private void createSecondaryFighterView() {
         TextureRegion inactiveFighter = HUDUtils.getCorrespondingTextureRegion(player.getInactiveFighterClass());
 
-        float relativeMarginOfFighter = 0;
-        boolean flip = false;
+        float relativeMarginOfFighter;
+        boolean flip;
         if (placement == Placement.RIGHT) {
             relativeMarginOfFighter = KeyInputView.getWidth() + fighterXMargin;
             flip = true;
-        } else if (placement == Placement.LEFT) {
+        } else {
             relativeMarginOfFighter = -fighterXMargin - inactiveFighter.getRegionWidth();
             flip = false;
         }
