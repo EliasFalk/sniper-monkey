@@ -34,8 +34,8 @@ public class SelectViewRectangle extends Actor implements ICharacterSelectedObse
     private final Color color;
     private boolean player1Select;
     private boolean player2Select;
-    private final Label fighterLabel;
-    private final Class<? extends Fighter> fighter;
+    private final Label player1HoverFighterLabel;
+    private final Label player2HoverFighterLabel;
     private final Stage stage;
     private Color player1OuterRectangleColor;
     private Color player2OuterRectangleColor;
@@ -50,9 +50,11 @@ public class SelectViewRectangle extends Actor implements ICharacterSelectedObse
         this.height = height;
         this.color = color;
         addLabel();
-        this.fighter = fighter;
         this.stage = stage;
-        fighterLabel = new Label(HUDUtils.getFighterDisplayName(fighter), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        player1HoverFighterLabel = new Label(HUDUtils.getFighterDisplayName(fighter), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        player1HoverFighterLabel.setPosition((Gdx.graphics.getWidth()*2)/10f, (Gdx.graphics.getHeight()*5.5f)/10f);
+        player2HoverFighterLabel = new Label(HUDUtils.getFighterDisplayName(fighter), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        player2HoverFighterLabel.setPosition((Gdx.graphics.getWidth()*6)/10f, (Gdx.graphics.getHeight()*5.5f)/10f);
         this.img = createFighterImage(HUDUtils.getCorrespondingTextureRegion(fighter), x, y, true, img);
         this.player1PreviewImage = createFighterImage(HUDUtils.getCorrespondingTextureRegion(fighter), (Gdx.graphics.getWidth()*2)/10f, (Gdx.graphics.getHeight()*6)/10f, true, player1PreviewImage);
         this.player2PreviewImage = createFighterImage(HUDUtils.getCorrespondingTextureRegion(fighter), (Gdx.graphics.getWidth()*6)/10f, (Gdx.graphics.getHeight()*6)/10f, true, player2PreviewImage);
@@ -67,20 +69,26 @@ public class SelectViewRectangle extends Actor implements ICharacterSelectedObse
         if (player1Select && player2Select) {
             drawDoubleOuterRectangle();
             drawPlayer1PreviewAnimation();
+            drawPlayer1HoverLabel();
             drawPlayer2PreviewAnimation();
+            drawPlayer2HoverLabel();
         } else {
             if (player1Select) {
                 drawPlayer1OuterRectangle();
                 drawPlayer1PreviewAnimation();
+                drawPlayer1HoverLabel();
             } else {
                 removePlayer1PreviewAnimation();
+                removePlayer1HoverLabel();
             }
 
             if (player2Select) {
                 drawPlayer2OuterRectangle();
                 drawPlayer2PreviewAnimation();
+                drawPlayer2HoverLabel();
             } else {
                 removePlayer2PreviewAnimation();
+                removePlayer2HoverLabel();
             }
 
             //Where none of the players are on the rectangle just add blue to the outer rectangle
@@ -91,6 +99,22 @@ public class SelectViewRectangle extends Actor implements ICharacterSelectedObse
         drawRectangle(color);
         shapeRenderer.end();
         batch.begin();
+    }
+
+    private void drawPlayer1HoverLabel() {
+        stage.addActor(player1HoverFighterLabel);
+    }
+
+    private void drawPlayer2HoverLabel() {
+        stage.addActor(player2HoverFighterLabel);
+    }
+
+    private void removePlayer1HoverLabel() {
+        player1HoverFighterLabel.remove();
+    }
+
+    private void removePlayer2HoverLabel() {
+        player2HoverFighterLabel.remove();
     }
 
     private void drawDoubleOuterRectangle() {

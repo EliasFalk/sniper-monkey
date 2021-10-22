@@ -3,11 +3,12 @@ package game.sniper_monkey.view.characterSelection;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.Select;
 import game.sniper_monkey.model.player.fighter.EvilWizard;
 import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.player.fighter.HuntressBow;
@@ -25,15 +26,17 @@ import java.util.Map;
  */
 public class CharacterSelectionScreen extends ScreenAdapter {
 
-    SpriteBatch batch;
-    ShapeRenderer sr;
-    Stage stage;
+    private final SpriteBatch batch;
+    private final ShapeRenderer sr;
+    private final Stage stage;
 
-    CharacterSelectionScreenController characterSelectionScreenController;
-    SelectedFighterView selectedFighterView;
+    private final CharacterSelectionScreenController characterSelectionScreenController;
+    public SelectedFighterView selectedFighterView;
+
+    private final Label player1HowToChooseFighter;
+    private final Label player2HowToChooseFighter;
 
 
-    //Create a list with potential fighters to choose from? Should it be the sprite of each fighter?
     public final List<Class<? extends Fighter>> fighterList = new ArrayList<>();
 
     public CharacterSelectionScreen(CharacterSelectionScreenController characterSelectionController) {
@@ -49,12 +52,12 @@ public class CharacterSelectionScreen extends ScreenAdapter {
         fighterList.add(Samurai.class);
         fighterList.add(HuntressBow.class);
         fighterList.add(EvilWizard.class);
-        fighterList.add(HuntressBow.class);
-        fighterList.add(Samurai.class);
-        fighterList.add(EvilWizard.class);
-        fighterList.add(HuntressBow.class);
 
         characterSelectionController.amountOfFighters = fighterList.size();
+
+        this.player1HowToChooseFighter = new Label("Player1 move with WASD\nPlayer1 Primary press P\nPlayer1 Secondary press T\n", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        this.player2HowToChooseFighter = new Label("Player2 move with arrow keys\nPlayer2 Primary press ENTER\nPlayer2 Secondary press SHIFT\n", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        this.player2HowToChooseFighter.setPosition(Gdx.graphics.getWidth()-player2HowToChooseFighter.getWidth(), 0);
 
         createRectangles();
     }
@@ -67,9 +70,9 @@ public class CharacterSelectionScreen extends ScreenAdapter {
 
             //Fix maths
             if ( i < (characterSelectionScreenController.amountOfFighters/2)) {
-                rect = new SelectViewRectangle(fighterList.get(i), ((i % (characterSelectionScreenController.amountOfFighters / 2f))) * Gdx.graphics.getWidth() / ((float) characterSelectionScreenController.amountOfFighters / 2)+100, Gdx.graphics.getHeight() / 4f, 100f, 100f, Color.BLUE, stage);
+                rect = new SelectViewRectangle(fighterList.get(i), ((i % (characterSelectionScreenController.amountOfFighters / 2f))) * (Gdx.graphics.getWidth() / ((float) characterSelectionScreenController.amountOfFighters / 2))+270, Gdx.graphics.getHeight() / 3.5f, 150f, 150f, Color.BLUE, stage);
             } else {
-                rect = new SelectViewRectangle(fighterList.get(i),((i % (characterSelectionScreenController.amountOfFighters / 2f))) * Gdx.graphics.getWidth() / ((float) characterSelectionScreenController.amountOfFighters / 2)+100, Gdx.graphics.getHeight() / (3 * 4f), 100f, 100f, Color.BLUE, stage);
+                rect = new SelectViewRectangle(fighterList.get(i),((i % (characterSelectionScreenController.amountOfFighters / 2f))) * Gdx.graphics.getWidth() / ((float) characterSelectionScreenController.amountOfFighters / 2)+270, Gdx.graphics.getHeight() / (3.5f * 5f), 150f, 150f, Color.BLUE, stage);
             }
 
             characterSelectionScreenController.registerObserver(rect);
@@ -96,9 +99,16 @@ public class CharacterSelectionScreen extends ScreenAdapter {
         }
     }
 
+    private void staticContent() {
+        stage.addActor(player1HowToChooseFighter);
+        stage.addActor(player2HowToChooseFighter);
+    }
+
     @Override
     public void render(float deltaTime) {
         ScreenUtils.clear(1, 1, 1, 1);
+
+        staticContent();
 
         characterSelectionScreenController.handleInput();
         unSelectedRectangles();

@@ -84,6 +84,7 @@ public class CharacterSelectionScreenController implements IController {
             player1SecondaryFighter = chooseFighterHelper(characterSelectionScreen.fighterList.get(player1SelectedRectangleIndex));
             chosenFighters.replace("player1SecondaryFighter", player1SecondaryFighter);
         }
+        characterSelectionScreen.selectedFighterView.drawPlayer1SecondaryFighter(player1SecondaryFighter);
         notifyObserversOfPlayer1SelectedCharacter();
     }
 
@@ -107,6 +108,7 @@ public class CharacterSelectionScreenController implements IController {
             player2SecondaryFighter = chooseFighterHelper(characterSelectionScreen.fighterList.get(player2SelectedRectangleIndex));
             chosenFighters.replace("player2SecondaryFighter", player2SecondaryFighter);
         }
+        characterSelectionScreen.selectedFighterView.drawPlayer2SecondaryFighter(player2SecondaryFighter);
         notifyObserversOfPlayer2SelectedCharacter();
     }
 
