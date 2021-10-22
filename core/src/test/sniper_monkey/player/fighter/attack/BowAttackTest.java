@@ -46,7 +46,7 @@ public class BowAttackTest {
     }
 
     @Test
-    public void testBowAttack() {
+    public void testBowPerformAttack() {
         Player player1 = PlayerFactory.createPlayer1(new Vector2(0, 0));
         Player player2 = PlayerFactory.createPlayer2(new Vector2(70, 0));
         float player1baseHealth = player1.getHealth();
@@ -64,15 +64,6 @@ public class BowAttackTest {
         assertEquals(10, bowAttack.getStaminaCost(), 0.001);
     }
 
-    /*@Test // TODO cannot use isfinished method through player, have to go through the attack which is wack. pls fix
-    public void testIsFinished() {
-        Player player = PlayerFactory.createPlayer(new Vector2(0,0));
-        player.setInputAction(PlayerInputAction.ATTACK1);
-        World.getInstance().queueAddGameObject(player);
-        World.getInstance().update(0.1f);
-        assertTrue()
-    }*/
-
     @Test
     public void testAttackLength() {
         IAttack bowAttack = AttackFactory.createBowAttack();
@@ -84,18 +75,4 @@ public class BowAttackTest {
         IAttack bowAttack = AttackFactory.createBowAttack();
         assertEquals(0.2f, bowAttack.getHitStunLength(), 0.001);
     }
-
-    @Test
-    public void testBowAttackMiss() {
-        Player player1 = PlayerFactory.createPlayer1(new Vector2(700, 0));
-        Player player2 = PlayerFactory.createPlayer2(new Vector2(0, 0));
-        player2.setInputAction(PlayerInputAction.ATTACK1);
-        World.getInstance().queueAddGameObject(player1);
-        World.getInstance().queueAddGameObject(player2);
-        World.getInstance().update(0.1f);
-        World.getInstance().update(0.1f);
-        Assert.assertEquals(100f, player2.getHealth(), 0);
-    }
-
-
 }

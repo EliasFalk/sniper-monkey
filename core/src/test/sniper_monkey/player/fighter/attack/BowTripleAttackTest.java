@@ -9,6 +9,7 @@ import game.sniper_monkey.model.TimerBank;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.PlayerFactory;
 import game.sniper_monkey.model.player.PlayerInputAction;
+import game.sniper_monkey.model.player.fighter.HuntressBow;
 import game.sniper_monkey.model.player.fighter.attack.AttackFactory;
 import game.sniper_monkey.model.player.fighter.attack.IAttack;
 import game.sniper_monkey.model.world.World;
@@ -58,31 +59,18 @@ public class BowTripleAttackTest {
     }
 
     @Test
-    public void testBowTripleAttackHit() {
+    public void testBowTriplePerformAttack() {
         Player player1 = PlayerFactory.createPlayer1(new Vector2(0, 0));
-        Player player2 = PlayerFactory.createPlayer2(new Vector2(70, 0));
+        Player player2 = PlayerFactory.createPlayer2(new Vector2(70, 0), HuntressBow.class, HuntressBow.class);
         float player1baseHealth = player1.getHealth();
         World.getInstance().queueAddGameObject(player1);
         World.getInstance().queueAddGameObject(player2);
         updateWorld(2);
-        player2.setInputAction(PlayerInputAction.ATTACK1);
-        updateWorld(1);
+        player2.setInputAction(PlayerInputAction.ATTACK2);
+        updateWorld(2);
         assertTrue(player1baseHealth > player1.getHealth());
     }
 
-    @Test
-    public void testBowTripleAttackMiss() {
-        Player player1 = PlayerFactory.createPlayer1(new Vector2(0, 0));
-        Player player2 = PlayerFactory.createPlayer2(new Vector2(1400, 0));
-        player2.setInputAction(PlayerInputAction.ATTACK2);
-        float player1baseHealth = player1.getHealth();
-        World.getInstance().queueAddGameObject(player1);
-        World.getInstance().queueAddGameObject(player2);
-        updateWorld(2);
-        player2.setInputAction(PlayerInputAction.ATTACK1);
-        updateWorld(1);
-        assertEquals(player1baseHealth, player1.getHealth(), 0.0);
 
-    }
 
 }

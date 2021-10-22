@@ -41,9 +41,7 @@ public class Arrow extends AttackObject {
             delete(); // after hit
         });
 
-        addHitResponse(WorldBrick.class, gameObject -> {
-            delete(); // after hit
-        });
+        addHitResponse(WorldBrick.class, gameObject -> delete());
 
     }
 

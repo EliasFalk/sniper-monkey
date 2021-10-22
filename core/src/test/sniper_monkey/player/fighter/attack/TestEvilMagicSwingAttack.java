@@ -51,7 +51,7 @@ public class TestEvilMagicSwingAttack {
     }
 
     @Test
-    public void testEvilMagicSwingAttack() {
+    public void testEvilMagicSwingPerformAttack() {
         Player player1 = PlayerFactory.createPlayer1(new Vector2(70, 0), EvilWizard.class, FantasyWarrior.class);
         Player player2 = PlayerFactory.createPlayer2(new Vector2(0, 0));
         float player2baseHealth = player2.getHealth();
@@ -61,19 +61,6 @@ public class TestEvilMagicSwingAttack {
         player1.setInputAction(PlayerInputAction.ATTACK1);
         updateWorld(1);
         assertTrue(player2baseHealth > player2.getHealth());
-    }
-
-    @Test
-    public void testEvilMagicSwingAttackMiss() {
-        Player player1 = PlayerFactory.createPlayer1(new Vector2(700, 0), EvilWizard.class, FantasyWarrior.class);
-        Player player2 = PlayerFactory.createPlayer2(new Vector2(0, 0));
-        float player2baseHealth = player2.getHealth();
-        World.getInstance().queueAddGameObject(player1);
-        World.getInstance().queueAddGameObject(player2);
-        updateWorld(2);
-        player1.setInputAction(PlayerInputAction.ATTACK1);
-        updateWorld(1);
-        assertEquals(player2baseHealth, player2.getHealth(), 0.0);
     }
 
     @Test
