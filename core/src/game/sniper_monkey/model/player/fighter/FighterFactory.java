@@ -20,6 +20,7 @@ public class FighterFactory {
         correspondingFighters.put(EvilWizard.class, FighterFactory::createEvilWizard);
         correspondingFighters.put(Samurai.class, FighterFactory::createSamurai);
         correspondingFighters.put(HuntressBow.class, FighterFactory::createHuntressBow);
+        correspondingFighters.put(FantasyWarrior.class, FighterFactory::createFantasyWarrior);
     }
 
     /**
