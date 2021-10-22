@@ -48,6 +48,7 @@ public class FantasyWarriorView extends GameObjectView {
         animations.put(PhysicalState.JUMPING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(jump, 3), Animation.PlayMode.LOOP));
         animations.put(PhysicalState.FALLING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(fall, 3), Animation.PlayMode.LOOP));
         animations.put(PhysicalState.BLOCKING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(death, 7), Animation.PlayMode.LOOP_PINGPONG));
+        animations.put(PhysicalState.DYING, new Animation<>(frameDuration, AnimationUtils.cutSpriteSheet(death, 7), Animation.PlayMode.NORMAL));
         animations.put(PhysicalState.ATTACKING1, new Animation<>(model.getAttackLength(0) / 7, AnimationUtils.cutSpriteSheet(attack1, 7), Animation.PlayMode.NORMAL));
         animations.put(PhysicalState.ATTACKING2, new Animation<>(model.getAttackLength(1) / 8, AnimationUtils.cutSpriteSheet(attack2, 8), Animation.PlayMode.NORMAL));
     }
