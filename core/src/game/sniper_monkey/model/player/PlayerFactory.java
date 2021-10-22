@@ -10,31 +10,21 @@ import game.sniper_monkey.utils.collision.CollisionMasks;
  */
 public class PlayerFactory {
 
-    /**
-     * Creates a player with two fighters
-     *
-     * @return a player object with two fighters.
-     */
-    public static Player createPlayer() {
-        // TODO change this method thanks
-        return new Player(FighterFactory.createEvilWizard(), FighterFactory.createEvilWizard());
-    }
-
     //TODO documentation
-    public static Player createPlayer(Vector2 spawnPos) {
+    public static Player createPlayer(Vector2 spawnPos, Fighter primaryFighter, Fighter secondaryFighter, int collisionMasks) {
         // TODO change this method thanks
-        return new Player(spawnPos, FighterFactory.createEvilWizard(), FighterFactory.createEvilWizard());
+        return new Player(spawnPos, primaryFighter, secondaryFighter, collisionMasks);
     }
 
     //TODO documentation
     public static Player createPlayer1(Vector2 spawnPos, Fighter primaryFighter, Fighter secondaryFighter) {
         // TODO change this method thanks
-        return new Player(spawnPos, primaryFighter, secondaryFighter, CollisionMasks.PLAYER_1);
+        return createPlayer(spawnPos, primaryFighter, secondaryFighter, CollisionMasks.PLAYER_1);
     }
 
     //TODO documentation
     public static Player createPlayer2(Vector2 spawnPos, Fighter primaryFighter, Fighter secondaryFighter) {
         // TODO change this method thanks
-        return new Player(spawnPos, primaryFighter, secondaryFighter, CollisionMasks.PLAYER_2);
+        return createPlayer(spawnPos, primaryFighter, secondaryFighter, CollisionMasks.PLAYER_2);
     }
 }
