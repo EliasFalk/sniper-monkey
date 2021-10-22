@@ -100,7 +100,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
      * @param collisionMask    The collision mask of the fighter.
      * @see game.sniper_monkey.utils.collision.CollisionMasks
      */
-    public Player(Vector2 spawnPos, Fighter primaryFighter, Fighter secondaryFighter, int collisionMask) {
+    protected Player(Vector2 spawnPos, Fighter primaryFighter, Fighter secondaryFighter, int collisionMask) {
         super(spawnPos, true);
         physicsPos.setPosition(spawnPos);
         this.spawnPos = spawnPos;
@@ -115,20 +115,21 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     /**
      * Creates a player with a position in the world
      *
-     * @param spawnPos The initial position of the player.
-     * @param primaryFighter The primary fighter to use
+     * @param spawnPos         The initial position of the player.
+     * @param primaryFighter   The primary fighter to use
      * @param secondaryFighter The secondary fighter to use
      */
-    public Player(Vector2 spawnPos, Fighter primaryFighter, Fighter secondaryFighter) {
+    protected Player(Vector2 spawnPos, Fighter primaryFighter, Fighter secondaryFighter) {
         this(spawnPos, primaryFighter, secondaryFighter, 0);
     }
 
     /**
      * Creates a Player object
-     * @param primaryFighter The primary fighter to use
+     *
+     * @param primaryFighter   The primary fighter to use
      * @param secondaryFighter The secondary fighter to use
      */
-    public Player(Fighter primaryFighter, Fighter secondaryFighter) {
+    protected Player(Fighter primaryFighter, Fighter secondaryFighter) {
         this(new Vector2(0, 0), primaryFighter, secondaryFighter);
     }
 
