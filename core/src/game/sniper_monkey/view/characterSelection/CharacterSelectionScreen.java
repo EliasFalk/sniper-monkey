@@ -19,7 +19,6 @@ import java.util.Map;
 
 /**
  * <p>
- *     Used by SniperMonkey
  *     Used by CharacterSelectionScreenController
  *     Uses CharacterSelectionScreenController
  *     Uses SelectedFighterView
