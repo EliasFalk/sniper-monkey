@@ -22,6 +22,7 @@ import java.util.Map;
  * </p>
  * @author Kevin Jeryd
  */
+//TODO Fix circular dependency with CharacterSelectionScreen
 public class CharacterSelectionScreenController implements IController {
     CharacterSelectionScreen characterSelectionScreen;
 
