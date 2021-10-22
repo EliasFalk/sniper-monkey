@@ -27,8 +27,8 @@ public class PlayerTest {
     private static Player player;
     private static String playerValues;
     private static String physicsValues;
-    private static Class<? extends Fighter> primaryFighterClass = EvilWizard.class;
-    private static Class<? extends Fighter> secondaryFighterClass = HuntressBow.class;
+    private static final Class<? extends Fighter> primaryFighterClass = EvilWizard.class;
+    private static final Class<? extends Fighter> secondaryFighterClass = HuntressBow.class;
     private static final float spawnX = 100;
     private static final float spawnY = 100;
     private static final float deltaTime = 1 / 60f;
@@ -56,11 +56,6 @@ public class PlayerTest {
         TimerBank.clear();
         player = PlayerFactory.createPlayer1(new Vector2(spawnX, spawnY), primaryFighterClass, secondaryFighterClass);
         player = PlayerFactory.createPlayer2(new Vector2(spawnX, spawnY), primaryFighterClass, secondaryFighterClass);
-    }
-
-    @Test
-    public void testInputActions() {
-
     }
 
     // TODO do movement tests when movement is finalized.
@@ -254,7 +249,8 @@ public class PlayerTest {
         float swapCooldown = Config.getNumber(playerValues, "SWAP_COOLDOWN");
         Class<? extends Fighter> secondaryFighter = player.getActiveFighterClass();
         player.setInputAction(PlayerInputAction.SWAP_FIGHTER);
-        player.update(deltaTime);
+        assertTrue(deltaTime < swapCooldown);
+        updatePlayer(deltaTime);
         Class<? extends Fighter> fighterAfterIllegalSwap = player.getActiveFighterClass();
         Assert.assertEquals(secondaryFighter, fighterAfterIllegalSwap);
     }
