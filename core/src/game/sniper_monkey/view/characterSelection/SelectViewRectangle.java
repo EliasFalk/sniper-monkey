@@ -67,7 +67,7 @@ public class SelectViewRectangle extends Actor implements ICharacterSelectedObse
         player1HoverFighterLabel.setPosition((Gdx.graphics.getWidth()*2)/10f, (Gdx.graphics.getHeight()*5.5f)/10f);
         player2HoverFighterLabel = new Label(HUDUtils.getFighterDisplayName(fighter), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         player2HoverFighterLabel.setPosition((Gdx.graphics.getWidth()*6)/10f, (Gdx.graphics.getHeight()*5.5f)/10f);
-        this.img = createFighterImage(HUDUtils.getCorrespondingTextureRegion(fighter), x, y, true, img);
+        this.img = createFighterImage(HUDUtils.getCorrespondingTextureRegion(fighter), x+width/3, y+height/3, true, img);
         this.player1PreviewImage = createFighterImage(HUDUtils.getCorrespondingTextureRegion(fighter), (Gdx.graphics.getWidth()*2)/10f, (Gdx.graphics.getHeight()*6)/10f, true, player1PreviewImage);
         this.player2PreviewImage = createFighterImage(HUDUtils.getCorrespondingTextureRegion(fighter), (Gdx.graphics.getWidth()*6)/10f, (Gdx.graphics.getHeight()*6)/10f, true, player2PreviewImage);
     }
