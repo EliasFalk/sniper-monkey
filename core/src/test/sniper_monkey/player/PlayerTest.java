@@ -17,6 +17,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 public class PlayerTest {
 
     private static Player player;
@@ -55,55 +58,60 @@ public class PlayerTest {
     }
 
     // TODO do movement tests when movement is finalized.
-//    @Test
-//    public void testMoveLeftWhileGroundState() {
-//        for (int i = 0; i < 300; i++) {
-//            player.update(deltaTime);
-//        }
-//        player.setInputAction(PlayerInputAction.MOVE_LEFT);
-//        float velGain = Config.getNumber(values, "VEL_GAIN");
-//        Assert.assertEquals(-velGain + spawnX, player.getPos().x, 0.0);
-//    }
-//
-//    @Test
-//    public void testMoveRightWhileGroundState() {
-//        player.setInputAction(PlayerInputAction.MOVE_RIGHT);
-//        for(int i = 0; i < 60; i++) {
-//            player.update(deltaTime);
-//        }
-//        float velGain = Config.getNumber(values, "VEL_GAIN");
-//        Assert.assertEquals(velGain + spawnX, player.getPos().x, 0.0);
-//    }
-//
-//    @Test
-//    public void testMaxXVelocityLeft() {
-//        for (int i = 0; i < 100; i++) {
-//            player.update(1 / 60f);
-//            player.setInputAction(PlayerInputAction.MOVE_LEFT);
-//        }
-//        float oldX = player.getPos().x;
-//        player.setInputAction(PlayerInputAction.MOVE_LEFT);
-//        player.update(1);
-//        float newX = player.getPos().x;
-//        float maxSpeed = Config.getNumber(values, "MAX_X_VEL");
-//        Assert.assertEquals(-maxSpeed, newX - oldX, 0.0);
-//    }
-//
-//    @Test
-//    public void testMaxXVelocityRight() {
-//        for (int i = 0; i < 100; i++) {
-//            player.update(1 / 60f);
-//            player.setInputAction(PlayerInputAction.MOVE_RIGHT);
-//        }
-//        float oldX = player.getPos().x;
-//        player.setInputAction(PlayerInputAction.MOVE_RIGHT);
-//        player.update(1);
-//        float newX = player.getPos().x;
-//        float maxSpeed = Config.getNumber(values, "MAX_X_VEL");
-//        Assert.assertEquals(maxSpeed, newX - oldX, 0.0);
-//    }
+    @Test
+    public void testMoveLeftWhileGroundState() {
+        updatePlayer(5);
+        float prevX = player.getPos().x;
+        updatePlayer(1);
+        assertEquals(prevX, player.getPos().x, 0.0);
+        player.setInputAction(PlayerInputAction.MOVE_LEFT);
+        updatePlayer(1);
+        assertTrue(prevX > player.getPos().x);
+    }
 
-    // TODO test jump
+    private Vector2 getVelocity() {
+        float smallDt = 1 / 1000f;
+        Vector2 prePos = player.getPos();
+        player.update(smallDt);
+        Vector2 afterPos = player.getPos();
+        return afterPos.sub(prePos).scl(1 / smallDt);
+    }
+
+    @Test
+    public void testMoveRightWhileGroundState() {
+        updatePlayer(5);
+        float prevX = player.getPos().x;
+        updatePlayer(1);
+        assertEquals(prevX, player.getPos().x, 0.0);
+        player.setInputAction(PlayerInputAction.MOVE_RIGHT);
+        updatePlayer(1);
+        assertTrue(prevX < player.getPos().x);
+    }
+
+    @Test
+    public void testMaxXVelocityLeft() {
+        for (int i = 0; i < 600; i++) {
+            player.update(deltaTime);
+            player.setInputAction(PlayerInputAction.MOVE_LEFT);
+        }
+        player.setInputAction(PlayerInputAction.MOVE_LEFT);
+        Vector2 playerVel = getVelocity();
+        float maxSpeed = Config.getNumber(playerValues, "MAX_X_VEL");
+        assertTrue(Math.abs(playerVel.x) <= maxSpeed);
+    }
+
+    @Test
+    public void testMaxXVelocityRight() {
+        for (int i = 0; i < 600; i++) {
+            player.update(deltaTime);
+            player.setInputAction(PlayerInputAction.MOVE_RIGHT);
+        }
+        float oldX = player.getPos().x;
+        player.setInputAction(PlayerInputAction.MOVE_RIGHT);
+        Vector2 playerVel = getVelocity();
+        float maxSpeed = Config.getNumber(playerValues, "MAX_X_VEL");
+        assertTrue(Math.abs(playerVel.x) <= maxSpeed);
+    }
 
     @Test
     public void testJumpWhileGroundedState() {
