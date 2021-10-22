@@ -5,7 +5,6 @@ import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.Config;
-import game.sniper_monkey.model.TimerBank;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.PlayerFactory;
 import game.sniper_monkey.model.player.PlayerInputAction;
@@ -13,15 +12,14 @@ import game.sniper_monkey.model.player.fighter.EvilWizard;
 import game.sniper_monkey.model.player.fighter.FantasyWarrior;
 import game.sniper_monkey.model.player.fighter.HuntressBow;
 import game.sniper_monkey.model.player.fighter.attack.AttackFactory;
-import game.sniper_monkey.model.player.fighter.attack.EvilMagicSwingAttack;
 import game.sniper_monkey.model.player.fighter.attack.IAttack;
 import game.sniper_monkey.model.world.World;
 import game.sniper_monkey.model.world_brick.WorldBrick;
+import game.sniper_monkey.utils.time.TimerBank;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class TestEvilMagicSwingAttack {

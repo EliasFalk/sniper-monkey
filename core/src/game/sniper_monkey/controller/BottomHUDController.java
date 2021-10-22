@@ -1,4 +1,4 @@
-package game.sniper_monkey.view.hud;
+package game.sniper_monkey.controller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -8,6 +8,9 @@ import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.SwappedFighterObserver;
 import game.sniper_monkey.utils.view.HUDUtils;
 import game.sniper_monkey.view.GameScreen;
+import game.sniper_monkey.view.hud.KeyInputView;
+import game.sniper_monkey.view.hud.Placement;
+import game.sniper_monkey.view.hud.SecondaryFighterView;
 
 /**
  * Controls the bottom part of the HUD of a player including the key inputs and secondary fighter.
@@ -28,7 +31,7 @@ public class BottomHUDController implements SwappedFighterObserver {
     private final GameScreen gameScreen;
     private final Player player;
     private final float keyInputMargin = 6f;
-    private final float fighterXMargin = 50f;
+    private final float fighterXMargin = 75f;
     private final float fighterYMargin = 50f;
     private final float keyInputsXPosition = 200f;
     private final float keyInputsYPosition = 25;

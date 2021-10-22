@@ -1,8 +1,10 @@
-package game.sniper_monkey.utils;
+package game.sniper_monkey.utils.map;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import game.sniper_monkey.utils.view.SpriteUtils;
+import game.sniper_monkey.utils.xml.NodeListUtil;
+import game.sniper_monkey.utils.xml.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;

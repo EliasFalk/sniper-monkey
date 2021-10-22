@@ -1,4 +1,4 @@
-package game.sniper_monkey.utils;
+package game.sniper_monkey.utils.xml;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

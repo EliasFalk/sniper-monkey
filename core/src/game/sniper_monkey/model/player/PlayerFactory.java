@@ -18,21 +18,42 @@ public class PlayerFactory {
     private PlayerFactory() {
     }
 
-    //TODO documentation
-    public static Player createPlayer(Vector2 spawnPos, Fighter primaryFighter, Fighter secondaryFighter, int collisionMasks) {
-        // TODO change this method thanks
-        return new Player(spawnPos, primaryFighter, secondaryFighter, collisionMasks);
+    /**
+     * Returns a player with a given spawn position, primary and secondary fighter as well as collision mask.
+     *
+     * @param spawnPos         The spawn position of where the player will spawn and respawn when swapping fighter.
+     * @param primaryFighter   The primary fighter that the player will use, will be the active fighter until swap.
+     * @param secondaryFighter The secondary fighter that the player will use.
+     * @param collisionMask    The collision mask that the player will have.
+     * @return A player.
+     */
+    public static Player createPlayer(Vector2 spawnPos, Fighter primaryFighter, Fighter secondaryFighter, int collisionMask) {
+        return new Player(spawnPos, primaryFighter, secondaryFighter, collisionMask);
     }
 
-    //TODO documentation
+    /**
+     * Returns a player with a given spawn position, primary and secondary fighter.
+     * The player has a predetermined collision mask of PLAYER_1.
+     *
+     * @param spawnPos         The spawn position of where the player will spawn and respawn when swapping fighter.
+     * @param primaryFighter   The primary fighter that the player will use, will be the active fighter until swap.
+     * @param secondaryFighter The secondary fighter that the player will use.
+     * @return A player with a collision mask of player 1.
+     */
     public static Player createPlayer1(Vector2 spawnPos, Fighter primaryFighter, Fighter secondaryFighter) {
-        // TODO change this method thanks
         return createPlayer(spawnPos, primaryFighter, secondaryFighter, CollisionMasks.PLAYER_1);
     }
 
-    //TODO documentation
+    /**
+     * Returns a player with a given spawn position, primary and secondary fighter.
+     * The player has a predetermined collision mask of PLAYER_2.
+     *
+     * @param spawnPos         The spawn position of where the player will spawn and respawn when swapping fighter.
+     * @param primaryFighter   The primary fighter that the player will use, will be the active fighter until swap.
+     * @param secondaryFighter The secondary fighter that the player will use.
+     * @return A player with a collision mask of player 2.
+     */
     public static Player createPlayer2(Vector2 spawnPos, Fighter primaryFighter, Fighter secondaryFighter) {
-        // TODO change this method thanks
         return createPlayer(spawnPos, primaryFighter, secondaryFighter, CollisionMasks.PLAYER_2);
     }
 

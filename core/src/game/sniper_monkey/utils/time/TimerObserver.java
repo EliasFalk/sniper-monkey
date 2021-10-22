@@ -1,4 +1,4 @@
-package game.sniper_monkey.model.world;
+package game.sniper_monkey.utils.time;
 
 /**
  * An interface that serves the purpose to notify an observer of a timer of when that timer changes.

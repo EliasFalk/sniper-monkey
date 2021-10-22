@@ -1,4 +1,4 @@
-package game.sniper_monkey.model;
+package game.sniper_monkey.utils.time;
 
 import java.util.ArrayList;
 import java.util.List;

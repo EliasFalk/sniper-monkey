@@ -3,7 +3,7 @@ package game.sniper_monkey.view.world_brick;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.world_brick.WorldBrick;
-import game.sniper_monkey.utils.TileReader;
+import game.sniper_monkey.utils.map.TileReader;
 import game.sniper_monkey.utils.view.SpriteUtils;
 import game.sniper_monkey.view.GameObjectView;
 

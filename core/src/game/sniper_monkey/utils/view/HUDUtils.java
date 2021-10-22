@@ -28,10 +28,10 @@ public class HUDUtils {
             return new TextureRegion(idle, 52, 48, 46, 52);
         } else if (fighter == Samurai.class) {
             Texture idle = new Texture("images/samurai/Idle.png");
-            return new TextureRegion(idle, 81, 78, 33, 55);
+            return new TextureRegion(idle, 81, 70, 33, 60);
         } else if (fighter == FantasyWarrior.class) {
             Texture idle = new Texture("images/fantasyWarrior/Idle.png");
-            return new TextureRegion(idle, 78, 72, 33, 55);
+            return new TextureRegion(idle, 78, 64, 33, 58);
         }
         // TODO do for future fighters when they have been implemented.
         else {
