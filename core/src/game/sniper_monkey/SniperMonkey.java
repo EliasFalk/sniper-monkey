@@ -31,7 +31,6 @@ public class SniperMonkey extends ApplicationAdapter {
             return;
         }
         activeController.tick(deltaTime);
-        TimerBank.updateTimers(deltaTime);
     }
 
     //TODO documentation

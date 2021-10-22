@@ -22,6 +22,7 @@ import game.sniper_monkey.model.world.World;
 import game.sniper_monkey.model.world_brick.WorldBrick;
 import game.sniper_monkey.utils.MapReader;
 import game.sniper_monkey.view.GameScreen;
+import game.sniper_monkey.view.characterSelection.CharacterSelectionScreenController;
 import game.sniper_monkey.view.hud.*;
 
 import java.util.Map;
@@ -163,6 +164,7 @@ public class GameController implements FluctuatingAttributeObserver, IController
             public void changed(ChangeEvent event, Actor actor) {
 //                gameScreen.removeHudView(endMenu);
                 // TODO go back to start screen
+                SniperMonkey.activeController = new CharacterSelectionScreenController();
             }
         });
 
