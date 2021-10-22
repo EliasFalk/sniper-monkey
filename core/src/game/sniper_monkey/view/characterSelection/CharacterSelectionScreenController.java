@@ -59,26 +59,14 @@ public class CharacterSelectionScreenController implements IController {
         }
     }
 
-    private Fighter chooseFighterHelper(Class<? extends Fighter> fighter) {
-        if (fighter == EvilWizard.class) {
-            return FighterFactory.createEvilWizard();
-        } else if (fighter == HuntressBow.class) {
-            return FighterFactory.createHuntressBow();
-        } else if (fighter == Samurai.class) {
-            return FighterFactory.createSamurai();
-        } else {
-            throw new IllegalArgumentException("No fighter found with that class");
-        }
-    }
-
     //Could probably refactor the choosePlayer to one method where you send in the fighter that supposed the be set and player1SelectedRectangle index so you can get the fighter.
     //Needs that the drawPlayer method in selectedFighterView is one that takes in parameters instead of many different
     private void choosePlayer1PrimaryFighter() {
         if (player1PrimaryFighter == null) {
-            player1PrimaryFighter = chooseFighterHelper(characterSelectionScreen.fighterList.get(player1SelectedRectangleIndex));
+            player1PrimaryFighter = FighterFactory.getFighter(characterSelectionScreen.fighterList.get(player1SelectedRectangleIndex));
             chosenFighters.put("player1PrimaryFighter", player1PrimaryFighter);
         } else {
-            player1PrimaryFighter = chooseFighterHelper(characterSelectionScreen.fighterList.get(player1SelectedRectangleIndex));
+            player1PrimaryFighter = FighterFactory.getFighter(characterSelectionScreen.fighterList.get(player1SelectedRectangleIndex));
             chosenFighters.replace("player1PrimaryFighter", player1PrimaryFighter);
         }
         characterSelectionScreen.selectedFighterView.drawPlayer1PrimaryFighter(player1PrimaryFighter);
@@ -87,10 +75,10 @@ public class CharacterSelectionScreenController implements IController {
 
     private void choosePlayer1SecondaryFighter() {
         if (player1SecondaryFighter == null) {
-            player1SecondaryFighter = chooseFighterHelper(characterSelectionScreen.fighterList.get(player1SelectedRectangleIndex));
+            player1SecondaryFighter = FighterFactory.getFighter(characterSelectionScreen.fighterList.get(player1SelectedRectangleIndex));
             chosenFighters.put("player1SecondaryFighter", player1SecondaryFighter);
         } else {
-            player1SecondaryFighter = chooseFighterHelper(characterSelectionScreen.fighterList.get(player1SelectedRectangleIndex));
+            player1SecondaryFighter = FighterFactory.getFighter(characterSelectionScreen.fighterList.get(player1SelectedRectangleIndex));
             chosenFighters.replace("player1SecondaryFighter", player1SecondaryFighter);
         }
         characterSelectionScreen.selectedFighterView.drawPlayer1SecondaryFighter(player1SecondaryFighter);
@@ -99,10 +87,10 @@ public class CharacterSelectionScreenController implements IController {
 
     private void choosePlayer2PrimaryFighter() {
         if (player2PrimaryFighter == null) {
-            player2PrimaryFighter = chooseFighterHelper(characterSelectionScreen.fighterList.get(player2SelectedRectangleIndex));
+            player2PrimaryFighter = FighterFactory.getFighter(characterSelectionScreen.fighterList.get(player2SelectedRectangleIndex));
             chosenFighters.put("player2PrimaryFighter", player2PrimaryFighter);
         } else {
-            player2PrimaryFighter = chooseFighterHelper(characterSelectionScreen.fighterList.get(player2SelectedRectangleIndex));
+            player2PrimaryFighter = FighterFactory.getFighter(characterSelectionScreen.fighterList.get(player2SelectedRectangleIndex));
             chosenFighters.replace("player2PrimaryFighter", player2PrimaryFighter);
         }
         characterSelectionScreen.selectedFighterView.drawPlayer2PrimaryFighter(player2PrimaryFighter);
@@ -111,10 +99,10 @@ public class CharacterSelectionScreenController implements IController {
 
     private void choosePlayer2SecondaryFighter() {
         if (player2SecondaryFighter == null) {
-            player2SecondaryFighter = chooseFighterHelper(characterSelectionScreen.fighterList.get(player2SelectedRectangleIndex));
+            player2SecondaryFighter = FighterFactory.getFighter(characterSelectionScreen.fighterList.get(player2SelectedRectangleIndex));
             chosenFighters.put("player2SecondaryFighter", player2SecondaryFighter);
         } else {
-            player2SecondaryFighter = chooseFighterHelper(characterSelectionScreen.fighterList.get(player2SelectedRectangleIndex));
+            player2SecondaryFighter = FighterFactory.getFighter(characterSelectionScreen.fighterList.get(player2SelectedRectangleIndex));
             chosenFighters.replace("player2SecondaryFighter", player2SecondaryFighter);
         }
         characterSelectionScreen.selectedFighterView.drawPlayer2SecondaryFighter(player2SecondaryFighter);
