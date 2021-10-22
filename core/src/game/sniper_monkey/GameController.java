@@ -34,6 +34,9 @@ public class GameController implements FluctuatingAttributeObserver, IController
     private Player player1, player2;
     private OverlayMenu pauseMenu;
     private OverlayMenu endMenu;
+    private OverlayMenu startOverlay;
+    private int startStage = 0;
+    private CallbackTimer startStageTime = new CallbackTimer(1, true, () -> startStage++);
 
     @Override
     public void onValueChange(float min, float max, float health) {
@@ -77,7 +80,7 @@ public class GameController implements FluctuatingAttributeObserver, IController
         gameScreen.addHudView(roundTimerView);
 
         World.getInstance().update(0);
-
+        initStartState();
         currentState = this::startState;
     }
 
@@ -85,13 +88,30 @@ public class GameController implements FluctuatingAttributeObserver, IController
         if (player1.getHealth() > player2.getHealth()) return 1;
         else if (player2.getHealth() > player1.getHealth()) return 2;
         else return 0;
+    }
 
+    private void initStartState() {
+        startOverlay = new OverlayMenu("3");
+        gameScreen.addHudView(startOverlay);
+        startStage = 0;
+        startStageTime.setAutoUpdate(false);
+        startStageTime.start();
     }
 
     private void startState(float deltaTime) {
-        //TODO 3.. 2.. 1.. FIGHT!
-        roundTimer.start();
-        currentState = this::fightingState;
+        startStageTime.update(deltaTime);
+        switch (startStage) {
+            case 0 -> startOverlay.updateTitleText("3");
+            case 1 -> startOverlay.updateTitleText("2");
+            case 2 -> startOverlay.updateTitleText("1");
+            case 3 -> startOverlay.updateTitleText("Fight!");
+            default -> {
+                roundTimer.start();
+                currentState = this::fightingState;
+                gameScreen.removeHudView(startOverlay);
+                startStageTime.stop();
+            }
+        }
     }
 
     private void fightingState(float deltaTime) {
@@ -110,6 +130,7 @@ public class GameController implements FluctuatingAttributeObserver, IController
         //TODO add pause overlay
         roundTimer.stop();
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) { //TODO config for key bind
+            initStartState();
             currentState = this::startState;
             gameScreen.removeHudView(pauseMenu);
         }
@@ -123,14 +144,12 @@ public class GameController implements FluctuatingAttributeObserver, IController
         resumeGame.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                initStartState();
                 gameScreen.removeHudView(pauseMenu);
                 currentState = GameController.this::startState;
             }
         });
-
-        Button ass = new TextButton("Ass", textButtonStyle);
         pauseMenu.addButton(resumeGame);
-        pauseMenu.addButton(ass);
         return pauseMenu;
     }
 
@@ -142,7 +161,7 @@ public class GameController implements FluctuatingAttributeObserver, IController
         goToStart.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                gameScreen.removeHudView(endMenu);
+//                gameScreen.removeHudView(endMenu);
                 // TODO go back to start screen
             }
         });
@@ -153,7 +172,7 @@ public class GameController implements FluctuatingAttributeObserver, IController
 
 
     private void gameOverState(float deltaTime) {
-
+        roundTimer.stop();
     }
 
     private void addEndMenuToScreen() {

@@ -10,6 +10,12 @@ import game.sniper_monkey.utils.view.FontUtils;
 
 /**
  * A view that represents a pressable key on the keyboard.
+ * <p>
+ * Uses TimerObserver.
+ * Uses HUDView.
+ * Uses Placement.
+ * <p>
+ * Used by BottomHUDController.
  *
  * @author Elias Falk
  */
@@ -17,8 +23,6 @@ public class KeyInputView implements TimerObserver, HUDView {
 
     private final float x;
     private final float y;
-    private String key;
-    private String text;
     private final FillableBar fillableBar;
     private final Label keyLabel;
     private final Label sideTextLabel;
@@ -26,11 +30,10 @@ public class KeyInputView implements TimerObserver, HUDView {
     private static final float height = 30f;
     private float sideLabelOffset = 10f;
     private Placement textPlacement;
-    private final float sideTextWidth = 150f;
 
 
     /**
-     * Creates a new key input view with a default color of light gray.
+     * Creates a new key input view with a default color of light green.
      *
      * @param x             The x position of the key input view. 0 is the left most pixel on the screen.
      * @param y             The y position of the key input view. 0 is the bottom pixel of the screen.
@@ -41,8 +44,6 @@ public class KeyInputView implements TimerObserver, HUDView {
     public KeyInputView(float x, float y, String key, String text, Placement textPlacement) {
         this.x = x;
         this.y = y;
-        this.key = key;
-        this.text = text;
         this.textPlacement = textPlacement;
         fillableBar = createFillableBar(x, y);
         keyLabel = createKeyLabel(x, y, key);
@@ -103,7 +104,6 @@ public class KeyInputView implements TimerObserver, HUDView {
      * @param text The new side text.
      */
     public void setText(String text) {
-        this.text = text;
         updateSideLabel(text, textPlacement);
     }
 

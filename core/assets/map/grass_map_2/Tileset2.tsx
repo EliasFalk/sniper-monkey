@@ -27,17 +27,17 @@
  <tile id="26" type="26"/>
  <tile id="27" type="27"/>
  <tile id="28" type="28"/>
- <tile id="29" type="ghost-29"/>
- <tile id="30" type="ghost-30"/>
- <tile id="31" type="ghost-31"/>
+ <tile id="29" type="29"/>
+ <tile id="30" type="30"/>
+ <tile id="31" type="31"/>
  <tile id="32" type="32"/>
  <tile id="33" type="33"/>
  <tile id="34" type="34"/>
  <tile id="35" type="35"/>
  <tile id="36" type="36"/>
- <tile id="37" type="ghost-37"/>
+ <tile id="37" type="37"/>
  <tile id="38" type="ghost-38"/>
- <tile id="39" type="ghost-39"/>
+ <tile id="39" type="39"/>
  <tile id="40" type="40"/>
  <tile id="41" type="41"/>
  <tile id="42" type="42"/>

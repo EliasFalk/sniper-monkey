@@ -11,6 +11,11 @@ import game.sniper_monkey.utils.view.HUDUtils;
 
 /**
  * A view that represents the secondary fighter, including a corresponding image of the idle animation and the fighter's display name.
+ * <p>
+ * Uses HUDView.
+ * Uses HUDUtils.
+ * <p>
+ * Used by BottomHUDController.
  *
  * @author Elias
  */
@@ -100,7 +105,7 @@ public class SecondaryFighterView implements HUDView {
      *
      * @param textureRegion The texture region to be updated with.
      */
-    public void updateImage(TextureRegion textureRegion, float x, float y, boolean flipX) {
+    private void updateImage(TextureRegion textureRegion, float x, float y, boolean flipX) {
         textureRegion.flip(flipX, false);
         TextureRegionDrawable trd = new TextureRegionDrawable(textureRegion);
         float h = textureRegion.getRegionHeight();

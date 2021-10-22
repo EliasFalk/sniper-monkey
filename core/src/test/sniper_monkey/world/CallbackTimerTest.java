@@ -2,6 +2,7 @@ package sniper_monkey.world;
 
 import game.sniper_monkey.model.TimerBank;
 import game.sniper_monkey.model.world.CallbackTimer;
+import game.sniper_monkey.model.world.TimerObserver;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +15,7 @@ public class CallbackTimerTest {
     private CallbackTimer cbTimer;
     private boolean finished;
     private final float timerLength = 1f;
+    private static boolean observerCalled;
 
     @Before
     public void initTimer() {
@@ -105,8 +107,10 @@ public class CallbackTimerTest {
     @Test
     public void testSettingAutoUpdate() {
         cbTimer.setAutoUpdate(true);
+        TimerBank.updateTimers(0);
         Assert.assertTrue(TimerBank.contains(cbTimer));
         cbTimer.setAutoUpdate(false);
+        TimerBank.updateTimers(0);
         Assert.assertFalse(TimerBank.contains(cbTimer));
     }
 
@@ -127,6 +131,28 @@ public class CallbackTimerTest {
         cbTimer.start();
         cbTimer.update(timerLength);
         Assert.assertFalse(cbTimer.isDone());
+    }
+
+    @Test
+    public void testObserver() {
+        observerCalled = false;
+        cbTimer.registerTimerObserver((timerLength, timeLeft) -> observerCalled = true);
+        cbTimer.start();
+        cbTimer.update(timerLength);
+        Assert.assertTrue(observerCalled);
+    }
+
+    @Test
+    public void testUnregisterObserver() {
+        observerCalled = false;
+        TimerObserver observer = (timerLength, timeLeft) -> {
+            observerCalled = true;
+        };
+        cbTimer.registerTimerObserver(observer);
+        cbTimer.unregisterTimerObserver(observer);
+        cbTimer.start();
+        cbTimer.update(timerLength);
+        Assert.assertFalse(observerCalled);
     }
 
 }

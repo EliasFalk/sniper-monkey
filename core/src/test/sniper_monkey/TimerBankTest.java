@@ -21,7 +21,7 @@ public class TimerBankTest {
         CallbackTimer nullTimer = null;
 
         TimerBank.addTimer(timer);
-
+        TimerBank.updateTimers(0);
         assertTrue(TimerBank.contains(timer));
 
         assertFalse(TimerBank.addTimer(timer));

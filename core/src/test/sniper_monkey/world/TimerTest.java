@@ -1,10 +1,12 @@
 package sniper_monkey.world;
-import org.junit.*;
 
 import game.sniper_monkey.model.world.Timer;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
 
+@Deprecated
 public class TimerTest {
     Timer timer = new Timer(2);
 
