@@ -224,7 +224,6 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
 
     // State helper methods
     private void moveLeft() {
-        System.out.println("MOVING LEFT");
         Vector2 newVel = physicsPos.getVelocity().add(new Vector2(-VEL_GAIN, 0));
         if (newVel.x <= -MAX_X_VEL) {
             newVel = new Vector2(-MAX_X_VEL, physicsPos.getVelocity().y);

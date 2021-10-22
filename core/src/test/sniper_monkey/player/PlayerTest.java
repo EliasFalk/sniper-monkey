@@ -14,7 +14,6 @@ import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.player.fighter.FighterFactory;
 import game.sniper_monkey.model.player.fighter.HuntressBow;
 import game.sniper_monkey.model.player.fighter.attack.IAttack;
-import game.sniper_monkey.model.player.fighter.FighterFactory;
 import game.sniper_monkey.model.world.World;
 import game.sniper_monkey.model.world_brick.WorldBrick;
 import org.junit.Assert;
@@ -202,7 +201,6 @@ public class PlayerTest {
     @Test
     public void testActiveFighterChangedAfterSwap() {
         Class<? extends Fighter> beforeSwappedFighterClass = player.getActiveFighterClass();
-        System.out.println(beforeSwappedFighterClass);
         player.setInputAction(PlayerInputAction.SWAP_FIGHTER);
         player.update(deltaTime);
         Class<? extends Fighter> afterSwappedFighterClass = player.getActiveFighterClass();
@@ -402,7 +400,6 @@ public class PlayerTest {
         player.update(0);
         player.takeDamage(baseDmg);
         float dmgTakenBlockingAfterRegen = baseHealth - player.getHealth();
-        System.out.println(dmgTakenBlockingAfterRegen);
         assertTrue(dmgTakenBlockingAfterRegen < dmgTakenBlockingForLongTime);
     }
 

@@ -2,9 +2,7 @@ package game.sniper_monkey;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import game.sniper_monkey.view.characterSelection.CharacterSelectionScreen;
 import game.sniper_monkey.view.characterSelection.CharacterSelectionScreenController;
-import game.sniper_monkey.model.TimerBank;
 
 public class SniperMonkey extends ApplicationAdapter {
     private GameController gameController;
@@ -25,7 +23,6 @@ public class SniperMonkey extends ApplicationAdapter {
     //TODO documentation
     @Override
     public void render() {
-        System.out.println(activeController);
         float deltaTime = Math.min(1 / 10f, Gdx.graphics.getDeltaTime());
         if (Gdx.graphics.getDeltaTime() > 1) {
             return;

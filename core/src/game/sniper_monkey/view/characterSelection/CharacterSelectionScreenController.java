@@ -162,7 +162,6 @@ public class CharacterSelectionScreenController implements IController {
 
     private void notifyObserversOfPlayer1SelectedCharacter() {
         if (chosenFighters.size() == 4) {
-            System.out.println(chosenFighters);
             SniperMonkey.activeController = new GameController(chosenFighters);
         } else {
             for (ICharacterSelectedObserver observer : observers) {
@@ -173,7 +172,6 @@ public class CharacterSelectionScreenController implements IController {
 
     private void notifyObserversOfPlayer2SelectedCharacter() {
         if (chosenFighters.size() == 4) {
-            System.out.println(chosenFighters);
             SniperMonkey.activeController = new GameController(chosenFighters);
         } else {
             for (ICharacterSelectedObserver observer : observers) {
