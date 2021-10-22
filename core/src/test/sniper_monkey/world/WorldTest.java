@@ -6,6 +6,7 @@ import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.Config;
 import game.sniper_monkey.model.player.PlayerFactory;
+import game.sniper_monkey.model.player.fighter.FighterFactory;
 import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.model.world.IWorldObserver;
 import game.sniper_monkey.model.world.World;
@@ -29,7 +30,7 @@ public class WorldTest {
 
     @Test
     public void testAddGameObject() {
-        GameObject obj = PlayerFactory.createPlayer(new Vector2(50, 50));
+        GameObject obj = PlayerFactory.createPlayer(new Vector2(50, 50), FighterFactory.createEvilWizard(), FighterFactory.createHuntressBow(), 0);
         world.queueAddGameObject(obj);
         world.update(1);
         Assert.assertNotEquals(new Vector2(50, 50), obj.getPos());

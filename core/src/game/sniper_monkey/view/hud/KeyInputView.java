@@ -26,7 +26,7 @@ public class KeyInputView implements TimerObserver, HUDView {
     private final FillableBar fillableBar;
     private final Label keyLabel;
     private final Label sideTextLabel;
-    private static final float width = 30f;
+    private static final float width = 80f;
     private static final float height = 30f;
     private float sideLabelOffset = 10f;
     private Placement textPlacement;

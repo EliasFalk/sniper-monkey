@@ -71,6 +71,4 @@ public class BowTripleAttackTest {
         assertTrue(player1baseHealth > player1.getHealth());
     }
 
-
-
 }

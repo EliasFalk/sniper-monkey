@@ -5,7 +5,7 @@ package game.sniper_monkey.model.player;
  * <p>
  * Used by GameController.
  * Used by BarView.
- * (Used by Player to an extent. Player does not observe an attribute but rather gives a method to observe it's flucutating attributes.).
+ * (Used by Player to an extent. Player does not observe an attribute but rather gives a method to observe it's fluctuating attributes.).
  *
  * @author Elias Falk
  * @author Vincent Hellner

@@ -7,13 +7,16 @@ import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.PhysicsPosition;
 import game.sniper_monkey.model.collision.CollisionEngine;
 import game.sniper_monkey.model.collision.Hitbox;
-import game.sniper_monkey.model.world.GameObject;
+import game.sniper_monkey.model.world.World;
 import game.sniper_monkey.model.world_brick.WorldBrick;
-import game.sniper_monkey.utils.collision.CollisionMasks;
 import game.sniper_monkey.utils.collision.CollisionResponse;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class CollisionResponseTest {
 
@@ -26,7 +29,7 @@ public class CollisionResponseTest {
         final HeadlessApplicationConfiguration config = new HeadlessApplicationConfiguration();
         new HeadlessApplication(new ApplicationAdapter() {
         }, config);
-
+        World.getInstance().resetWorld();
         obstacle = new WorldBrick(new Vector2(0, 0), "unspecified");
         //Dynamic for faster cleanup
         CollisionEngine.registerGameObject(obstacle, true);

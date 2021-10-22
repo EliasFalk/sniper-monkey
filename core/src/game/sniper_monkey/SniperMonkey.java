@@ -2,15 +2,22 @@ package game.sniper_monkey;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import game.sniper_monkey.model.TimerBank;
+import game.sniper_monkey.view.characterSelection.CharacterSelectionScreenController;
 
 public class SniperMonkey extends ApplicationAdapter {
     private GameController gameController;
+    public static IController activeController = new IController() {
+        @Override
+        public void tick(float deltaTime) {
 
+        }
+    };
+
+    private CharacterSelectionScreenController characterSelectionScreenController;
     //TODO documentation
     @Override
     public void create() {
-        gameController = new GameController();
+        activeController = new CharacterSelectionScreenController();
     }
 
     //TODO documentation
@@ -20,17 +27,20 @@ public class SniperMonkey extends ApplicationAdapter {
         if (Gdx.graphics.getDeltaTime() > 1) {
             return;
         }
-        gameController.tick(deltaTime);
+        activeController.tick(deltaTime);
     }
 
     //TODO documentation
     @Override
     public void dispose() {
-        gameController.dispose();
+        characterSelectionScreenController.dispose();
+        //gameController.dispose();
     }
 
+    /*
     @Override
     public void resize(int w, int h) {
         gameController.onResize(w, h);
     }
+     */
 }
