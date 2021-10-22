@@ -19,7 +19,7 @@ public class BowTripleAttack implements IAttack {
     private static final float damage = 12.5f;
     private static final float attackLength = 1.5f;
     private static final float attackDelay = 1f;
-    private static final float attackObjectTimeToLive = 3f;
+    private static final float attackObjectTimeToLive = 2.5f;
     private static final float hitStunLength = 1f;
     private static final float stamina = 17.5f;
     private boolean isFinished = true;
