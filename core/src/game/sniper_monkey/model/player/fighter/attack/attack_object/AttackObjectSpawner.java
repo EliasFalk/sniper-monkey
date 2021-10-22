@@ -87,4 +87,18 @@ public class AttackObjectSpawner {
         World.getInstance().queueAddGameObject(samuraiShuriken);
     }
 
+    /**
+     * Creates an attackobject of the Fantasy warrior's Electrical Slash and adds it to the world.
+     *
+     * @param damage        a float 0..n. Is how much damage the AttackObject is going to do.
+     * @param timeToLive    a float 0..n. Determines for how long the object exists for in seconds.
+     * @param spawnPos      a Vector2. A coordinate of the position where the hitbox of the electrical slash is supposed to spawn.
+     * @param collisionMask an int 0..n. A collision mask to prevent the hitbox of the electrical slash from colliding with the attacker.
+     * @param lookingRight  a boolean. Is the direction the player is facing. True if player is facing to the right, false if the player is facing the left.
+     */
+    public static void spawnElectricalSlash(float damage, float timeToLive, Vector2 spawnPos, int collisionMask, boolean lookingRight) {
+        AttackObject electricalSlash = new ElectricalSlash(damage, timeToLive, spawnPos, collisionMask, lookingRight);
+        World.getInstance().queueAddGameObject(electricalSlash);
+    }
+
 }

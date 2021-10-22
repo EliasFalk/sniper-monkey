@@ -29,4 +29,12 @@ public class FighterFactory {
     public static Fighter createSamurai() {
         return new Samurai();
     }
+
+    /**
+     * Creates a Fantasy warrior fighter.
+     * @return a fighter with factors and attacks belonging to the Fantasy warrior.
+     */
+    public static Fighter createFantasyWarrior() {
+        return new FantasyWarrior();
+    }
 }

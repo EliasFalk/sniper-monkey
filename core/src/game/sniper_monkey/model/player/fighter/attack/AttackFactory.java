@@ -58,9 +58,17 @@ public class AttackFactory {
 
     /**
      * Creates an object of the type SamuraiShurikenAttack. Is the second attack for the Samurai.
-     * @return a new SamuraiShurikenObject.
+     * @return a new SamuraiShuriken object.
      */
     public static IAttack createSamuraiShurikenAttack() {
         return new SamuraiShurikenAttack();
+    }
+
+    /**
+     * Creates an object of the type ElectricalSlashAttack. Is the first attack for the Fantasy Warrior.
+     * @return a new FantasyWarrior object.
+     */
+    public static IAttack createElectricalSlashAttack() {
+        return new ElectricalSlashAttack();
     }
 }
