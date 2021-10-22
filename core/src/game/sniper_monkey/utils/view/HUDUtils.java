@@ -2,10 +2,7 @@ package game.sniper_monkey.utils.view;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import game.sniper_monkey.model.player.fighter.EvilWizard;
-import game.sniper_monkey.model.player.fighter.Fighter;
-import game.sniper_monkey.model.player.fighter.HuntressBow;
-import game.sniper_monkey.model.player.fighter.Samurai;
+import game.sniper_monkey.model.player.fighter.*;
 import game.sniper_monkey.model.player.fighter.attack.*;
 
 /**
@@ -31,7 +28,10 @@ public class HUDUtils {
             return new TextureRegion(idle, 52, 48, 46, 52);
         } else if (fighter == Samurai.class) {
             Texture idle = new Texture("images/samurai/Idle.png");
-            return new TextureRegion(idle, 81, 78, 33, 55);
+            return new TextureRegion(idle, 81, 70, 33, 60);
+        } else if (fighter == FantasyWarrior.class) {
+            Texture idle = new Texture("images/fantasyWarrior/Idle.png");
+            return new TextureRegion(idle, 78, 64, 33, 58);
         }
         // TODO do for future fighters when they have been implemented.
         else {
@@ -53,6 +53,8 @@ public class HUDUtils {
             return "Huntress Bow";
         } else if (fighter == Samurai.class) {
             return "Samurai";
+        } else if (fighter == FantasyWarrior.class) {
+            return "Fantasy Warrior";
         }
         // TODO do for future fighters when they have been implemented.
         else {
@@ -80,6 +82,10 @@ public class HUDUtils {
                 return "Samurai Quick Attack";
         } else if (attack == SamuraiShurikenAttack.class) {
             return "Samurai Triple Shuriken";
+        } else if (attack == ElectricalSlashAttack.class) {
+            return "Electrical Slash Attack";
+        } else if (attack == ElectricalSmashAttack.class) {
+            return "Electrical Smash Attack";
         } else {
             return "";
 //            throw new IllegalArgumentException("No display name found for this attack class.");
