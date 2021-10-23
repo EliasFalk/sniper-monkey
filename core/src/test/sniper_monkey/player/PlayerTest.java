@@ -14,13 +14,11 @@ import game.sniper_monkey.model.world.World;
 import game.sniper_monkey.model.world_brick.WorldBrick;
 import game.sniper_monkey.utils.Config;
 import game.sniper_monkey.utils.time.TimerBank;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class PlayerTest {
 
@@ -61,12 +59,12 @@ public class PlayerTest {
     // TODO do movement tests when movement is finalized.
     @Test
     public void testMoveLeftWhileGroundState() {
-        updatePlayer(5);
+        updatePlayerAndTimerBank(5);
         float prevX = player.getPos().x;
-        updatePlayer(1);
+        updatePlayerAndTimerBank(1);
         assertEquals(prevX, player.getPos().x, 0.0);
         player.setInputAction(PlayerInputAction.MOVE_LEFT);
-        updatePlayer(1);
+        updatePlayerAndTimerBank(1);
         assertTrue(prevX > player.getPos().x);
     }
 
@@ -78,23 +76,35 @@ public class PlayerTest {
         return afterPos.sub(prePos).scl(1 / smallDt);
     }
 
+    private void updatePlayerWithAction(float seconds, PlayerInputAction action) {
+        for (int i = 0; i < seconds / deltaTime; i++) {
+            player.setInputAction(action);
+            player.update(deltaTime);
+        }
+    }
+
+    private void updatePlayerAndTimerBank(float seconds) {
+        for (int i = 0; i < seconds / deltaTime; i++) {
+            player.update(deltaTime);
+            TimerBank.updateTimers(deltaTime);
+        }
+    }
+
     @Test
     public void testMoveRightWhileGroundState() {
-        updatePlayer(5);
+        updatePlayerAndTimerBank(5);
         float prevX = player.getPos().x;
-        updatePlayer(1);
+        updatePlayerAndTimerBank(1);
         assertEquals(prevX, player.getPos().x, 0.0);
         player.setInputAction(PlayerInputAction.MOVE_RIGHT);
-        updatePlayer(1);
+        updatePlayerAndTimerBank(1);
         assertTrue(prevX < player.getPos().x);
     }
 
     @Test
     public void testMaxXVelocityLeft() {
-        for (int i = 0; i < 600; i++) {
-            player.update(deltaTime);
-            player.setInputAction(PlayerInputAction.MOVE_LEFT);
-        }
+        assertEquals(0, getVelocity().x, 0);
+        updatePlayerWithAction(5, PlayerInputAction.MOVE_LEFT);
         player.setInputAction(PlayerInputAction.MOVE_LEFT);
         Vector2 playerVel = getVelocity();
         float maxSpeed = Config.getNumber(playerValues, "MAX_X_VEL");
@@ -103,11 +113,8 @@ public class PlayerTest {
 
     @Test
     public void testMaxXVelocityRight() {
-        for (int i = 0; i < 600; i++) {
-            player.update(deltaTime);
-            player.setInputAction(PlayerInputAction.MOVE_RIGHT);
-        }
-        float oldX = player.getPos().x;
+        assertEquals(0, getVelocity().x, 0);
+        updatePlayerWithAction(5, PlayerInputAction.MOVE_RIGHT);
         player.setInputAction(PlayerInputAction.MOVE_RIGHT);
         Vector2 playerVel = getVelocity();
         float maxSpeed = Config.getNumber(playerValues, "MAX_X_VEL");
@@ -116,40 +123,32 @@ public class PlayerTest {
 
     @Test
     public void testJumpWhileGroundedState() {
-        updatePlayer(5);
+        updatePlayerAndTimerBank(5);
         float prevY = player.getPos().y;
+        float prevYVelocity = getVelocity().y;
         player.setInputAction(PlayerInputAction.JUMP);
         player.update(deltaTime);
-        Assert.assertTrue(prevY < player.getPos().y);
+        assertTrue(prevY < player.getPos().y);
+        assertTrue(prevYVelocity < getVelocity().y);
     }
 
     @Test
-    public void testJumpWhileInAirState() { //TODO make this less ugly.
-        updatePlayer(5);
+    public void testJumpWhileInAirState() {
+        updatePlayerAndTimerBank(5);
         player.setInputAction(PlayerInputAction.JUMP);
         player.update(deltaTime);
 
         float jumpGain = Config.getNumber(playerValues, "JUMP_GAIN");
         float gravity = Config.getNumber(physicsValues, "GRAVITY");
         float secondsToZeroYVelocity = jumpGain / Math.abs(gravity);
-        float framesToZeroYVelocity = secondsToZeroYVelocity / deltaTime;
 
-        for (int i = 0; i < framesToZeroYVelocity; i++) {
-            player.update(deltaTime);
-        }
+        updatePlayerAndTimerBank(secondsToZeroYVelocity);
 
         float prevY = player.getPos().y;
         player.setInputAction(PlayerInputAction.JUMP);
 
         player.update(deltaTime);
-        Assert.assertTrue(prevY > player.getPos().y);
-    }
-
-    private void updatePlayer(float seconds) {
-        for (int i = 0; i < seconds / deltaTime; i++) {
-            player.update(deltaTime);
-            TimerBank.updateTimers(deltaTime);
-        }
+        assertTrue(prevY > player.getPos().y);
     }
 
     @Test
@@ -161,7 +160,7 @@ public class PlayerTest {
             player.update(deltaTime);
         }
 
-        Assert.assertEquals(startX, player.getPos().x, 0);
+        assertEquals(startX, player.getPos().x, 0);
 
         startX = player.getPos().x;
         for (int i = 0; i < 60; i++) {
@@ -170,7 +169,7 @@ public class PlayerTest {
             player.update(deltaTime);
         }
 
-        Assert.assertEquals(startX, player.getPos().x, 0);
+        assertEquals(startX, player.getPos().x, 0);
 
         startX = player.getPos().x;
         for (int i = 0; i < 60; i++) {
@@ -179,7 +178,7 @@ public class PlayerTest {
             player.update(deltaTime);
         }
 
-        Assert.assertEquals(startX, player.getPos().x, 0);
+        assertEquals(startX, player.getPos().x, 0);
 
         startX = player.getPos().x;
         for (int i = 0; i < 60; i++) {
@@ -188,7 +187,7 @@ public class PlayerTest {
             player.update(deltaTime);
         }
 
-        Assert.assertEquals(startX, player.getPos().x, 0);
+        assertEquals(startX, player.getPos().x, 0);
     }
 
     @Test
@@ -197,77 +196,69 @@ public class PlayerTest {
         player.setInputAction(PlayerInputAction.SWAP_FIGHTER);
         player.update(deltaTime);
         Class<? extends Fighter> afterSwappedFighterClass = player.getActiveFighterClass();
-        Assert.assertNotEquals(beforeSwappedFighterClass, afterSwappedFighterClass);
+        assertNotEquals(beforeSwappedFighterClass, afterSwappedFighterClass);
     }
 
     @Test
     public void testTeleportToSpawnAfterSwap() {
-        updatePlayer(5);
+        updatePlayerAndTimerBank(5);
         Vector2 groundPos = player.getPos();
 
         player.setInputAction(PlayerInputAction.SWAP_FIGHTER);
         player.update(deltaTime);
         Vector2 respawnPos = player.getPos();
 
-        Vector2 originalSpawnPos = new Vector2(spawnX, spawnY);
-
-        Assert.assertEquals(spawnX, respawnPos.x, 1f);
-        Assert.assertEquals(spawnY, respawnPos.y, 1f);
-        Assert.assertNotEquals(groundPos, respawnPos);
+        assertEquals(spawnX, respawnPos.x, 1f);
+        assertEquals(spawnY, respawnPos.y, 1f);
+        assertNotEquals(groundPos, respawnPos);
     }
 
     @Test
     public void testResetVelocityAfterSwap() {
-        for (int i = 0; i < 200; i++) {
-            player.setInputAction(PlayerInputAction.MOVE_RIGHT);
-            player.update(deltaTime);
-        }
+        updatePlayerWithAction(2, PlayerInputAction.MOVE_RIGHT);
 
-        float verySmallDeltaTime = 1 / 10000f;
-
-        Vector2 pos1 = player.getPos();
-        player.setInputAction(PlayerInputAction.MOVE_RIGHT);
-        player.update(verySmallDeltaTime);
-        Vector2 pos2 = player.getPos();
-        Vector2 velocityBeforeSwap = pos2.cpy().sub(pos1).cpy().scl(1 / verySmallDeltaTime);
+        Vector2 velocityBeforeSwap = getVelocity();
 
         player.setInputAction(PlayerInputAction.SWAP_FIGHTER);
-        player.update(verySmallDeltaTime);
-        Vector2 pos3 = player.getPos();
-        player.update(verySmallDeltaTime);
-        Vector2 pos4 = player.getPos();
-        Vector2 velocityAfterSwap = pos4.cpy().sub(pos3).cpy().scl(1 / verySmallDeltaTime);
-        Assert.assertNotEquals(velocityBeforeSwap, velocityAfterSwap);
-        Assert.assertEquals(0, velocityAfterSwap.x, 0);
-        Assert.assertEquals(0, velocityAfterSwap.y, 0.5f);
+        player.update(0);
+        Vector2 velocityAfterSwap = getVelocity();
+        assertNotEquals(velocityBeforeSwap, velocityAfterSwap);
+        assertEquals(0, velocityAfterSwap.x, 0);
+        assertEquals(0, velocityAfterSwap.y, 1f);
     }
 
     @Test
     public void testCannotSwapUntilSwapTimerOver() {
-        player.setInputAction(PlayerInputAction.SWAP_FIGHTER);
-        player.update(deltaTime);
         float swapCooldown = Config.getNumber(playerValues, "SWAP_COOLDOWN");
-        Class<? extends Fighter> secondaryFighter = player.getActiveFighterClass();
+
         player.setInputAction(PlayerInputAction.SWAP_FIGHTER);
+        updatePlayerAndTimerBank(deltaTime);
+        Class<? extends Fighter> secondaryFighter = player.getActiveFighterClass();
+
         assertTrue(deltaTime < swapCooldown);
-        updatePlayer(deltaTime);
+        player.setInputAction(PlayerInputAction.SWAP_FIGHTER);
+        updatePlayerAndTimerBank(deltaTime);
+
         Class<? extends Fighter> fighterAfterIllegalSwap = player.getActiveFighterClass();
-        Assert.assertEquals(secondaryFighter, fighterAfterIllegalSwap);
+        assertEquals(secondaryFighter, fighterAfterIllegalSwap);
     }
 
     @Test
     public void testSwapAgainAfterSwapCooldown() {
+        float swapCooldown = Config.getNumber(playerValues, "SWAP_COOLDOWN");
+
         Class<? extends Fighter> primaryFighter = player.getActiveFighterClass();
         player.setInputAction(PlayerInputAction.SWAP_FIGHTER);
-        player.update(deltaTime);
-        float swapCooldown = Config.getNumber(playerValues, "SWAP_COOLDOWN");
+        player.update(0);
+
         Class<? extends Fighter> secondaryFighter = player.getActiveFighterClass();
-        TimerBank.updateTimers(swapCooldown);
-        player.update(deltaTime);
+        updatePlayerAndTimerBank(swapCooldown + deltaTime);
         player.setInputAction(PlayerInputAction.SWAP_FIGHTER);
-        player.update(deltaTime);
+        player.update(0);
+
         Class<? extends Fighter> fighterAfterLegalSwap = player.getActiveFighterClass();
-        Assert.assertEquals(primaryFighter, fighterAfterLegalSwap);
+        assertEquals(primaryFighter, fighterAfterLegalSwap);
+        assertEquals(secondaryFighterClass, secondaryFighter);
     }
 
 
@@ -307,8 +298,8 @@ public class PlayerTest {
         player.takeDamage(baseDmg);
         Fighter fighter = FighterFactory.getFighter(player.getActiveFighterClass());
         float defenseFactor = fighter.DEFENSE_FACTOR;
-        float dmgTakenWithoutBlocking = baseHealth - baseDmg * (1 - defenseFactor);
-        assertEquals(dmgTakenWithoutBlocking, player.getHealth(), 0);
+        float HealthAfterTakenDmgNoBlocking = baseHealth - baseDmg * (1 - defenseFactor);
+        assertEquals(HealthAfterTakenDmgNoBlocking, player.getHealth(), 0);
     }
 
     @Test
@@ -355,14 +346,14 @@ public class PlayerTest {
 
         for (int i = 0; i < 600; i++) {
             player.setInputAction(PlayerInputAction.BLOCK);
-            updatePlayer(deltaTime);
+            updatePlayerAndTimerBank(deltaTime);
         }
 
         baseHealth = player.getHealth();
         player.setInputAction(PlayerInputAction.BLOCK);
-        updatePlayer(0);
+        updatePlayerAndTimerBank(0);
         player.setInputAction(PlayerInputAction.BLOCK);
-        updatePlayer(0);
+        updatePlayerAndTimerBank(0);
         player.takeDamage(baseDmg);
         float dmgTakenBlockingForLongTime = baseHealth - player.getHealth();
         assertTrue(dmgTakenBlockingForLongTime > dmgTakenBlockingForShortTime);
@@ -374,7 +365,7 @@ public class PlayerTest {
         float baseHealth = player.getHealth();
         for (int i = 0; i < 600; i++) {
             player.setInputAction(PlayerInputAction.BLOCK);
-            updatePlayer(deltaTime);
+            updatePlayerAndTimerBank(deltaTime);
         }
         player.setInputAction(PlayerInputAction.BLOCK);
         player.update(0);
@@ -382,10 +373,10 @@ public class PlayerTest {
         float dmgTakenBlockingForLongTime = baseHealth - player.getHealth();
 
         float blockCooldown = Config.getNumber(playerValues, "BLOCK_COOLDOWN");
-        updatePlayer(blockCooldown);
+        updatePlayerAndTimerBank(blockCooldown);
 
         // regen blockfactor
-        updatePlayer(5);
+        updatePlayerAndTimerBank(5);
 
         baseHealth = player.getHealth();
         player.setInputAction(PlayerInputAction.BLOCK);
@@ -400,7 +391,7 @@ public class PlayerTest {
     @Test
     public void testInputsWhileAttacking() {
         player.setInputAction(PlayerInputAction.ATTACK1);
-        updatePlayer(deltaTime);
+        updatePlayerAndTimerBank(deltaTime);
         for (int i = 0; i < 10; i++) {
             player.setInputAction(PlayerInputAction.MOVE_LEFT);
             player.update(deltaTime);
@@ -465,32 +456,21 @@ public class PlayerTest {
         player.update(0);
         float initialBlockFactor = currentBlockFactor[0];
         float blockCooldown = Config.getNumber(playerValues, "BLOCK_COOLDOWN");
-        updatePlayer(blockCooldown + 1);
-        for (int i = 0; i < 60; i++) {
-            player.setInputAction(PlayerInputAction.BLOCK);
-            player.update(deltaTime);
-        }
+        updatePlayerAndTimerBank(blockCooldown + 1);
+        updatePlayerWithAction(1, PlayerInputAction.BLOCK);
         float afterBlockingBlockFactor = currentBlockFactor[0];
         assertTrue(initialBlockFactor > afterBlockingBlockFactor);
 
         // somewhat reset the state of the player
-        updatePlayer(100);
+        updatePlayerAndTimerBank(100);
 
         player.unregisterBlockObserver(observer);
         player.setInputAction(PlayerInputAction.BLOCK);
         player.update(0);
         initialBlockFactor = currentBlockFactor[0];
-        updatePlayer(blockCooldown + 1);
-        for (int i = 0; i < 60; i++) {
-            player.setInputAction(PlayerInputAction.BLOCK);
-            player.update(deltaTime);
-        }
+        updatePlayerAndTimerBank(blockCooldown + 1);
+        updatePlayerWithAction(1, PlayerInputAction.BLOCK);
         afterBlockingBlockFactor = currentBlockFactor[0];
         assertEquals(initialBlockFactor, afterBlockingBlockFactor, 0);
     }
-
-
-    // States
-    // block - can't test until attacks have been implemented
-    // attack - can't test until attacks have been implemented
 }
