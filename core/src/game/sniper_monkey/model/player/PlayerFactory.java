@@ -16,7 +16,7 @@ import game.sniper_monkey.utils.collision.CollisionMasks;
  *
  * @author Elias Falk
  */
-public class PlayerFactory {
+public final class PlayerFactory {
     private PlayerFactory() {
     }
 

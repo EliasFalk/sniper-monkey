@@ -14,9 +14,10 @@ import java.util.Map;
  *
  * @author Elias Falk
  */
-public class FighterFactory {
+public final class FighterFactory {
 
-    private FighterFactory() {}
+    private FighterFactory() {
+    }
 
     private static final Map<Class<? extends Fighter>, FighterCreator> correspondingFighters = new HashMap<>();
 
