@@ -50,6 +50,7 @@ public abstract class AttackObject extends GameObject {
         timeToLiveTimer.reset();
         timeToLiveTimer.start();
         setHitboxMask(collisionMask);
+        setGhost(true);
 
         this.damage = damage;
         this.timeToLive = timeToLive;
