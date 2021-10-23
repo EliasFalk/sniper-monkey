@@ -10,12 +10,15 @@ import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * A utility class to read xml documents.
+ * <p>
+ * Used by MapReader.
+ * Used by TileReader.
  *
  * @author Vincent Hellner
  * @author Elias Falk
  */
-public class XMLUtils {
-    private static final DocumentBuilder db = XMLUtils.createDocumentBuilder();
+public final class XMLUtils {
+    private static final DocumentBuilder db = createDocumentBuilder();
 
     private XMLUtils() {
     }

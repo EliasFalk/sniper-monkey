@@ -7,10 +7,19 @@ import game.sniper_monkey.model.player.fighter.attack.*;
 
 /**
  * A utility class that returns the corresponding display name, image or similar given a class.
+ * <p>
+ * Used by BottomHUDController.
+ * Used by SelectViewRectangle.
+ * Used by SecondaryFighterView.
+ * <p>
+ * (Uses Fighter.)
+ * (Uses IAttack.)
  *
  * @author Elias Falk
  */
-public class HUDUtils {
+public final class HUDUtils {
+    private HUDUtils() {
+    }
 
     /**
      * Returns a cutout region of the first image of the idle sprite sheet representing the fighter.
@@ -23,7 +32,7 @@ public class HUDUtils {
         if (fighter == EvilWizard.class) {
             Texture idle = new Texture("images/evil_wizard_2/Idle.png");
             return new TextureRegion(idle, 104, 69, 64, 100);
-        } else if(fighter == HuntressBow.class) {
+        } else if (fighter == HuntressBow.class) {
             Texture idle = new Texture("images/huntress_2/idle.png");
             return new TextureRegion(idle, 52, 48, 46, 52);
         } else if (fighter == Samurai.class) {
@@ -49,7 +58,7 @@ public class HUDUtils {
     public static String getFighterDisplayName(Class<? extends Fighter> fighter) {
         if (fighter == EvilWizard.class) {
             return "Evil Wizard";
-        } else if(fighter == HuntressBow.class) {
+        } else if (fighter == HuntressBow.class) {
             return "Huntress Bow";
         } else if (fighter == Samurai.class) {
             return "Samurai";
@@ -79,7 +88,7 @@ public class HUDUtils {
         } else if (attack == BowTripleAttack.class) {
             return "Bow Triple Attack";
         } else if (attack == SamuraiQuickAttack.class) {
-                return "Samurai Quick Attack";
+            return "Samurai Quick Attack";
         } else if (attack == SamuraiShurikenAttack.class) {
             return "Samurai Triple Shuriken";
         } else if (attack == ElectricalSlashAttack.class) {
@@ -87,8 +96,7 @@ public class HUDUtils {
         } else if (attack == ElectricalSmashAttack.class) {
             return "Electrical Smash Attack";
         } else {
-            return "";
-//            throw new IllegalArgumentException("No display name found for this attack class.");
+            throw new IllegalArgumentException("No display name found for this attack class.");
         }
     }
 }

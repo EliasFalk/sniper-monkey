@@ -15,14 +15,17 @@ import java.util.Map;
 
 /**
  * A utility class to read tile sets.
+ * <p>
+ * Used by WorldBrickView.
  *
  * @author Elias Falk
  * @author Vincent Hellner
  */
-public class TileReader {
+public final class TileReader {
     private static final String MAPS_DIR = "core/assets/map/";
 
-    private TileReader() {}
+    private TileReader() {
+    }
 
     /**
      * Reads a tileset from the program Tiled (.tsx extension) and returns a map containing the type for each tile together with the correct sprite.
@@ -45,10 +48,10 @@ public class TileReader {
 
         NodeList tiles = tileSet.getElementsByTagName("tile");
 
-        for(Node tile : NodeListUtil.asList(tiles)) {
+        for (Node tile : NodeListUtil.asList(tiles)) {
             int id = Integer.parseInt(tile.getAttributes().getNamedItem("id").getTextContent());
             String type = tile.getAttributes().getNamedItem("type").getTextContent();
-            if(type.startsWith("ghost-")) {
+            if (type.startsWith("ghost-")) {
                 type = type.split("-")[1];
             }
             tileMap.put(type, SpriteUtils.getTile(new Texture(imagePath), tileHeight, id % columns, id / columns));

@@ -11,10 +11,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
 /**
  * A utility class which returns different label styles with different parameters.
+ * <p>
+ * Used by BarView.
+ * Used by KeyInputView.
+ * Used by OverLayMenu.
+ * Used by RoundTimerView.
+ * Used by SecondaryFighterView.
  *
  * @author Elias Falk
  */
-public class FontUtils {
+public final class FontUtils {
     private static final FileHandle roboto = Gdx.files.internal("fonts/Roboto/Roboto-Regular.ttf");
 
     private FontUtils() {
