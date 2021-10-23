@@ -32,16 +32,47 @@ import java.util.Map;
  * @author Elias Falk
  */
 public class GameController implements FluctuatingAttributeObserver, IScreenController {
+    private final CallbackTimer roundTimer;
+    private final Map<String, Fighter> chosenFighters;
     private GameScreen gameScreen;
     private PlayerController player1Controller, player2Controller;
-    private final CallbackTimer roundTimer;
     private GameState currentState;
     private Player player1, player2;
-    private OverlayMenu pauseMenu;
-    private OverlayMenu endMenu;
-    private OverlayMenu startOverlay;
+    private final OverlayMenu pauseMenu;
+    private final OverlayMenu endMenu;
+    private final OverlayMenu startOverlay;
     private int startStage = 0;
     private final CallbackTimer startStageTime = new CallbackTimer(1, true, () -> startStage++);
+
+    /**
+     * Create a GameController
+     *
+     * @param chosenFighters The fighters for the players to use
+     */
+    public GameController(Map<String, Fighter> chosenFighters) {
+        this.chosenFighters = chosenFighters;
+        Config.readConfigFile("cfg/game.cfg");
+        roundTimer = createRoundTimer();
+        pauseMenu = createPauseMenu();
+        startOverlay = createStartOverlay();
+        endMenu = createEndMenu();
+        World.getInstance().resetWorld();
+        TimerBank.clear();
+        create();
+    }
+
+    private OverlayMenu createStartOverlay() {
+        return new OverlayMenu("3");
+    }
+
+    private CallbackTimer createRoundTimer() {
+        final CallbackTimer roundTimer;
+        roundTimer = new CallbackTimer(Config.getNumber("cfg/game.cfg", "ROUND_TIME"), () -> {
+            currentState = this::gameOverState;
+            addEndMenuToScreen();
+        });
+        return roundTimer;
+    }
 
     @Override
     public void onValueChange(float min, float max, float health) {
@@ -49,34 +80,6 @@ public class GameController implements FluctuatingAttributeObserver, IScreenCont
             currentState = this::gameOverState;
             addEndMenuToScreen();
         }
-    }
-
-    @FunctionalInterface
-    private interface GameState {
-        /**
-         * Perform the state
-         * @param deltaTime The time since last update
-         */
-        void perform(float deltaTime);
-    }
-
-    private final Map<String, Fighter> chosenFighters;
-
-    /**
-     * Create a GameController
-     * @param chosenFighters The fighters for the players to use
-     */
-    public GameController(Map<String, Fighter> chosenFighters) {
-        this.chosenFighters = chosenFighters;
-        Config.readConfigFile("cfg/game.cfg");
-        roundTimer = new CallbackTimer(Config.getNumber("cfg/game.cfg", "ROUND_TIME"), () -> {
-            currentState = this::gameOverState;
-            addEndMenuToScreen();
-        });
-        pauseMenu = createPauseMenu();
-        startOverlay = new OverlayMenu("3");
-        World.getInstance().resetWorld();
-        create();
     }
 
     private void create() {
@@ -90,13 +93,17 @@ public class GameController implements FluctuatingAttributeObserver, IScreenCont
         initPlayer(1, spawnPoints.get("player_1").cpy().add(mapOffset));
         initPlayer(2, spawnPoints.get("player_2").cpy().add(mapOffset));
 
-        RoundTimerView roundTimerView = new RoundTimerView();
-        roundTimer.registerTimerObserver(roundTimerView);
-        gameScreen.addHudView(roundTimerView);
+        createRoundTimerView();
 
         World.getInstance().update(0);
         initStartState();
         currentState = this::startState;
+    }
+
+    private void createRoundTimerView() {
+        RoundTimerView roundTimerView = new RoundTimerView();
+        roundTimer.registerTimerObserver(roundTimerView);
+        gameScreen.addHudView(roundTimerView);
     }
 
     private int determineWinner() {
@@ -168,15 +175,15 @@ public class GameController implements FluctuatingAttributeObserver, IScreenCont
     }
 
     private OverlayMenu createEndMenu() {
-        OverlayMenu endMenu = new OverlayMenu("Player " + determineWinner() + " Wins!");
+        final OverlayMenu endMenu;
+        endMenu = new OverlayMenu("");
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.font = new BitmapFont();
-        Button goToStart = new TextButton("Return to main menu", textButtonStyle);
+        Button goToStart = new TextButton("Return to character selection", textButtonStyle);
         goToStart.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-//                gameScreen.removeHudView(endMenu);
-                // TODO go back to start screen
+                gameScreen.removeHudView(endMenu);
                 SniperMonkey.activeController = new CharacterSelectionScreenController();
             }
         });
@@ -185,13 +192,12 @@ public class GameController implements FluctuatingAttributeObserver, IScreenCont
         return endMenu;
     }
 
-
     private void gameOverState(float deltaTime) {
         roundTimer.stop();
     }
 
     private void addEndMenuToScreen() {
-        endMenu = createEndMenu();
+        endMenu.updateTitleText("Player " + determineWinner() + " Wins!");
         gameScreen.addHudView(endMenu);
     }
 
@@ -214,20 +220,19 @@ public class GameController implements FluctuatingAttributeObserver, IScreenCont
         if (playerNum == 1) {
             player = PlayerFactory.createPlayer1(spawnPoint, chosenFighters.get("player1PrimaryFighter"), chosenFighters.get("player1SecondaryFighter"));
             player1 = player;
-            World.getInstance().queueAddGameObject(player);
             player1Controller = new PlayerController(player, "cfg/player1_keybinds.cfg");
             createBars(player, Placement.LEFT);
             bottomHUD = new BottomHUDController(gameScreen, player, "cfg/player1_keybinds.cfg", Placement.LEFT);
         } else if (playerNum == 2) {
             player = PlayerFactory.createPlayer2(spawnPoint, chosenFighters.get("player2PrimaryFighter"), chosenFighters.get("player2SecondaryFighter"));
             player2 = player;
-            World.getInstance().queueAddGameObject(player);
             player2Controller = new PlayerController(player, "cfg/player2_keybinds.cfg");
             createBars(player, Placement.RIGHT);
             bottomHUD = new BottomHUDController(gameScreen, player, "cfg/player2_keybinds.cfg", Placement.RIGHT);
         } else {
             throw new IllegalArgumentException("THERE CAN ONLY BE 2 PLAYERS..."); // TODO
         }
+        World.getInstance().queueAddGameObject(player);
         player.registerSwappedFighterObserver(bottomHUD);
         player.registerSwappedFighterObserver(gameScreen);
         player.registerHealthObserver(this);
@@ -265,5 +270,15 @@ public class GameController implements FluctuatingAttributeObserver, IScreenCont
     @Override
     public void onResize(int w, int h) {
         gameScreen.resize(w, h);
+    }
+
+    @FunctionalInterface
+    private interface GameState {
+        /**
+         * Perform the state
+         *
+         * @param deltaTime The time since last update
+         */
+        void perform(float deltaTime);
     }
 }
