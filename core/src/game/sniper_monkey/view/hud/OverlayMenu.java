@@ -24,11 +24,11 @@ import java.util.List;
  * @author Vincent Hellner
  */
 public class OverlayMenu implements HUDView {
-    private final float yStart = Gdx.graphics.getHeight() - 200f;
-    private final float yButtonStart = yStart - 100f;
-    private final float buttonHeight = 40f;
-    private final float buttonWidth = 300f;
-    private final float buttonMargin = 5f;
+    private static final float yStart = Gdx.graphics.getHeight() - 200f;
+    private static final float yButtonStart = yStart - 100f;
+    private static final float buttonHeight = 40f;
+    private static final float buttonWidth = 300f;
+    private static final float buttonMargin = 5f;
     private final List<Button> buttons;
     private Label title;
     private final Image lightBox;
@@ -52,7 +52,7 @@ public class OverlayMenu implements HUDView {
     }
 
     private void transformButtons() {
-        float buttonMargin = this.buttonMargin;
+        float buttonMargin = OverlayMenu.buttonMargin;
         for (Button button : buttons) {
             Skin skin = new Skin();
             TextureAtlas buttonAtlas = new TextureAtlas(Gdx.files.local("skins/expee/expee-ui.atlas"));
@@ -66,7 +66,7 @@ public class OverlayMenu implements HUDView {
             button.setWidth(buttonWidth);
             button.setHeight(buttonHeight);
             button.setPosition(Gdx.graphics.getWidth() / 2f - button.getWidth() / 2f, yButtonStart - buttonHeight - buttonMargin);
-            buttonMargin += this.buttonMargin + buttonHeight;
+            buttonMargin += OverlayMenu.buttonMargin + buttonHeight;
         }
     }
 

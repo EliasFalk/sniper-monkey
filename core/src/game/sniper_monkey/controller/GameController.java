@@ -49,6 +49,8 @@ import java.util.Map;
  * </p>
  *
  * @author Elias Falk
+ * @author Vincent Hellner
+ * @author Kevin Jeryd
  */
 public class GameController implements FluctuatingAttributeObserver, IScreenController {
     private final CallbackTimer roundTimer;
@@ -64,9 +66,10 @@ public class GameController implements FluctuatingAttributeObserver, IScreenCont
     private final CallbackTimer startStageTime = new CallbackTimer(1, true, () -> startStage++);
 
     /**
-     * Create a GameController
+     * Create a GameController that controls the game screen.
      *
-     * @param chosenFighters The fighters for the players to use
+     * @param chosenFighters The fighters that the players that the controller creates will use.
+     * @see CharacterSelectionScreenController
      */
     public GameController(Map<String, Fighter> chosenFighters) {
         this.chosenFighters = chosenFighters;

@@ -21,6 +21,15 @@ import java.util.List;
 /**
  * A class storing view data (all HUDViews and GameObjectViews) as well as renders these using
  * a projection matrix. It also provides visual debug functionality.
+ * <p>
+ * Uses IWorldObserver.
+ * Uses SwappedFighterObserver.
+ * Uses GameObjectView.
+ * Uses Player.
+ * Uses GameObjectViewFactory.
+ * <p>
+ * Used by GameController.
+ * Used by BottomHUDController.
  *
  * @author Vincent Hellner
  * @author Elias Falk
@@ -122,14 +131,12 @@ public class GameScreen extends ScreenAdapter implements IWorldObserver, Swapped
         PartitionDebugRenderer.dispose();
     }
 
-    //TODO documentation
     @Override
     public void onObjectAddedToWorld(GameObject obj) {
         GameObjectView view = GameObjectViewFactory.viewFromGameObject(obj);
         if (view != null) gameObjectViews.add(view);
     }
 
-    //TODO documentation
     @Override
     public void onObjectRemovedFromWorld(GameObject obj) {
         for (int i = 0; i < gameObjectViews.size(); i++) {
@@ -142,6 +149,7 @@ public class GameScreen extends ScreenAdapter implements IWorldObserver, Swapped
 
     /**
      * Add a HUDView for the screen to draw
+     *
      * @param hudView The HUDView to add.
      */
     public void addHudView(HUDView hudView) {
@@ -150,6 +158,7 @@ public class GameScreen extends ScreenAdapter implements IWorldObserver, Swapped
 
     /**
      * Remove a HUDView for the screen to draw
+     *
      * @param hudView The HUDView to add.
      */
     public void removeHudView(HUDView hudView) {

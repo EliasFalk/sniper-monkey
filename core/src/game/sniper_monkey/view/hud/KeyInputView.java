@@ -20,17 +20,15 @@ import game.sniper_monkey.utils.view.FontUtils;
  * @author Elias Falk
  */
 public class KeyInputView implements TimerObserver, HUDView {
-
+    private static final float width = 80f;
+    private static final float height = 30f;
+    private static final float sideLabelOffset = 10f;
     private final float x;
     private final float y;
     private final FillableBar fillableBar;
     private final Label keyLabel;
     private final Label sideTextLabel;
-    private static final float width = 80f;
-    private static final float height = 30f;
-    private final float sideLabelOffset = 10f;
     private final Placement textPlacement;
-
 
     /**
      * Creates a new key input view with a default color of light green.
@@ -49,6 +47,24 @@ public class KeyInputView implements TimerObserver, HUDView {
         keyLabel = createKeyLabel(x, y, key);
         sideTextLabel = createSideTextLabel(text);
         positionSideTextLabel(textPlacement);
+    }
+
+    /**
+     * Returns the width of the part of the key input view that represents the key cap.
+     *
+     * @return The width of the part of the key input view that represents the key cap.
+     */
+    public static float getWidth() {
+        return width;
+    }
+
+    /**
+     * Returns the height of the part of the key input view that represents the key cap.
+     *
+     * @return The height of the part of the key input view that represents the key cap.
+     */
+    public static float getHeight() {
+        return height;
     }
 
     private Label createSideTextLabel(String text) {
@@ -78,24 +94,6 @@ public class KeyInputView implements TimerObserver, HUDView {
         keyLabel = new Label(key, new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         keyLabel.setPosition(x + width / 2, y + height / 2, Align.center);
         return keyLabel;
-    }
-
-    /**
-     * Returns the width of the part of the key input view that represents the key cap.
-     *
-     * @return The width of the part of the key input view that represents the key cap.
-     */
-    public static float getWidth() {
-        return width;
-    }
-
-    /**
-     * Returns the height of the part of the key input view that represents the key cap.
-     *
-     * @return The height of the part of the key input view that represents the key cap.
-     */
-    public static float getHeight() {
-        return height;
     }
 
     /**

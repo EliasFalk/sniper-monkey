@@ -23,10 +23,10 @@ import java.text.DecimalFormat;
  * @author Vincent Hellner
  */
 public class BarView implements FluctuatingAttributeObserver, HUDView {
-    private Label barLabel;
+    private static final float sideTextMargin = 10f;
     private final FillableBar fillableBar;
+    private Label barLabel;
     private float currentValue = 0;
-    private final float sideTextMargin = 10f;
 
     /**
      * Creates a new bar view with a fillable bar and a side text representing the percentage filled.
@@ -44,23 +44,6 @@ public class BarView implements FluctuatingAttributeObserver, HUDView {
     public BarView(float x, float y, float width, float height, Color color, FillDirection fillDir, int textAlignment) {
         createBarLabel(x, y, width, height, textAlignment);
         fillableBar = new FillableBar(x, y, width, height, color, fillDir);
-    }
-
-    private void createBarLabel(float x, float y, float barWidth, float barHeight, int textAlignment) {
-        barLabel = new Label(String.format(new DecimalFormat("#.##").format(100), 0f), FontUtils.robotoWhite(14, 2));
-        barLabel.setFontScale(1, 1);
-        float yLabelPos = y + barHeight / 2 - barLabel.getHeight() / 2;
-        float xLabelPos = x;
-        if (textAlignment == Align.left) {
-            xLabelPos = x - sideTextMargin - barLabel.getWidth();
-        } else if (textAlignment == Align.center) {
-            xLabelPos = x + barWidth / 2 - barLabel.getWidth() / 2;
-        } else if (textAlignment == Align.right) {
-            xLabelPos = x + sideTextMargin + barWidth;
-        }
-
-        barLabel.setPosition(xLabelPos, yLabelPos);
-        barLabel.setAlignment(Align.center);
     }
 
     /**
@@ -85,6 +68,23 @@ public class BarView implements FluctuatingAttributeObserver, HUDView {
      */
     public BarView(float x, float y, Color color) {
         this(x, y, color, FillDirection.RIGHT);
+    }
+
+    private void createBarLabel(float x, float y, float barWidth, float barHeight, int textAlignment) {
+        barLabel = new Label(String.format(new DecimalFormat("#.##").format(100), 0f), FontUtils.robotoWhite(14, 2));
+        barLabel.setFontScale(1, 1);
+        float yLabelPos = y + barHeight / 2 - barLabel.getHeight() / 2;
+        float xLabelPos = x;
+        if (textAlignment == Align.left) {
+            xLabelPos = x - sideTextMargin - barLabel.getWidth();
+        } else if (textAlignment == Align.center) {
+            xLabelPos = x + barWidth / 2 - barLabel.getWidth() / 2;
+        } else if (textAlignment == Align.right) {
+            xLabelPos = x + sideTextMargin + barWidth;
+        }
+
+        barLabel.setPosition(xLabelPos, yLabelPos);
+        barLabel.setAlignment(Align.center);
     }
 
     @Override
