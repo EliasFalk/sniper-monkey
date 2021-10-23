@@ -6,6 +6,11 @@ package game.sniper_monkey.model.player.fighter.attack;
  * @author Dadi Andrason
  * @author Kevin Jeryd
  *
+ * Used by EvilWizard
+ * Used by FantasyWarrior
+ * Used by HuntressBow
+ * Used by Samurai
+ *
  * Uses IAttack
  * Uses EvilMagicSwingAttack
  * Uses EvilMagicHammerAttack

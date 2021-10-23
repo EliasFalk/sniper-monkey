@@ -9,9 +9,23 @@ import game.sniper_monkey.model.world.World;
  * @author Dadi Andrason
  * @author Kevin Jeryd
  *
- * Used by SwordAttack
+ * Used by BowAttack
+ * Used by BowTripleAttack
+ * Used by ElectricalSlashAttack
+ * Used by ElectricalSmashAttack
+ * Used by EvilMagicHammerAttack
+ * Used by EvilMagicSwingAttack
+ * Used by SamuraiQuickAttack
+ * Used by SamuraiShurikenAttack
  *
  * Uses World
+ * Uses Arrow
+ * Uses ElectricalSlash
+ * Uses ElectricalSmash
+ * Uses EvilMagicHammer
+ * Uses EvilMagicSwing
+ * Uses SamuraiQuickSwing
+ * Uses Shuriken
  */
 public class AttackObjectSpawner {
 

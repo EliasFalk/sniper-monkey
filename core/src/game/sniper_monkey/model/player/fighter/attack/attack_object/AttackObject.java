@@ -17,6 +17,11 @@ import java.util.function.Consumer;
  * @author Dadi Andrason
  * @author Kevin Jeryd
  *
+ * Used by AttackObjectSpawner
+ *
+ * Uses CollisionEngine
+ * Uses CallbackTimer
+ * Uses GameObject
  */
 public abstract class AttackObject extends GameObject {
 

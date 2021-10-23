@@ -13,6 +13,8 @@ import game.sniper_monkey.model.world_brick.WorldBrick;
  * Uses DamagablePlayer
  *
  * Used by AttackObjectSpawner
+ * Used by ArrowView
+ * Used by GameObjectViewFactory
  */
 public class Arrow extends AttackObject {
 

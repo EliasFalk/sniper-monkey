@@ -11,6 +11,8 @@ import game.sniper_monkey.model.world_brick.WorldBrick;
  * @author Dadi Andrason
  *
  * Used by AttackObjectSpawner
+ * Used by ShurikenView
+ * Used by GameObjectViewFactory
  *
  * Uses DamageablePlayer
  */

@@ -11,6 +11,7 @@ import game.sniper_monkey.utils.time.CallbackTimer;
  * @author Dadi Andrason
  * <p>
  * Used by AttackFactory
+ * Used by HUDUtils
  * <p>
  * Uses CallbackTimer
  * Uses AttackObjectSpawner

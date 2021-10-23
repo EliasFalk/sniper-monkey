@@ -10,13 +10,11 @@ import game.sniper_monkey.utils.time.CallbackTimer;
  * @author Kevin Jeryd
  * @author Dadi Andrason
  * <p>
- * Used by SniperMonkey
  * Used by AttackFactory
+ * Used by HUDUtils
  * <p>
  * Uses CallbackTimer
- * Uses World
  * Uses AttackObjectSpawner
- * Uses AttackObject
  */
 public class EvilMagicHammerAttack implements IAttack {
 

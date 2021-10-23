@@ -8,6 +8,20 @@ import com.badlogic.gdx.math.Vector2;
  *
  * @author Elias Falk
  * @author Dadi Andrason
+ *
+ * Used by Fighter
+ * Used by Player
+ * Used by ReadablePlayer
+ * Used by AttackFactory
+ * Used by BowAttack
+ * Used by BowTripleAttack
+ * Used by ElectricalSlashAttack
+ * Used by ElectricalSmashAttack
+ * Used by EvilMagicHammerAttack
+ * Used by EvilMagicSwingAttack
+ * Used by SamuraiQuickAttack
+ * Used by SamuraiShurikenAttack
+ * Used by HUDUtils
  */
 public interface IAttack {
 
