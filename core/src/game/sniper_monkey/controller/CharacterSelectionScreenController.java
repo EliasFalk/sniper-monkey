@@ -17,8 +17,12 @@ import java.util.Map;
  * <p>
  * Used by SniperMonkey
  * Used by CharacterSelectionScreen
+ * Used by GameController
  * Uses CharacterSelectionScreen
  * Uses IController
+ * Uses Fighter
+ * Uses FighterFactory
+ * Uses ICharacterSelectedObserver
  * </p>
  *
  * @author Kevin Jeryd

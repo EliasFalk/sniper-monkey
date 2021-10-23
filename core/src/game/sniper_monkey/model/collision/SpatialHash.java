@@ -12,6 +12,12 @@ import java.util.stream.Collectors;
  * A spatial hash which partitions space into multiple cells in a grid. Every partition stores a set
  * of hitboxes and associated GameObjects. It can later be queried for these.
  *
+ * <p>
+ *     Used by CollisionEngine
+ *
+ *     Uses GameObject
+ * </p>
+ *
  * @author Vincent Hellner
  */
 public final class SpatialHash {

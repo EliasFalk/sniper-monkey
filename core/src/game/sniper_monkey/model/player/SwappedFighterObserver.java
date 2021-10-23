@@ -5,6 +5,7 @@ package game.sniper_monkey.model.player;
  * <p>
  * Used by BottomHUDController. // TODO could make the views be observers instead.
  * Used by GameScreen.
+ * Used by Player
  *
  * @author Elias Falk
  */

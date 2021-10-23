@@ -27,9 +27,20 @@ import java.util.Map;
  * Uses PlayerInputAction.
  * Uses PhysicsPosition.
  * Uses Config.
+ * Uses IAttack
+ * Uses CollisionResponse
+ * Uses CallbackTimer
+ * Uses TimerObserver
  * <p>
  * Used by PlayerFactory.
  * Used by FighterViews.
+ * Used by BottomHudController
+ * Used by GameController
+ * Used by SwappedFighterObserver
+ * Used by all concrete attacks such as EvilMagicSwing, Arrow, ElectricalSmash etc
+ * Used by GameObjectViewFactory
+ * Used by GameScreen
+ * Used by all FighterViews such as EvilWizardView, FantasyWarriorView etc
  *
  * @author Elias Falk
  * @author Vincent Hellner

@@ -6,6 +6,17 @@ import game.sniper_monkey.model.player.fighter.attack.AttackFactory;
 
 /**
  * A fantasy warrior fighter.
+ *
+ * <p>
+ *     Used by FighterFactory
+ *     Used by HUDUtils
+ *     Used by GameObjectViewFactory
+ *     Used by CharacterSelectionScreen
+ *
+ *     Uses AttackFactory
+ * </p>
+ *
+ * @author Dadi Andrason
  */
 public class FantasyWarrior extends Fighter {
 

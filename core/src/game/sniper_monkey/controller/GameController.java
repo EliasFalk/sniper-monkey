@@ -29,6 +29,25 @@ import java.util.Map;
 /**
  * Controller that controls the Game itself
  *
+ * <p>
+ *     Used by CharacterSelectionScreenController
+ *
+ *     Uses FluctuatingAttributeObserver
+ *     Uses IScreenController
+ *     Uses SniperMonkey
+ *     Uses Player
+ *     Uses PlayerFactory
+ *     Uses Fighter
+ *     Uses World
+ *     Uses WorldBrick
+ *     Uses Config
+ *     Uses MapReader
+ *     Uses CallbackTimer
+ *     Uses TimerBank
+ *     Uses GameScreen
+ *     Uses HUD
+ * </p>
+ *
  * @author Elias Falk
  */
 public class GameController implements FluctuatingAttributeObserver, IScreenController {

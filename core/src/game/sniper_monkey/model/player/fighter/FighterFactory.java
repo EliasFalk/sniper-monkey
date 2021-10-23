@@ -5,8 +5,12 @@ import java.util.Map;
 
 /**
  * A factory that serves as an interface for creating all the different fighters.
+ *
  * <p>
- * Used by PlayerFactory.
+ *     Used by CharacterSelectionScreenController
+ *     Used by PlayerFactory
+ *     Used by FighterFactory
+ * </p>
  *
  * @author Elias Falk
  */

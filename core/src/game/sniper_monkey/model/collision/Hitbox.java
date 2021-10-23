@@ -5,6 +5,15 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * An Axis Aligned Bounding Box used for hit detection.
  *
+ * <p>
+ *     Used by CollisionEngine
+ *     Used by CollisionPair
+ *     Used by Hitbox (self)
+ *     Used by SpatialHash
+ *     Used by GameObject
+ *     Used by CollisionResponse
+ * </p>
+ *
  * @author Vincent Hellner
  */
 public final class Hitbox {

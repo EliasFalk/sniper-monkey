@@ -7,6 +7,8 @@ package game.sniper_monkey.controller;
  * Used by CharacterSelectionScreenController
  * </p>
  * Interface representing a tickable controller which needs to be updated every frame.
+ *
+ * @author Kevin Jeryd
  */
 public interface IScreenController {
 

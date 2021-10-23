@@ -6,7 +6,18 @@ import game.sniper_monkey.model.player.fighter.attack.AttackFactory;
 /**
  * An Evil Wizard (spooky)
  *
+ * <p>
+ *     Used by FighterFactory
+ *     Used by HUDUtils
+ *     Used by GameObjectViewFactory
+ *     Used by CharacterSelectionScreen
+ *
+ *     Uses AttackFactory
+ * </p>
+ *
  * @author Elias Falk
+ * @author Kevin Jeryd
+ * @author Dadi Andrason
  */
 public class EvilWizard extends Fighter {
     private static final float attack = 1;

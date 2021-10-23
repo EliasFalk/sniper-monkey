@@ -5,6 +5,17 @@ import game.sniper_monkey.model.player.fighter.attack.AttackFactory;
 
 /**
  *  A samurai fighter.
+ *
+ *  <p>
+ *    Used by FighterFactory
+ *    Used by HUDUtils
+ *    Used by GameObjectViewFactory
+ *    Used by CharacterSelectionScreen
+ *
+ *    Uses AttackFactory
+ *  </p>
+ *
+ * @author Dadi Andrason
  */
 public class Samurai extends Fighter {
 

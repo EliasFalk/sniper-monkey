@@ -22,6 +22,7 @@ import game.sniper_monkey.view.hud.SecondaryFighterView;
  * Uses KeyInputView.
  * Uses Placement.
  * Uses Config.
+ * Uses HUDUtils
  * <p>
  * Used by GameController.
  *

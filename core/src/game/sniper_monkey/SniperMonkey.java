@@ -3,7 +3,6 @@ package game.sniper_monkey;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import game.sniper_monkey.controller.CharacterSelectionScreenController;
-import game.sniper_monkey.controller.GameController;
 import game.sniper_monkey.controller.IScreenController;
 
 /**
@@ -15,7 +14,6 @@ import game.sniper_monkey.controller.IScreenController;
  * @author Dadi Andrason
  */
 public class SniperMonkey extends ApplicationAdapter {
-    private GameController gameController;
     /**
      * The active screen controller to
      */

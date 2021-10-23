@@ -10,6 +10,25 @@ import java.util.List;
  * An abstract class used for fighters providing functionality such as attacking,
  * storing basic stats and hitbox settings.
  *
+ * <p>
+ *     Used by Player
+ *     Used by PlayerFactory
+ *     Used by ReadablePlayer
+ *     Used by EvilWizard
+ *     Used by FantasyWarrior
+ *     Used by FighterFactory
+ *     Used by HuntressBow
+ *     Used by Samurai
+ *     Used by HUDUtils
+ *     Used by GameObjectViewFactory
+ *     Used by CharacterSelectionScreen
+ *     Used by SelectViewRectangle
+ *     Used by SelectedFighterView
+ *     Used by SecondaryFighterView
+ *
+ *     Uses IAttack
+ * </p>
+ *
  * @author Elias Falk
  */
 public abstract class Fighter {

@@ -3,7 +3,6 @@ package game.sniper_monkey.model.player.fighter.attack.attack_object;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.player.DamageablePlayer;
 import game.sniper_monkey.model.player.Player;
-import game.sniper_monkey.model.player.ReadablePlayer;
 
 /**
  * A class of the attack object of the fantasy warriors first attack, the ElectricalSlash.

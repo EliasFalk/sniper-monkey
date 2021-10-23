@@ -11,7 +11,7 @@ import game.sniper_monkey.utils.Config;
  * <p>
  * Uses Config
  * Uses ControllablePlayer
- * Uses Gdx.input
+ * Uses PlayerInputAction
  * <p>
  * Used by GameController
  *

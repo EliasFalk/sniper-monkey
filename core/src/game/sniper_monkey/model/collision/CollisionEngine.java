@@ -11,6 +11,15 @@ import java.util.List;
  * A static class used for checking collision between hitboxes and
  * optimizes this by storing static (Not moving) GameObjects in a spatial hash.
  *
+ * <p>
+ *     Used by AttackObject
+ *     Used by World
+ *     Used by CollisionResponse
+ *
+ *     Uses GameObject
+ *     Uses CollisionMasks
+ * </p>
+ *
  * @author Vincent Hellner
  */
 public final class CollisionEngine {

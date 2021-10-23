@@ -9,6 +9,8 @@ import game.sniper_monkey.utils.collision.CollisionMasks;
  * A factory that serves as the interface to creating players.
  * <p>
  * Uses FighterFactory.
+ * Uses Fighter
+ * Uses CollisionMasks
  * <p>
  * Used by GameController.
  *
