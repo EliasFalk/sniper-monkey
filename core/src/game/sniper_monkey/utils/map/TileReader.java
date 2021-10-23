@@ -40,8 +40,6 @@ public final class TileReader {
         Map<String, Sprite> tileMap = new HashMap<>();
         NamedNodeMap tileSetAttrbiutes = tileSet.getElementsByTagName("tileset").item(0).getAttributes();
         int tileHeight = Integer.parseInt(tileSetAttrbiutes.getNamedItem("tileheight").getTextContent());
-        int tileWidth = Integer.parseInt(tileSetAttrbiutes.getNamedItem("tilewidth").getTextContent());
-        int tileCount = Integer.parseInt(tileSetAttrbiutes.getNamedItem("tilecount").getTextContent());
         int columns = Integer.parseInt(tileSetAttrbiutes.getNamedItem("columns").getTextContent());
         String imagePath = tileSet.getElementsByTagName("image").item(0).getAttributes().getNamedItem("source").getTextContent();
         imagePath = imagePath.replaceAll("^\\p{P}+|\\p{P}+$", "");
