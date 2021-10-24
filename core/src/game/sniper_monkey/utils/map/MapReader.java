@@ -15,19 +15,26 @@ import java.util.Map;
 
 /**
  * A static utility that can read and convert Tiled map files along with tileset files.
+ * <p>
+ * Used by GameController.
+ * <p>
+ * Uses XMLUtils.
+ * Uses NodeListUtil.
  *
  * @author Vincent Hellner
  * @author Elias Falk
  */
 public final class MapReader {
-    private MapReader() {}
-
     private static final String MAPS_DIR = "core/assets/map/";
+
+    private MapReader() {
+    }
 
     /**
      * Reads the spawn points in the map and returns them as a Map
+     *
      * @param mapPath The path to the map relative to the maps directory
-     * @return        A Map with the spawn points
+     * @return A Map with the spawn points
      */
     public static Map<String, Vector2> readSpawnPoints(String mapPath) {
         Document mapDoc = XMLUtils.readDocument(MAPS_DIR + mapPath);
@@ -37,9 +44,9 @@ public final class MapReader {
 
     private static Map<String, Vector2> getSpawnPoints(Node spawnGroup) {
         Map<String, Vector2> spawnPoints = new HashMap<>();
-        for(Node node : NodeListUtil.asList(spawnGroup.getChildNodes())) {
-            if(!node.getNodeName().equals("object")) continue;
-            if(node.getAttributes().getNamedItem("type").getTextContent().equals("spawn_point")) {
+        for (Node node : NodeListUtil.asList(spawnGroup.getChildNodes())) {
+            if (!node.getNodeName().equals("object")) continue;
+            if (node.getAttributes().getNamedItem("type").getTextContent().equals("spawn_point")) {
                 float xSpawn = Float.parseFloat(node.getAttributes().getNamedItem("x").getTextContent());
                 float ySpawn = Float.parseFloat(node.getAttributes().getNamedItem("y").getTextContent());
                 spawnPoints.put(node.getAttributes().getNamedItem("name").getTextContent(), new Vector2(xSpawn, ySpawn));
@@ -50,14 +57,14 @@ public final class MapReader {
 
     private static Node getSpawnGroup(Document mapDoc) {
         Node spawnGroup = null;
-        for(Node node : NodeListUtil.asList(mapDoc.getElementsByTagName("objectgroup"))) {
+        for (Node node : NodeListUtil.asList(mapDoc.getElementsByTagName("objectgroup"))) {
             Node nameAttribute = node.getAttributes().getNamedItem("name");
-            if(nameAttribute.getTextContent().equals("spawns")) {
+            if (nameAttribute.getTextContent().equals("spawns")) {
                 spawnGroup = node;
                 break;
             }
         }
-        if(spawnGroup == null) throw new IllegalArgumentException("Supplied map does not contain spawn points");
+        if (spawnGroup == null) throw new IllegalArgumentException("Supplied map does not contain spawn points");
         return spawnGroup;
     }
 
@@ -66,7 +73,7 @@ public final class MapReader {
      *
      * @param mapPath     The path relative to the map directory of the map file.
      * @param tilesetPath The path relative to the map directory of the tileset file.
-     * @return            A 2D array of Strings representing the map where each entry is the name of the tile or "air" if there is no tile.
+     * @return A 2D array of Strings representing the map where each entry is the name of the tile or "air" if there is no tile.
      */
     public static String[][] readMapTiles(String mapPath, String tilesetPath) {
         Document mapDoc = XMLUtils.readDocument(MAPS_DIR + mapPath);
@@ -80,7 +87,7 @@ public final class MapReader {
      *
      * @param mapFolder The path relative to the map directory of a folder containing both a map and a tileset file.
      *                  If there are multiple map or tileset files the last files in the directory will be read.
-     * @return          A 2D array of Strings representing the map where each entry is the name of the tile or "air" if there is no tile.
+     * @return A 2D array of Strings representing the map where each entry is the name of the tile or "air" if there is no tile.
      */
     public static String[][] readMapTiles(String mapFolder) {
         FileHandle dirHandle = Gdx.files.internal(MAPS_DIR + mapFolder);
@@ -89,8 +96,8 @@ public final class MapReader {
         String tileMap = "";
 
         for (FileHandle entry : dirHandle.list()) {
-            if(entry.extension().equals("tmx")) tileMap = entry.name();
-            else if(entry.extension().equals("tsx")) tileSet = entry.name();
+            if (entry.extension().equals("tmx")) tileMap = entry.name();
+            else if (entry.extension().equals("tsx")) tileSet = entry.name();
         }
 
         return readMapTiles(mapFolder + "/" + tileMap, mapFolder + "/" + tileSet);
@@ -103,8 +110,8 @@ public final class MapReader {
 
         String[][] translatedMap = new String[mapData.length][mapData[0].length];
 
-        for(int y = 0; y < mapData.length; y++) {
-            for(int x = 0; x < mapData[y].length; x++) {
+        for (int y = 0; y < mapData.length; y++) {
+            for (int x = 0; x < mapData[y].length; x++) {
                 translatedMap[y][x] = tileNames.getOrDefault(mapData[y][x], "air");
             }
         }
@@ -122,9 +129,9 @@ public final class MapReader {
         int height = Integer.parseInt(layerAttributes.getNamedItem("height").getTextContent());
 
         int[][] map = new int[height][width];
-        for(int y = height-1; y >= 0; y--) {
-            for(int x = 0; x < width; x++) {
-                map[height-y-1][x] = Integer.parseInt(rows[y].split(",")[x])-1;
+        for (int y = height - 1; y >= 0; y--) {
+            for (int x = 0; x < width; x++) {
+                map[height - y - 1][x] = Integer.parseInt(rows[y].split(",")[x]) - 1;
             }
         }
         return map;
@@ -133,7 +140,7 @@ public final class MapReader {
     private static Map<Integer, String> readTileNames(Document tilesetDoc) {
         Map<Integer, String> tileNames = new HashMap<>();
         NodeList tileData = tilesetDoc.getElementsByTagName("tile");
-        for(Node node : NodeListUtil.asList(tileData)) {
+        for (Node node : NodeListUtil.asList(tileData)) {
             int id = Integer.parseInt(node.getAttributes().item(0).getTextContent());
             String name = node.getAttributes().item(1).getTextContent();
             tileNames.put(id, name);

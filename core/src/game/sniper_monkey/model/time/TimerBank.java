@@ -1,4 +1,4 @@
-package game.sniper_monkey.utils.time;
+package game.sniper_monkey.model.time;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +9,12 @@ import java.util.List;
  * @author Elias Falk
  */
 public final class TimerBank {
-
-    private TimerBank() {
-    }
-
     private static final List<UpdatableTimer> timers = new ArrayList<>();
     private static final List<UpdatableTimer> timersToBeAdded = new ArrayList<>();
     private static final List<UpdatableTimer> timersTobeRemoved = new ArrayList<>();
+
+    private TimerBank() {
+    }
 
     /**
      * Adds an updatable timer to the bank.

@@ -1,6 +1,7 @@
-package game.sniper_monkey.utils.time;
+package game.sniper_monkey.model.time;
 
 import game.sniper_monkey.utils.Callback;
+import game.sniper_monkey.utils.time.TimerObserver;
 
 import java.util.ArrayList;
 import java.util.List;

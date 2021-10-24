@@ -1,8 +1,10 @@
-package game.sniper_monkey.utils.time;
+package game.sniper_monkey.model.time;
 
 /**
  * An interface providing functionality for timers that should be updated every frame
  *
+ * Used by CallBackTimer.
+ * 
  * @author Elias Falk
  */
 public interface UpdatableTimer {

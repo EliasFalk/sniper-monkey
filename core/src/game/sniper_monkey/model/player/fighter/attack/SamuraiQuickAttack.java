@@ -2,7 +2,7 @@ package game.sniper_monkey.model.player.fighter.attack;
 
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.player.fighter.attack.attack_object.AttackObjectSpawner;
-import game.sniper_monkey.utils.time.CallbackTimer;
+import game.sniper_monkey.model.time.CallbackTimer;
 
 /**
  * A quick attack for the Samurai fighter, it's first attack.

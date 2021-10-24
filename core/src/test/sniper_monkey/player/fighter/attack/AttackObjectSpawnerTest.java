@@ -8,10 +8,10 @@ import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.PlayerFactory;
 import game.sniper_monkey.model.player.fighter.HuntressBow;
 import game.sniper_monkey.model.player.fighter.attack.attack_object.AttackObjectSpawner;
+import game.sniper_monkey.model.time.TimerBank;
 import game.sniper_monkey.model.world.World;
 import game.sniper_monkey.model.world_brick.WorldBrick;
 import game.sniper_monkey.utils.Config;
-import game.sniper_monkey.utils.time.TimerBank;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

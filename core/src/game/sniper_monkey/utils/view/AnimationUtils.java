@@ -6,6 +6,8 @@ import com.badlogic.gdx.utils.Array;
 
 /**
  * Utility used for cutting Sprite sheets used in animations.
+ * <p>
+ * Used by all fighter views.
  *
  * @author Elias Falk
  * @author Vincent Hellner

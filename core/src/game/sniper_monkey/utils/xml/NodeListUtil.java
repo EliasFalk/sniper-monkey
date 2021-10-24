@@ -10,14 +10,19 @@ import java.util.RandomAccess;
 
 /**
  * An Xml utility used to convert NodeLists to an iterable collection.
+ * <p>
+ * Used by MapReader.
+ * Used by TileReader.
  *
  * @author -
  */
 public final class NodeListUtil {
-    private NodeListUtil() {}
+    private NodeListUtil() {
+    }
 
     /**
      * Converts a NodeList to a List of nodes.
+     *
      * @param nodeList The NodeList to be converted
      * @return A List of Nodes
      */
@@ -29,7 +34,7 @@ public final class NodeListUtil {
         private final NodeList list;
 
         NodeListWrapper(NodeList l) {
-            list=l;
+            list = l;
         }
 
         public Node get(int index) {

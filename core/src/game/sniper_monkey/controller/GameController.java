@@ -15,12 +15,12 @@ import game.sniper_monkey.model.player.FluctuatingAttributeObserver;
 import game.sniper_monkey.model.player.Player;
 import game.sniper_monkey.model.player.PlayerFactory;
 import game.sniper_monkey.model.player.fighter.Fighter;
+import game.sniper_monkey.model.time.CallbackTimer;
+import game.sniper_monkey.model.time.TimerBank;
 import game.sniper_monkey.model.world.World;
 import game.sniper_monkey.model.world_brick.WorldBrick;
 import game.sniper_monkey.utils.Config;
 import game.sniper_monkey.utils.map.MapReader;
-import game.sniper_monkey.utils.time.CallbackTimer;
-import game.sniper_monkey.utils.time.TimerBank;
 import game.sniper_monkey.view.GameScreen;
 import game.sniper_monkey.view.hud.*;
 

@@ -4,10 +4,10 @@ import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.PhysicsPosition;
 import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.player.fighter.attack.IAttack;
+import game.sniper_monkey.model.time.CallbackTimer;
 import game.sniper_monkey.model.world.GameObject;
 import game.sniper_monkey.utils.Config;
 import game.sniper_monkey.utils.collision.CollisionResponse;
-import game.sniper_monkey.utils.time.CallbackTimer;
 import game.sniper_monkey.utils.time.TimerObserver;
 
 import java.util.ArrayList;

@@ -5,19 +5,23 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 /**
  * Utility used for sprites
+ * <p>
+ * Used by TileReader.
+ * Used by all fighter views.
+ * Used by WorldBrickView.
  *
  * @author Elias Falk
  * @author Vincent Hellner
  */
 public final class SpriteUtils {
-    private SpriteUtils() {
-    }
-
     private static final Sprite defaultSprite;
 
     static {
         Texture missingTexture = new Texture("images/missing_texture_texture.png");
         defaultSprite = new Sprite(missingTexture);
+    }
+
+    private SpriteUtils() {
     }
 
     /**
