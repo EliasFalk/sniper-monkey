@@ -1,13 +1,13 @@
 package game.sniper_monkey.view.hud;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
+import game.sniper_monkey.utils.view.ButtonUtils;
 import game.sniper_monkey.utils.view.FontUtils;
 
 import java.util.ArrayList;
@@ -54,15 +54,7 @@ public class OverlayMenu implements HUDView {
     private void transformButtons() {
         float buttonMargin = OverlayMenu.buttonMargin;
         for (Button button : buttons) {
-            Skin skin = new Skin();
-            TextureAtlas buttonAtlas = new TextureAtlas(Gdx.files.local("skins/expee/expee-ui.atlas"));
-            skin.addRegions(buttonAtlas);
-            TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-            textButtonStyle.up = skin.getDrawable("button");
-            textButtonStyle.fontColor = Color.BLACK;
-            textButtonStyle.down = skin.getDrawable("button-pressed");
-            textButtonStyle.font = new BitmapFont(Gdx.files.local("skins/expee/font-export.fnt"));
-            button.setStyle(textButtonStyle);
+            button.setStyle(ButtonUtils.getExpeeButtonStyle());
             button.setWidth(buttonWidth);
             button.setHeight(buttonHeight);
             button.setPosition(Gdx.graphics.getWidth() / 2f - button.getWidth() / 2f, yButtonStart - buttonHeight - buttonMargin);

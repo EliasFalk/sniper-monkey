@@ -3,7 +3,6 @@ package game.sniper_monkey.controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -21,6 +20,7 @@ import game.sniper_monkey.model.world.World;
 import game.sniper_monkey.model.world_brick.WorldBrick;
 import game.sniper_monkey.utils.Config;
 import game.sniper_monkey.utils.map.MapReader;
+import game.sniper_monkey.utils.view.ButtonUtils;
 import game.sniper_monkey.view.GameScreen;
 import game.sniper_monkey.view.hud.*;
 
@@ -30,22 +30,23 @@ import java.util.Map;
  * Controller that controls the Game itself
  *
  * <p>
- *     Used by CharacterSelectionScreenController
- *
- *     Uses FluctuatingAttributeObserver
- *     Uses IScreenController
- *     Uses SniperMonkey
- *     Uses Player
- *     Uses PlayerFactory
- *     Uses Fighter
- *     Uses World
- *     Uses WorldBrick
- *     Uses Config
- *     Uses MapReader
- *     Uses CallbackTimer
- *     Uses TimerBank
- *     Uses GameScreen
- *     Uses HUD
+ * Used by CharacterSelectionScreenController.
+ * <p>
+ * Uses FluctuatingAttributeObserver.
+ * Uses IScreenController.
+ * Uses SniperMonkey.
+ * Uses Player.
+ * Uses PlayerFactory.
+ * Uses Fighter.
+ * Uses World.
+ * Uses WorldBrick.
+ * Uses Config.
+ * Uses MapReader.
+ * Uses CallbackTimer.
+ * Uses TimerBank.
+ * Uses GameScreen.
+ * Uses HUD.
+ * Uses ButtonUtils.
  * </p>
  *
  * @author Elias Falk
@@ -55,13 +56,13 @@ import java.util.Map;
 public class GameController implements FluctuatingAttributeObserver, IScreenController {
     private final CallbackTimer roundTimer;
     private final Map<String, Fighter> chosenFighters;
+    private final OverlayMenu pauseMenu;
+    private final OverlayMenu endMenu;
+    private final OverlayMenu startOverlay;
     private GameScreen gameScreen;
     private PlayerController player1Controller, player2Controller;
     private GameState currentState;
     private Player player1, player2;
-    private final OverlayMenu pauseMenu;
-    private final OverlayMenu endMenu;
-    private final OverlayMenu startOverlay;
     private int startStage = 0;
     private final CallbackTimer startStageTime = new CallbackTimer(1, true, () -> startStage++);
 
@@ -170,7 +171,6 @@ public class GameController implements FluctuatingAttributeObserver, IScreenCont
     }
 
     private void pauseState(float deltaTime) {
-        //TODO add pause overlay
         roundTimer.stop();
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) { //TODO config for key bind
             initStartState();
@@ -181,9 +181,7 @@ public class GameController implements FluctuatingAttributeObserver, IScreenCont
 
     private OverlayMenu createPauseMenu() {
         OverlayMenu pauseMenu = new OverlayMenu("Game Paused");
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.font = new BitmapFont();
-        Button resumeGame = new TextButton("Resume", textButtonStyle);
+        Button resumeGame = new TextButton("Resume", ButtonUtils.getDefaultButtonFont());
         resumeGame.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -199,9 +197,7 @@ public class GameController implements FluctuatingAttributeObserver, IScreenCont
     private OverlayMenu createEndMenu() {
         final OverlayMenu endMenu;
         endMenu = new OverlayMenu("");
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.font = new BitmapFont();
-        Button goToStart = new TextButton("Return to character selection", textButtonStyle);
+        Button goToStart = new TextButton("Return to character selection", ButtonUtils.getDefaultButtonFont());
         goToStart.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
