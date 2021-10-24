@@ -13,6 +13,7 @@ import java.util.Map;
  * </p>
  *
  * @author Elias Falk
+ * @author Dadi Andrason
  */
 public final class FighterFactory {
 
