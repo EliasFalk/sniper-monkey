@@ -15,9 +15,11 @@ import static org.junit.Assert.assertEquals;
 // TODO create better tests that use config values.
 public class PhysicsPositionTest {
 
+    private static final float deltaTime = 1 / 60f;
     private static PhysicsPosition physicsPos;
     private static String physicsConsts;
-    private static float deltaTime = 1 / 10f;
+    private static float DRAG;
+    private static float GRAVITY;
 
     @BeforeClass
     public static void initHeadless() {
@@ -30,6 +32,8 @@ public class PhysicsPositionTest {
     public static void readConfig() {
         physicsConsts = "cfg/physics.cfg";
         Config.readConfigFile(physicsConsts);
+        DRAG = Config.getNumber(physicsConsts, "DRAG");
+        GRAVITY = Config.getNumber(physicsConsts, "GRAVITY");
     }
 
 
@@ -46,25 +50,30 @@ public class PhysicsPositionTest {
         assertEquals(10 * deltaTime, physicsPos.getPosition().x, 0);
         assertEquals(0, physicsPos.getPosition().y, 0);
         assertEquals(0, physicsPos.getVelocity().x, 0);
-        assertEquals(-60, physicsPos.getVelocity().y, 0); // gravity, better to read from config
+        assertEquals(deltaTime * GRAVITY, physicsPos.getVelocity().y, 0);
     }
 
     @Test
     public void testUpdateBigVelocity() {
+        float xVel = 10000;
         physicsPos.setPosition(new Vector2(0, 0));
-        physicsPos.setVelocity(new Vector2(10000, 0));
+        physicsPos.setVelocity(new Vector2(xVel, 0));
 
         physicsPos.update(deltaTime);
-        assertEquals(9920, physicsPos.getVelocity().x, 0); // drag
-        assertEquals(-60, physicsPos.getVelocity().y, 0); // gravity
+        assertEquals(xVel - (deltaTime * DRAG), physicsPos.getVelocity().x, 0);
+        assertEquals(deltaTime * GRAVITY, physicsPos.getVelocity().y, 0);
     }
 
 
     @Test
     public void testCustomAccel() {
-        physicsPos = new PhysicsPosition(new Vector2(0, 0), new Vector2(0, 0), new Vector2(1000, 0));
+        Vector2 pos = new Vector2(0, 0);
+        Vector2 vel = new Vector2(0, 0);
+        Vector2 accel = new Vector2(1000, 100);
+        physicsPos = new PhysicsPosition(pos, vel, accel);
         physicsPos.update(deltaTime);
-        assertEquals(20, physicsPos.getVelocity().x, 0); // accel - drag
+        vel.cpy().add(1000, 100).scl(deltaTime);
+        assertEquals(1000 * deltaTime - Math.signum(vel.x) * DRAG * deltaTime, physicsPos.getVelocity().x, 0);
     }
 
     @Test
