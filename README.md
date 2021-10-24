@@ -11,7 +11,7 @@ Path                                    | Comment
 `/core/assets`                          | Contains all assets in the game.
 
 ## How to run
-Clone or unzip project and open in an IDE to build the project.
+Clone or unzip the project and open in an IDE to build the project.
 Running "game/sniper_monkey/desktop/DesktopLauncher.java" should then start the program.
 
 ## About
