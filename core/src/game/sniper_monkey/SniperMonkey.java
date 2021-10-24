@@ -6,7 +6,7 @@ import game.sniper_monkey.controller.CharacterSelectionScreenController;
 import game.sniper_monkey.controller.IScreenController;
 
 /**
- * Represents the application
+ * Represents the application that is used by the libgdx library.
  *
  * @author Elias Falk
  * @author Vincent Hellner
@@ -15,28 +15,15 @@ import game.sniper_monkey.controller.IScreenController;
  */
 public class SniperMonkey extends ApplicationAdapter {
     /**
-     * The active screen controller to
+     * The active screen controller that will be ticked each frame.
      */
-    public static IScreenController activeController = new IScreenController() {
-        @Override
-        public void tick(float deltaTime) {
+    public static IScreenController activeController;
 
-        }
-
-        @Override
-        public void onResize(int w, int h) {
-
-        }
-    };
-
-    private CharacterSelectionScreenController characterSelectionScreenController;
-    //TODO documentation
     @Override
     public void create() {
         activeController = new CharacterSelectionScreenController();
     }
 
-    //TODO documentation
     @Override
     public void render() {
         float deltaTime = Math.min(1 / 10f, Gdx.graphics.getDeltaTime());
@@ -46,16 +33,14 @@ public class SniperMonkey extends ApplicationAdapter {
         activeController.tick(deltaTime);
     }
 
-    //TODO documentation
-    @Override
-    public void dispose() {
-        characterSelectionScreenController.dispose();
-        //gameController.dispose();
-    }
-
 
     @Override
     public void resize(int w, int h) {
         activeController.onResize(w, h);
+    }
+
+    @Override
+    public void dispose() {
+        activeController = null;
     }
 }
