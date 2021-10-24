@@ -1,25 +1,31 @@
 package game.sniper_monkey.view.hud;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 import game.sniper_monkey.model.player.fighter.Fighter;
+import game.sniper_monkey.utils.view.FontUtils;
 import game.sniper_monkey.utils.view.HUDUtils;
 
 /**
  * A view that represents the secondary fighter, including a corresponding image of the idle animation and the fighter's display name.
+ * <p>
+ * Uses HUDView.
+ * Uses HUDUtils.
+ * <p>
+ * Used by BottomHUDController.
+ *
+ * @author Elias
  */
 public class SecondaryFighterView implements HUDView {
-    private Image img;
+    private final Image img;
     private final float x;
     private final float y;
-    private Label fighterName;
-    private final float yTextOffset = -15f;
+    private final Label fighterNameLabel;
+    private final float yTextOffset = -5f;
+    private final boolean flipX;
 
     /**
      * Creates a view that represents the secondary fighter.
@@ -33,8 +39,11 @@ public class SecondaryFighterView implements HUDView {
     public SecondaryFighterView(TextureRegion textureRegion, float x, float y, String fighterName, boolean flipX) {
         this.x = x;
         this.y = y;
-        createFighterImage(textureRegion, x, y, flipX);
-        createFighterNameLabel(x, y, fighterName);
+        this.flipX = flipX;
+        this.img = createFighterImage(textureRegion);
+        formatAndPositionImage(textureRegion, x, y, flipX);
+        this.fighterNameLabel = createFighterNameLabel(fighterName);
+        formatAndPositionLabel(fighterName);
     }
 
     /**
@@ -72,17 +81,12 @@ public class SecondaryFighterView implements HUDView {
         this(HUDUtils.getCorrespondingTextureRegion(fighterClass), x, y, HUDUtils.getFighterDisplayName(fighterClass));
     }
 
-    private void createFighterImage(TextureRegion textureRegion, float x, float y, boolean flipX) {
-        textureRegion.flip(flipX, false);
-        this.img = new Image(textureRegion);
-        img.setAlign(Align.center);
-        img.setPosition(x, y);
+    private Image createFighterImage(TextureRegion textureRegion) {
+        return new Image(textureRegion);
     }
 
-    private void createFighterNameLabel(float x, float y, String fighterName) {
-        this.fighterName = new Label(fighterName, new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        this.fighterName.setPosition(x + img.getWidth() / 2 - this.fighterName.getWidth() / 2, y + yTextOffset);
-        this.fighterName.setAlignment(Align.center);
+    private Label createFighterNameLabel(String fighterName) {
+        return new Label(fighterName, FontUtils.robotoWhite(16));
     }
 
     /**
@@ -91,8 +95,8 @@ public class SecondaryFighterView implements HUDView {
      * @param fighterClass The fighter class to be updated with.
      */
     public void updateFighterView(Class<? extends Fighter> fighterClass) {
-        updateImage(HUDUtils.getCorrespondingTextureRegion(fighterClass));
-        updateFighterName(HUDUtils.getFighterDisplayName(fighterClass));
+        formatAndPositionImage(HUDUtils.getCorrespondingTextureRegion(fighterClass), x, y, flipX);
+        formatAndPositionLabel(HUDUtils.getFighterDisplayName(fighterClass));
     }
 
     /**
@@ -100,9 +104,15 @@ public class SecondaryFighterView implements HUDView {
      *
      * @param textureRegion The texture region to be updated with.
      */
-    public void updateImage(TextureRegion textureRegion) {
+    private void formatAndPositionImage(TextureRegion textureRegion, float x, float y, boolean flipX) {
+        textureRegion.flip(flipX, false);
         TextureRegionDrawable trd = new TextureRegionDrawable(textureRegion);
+        float h = textureRegion.getRegionHeight();
+        float w = textureRegion.getRegionWidth();
         img.setDrawable(trd);
+        img.setWidth(w);
+        img.setHeight(h);
+        img.setPosition(x, y);
     }
 
 
@@ -111,13 +121,20 @@ public class SecondaryFighterView implements HUDView {
      *
      * @param name The name of the displayed fighter.
      */
-    public void updateFighterName(String name) {
-        fighterName.setText(name);
+    public void formatAndPositionLabel(String name) {
+        fighterNameLabel.setText(name);
+        fighterNameLabel.setPosition(x + img.getPrefWidth() / 2 - fighterNameLabel.getPrefWidth() / 2, y + yTextOffset - fighterNameLabel.getPrefHeight());
     }
 
     @Override
     public void addActors(Stage stage) {
         stage.addActor(img);
-        stage.addActor(fighterName);
+        stage.addActor(fighterNameLabel);
+    }
+
+    @Override
+    public void removeActors() {
+        img.remove();
+        fighterNameLabel.remove();
     }
 }

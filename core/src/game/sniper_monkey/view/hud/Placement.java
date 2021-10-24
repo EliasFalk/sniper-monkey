@@ -1,13 +1,15 @@
 package game.sniper_monkey.view.hud;
 
 /**
- * The placement of anything that can be placed at the top, right, bottom or to the left.
+ * The placement of anything that can only be placed left or right.
+ * <p>
+ * Used by GameController.
+ * Used by BottomHUDController.
+ * Used by KeyInputView.
  *
  * @author Elias Falk
  */
 public enum Placement {
-    TOP,
     RIGHT,
-    BOTTOM,
     LEFT
 }

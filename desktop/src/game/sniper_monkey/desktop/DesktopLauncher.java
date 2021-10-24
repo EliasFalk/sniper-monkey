@@ -10,6 +10,7 @@ public class DesktopLauncher {
 		config.width = 1280;
 		config.height = 720;
 		config.fullscreen = false;
+		config.foregroundFPS = 144;
 		new LwjglApplication(new SniperMonkey(), config);
 	}
 }

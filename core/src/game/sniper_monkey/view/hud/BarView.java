@@ -1,26 +1,32 @@
 package game.sniper_monkey.view.hud;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import game.sniper_monkey.model.player.FluctuatingAttributeObserver;
+import game.sniper_monkey.utils.view.FontUtils;
 
 import java.text.DecimalFormat;
 
 
 /**
  * A view that represents a fillable bar and a side text related to the fillable bar.
+ * <p>
+ * Uses FluctuatingAttributeObserver.
+ * Uses HUDView.
+ * Uses FillableBar.
+ * <p>
+ * Used by GameController.
  *
  * @author Elias Falk
  * @author Vincent Hellner
  */
 public class BarView implements FluctuatingAttributeObserver, HUDView {
+    private static final float sideTextMargin = 10f;
+    private final FillableBar fillableBar;
     private Label barLabel;
-    private FillableBar fillableBar;
     private float currentValue = 0;
-    private final float sideTextMargin = 10f;
 
     /**
      * Creates a new bar view with a fillable bar and a side text representing the percentage filled.
@@ -38,23 +44,6 @@ public class BarView implements FluctuatingAttributeObserver, HUDView {
     public BarView(float x, float y, float width, float height, Color color, FillDirection fillDir, int textAlignment) {
         createBarLabel(x, y, width, height, textAlignment);
         fillableBar = new FillableBar(x, y, width, height, color, fillDir);
-    }
-
-    private void createBarLabel(float x, float y, float barWidth, float barHeight, int textAlignment) {
-        barLabel = new Label(String.format(new DecimalFormat("#.##").format(100), 0f), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        barLabel.setFontScale(1, 1);
-        float yLabelPos = y + barHeight / 2 - barLabel.getHeight() / 2;
-        float xLabelPos = x;
-        if (textAlignment == Align.left) {
-            xLabelPos = x - sideTextMargin - barLabel.getWidth();
-        } else if (textAlignment == Align.center) {
-            xLabelPos = x + barWidth / 2 - barLabel.getWidth() / 2;
-        } else if (textAlignment == Align.right) {
-            xLabelPos = x + sideTextMargin + barWidth;
-        }
-
-        barLabel.setPosition(xLabelPos, yLabelPos);
-        barLabel.setAlignment(Align.center);
     }
 
     /**
@@ -81,6 +70,23 @@ public class BarView implements FluctuatingAttributeObserver, HUDView {
         this(x, y, color, FillDirection.RIGHT);
     }
 
+    private void createBarLabel(float x, float y, float barWidth, float barHeight, int textAlignment) {
+        barLabel = new Label(String.format(new DecimalFormat("#.##").format(100), 0f), FontUtils.robotoWhite(14, 2));
+        barLabel.setFontScale(1, 1);
+        float yLabelPos = y + barHeight / 2 - barLabel.getHeight() / 2;
+        float xLabelPos = x;
+        if (textAlignment == Align.left) {
+            xLabelPos = x - sideTextMargin - barLabel.getWidth();
+        } else if (textAlignment == Align.center) {
+            xLabelPos = x + barWidth / 2 - barLabel.getWidth() / 2;
+        } else if (textAlignment == Align.right) {
+            xLabelPos = x + sideTextMargin + barWidth;
+        }
+
+        barLabel.setPosition(xLabelPos, yLabelPos);
+        barLabel.setAlignment(Align.center);
+    }
+
     @Override
     public void addActors(Stage stage) {
         stage.addActor(fillableBar);
@@ -88,9 +94,15 @@ public class BarView implements FluctuatingAttributeObserver, HUDView {
     }
 
     @Override
-    public void onPercentageChange(float newFraction) {
-        currentValue = newFraction;
-        barLabel.setText(String.format(new DecimalFormat("#.#").format(currentValue * 100), currentValue));
-        fillableBar.update(newFraction);
+    public void removeActors() {
+        fillableBar.remove();
+        barLabel.remove();
+    }
+
+    @Override
+    public void onValueChange(float min, float max, float current) {
+        currentValue = (current - min) / (max - min);
+        barLabel.setText(new DecimalFormat("#.#").format(currentValue * 100));
+        fillableBar.update(currentValue);
     }
 }

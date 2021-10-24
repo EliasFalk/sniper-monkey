@@ -1,12 +1,18 @@
 package game.sniper_monkey.view;
 
-import game.sniper_monkey.model.platform.Platform;
 import game.sniper_monkey.model.player.Player;
-import game.sniper_monkey.model.player.fighter.EvilWizard;
-import game.sniper_monkey.model.player.fighter.Fighter;
+import game.sniper_monkey.model.player.fighter.*;
+import game.sniper_monkey.model.player.fighter.attack.attack_object.Arrow;
+import game.sniper_monkey.model.player.fighter.attack.attack_object.Shuriken;
 import game.sniper_monkey.model.world.GameObject;
-import game.sniper_monkey.view.platform.PlatformView;
+import game.sniper_monkey.model.world_brick.WorldBrick;
 import game.sniper_monkey.view.player.fighter.EvilWizardView;
+import game.sniper_monkey.view.player.fighter.FantasyWarriorView;
+import game.sniper_monkey.view.player.fighter.HuntressView;
+import game.sniper_monkey.view.player.fighter.SamuraiView;
+import game.sniper_monkey.view.player.fighter.attack_object.ArrowView;
+import game.sniper_monkey.view.player.fighter.attack_object.ShurikenView;
+import game.sniper_monkey.view.world_brick.WorldBrickView;
 
 import java.util.HashMap;
 
@@ -26,11 +32,16 @@ public final class GameObjectViewFactory {
     static {
         //Lambdas calling the corresponding create function based on the type of the GameObject supplied.
         viewCreatorDispatch.put(Player.class, obj -> createFighterView((Player) obj));
-        viewCreatorDispatch.put(Platform.class, obj -> new PlatformView((Platform) obj));
+        viewCreatorDispatch.put(WorldBrick.class, obj -> new WorldBrickView((WorldBrick) obj));
+        viewCreatorDispatch.put(Arrow.class, obj -> new ArrowView((Arrow) obj));
+        viewCreatorDispatch.put(Shuriken.class, obj -> new ShurikenView((Shuriken) obj));
     }
 
     static {
         fighterDispatch.put(EvilWizard.class, obj -> new EvilWizardView((Player) obj));
+        fighterDispatch.put(HuntressBow.class, obj -> new HuntressView((Player) obj));
+        fighterDispatch.put(Samurai.class, obj -> new SamuraiView((Player) obj));
+        fighterDispatch.put(FantasyWarrior.class, obj -> new FantasyWarriorView((Player) obj));
     }
 
     private static GameObjectView createFighterView(Player player) {

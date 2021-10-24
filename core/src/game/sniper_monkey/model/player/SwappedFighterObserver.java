@@ -2,6 +2,10 @@ package game.sniper_monkey.model.player;
 
 /**
  * An observer interface that is implemented by classes that wants to observe when a player swaps fighter.
+ * <p>
+ * Used by BottomHUDController. // TODO could make the views be observers instead.
+ * Used by GameScreen.
+ * Used by Player
  *
  * @author Elias Falk
  */

@@ -1,13 +1,14 @@
 package game.sniper_monkey.model.player;
 
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.model.Config;
 import game.sniper_monkey.model.PhysicsPosition;
 import game.sniper_monkey.model.player.fighter.Fighter;
-import game.sniper_monkey.model.world.CallbackTimer;
+import game.sniper_monkey.model.player.fighter.attack.IAttack;
+import game.sniper_monkey.model.time.CallbackTimer;
 import game.sniper_monkey.model.world.GameObject;
-import game.sniper_monkey.model.world.TimerObserver;
+import game.sniper_monkey.utils.Config;
 import game.sniper_monkey.utils.collision.CollisionResponse;
+import game.sniper_monkey.utils.time.TimerObserver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +18,29 @@ import java.util.Map;
 /**
  * A player GameObject to be controlled in the world, handling its movement, collision, blocking and attacking
  * using two internal Fighter subclasses.
+ * <p>
+ * Uses ReadablePlayer, ControllablePlayer, DamageablePlayer.
+ * Uses GameObject.
+ * Uses FluctuatingAttribute.
+ * Uses CallbackTimer.
+ * Uses Fighter.
+ * Uses PlayerInputAction.
+ * Uses PhysicsPosition.
+ * Uses Config.
+ * Uses IAttack
+ * Uses CollisionResponse
+ * Uses CallbackTimer
+ * Uses TimerObserver
+ * <p>
+ * Used by PlayerFactory.
+ * Used by FighterViews.
+ * Used by BottomHudController
+ * Used by GameController
+ * Used by SwappedFighterObserver
+ * Used by all concrete attacks such as EvilMagicSwing, Arrow, ElectricalSmash etc
+ * Used by GameObjectViewFactory
+ * Used by GameScreen
+ * Used by all FighterViews such as EvilWizardView, FantasyWarriorView etc
  *
  * @author Elias Falk
  * @author Vincent Hellner
@@ -24,6 +48,7 @@ import java.util.Map;
  * @author Dadi Andrason
  */
 public class Player extends GameObject implements ReadablePlayer, ControllablePlayer, DamageablePlayer {
+
     private static final float MAX_X_VEL;
     private static final float VEL_GAIN;
     private static final float JUMP_GAIN;
@@ -41,10 +66,12 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     private final FluctuatingAttribute blockFactor = new FluctuatingAttribute(MIN_BLOCK, MAX_BLOCK);
     private final CallbackTimer blockTimer = new CallbackTimer(BLOCK_COOLDOWN, () -> canBlock = true);
     private final CallbackTimer swapTimer = new CallbackTimer(SWAP_COOLDOWN, () -> canSwap = true);
+    private final CallbackTimer hitStun = new CallbackTimer(0, () -> canAttack = true);
     private final List<SwappedFighterObserver> swappedFighterObservers = new ArrayList<>();
     private final Fighter primaryFighter;
     private final Fighter secondaryFighter;
     private final Map<PlayerInputAction, Boolean> inputActions = new HashMap<>();
+    private final Vector2 spawnPos;
     private PhysicsPosition physicsPos = new PhysicsPosition(new Vector2(0, 0));
     boolean isGrounded = true;
     private Fighter activeFighter;
@@ -54,6 +81,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     private State abilityState = this::inactiveState;
     private boolean canBlock = true;
     private boolean canSwap = true;
+    private boolean canAttack = true;
 
 
     static {
@@ -73,14 +101,20 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         BLOCK_COOLDOWN = Config.getNumber(filepath, "BLOCK_COOLDOWN");
     }
 
+
     /**
-     * Creates a player with a position in the world
+     * Creates a player.
      *
-     * @param position The initial position of the player.
+     * @param spawnPos         The spawn position of the player. Will initially be placed here, as well as spawn there when swapping fighter.
+     * @param primaryFighter   The primary fighter, this will initially act as the active fighter.
+     * @param secondaryFighter The secondary fighter. Will become the active fighter after the player swaps fighter.
+     * @param collisionMask    The collision mask of the fighter.
+     * @see game.sniper_monkey.utils.collision.CollisionMasks
      */
-    public Player(Vector2 position, Fighter primaryFighter, Fighter secondaryFighter, int collisionMask) {
-        super(position, true);
-        physicsPos.setPosition(position);
+    protected Player(Vector2 spawnPos, Fighter primaryFighter, Fighter secondaryFighter, int collisionMask) {
+        super(spawnPos, true);
+        physicsPos.setPosition(spawnPos);
+        this.spawnPos = spawnPos;
         this.primaryFighter = primaryFighter;
         this.secondaryFighter = secondaryFighter;
         currentPhysicalState = PhysicalState.IDLING;
@@ -92,16 +126,21 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     /**
      * Creates a player with a position in the world
      *
-     * @param position The initial position of the player.
+     * @param spawnPos         The initial position of the player.
+     * @param primaryFighter   The primary fighter to use
+     * @param secondaryFighter The secondary fighter to use
      */
-    public Player(Vector2 position, Fighter primaryFighter, Fighter secondaryFighter) {
-        this(position, primaryFighter, secondaryFighter, 0);
+    protected Player(Vector2 spawnPos, Fighter primaryFighter, Fighter secondaryFighter) {
+        this(spawnPos, primaryFighter, secondaryFighter, 0);
     }
 
     /**
      * Creates a Player object
+     *
+     * @param primaryFighter   The primary fighter to use
+     * @param secondaryFighter The secondary fighter to use
      */
-    public Player(Fighter primaryFighter, Fighter secondaryFighter) {
+    protected Player(Fighter primaryFighter, Fighter secondaryFighter) {
         this(new Vector2(0, 0), primaryFighter, secondaryFighter);
     }
 
@@ -113,7 +152,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
      * If it isn't, reset the blockDefenseFactor and set the next state.
      */
     private void blockingState() {
-        currentPhysicalState = PhysicalState.DYING;
+        currentPhysicalState = PhysicalState.BLOCKING;
         if (inputActions.get(PlayerInputAction.BLOCK)) {
             blockFactor.setRegenerating(false);
             blockFactor.setDraining(true, BASE_BLOCK_DRAIN);
@@ -127,40 +166,36 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         }
     }
 
-    private void attacking1State() {
-
-    }
-
-    private void attacking2State() {
-
-    }
-
-    private void swappingFighterState() {
-        // TODO swap fighter
-
-        // if swapped fighter go to inactive state. Swapping fighter could take some time?
-        if (true) {
+    private void attackingState() {
+        hitStun.reset();
+        if (!activeFighter.isAttacking()) {
+            hitStun.start();
             abilityState = this::inactiveState;
         }
     }
 
+    private void swappingFighterState() {
+        // TODO discuss: deprecated unless it takes time for the player to respawn. i.e go into void -> respawn after some time
+        abilityState = this::inactiveState;
+    }
+
     private void inactiveState() {
-        if (inputActions.get(PlayerInputAction.ATTACK1)) {
-            // TODO performAttack
-            stamina.decrease(activeFighter.getStaminaDecrease(1));
-            abilityState = this::attacking1State;
+        if (inputActions.get(PlayerInputAction.ATTACK1) && canAttack && stamina.getCurrentValue() - activeFighter.getStaminaCost(0) >= 0 && !activeFighter.isAttacking()) {
+            performAttack(0);
+            currentPhysicalState = PhysicalState.ATTACKING1;
+            abilityState = this::attackingState;
             return;
-        } else if (inputActions.get(PlayerInputAction.ATTACK2)) {
-            // TODO performAttack
-            stamina.decrease(activeFighter.getStaminaDecrease(2));
-            abilityState = this::attacking2State;
+        } else if (inputActions.get(PlayerInputAction.ATTACK2) && canAttack && stamina.getCurrentValue() - activeFighter.getStaminaCost(1) >= 0 && !activeFighter.isAttacking()) {
+            performAttack(1);
+            currentPhysicalState = PhysicalState.ATTACKING2;
+            abilityState = this::attackingState;
             return;
         } else if (canBlock && inputActions.get(PlayerInputAction.BLOCK)) {
             abilityState = this::blockingState;
             canBlock = false;
             return;
-        } else if (inputActions.get(PlayerInputAction.SWAP_FIGHTER)) {
-            // TODO swapFighter
+        } else if (inputActions.get(PlayerInputAction.SWAP_FIGHTER) && canSwap) {
+            swapFighters();
             abilityState = this::swappingFighterState;
             return;
         }
@@ -199,7 +234,6 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         }
         if (physicsPos.getVelocity().y < 0) {
             movementState = this::inAirState;
-            return;
         }
     }
 
@@ -242,17 +276,27 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         } else {
             initActiveFighter(primaryFighter);
         }
+        swapTimer.reset();
+        swapTimer.start();
+        goToRespawnPosition();
+        for (SwappedFighterObserver observer : swappedFighterObservers) {
+            observer.onFighterSwap(this);
+        }
+        abilityState = this::inactiveState;
+        canSwap = false;
     }
 
-    @Override
-    public PhysicalState getCurrentPhysicalState() {
-        return currentPhysicalState;
+    private void goToRespawnPosition() {
+        physicsPos.setPosition(spawnPos);
+        physicsPos.setVelocity(new Vector2(0, 0));
+        super.setPosition(physicsPos.getPosition());
     }
 
-
-    @Override
-    public boolean isLookingRight() {
-        return lookingRight;
+    private void performAttack(int attackNum) {
+        activeFighter.performAttack(attackNum, this.getPos(), getHitboxMask(), isLookingRight());
+        stamina.decrease(activeFighter.getStaminaCost(attackNum));
+        hitStun.setTimerLength(activeFighter.getHitStunTime(attackNum));
+        canAttack = false;
     }
 
     private void initInputActions() {
@@ -277,26 +321,41 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     }
 
     @Override
+    public PhysicalState getCurrentPhysicalState() {
+        return currentPhysicalState;
+    }
+
+    @Override
+    public float getHealth() {
+        return health.getCurrentValue();
+    }
+
+    @Override
+    public boolean isLookingRight() {
+        return lookingRight;
+    }
+
+    @Override
     public void setInputAction(PlayerInputAction action) {
         inputActions.replace(action, true);
     }
 
     @Override
     public void takeDamage(float damageAmount) {
-        if (false/*currentState == blockingState*/) { // change when state checking has been implemented
+        if (currentPhysicalState == PhysicalState.BLOCKING) {
             health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR) * (1 - blockFactor.getCurrentValue()));
         } else {
-            health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR)); // TODO make getter for defense factor instead?
+            health.decrease(damageAmount * (1 - activeFighter.DEFENSE_FACTOR));
+        }
+
+        if (health.getCurrentValue() <= 0) {
+            currentPhysicalState = PhysicalState.DYING;
         }
     }
 
-    /**
-     * Checks if the player is dead.
-     *
-     * @return true if the player is dead, false if the player is alive.
-     */
-    public boolean isDead() {
-        return health.getCurrentValue() == 0;
+    @Override
+    public float getAttackLength(int attackNum) {
+        return activeFighter.getAttackLength(attackNum);
     }
 
     @Override
@@ -313,13 +372,8 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         }
     }
 
-    /**
-     * Returns the class of the active fighter's attack, specified by the attack number.
-     *
-     * @param attackNum The attack specifier. Starts at 0.
-     * @return The class of the specified attack of the active fighter.
-     */
-    public Class<?> getAttackClass(int attackNum) {
+    @Override
+    public Class<? extends IAttack> getAttackClass(int attackNum) {
         return activeFighter.getAttackClass(attackNum);
     }
 
@@ -327,7 +381,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
         activeFighter = fighter;
         setHitboxPos(physicsPos.getPosition());
         setHitboxSize(fighter.getHitboxSize());
-        stamina.setRegenerationAmount(BASE_STAMINA_REGEN * activeFighter.SPEED_FACTOR);
+        stamina.setRegenerating(true, BASE_STAMINA_REGEN * activeFighter.SPEED_FACTOR);
     }
 
     private void handleLookingDirection() {
@@ -353,8 +407,9 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     private void updatePlayerPos(float deltaTime) {
         physicsPos.update(deltaTime);
         isGrounded = false;
-        physicsPos = CollisionResponse.handleCollision(deltaTime, getHitbox(), getHitboxMask(), physicsPos, () -> {}, () -> {
-            if(physicsPos.getVelocity().y < 0) isGrounded = true;
+        physicsPos = CollisionResponse.handleCollision(deltaTime, getHitbox(), getHitboxMask(), physicsPos, () -> {
+        }, () -> {
+            if (physicsPos.getVelocity().y < 0) isGrounded = true;
         });
         super.setPosition(physicsPos.getPosition());
     }
@@ -415,24 +470,6 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
     }
 
     /**
-     * Subscribes the observer to changes made when the attack cooldown changes.
-     *
-     * @param timerObserver The observer that wants to be subscribed to the changes.
-     */
-    public void registerAttackCooldownObserver(TimerObserver timerObserver) {
-        // TODO since cooldown effects all attacks should set this in player
-    }
-
-    /**
-     * Subscribes the observer to changes made when the attack cooldown changes.
-     *
-     * @param timerObserver The observer that wants to be unsubscribed to the changes.
-     */
-    public void unregisterAttackCooldownObserver(TimerObserver timerObserver) {
-        // TODO
-    }
-
-    /**
      * Subscribes the observer to changes made when the block cooldown changes.
      *
      * @param timerObserver The observer that wants to be subscribed to the changes.
@@ -447,7 +484,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
      * @param timerObserver The observer that wants to be unsubscribed to the changes.
      */
     public void unregisterBlockCooldownObserver(TimerObserver timerObserver) {
-        blockTimer.unRegisterTimerObserver(timerObserver);
+        blockTimer.unregisterTimerObserver(timerObserver);
     }
 
     /**
@@ -465,7 +502,7 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
      * @param timerObserver The observer that wants to be subscribed to the changes.
      */
     public void unregisterSwapCooldownObserver(TimerObserver timerObserver) {
-        swapTimer.unRegisterTimerObserver(timerObserver);
+        swapTimer.unregisterTimerObserver(timerObserver);
     }
 
     /**
@@ -484,6 +521,24 @@ public class Player extends GameObject implements ReadablePlayer, ControllablePl
      */
     public void unregisterSwappedFighterObserver(SwappedFighterObserver observer) {
         swappedFighterObservers.remove(observer);
+    }
+
+    /**
+     * Subscribes the observer to changes made when the hitstun changes.
+     *
+     * @param timerObserver The observer that wants to be subscribed to the changes.
+     */
+    public void registerHitStunObserver(TimerObserver timerObserver) {
+        hitStun.registerTimerObserver(timerObserver);
+    }
+
+    /**
+     * Unsubscribes the observer to changes made when the hitstun changes.
+     *
+     * @param timerObserver The observer that wants to be subscribed to the changes.
+     */
+    public void unregisterHitStunObserver(TimerObserver timerObserver) {
+        hitStun.unregisterTimerObserver(timerObserver);
     }
 
     @FunctionalInterface

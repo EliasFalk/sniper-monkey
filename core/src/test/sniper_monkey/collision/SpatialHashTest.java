@@ -3,7 +3,7 @@ package sniper_monkey.collision;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.collision.CollisionPair;
 import game.sniper_monkey.model.collision.SpatialHash;
-import game.sniper_monkey.model.platform.Platform;
+import game.sniper_monkey.model.world_brick.WorldBrick;
 import game.sniper_monkey.model.world.GameObject;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +19,7 @@ public class SpatialHashTest {
     @Before
     public void initHitbox() {
         sh = new SpatialHash(64, 64);
-        testObject = new Platform(new Vector2(0, 0));
+        testObject = new WorldBrick(new Vector2(0, 0),"test");
     }
 
     @Test

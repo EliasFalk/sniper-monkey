@@ -1,6 +1,7 @@
 package game.sniper_monkey.model;
 
 import com.badlogic.gdx.math.Vector2;
+import game.sniper_monkey.utils.Config;
 
 /**
  * Represents an object used for handling of physics based movement using

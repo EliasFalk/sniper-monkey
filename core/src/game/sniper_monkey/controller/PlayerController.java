@@ -1,20 +1,24 @@
 package game.sniper_monkey.controller;
 
 import com.badlogic.gdx.Gdx;
-import game.sniper_monkey.model.Config;
 import game.sniper_monkey.model.player.ControllablePlayer;
 import game.sniper_monkey.model.player.PlayerInputAction;
+import game.sniper_monkey.utils.Config;
 
 /**
  * Represents a controller reading keyboard input and updating the internal
  * player's state based on a keybinds config file.
+ * <p>
+ * Uses Config
+ * Uses ControllablePlayer
+ * Uses PlayerInputAction
+ * <p>
+ * Used by GameController
  *
  * @author Elias Falk
  */
 public class PlayerController {
     private final ControllablePlayer player;
-
-    // TODO read keycodes from config file
     private final int moveLeftKeyCode;
     private final int moveRightKeyCode;
     private final int jumpKeyCode;
@@ -29,8 +33,8 @@ public class PlayerController {
      * Creates a player controller with input keys.
      *
      * @param player a player object. Is used to know which player object the controller controls.
+     * @param filepath filepath to the key bind config file
      */
-    // Send something to identify which config / part of config to read.
     public PlayerController(ControllablePlayer player, String filepath) {
         this.player = player;
         Config.readConfigFile(filepath);

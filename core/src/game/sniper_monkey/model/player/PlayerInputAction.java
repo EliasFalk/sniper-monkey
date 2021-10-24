@@ -2,6 +2,10 @@ package game.sniper_monkey.model.player;
 
 /**
  * The actions that a player can try to do.
+ * <p>
+ * Used by ControllablePlayer.
+ * Used by Player.
+ * Used by PlayerController.
  *
  * @author Elias Falk
  */

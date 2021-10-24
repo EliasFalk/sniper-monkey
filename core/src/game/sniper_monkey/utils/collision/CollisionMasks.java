@@ -9,10 +9,18 @@ public final class CollisionMasks
 {
     private CollisionMasks() {}
 
-    public static final int PLAYER_1 = 0b0001;
-    public static final int PLAYER_2 = 0b0010;
-    public static final int WALL = 0b0100;
-    public static final int PROJECTILE = 0b1000;
+    /**
+     * Default mask for player 1
+     */
+    public static final int PLAYER_1 = 0b00001;
+    /**
+     * Default mask for player 2
+     */
+    public static final int PLAYER_2 = 0b00010;
+    /**
+     * Mask for ghost objects that are ignored by the collision response algorithm
+     */
+    public static final int GHOST = 0b10000;
 
     /**
      * Checks if two collision masks are overlapping, i.e they mask each other out and should not collide

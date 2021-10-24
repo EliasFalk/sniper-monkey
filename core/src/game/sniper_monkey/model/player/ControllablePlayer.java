@@ -1,7 +1,12 @@
 package game.sniper_monkey.model.player;
 
 /**
- * Interface for a readable player
+ * Interface for a readable player.
+ *
+ * <p>
+ *     Used by PlayerController
+ *     Used by Player
+ * </p>
  *
  * @author Elias Falk
  */

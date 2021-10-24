@@ -10,13 +10,44 @@ import java.util.List;
  * An abstract class used for fighters providing functionality such as attacking,
  * storing basic stats and hitbox settings.
  *
+ * <p>
+ *     Used by Player
+ *     Used by PlayerFactory
+ *     Used by ReadablePlayer
+ *     Used by EvilWizard
+ *     Used by FantasyWarrior
+ *     Used by FighterFactory
+ *     Used by HuntressBow
+ *     Used by Samurai
+ *     Used by HUDUtils
+ *     Used by GameObjectViewFactory
+ *     Used by CharacterSelectionScreen
+ *     Used by SelectViewRectangle
+ *     Used by SelectedFighterView
+ *     Used by SecondaryFighterView
+ *
+ *     Uses IAttack
+ * </p>
+ *
  * @author Elias Falk
  */
 public abstract class Fighter {
 
+    /**
+     * Attack factor of fighter
+     */
     public final float ATTACK_FACTOR;
+    /**
+     * Defense factor of fighter
+     */
     public final float DEFENSE_FACTOR;
+    /**
+     * Speed factor of fighter
+     */
     public final float SPEED_FACTOR;
+    /**
+     * All of the fighters attacks
+     */
     protected final List<IAttack> attacks = new ArrayList<>();
     private final Vector2 hitboxSize;
 
@@ -57,12 +88,16 @@ public abstract class Fighter {
      * Performs the attack specified by the attackNum.
      *
      * @param attackNum A number between 0..n which determines which of the (n-1) attacks to perform.
+     * @param lookingRight Is the player looking right when attacking
+     * @param collisionMask the collision mask to be used to ignore objects when attacking
+     * @param playerPos The position of the attacking player
+     * @return Whether the attack succeeded or not
      */
-    public void performAttack(int attackNum) {
+    public boolean performAttack(int attackNum, Vector2 playerPos, int collisionMask, boolean lookingRight) {
         if (attackNum >= attacks.size()) {
             throw new IllegalArgumentException("attack " + attackNum + " does not exist");
         }
-        attacks.get(attackNum).performAttack(ATTACK_FACTOR);
+        return attacks.get(attackNum).performAttack(ATTACK_FACTOR, playerPos, collisionMask, lookingRight, getHitboxSize());
     }
 
     /**
@@ -71,7 +106,7 @@ public abstract class Fighter {
      * @param attackNum An int 0..n representing a attack of the fighter.
      * @return The stamina cost of the attack.
      */
-    public float getStaminaDecrease(int attackNum) {
+    public float getStaminaCost(int attackNum) {
         if (attackNum >= attacks.size()) {
             throw new IllegalArgumentException("attack " + attackNum + " does not exist");
         }
@@ -84,11 +119,50 @@ public abstract class Fighter {
      * @param attackNum The attack number. Starts at 0.
      * @return The class of the attack.
      */
-    public Class<?> getAttackClass(int attackNum) {
+    public Class<? extends IAttack> getAttackClass(int attackNum) {
         if (attackNum >= attacks.size()) {
             throw new IllegalArgumentException("attack " + attackNum + " does not exist");
         }
         return attacks.get(attackNum).getClass();
+    }
+
+    /**
+     * Checks if the fighter is mid-attack and during an animation.
+     *
+     * @return true if the fighter is mid attack, false if not.
+     */
+    public boolean isAttacking() {
+        boolean isAttacking = false;
+        for (IAttack attack : attacks) {
+            if (!attack.isFinished()) {
+                isAttacking = true;
+            }
+        }
+        return isAttacking;
+    }
+
+    /**
+     * Gets the length of the specified attack in seconds.
+     * @param attackNum is the index of the attack.
+     * @return a float 0..n. where the float is the length of the attack in seconds.
+     */
+    public float getAttackLength(int attackNum) {
+        if (attackNum >= attacks.size()) {
+            throw new IllegalArgumentException("attack " + attackNum + " does not exist");
+        }
+        return attacks.get(attackNum).getAttackLength();
+    }
+
+    /**
+     * Gets the length of the hitstun of the specified attack in seconds.
+     * @param attackNum is the index of the attack.
+     * @return a float 0..n. where the float is the length of the hitstun in seconds.
+     */
+    public float getHitStunTime(int attackNum) {
+        if (attackNum >= attacks.size()) {
+            throw new IllegalArgumentException("attack " + attackNum + " does not exist");
+        }
+        return attacks.get(attackNum).getHitStunLength();
     }
 
 }

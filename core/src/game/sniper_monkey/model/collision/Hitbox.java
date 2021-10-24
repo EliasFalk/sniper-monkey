@@ -5,6 +5,15 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * An Axis Aligned Bounding Box used for hit detection.
  *
+ * <p>
+ *     Used by CollisionEngine
+ *     Used by CollisionPair
+ *     Used by Hitbox (self)
+ *     Used by SpatialHash
+ *     Used by GameObject
+ *     Used by CollisionResponse
+ * </p>
+ *
  * @author Vincent Hellner
  */
 public final class Hitbox {
@@ -50,8 +59,15 @@ public final class Hitbox {
      * @param mask The new mask to add onto the current mask.
      */
     public void addMask(int mask) {
-        this.mask &= mask;
+        this.mask |= mask;
     }
+
+    /**
+     * Removes a part of the mask from this Hitbox.
+     *
+     * @param mask The mask to remove from the current mask.
+     */
+    public void removeMask(int mask) { this.mask &= ~mask; }
 
     /**
      * Returns the mask of this Hitbox.

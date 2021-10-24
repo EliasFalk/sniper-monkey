@@ -5,29 +5,33 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import game.sniper_monkey.model.world.TimerObserver;
+import game.sniper_monkey.utils.time.TimerObserver;
+import game.sniper_monkey.utils.view.FontUtils;
 
 /**
  * A view that represents a pressable key on the keyboard.
+ * <p>
+ * Uses TimerObserver.
+ * Uses HUDView.
+ * Uses Placement.
+ * <p>
+ * Used by BottomHUDController.
  *
  * @author Elias Falk
  */
 public class KeyInputView implements TimerObserver, HUDView {
-
+    private static final float width = 80f;
+    private static final float height = 30f;
+    private static final float sideLabelOffset = 10f;
     private final float x;
     private final float y;
-    private String key;
-    private String text;
     private final FillableBar fillableBar;
     private final Label keyLabel;
     private final Label sideTextLabel;
-    private static final float width = 30f;
-    private static final float height = 30f;
-    private float sideLabelOffset = 10f;
-
+    private final Placement textPlacement;
 
     /**
-     * Creates a new key input view with a default color of light gray.
+     * Creates a new key input view with a default color of light green.
      *
      * @param x             The x position of the key input view. 0 is the left most pixel on the screen.
      * @param y             The y position of the key input view. 0 is the bottom pixel of the screen.
@@ -38,30 +42,11 @@ public class KeyInputView implements TimerObserver, HUDView {
     public KeyInputView(float x, float y, String key, String text, Placement textPlacement) {
         this.x = x;
         this.y = y;
-        this.key = key;
-        this.text = text;
-
-        fillableBar = new FillableBar(x, y, width, height, Color.LIGHT_GRAY, FillDirection.UP);
+        this.textPlacement = textPlacement;
+        fillableBar = createFillableBar(x, y);
         keyLabel = createKeyLabel(x, y, key);
-        sideTextLabel = createSideLabel(x, y, text, textPlacement);
-    }
-
-    private Label createSideLabel(float x, float y, String text, Placement textPlacement) {
-        final Label sideTextLabel;
-        sideTextLabel = new Label(text, new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        if (textPlacement == Placement.RIGHT) {
-            sideTextLabel.setPosition(x + width + sideLabelOffset, y + (height / 2 - sideTextLabel.getHeight() / 2));
-        } else if (textPlacement == Placement.LEFT) {
-            sideTextLabel.setPosition(x - sideLabelOffset - sideTextLabel.getWidth(), y + (height / 2 - sideTextLabel.getHeight() / 2));
-        }
-        return sideTextLabel;
-    }
-
-    private Label createKeyLabel(float x, float y, String key) {
-        final Label keyLabel;
-        keyLabel = new Label(key, new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        keyLabel.setPosition(x + width / 2, y + height / 2, Align.center);
-        return keyLabel;
+        sideTextLabel = createSideTextLabel(text);
+        positionSideTextLabel(textPlacement);
     }
 
     /**
@@ -82,13 +67,42 @@ public class KeyInputView implements TimerObserver, HUDView {
         return height;
     }
 
+    private Label createSideTextLabel(String text) {
+        return new Label(text, FontUtils.robotoWhite(14));
+    }
+
+    private FillableBar createFillableBar(float x, float y) {
+        Color lightGreen = new Color(93 / 255f, 186 / 255f, 104 / 255f, 0);
+        return new FillableBar(x, y, width, height, lightGreen, FillDirection.UP);
+    }
+
+    private void updateSideLabel(String text, Placement textPlacement) {
+        sideTextLabel.setText(text);
+        positionSideTextLabel(textPlacement);
+    }
+
+    private void positionSideTextLabel(Placement textPlacement) {
+        if (textPlacement == Placement.RIGHT) {
+            sideTextLabel.setPosition(x + width + sideLabelOffset, y + (height / 2 - sideTextLabel.getHeight() / 2));
+        } else if (textPlacement == Placement.LEFT) {
+            sideTextLabel.setPosition(x - sideLabelOffset - sideTextLabel.getPrefWidth(), y + (height / 2 - sideTextLabel.getHeight() / 2));
+        }
+    }
+
+    private Label createKeyLabel(float x, float y, String key) {
+        final Label keyLabel;
+        keyLabel = new Label(key, new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        keyLabel.setPosition(x + width / 2, y + height / 2, Align.center);
+        return keyLabel;
+    }
+
     /**
      * Sets the side text of the visual key to a new text.
      *
      * @param text The new side text.
      */
     public void setText(String text) {
-        this.text = text;
+        updateSideLabel(text, textPlacement);
     }
 
     @Override
@@ -96,6 +110,13 @@ public class KeyInputView implements TimerObserver, HUDView {
         stage.addActor(fillableBar);
         stage.addActor(keyLabel);
         stage.addActor(sideTextLabel);
+    }
+
+    @Override
+    public void removeActors() {
+        fillableBar.remove();
+        keyLabel.remove();
+        sideTextLabel.remove();
     }
 
     @Override

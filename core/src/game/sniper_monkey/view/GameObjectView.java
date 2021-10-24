@@ -14,7 +14,13 @@ import game.sniper_monkey.model.world.GameObject;
  */
 public abstract class GameObjectView {
     private final GameObject model;
+    /**
+     * Offset to draw sprite at
+     */
     protected Vector2 drawOffset;
+    /**
+     * The sprite of the GameObjectView
+     */
     protected Sprite sprite;
 
     /**
@@ -45,6 +51,7 @@ public abstract class GameObjectView {
      *
      * @param sr    The ShapeRenderer to use.
      * @param batch The SpriteBatch to use.
+     * @param debugMode Should debug mode be used to render the hitbox.
      */
     public void render(ShapeRenderer sr, SpriteBatch batch, boolean debugMode) {
         batch.draw(sprite, model.getPos().x + drawOffset.x, model.getPos().y + drawOffset.y);

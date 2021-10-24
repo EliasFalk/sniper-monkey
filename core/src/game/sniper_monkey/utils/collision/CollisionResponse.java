@@ -1,10 +1,10 @@
 package game.sniper_monkey.utils.collision;
 
 import com.badlogic.gdx.math.Vector2;
-import game.sniper_monkey.model.Callback;
 import game.sniper_monkey.model.PhysicsPosition;
 import game.sniper_monkey.model.collision.CollisionEngine;
 import game.sniper_monkey.model.collision.Hitbox;
+import game.sniper_monkey.utils.Callback;
 
 /**
  * Static utility for responding to collision (i.e preventing
@@ -30,6 +30,8 @@ public final class CollisionResponse {
      * @return A resulting new physics position that represents the objects new position.
      */
     public static PhysicsPosition handleCollision(float deltaTime, Hitbox hitbox, int collisionMask, PhysicsPosition physicsPosition, Callback onXCollision, Callback onYCollision) {
+        collisionMask |= CollisionMasks.GHOST;
+
         Vector2 vel = physicsPosition.getVelocity();
         Vector2 hitboxStartingPos = hitbox.getPosition();
 

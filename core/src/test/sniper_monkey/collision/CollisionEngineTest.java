@@ -1,14 +1,19 @@
 package sniper_monkey.collision;
 
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.backends.headless.HeadlessApplication;
+import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import com.badlogic.gdx.math.Vector2;
 import game.sniper_monkey.model.collision.CollisionEngine;
 import game.sniper_monkey.model.collision.Hitbox;
-import game.sniper_monkey.model.platform.Platform;
 import game.sniper_monkey.model.world.GameObject;
+import game.sniper_monkey.model.world.World;
+import game.sniper_monkey.model.world_brick.WorldBrick;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class CollisionEngineTest {
 
@@ -17,8 +22,12 @@ public class CollisionEngineTest {
 
     @BeforeClass
     public static void InsertObj() {
-        obj = new Platform(new Vector2(0, 0));
-        objDynamic = new Platform(new Vector2(0, 0));
+        final HeadlessApplicationConfiguration config = new HeadlessApplicationConfiguration();
+        new HeadlessApplication(new ApplicationAdapter() {
+        }, config);
+        obj = new WorldBrick(new Vector2(0, 0), "test");
+        objDynamic = new WorldBrick(new Vector2(0, 0), "test");
+        World.getInstance().resetWorld();
         CollisionEngine.registerGameObject(obj, false);
     }
 

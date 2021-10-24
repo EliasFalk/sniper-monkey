@@ -1,13 +1,18 @@
 package sniper_monkey;
 
-import game.sniper_monkey.model.TimerBank;
-import game.sniper_monkey.model.world.CallbackTimer;
+import game.sniper_monkey.model.time.CallbackTimer;
+import game.sniper_monkey.model.time.TimerBank;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import org.junit.Test;
-
 public class TimerBankTest {
+
+    @BeforeClass
+    public static void init() {
+        TimerBank.clear();
+    }
 
     @Test
     public void addTimerTest() {
@@ -16,7 +21,7 @@ public class TimerBankTest {
         CallbackTimer nullTimer = null;
 
         TimerBank.addTimer(timer);
-
+        TimerBank.updateTimers(0);
         assertTrue(TimerBank.contains(timer));
 
         assertFalse(TimerBank.addTimer(timer));
