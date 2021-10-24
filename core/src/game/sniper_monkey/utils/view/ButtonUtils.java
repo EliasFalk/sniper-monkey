@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
  * A utility class to get button styles.
  * <p>
  * Used by GameController.
+ * Used by OverlayMenu.
  *
  * @author Elias Falk
  */
@@ -38,6 +39,11 @@ public final class ButtonUtils {
         return textButtonStyle;
     }
 
+    /**
+     * Returns the text button style for an expee styled button.
+     *
+     * @return the text button style for an expee styled button.
+     */
     public static TextButton.TextButtonStyle getExpeeButtonStyle() {
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.up = expeeSkin.getDrawable("button");

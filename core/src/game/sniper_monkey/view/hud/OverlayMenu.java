@@ -17,6 +17,7 @@ import java.util.List;
  * A view for a general overlay that represents a menu with x amount of buttons and a title as well as a covering lightbox.
  * <p>
  * Uses HUDView.
+ * Uses ButtonUtils.
  * <p>
  * Used by GameController.
  *
