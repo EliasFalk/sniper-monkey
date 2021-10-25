@@ -27,6 +27,8 @@ public class SelectedFighterView  {
     private final Label player1SecondarySelectedLabel;
     private final Label player2PrimarySelectedLabel;
     private final Label player2SecondarySelectedLabel;
+    private final Label errorLabel1;
+    private final Label errorLabel2;
 
     /**
      * Creates the view for when a fighter has been chosen.
@@ -40,6 +42,8 @@ public class SelectedFighterView  {
         this.player1SecondarySelectedLabel = new Label("", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         this.player2PrimarySelectedLabel = new Label("", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         this.player2SecondarySelectedLabel = new Label("", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        this.errorLabel1 = new Label("Player1 need to select primary first!", new Label.LabelStyle(new BitmapFont(), Color.RED));
+        this.errorLabel2 = new Label("Player2 need to select primary first!", new Label.LabelStyle(new BitmapFont(), Color.RED));
     }
 
     /**
@@ -60,6 +64,16 @@ public class SelectedFighterView  {
         playerSelectedImage.setPosition(xPos, yPos);
         playerSelectedImage.setWidth(textureRegionWidth);
         playerSelectedImage.setHeight(textureRegionHeight);
+    }
+
+    public void errorChoosePrimaryFirst(int player) {
+        if (player == 1) {
+            errorLabel1.setPosition((Gdx.graphics.getWidth()*2)/10f, (Gdx.graphics.getHeight()*8.8f)/10f);
+            stage.addActor(errorLabel1);
+        } else {
+            errorLabel2.setPosition((Gdx.graphics.getWidth()*6)/10f, (Gdx.graphics.getHeight()*8.8f)/10f);
+            stage.addActor(errorLabel2);
+        }
     }
 
     /**
@@ -84,6 +98,7 @@ public class SelectedFighterView  {
     public void drawPlayer1PrimaryFighter(Fighter fighter) {
         createSelectedImage(fighter, player1SelectedImage, (Gdx.graphics.getWidth()*2)/10f, (Gdx.graphics.getHeight()*6)/10f);
         setChosenFighterLabel(player1PrimarySelectedLabel, "Player 1 Primary: ", fighter, (Gdx.graphics.getWidth()*2)/10f, (Gdx.graphics.getHeight()*9.7f)/10f);
+        errorLabel1.setText("");
         stage.addActor(player1SelectedImage);
         stage.addActor(player1PrimarySelectedLabel);
     }
@@ -104,6 +119,7 @@ public class SelectedFighterView  {
     public void drawPlayer2PrimaryFighter(Fighter fighter) {
         createSelectedImage(fighter, player2SelectedImage, (Gdx.graphics.getWidth()*6)/10f, (Gdx.graphics.getHeight()*6)/10f);
         setChosenFighterLabel(player2PrimarySelectedLabel, "Player 2 Primary: ", fighter, (Gdx.graphics.getWidth()*6)/10f, (Gdx.graphics.getHeight()*9.7f)/10f);
+        errorLabel2.setText("");
         stage.addActor(player2SelectedImage);
         stage.addActor(player2PrimarySelectedLabel);
     }

@@ -7,6 +7,7 @@ import game.sniper_monkey.model.player.fighter.Fighter;
 import game.sniper_monkey.model.player.fighter.FighterFactory;
 import game.sniper_monkey.view.characterSelection.CharacterSelectionScreen;
 import game.sniper_monkey.view.characterSelection.ICharacterSelectedObserver;
+import game.sniper_monkey.view.characterSelection.SelectedFighterView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,7 +68,7 @@ public class CharacterSelectionScreenController implements IScreenController {
     }
 
     //Could probably refactor the choosePlayer to one method where you send in the fighter that supposed the be set and player1SelectedRectangle index so you can get the fighter.
-    //Needs that the drawPlayer method in selectedFighterView is one that takes in parameters instead of many different
+    //Needs that the drawPlayer method in selectedFighterView is one that takes in parameters instead of having one for each (e.g drawPlayer1Primary, drawPlayer1Secondary etc)
     private void choosePlayer1PrimaryFighter() {
         if (player1PrimaryFighter == null) {
             player1PrimaryFighter = FighterFactory.getFighter(characterSelectionScreen.fighterList.get(player1SelectedRectangleIndex));
@@ -131,7 +132,11 @@ public class CharacterSelectionScreenController implements IScreenController {
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             choosePlayer1PrimaryFighter();
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
-            choosePlayer1SecondaryFighter();
+            if (player1PrimaryFighter != null) {
+                choosePlayer1SecondaryFighter();
+            } else {
+                characterSelectionScreen.selectedFighterView.errorChoosePrimaryFirst(1);
+            }
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
             setPlayer2SelectedRectangleIndex(1);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
@@ -143,7 +148,11 @@ public class CharacterSelectionScreenController implements IScreenController {
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             choosePlayer2PrimaryFighter();
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_RIGHT)) {
-            choosePlayer2SecondaryFighter();
+            if (player2PrimaryFighter != null) {
+                choosePlayer2SecondaryFighter();
+            } else {
+                characterSelectionScreen.selectedFighterView.errorChoosePrimaryFirst(2);
+            }
         }
     }
 
